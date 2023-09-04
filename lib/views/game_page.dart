@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../controllers/table_controller.dart';
-import '../views/cell.dart';
+import 'cell_widget.dart';
 
 class GamePage extends StatelessWidget {
   const GamePage({super.key});

@@ -14,6 +14,7 @@ class TableController extends GetxController {
   var player1 = 'Player 1';
   var player2 = 'Player 2';
   var winner = '';
+  bool isGameOver = false;
 
   var inputRowsController = TextEditingController();
   var inputColumnsController = TextEditingController();
@@ -77,6 +78,7 @@ class TableController extends GetxController {
     currentPlayer = '';
     player1 = 'Player 1';
     player2 = 'Player 2';
+    isGameOver = false;
     print('reset player');
     print('Current player: $currentPlayer, $currentPlayerXO');
     print('Player 1: $player1');
@@ -99,14 +101,14 @@ class TableController extends GetxController {
     // int row = index % rows.value;
     // int column = index ~/ rows.value;
     print('draw something...');
-    if (currentPlayerXO == 'X' && listXO[row][column] == '') {
+    if (isGameOver == false && currentPlayerXO == 'X' && listXO[row][column] == '') {
       listXO[row][column] = "X";
       print('draw X');
       print(listXO);
       checkWinner();
       togglePlayer();
     }
-    if (currentPlayerXO != 'X' && listXO[row][column] == '') {
+    if (isGameOver == false && currentPlayerXO != 'X' && listXO[row][column] == '') {
       listXO[row][column] = "O";
       print('draw O');
       print(listXO);
@@ -129,12 +131,14 @@ class TableController extends GetxController {
           if (listXO[i][j] == 'X') {
             print('Winner is $winner');
             winner = player1;
+            isGameOver = true;
             Get.toNamed('\winner');
             update();
           }
           if (listXO[i][j] == 'O') {
             print('Winner is $winner');
             winner = player2;
+            isGameOver = true;
             Get.toNamed('\winner');
             update();
           }
@@ -152,12 +156,14 @@ class TableController extends GetxController {
           if (listXO[i][j] == 'X') {
             print('Winner is $winner');
             winner = player1;
+            isGameOver = true;
             Get.toNamed('\winner');
             update();
           }
           if (listXO[i][j] == 'O') {
             print('Winner is $winner');
             winner = player2;
+            isGameOver = true;
             Get.toNamed('\winner');
             update();
           }
@@ -175,12 +181,14 @@ class TableController extends GetxController {
           if (listXO[i][j] == 'X') {
             print('Winner is $winner');
             winner = player1;
+            isGameOver = true;
             Get.toNamed('\winner');
             update();
           }
           if (listXO[i][j] == 'O') {
             print('Winner is $winner');
             winner = player2;
+            isGameOver = true;
             Get.toNamed('\winner');
             update();
           }
@@ -198,12 +206,14 @@ class TableController extends GetxController {
           if (listXO[i][j] == 'X') {
             print('Winner is $winner');
             winner = player1;
+            isGameOver = true;
             Get.toNamed('\winner');
             update();
           }
           if (listXO[i][j] == 'O') {
             print('Winner is $winner');
             winner = player2;
+            isGameOver = true;
             Get.toNamed('\winner');
             update();
           }
