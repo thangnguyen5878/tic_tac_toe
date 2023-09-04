@@ -4,8 +4,8 @@ import 'package:get/get.dart';
 import '../controllers/table_controller.dart';
 import '../views/cell.dart';
 
-class TablePage extends StatelessWidget {
-  TablePage({super.key});
+class GamePage extends StatelessWidget {
+  const GamePage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -39,7 +39,7 @@ class TablePage extends StatelessWidget {
                 scrollDirection: Axis.vertical,
                 children: [
                   const SizedBox(height: 10),
-                  _buildTable(),
+                  _buildBoard(context),
                   const SizedBox(height: 60),
                 ],
               ),
@@ -60,17 +60,17 @@ class TablePage extends StatelessWidget {
         color: Colors.grey,
         height: 50,
         child: GetBuilder(builder: (TableController controller) {
-          final _currentPlayerXO = TableController.to.currentPlayerXO;
-          final _player1 = TableController.to.player1;
-          final _player2 = TableController.to.player2;
+          final currentPlayerXO = TableController.to.currentPlayerXO;
+          final player1 = TableController.to.player1;
+          final player2 = TableController.to.player2;
 
-          final _xColor = _currentPlayerXO == 'X' ? Colors.black : const Color.fromARGB(200, 100, 100, 100);
-          final _oColor = _currentPlayerXO == 'O' ? Colors.black : const Color.fromARGB(200, 100, 100, 100);
-          final _xBoxColor = _currentPlayerXO == 'X' ? Color.fromARGB(211, 193, 100, 100) : Colors.grey;
-          final _oBoxColor = _currentPlayerXO == 'O' ? Color.fromARGB(211, 193, 100, 100) : Colors.grey;
-          
-          final _player1Color = _currentPlayerXO == _player1 ? Colors.black : Colors.grey;
-          final _player2Color = _currentPlayerXO == _player2 ? Colors.black : Colors.grey;
+          final xColor = currentPlayerXO == 'X' ? Colors.black : const Color.fromARGB(200, 100, 100, 100);
+          final oColor = currentPlayerXO == 'O' ? Colors.black : const Color.fromARGB(200, 100, 100, 100);
+          final xBoxColor = currentPlayerXO == 'X' ? const Color.fromARGB(211, 193, 100, 100) : Colors.grey;
+          final oBoxColor = currentPlayerXO == 'O' ? const Color.fromARGB(211, 193, 100, 100) : Colors.grey;
+
+          final player1Color = currentPlayerXO == player1 ? Colors.black : Colors.grey;
+          final player2Color = currentPlayerXO == player2 ? Colors.black : Colors.grey;
 
           return Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -78,23 +78,16 @@ class TablePage extends StatelessWidget {
               // Player 1 Box
               Expanded(
                 child: Container(
-                  color: _xBoxColor,
-                  child: Column(    
+                  color: xBoxColor,
+                  child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      if (_player1.isNotEmpty)
+                      if (player1.isNotEmpty)
                         Text(
-                          _player1,
-                          style: TextStyle(
-                            color: _xColor,
-                            fontWeight: FontWeight.bold
-                          ),
+                          player1,
+                          style: TextStyle(color: xColor, fontWeight: FontWeight.bold),
                         ),
-                      Text('X',
-                          style: TextStyle(
-                            color: _xColor,
-                            fontWeight: FontWeight.bold
-                          )),
+                      Text('X', style: TextStyle(color: xColor, fontWeight: FontWeight.bold)),
                     ],
                   ),
                 ),
@@ -102,24 +95,18 @@ class TablePage extends StatelessWidget {
               // Player 2 Box
               Expanded(
                 child: Container(
-                  color: _oBoxColor,
+                  color: oBoxColor,
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      if (_player2.isNotEmpty)
+                      if (player2.isNotEmpty)
                         Text(
-                          _player2,
-                          style: TextStyle(
-                            color: _oColor,
-                            fontWeight: FontWeight.bold
-                          ),
+                          player2,
+                          style: TextStyle(color: oColor, fontWeight: FontWeight.bold),
                         ),
                       Text(
                         'O',
-                        style: TextStyle(
-                          color: _oColor,
-                          fontWeight: FontWeight.bold
-                        ),
+                        style: TextStyle(color: oColor, fontWeight: FontWeight.bold),
                       ),
                     ],
                   ),
@@ -133,27 +120,31 @@ class TablePage extends StatelessWidget {
   }
 }
 
-Widget _buildTable() {
+Widget _buildBoard(BuildContext context) {
   print('build table...');
-  final columns = TableController.to.columns;
-  final rows = TableController.to.rows;
+  final _columns = TableController.to.columns;
+  final _rows = TableController.to.rows;
+  final _cellEdgeSize = (MediaQuery.of(context).size.width - 10 * 2) / _columns;
 
-  return GridView.builder(
-    // scrollDirection: Axis.vertical,
-    physics: const NeverScrollableScrollPhysics(),
-    shrinkWrap: true,
-    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-      crossAxisCount: columns,
-      crossAxisSpacing: 2,
-      mainAxisSpacing: 2,
-      childAspectRatio: 1,
+  return Container(
+    decoration: BoxDecoration(border: Border.all(width: 1)),
+    child: GridView.builder(
+      padding: EdgeInsets.zero,
+      physics: NeverScrollableScrollPhysics(),
+      shrinkWrap: true,
+      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+        crossAxisCount: _columns,
+        crossAxisSpacing: 0,
+        mainAxisSpacing: 0,
+        childAspectRatio: 1,
+      ),
+      itemCount: _columns * _rows,
+      itemBuilder: (context, index) {
+        return CellWidget(
+          row: index ~/ _columns,
+          column: index % _columns,
+        );
+      },
     ),
-    itemCount: columns * rows,
-    itemBuilder: (context, index) {
-      return Cell(
-        row: index ~/ columns,
-        column: index % columns,
-      );
-    },
   );
 }

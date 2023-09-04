@@ -1,10 +1,9 @@
 import 'package:tic_tac_toe/views/input_page.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:tic_tac_toe/_temp/test_page.dart';
 
 import 'controllers/table_controller.dart';
-import 'views/table_page.dart';
-import 'views/input_page.dart';
 
 void main() {
   runApp(MyApp());
@@ -21,6 +20,7 @@ class MyApp extends StatelessWidget {
     return GetMaterialApp(
       title: 'Flutter Demo',
       debugShowCheckedModeBanner: false,
+      
       home: InputPage(),
     );
   }

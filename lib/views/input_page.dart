@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:tic_tac_toe/controllers/table_controller.dart';
-import 'package:tic_tac_toe/views/table_page.dart';
+import 'package:tic_tac_toe/views/game_page.dart';
 
 class InputPage extends StatelessWidget {
   final _formKey = GlobalKey<FormState>();
 
-  TextEditingController _inputColumnsController = TextEditingController();
-  TextEditingController _inputRowsController = TextEditingController();
+  final TextEditingController _inputColumnsController = TextEditingController();
+  final TextEditingController _inputRowsController = TextEditingController();
 
   InputPage({super.key});
 
@@ -50,7 +50,7 @@ class InputPage extends StatelessWidget {
         if (_formKey.currentState!.validate()) {
           _formKey.currentState!.save();
           TableController.to.createListXO();
-          Get.to(() => TablePage());
+          Get.to(() => GamePage());
           FocusScope.of(context).unfocus();
           TableController.to.clearInput();
         }
