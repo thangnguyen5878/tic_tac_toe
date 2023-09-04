@@ -5,30 +5,38 @@ import 'package:get/get.dart';
 void showWinnerDialog(String winner) {
   print('show winner dialog');
   Get.defaultDialog(
+    custom: Container(
+      alignment: Alignment.center,
+      color: const Color.fromARGB(73, 0, 0, 0),
+      child: Center(
+        child: Text(winner),
+      ),
+    ),
     title: 'Result',
     content: Text('WINNER is $winner'),
-    actions: [
-      // Play Again Button: remomve dialog and clear the board
-      TextButton(
-        onPressed: () {
-          Get.back();
-          print('play again');
-          TableController.to.emptyXOList();
-          // TableController.to.clearInput();
-        },
-        child: const Text("Play Again"),
-      ),
-      // Back button: back to input page
-      TextButton(
-        onPressed: () {
-          Get.back();
-          Get.back();
-          print('back to input page');
-          TableController.to.emptyXOList();
-          TableController.to.clearInput();
-        },
-        child: const Text("Back"),
-      ),
-    ],
+    
+    // actions: [
+    //   // Play Again Button: remomve dialog and clear the board
+    //   TextButton(
+    //     onPressed: () {
+    //       Get.back();
+    //       print('play again');
+    //       TableController.to.emptyXOList();
+    //       // TableController.to.clearInput();
+    //     },
+    //     child: const Text("Play Again"),
+    //   ),
+    //   // Back button: back to input page
+    //   TextButton(
+    //     onPressed: () {
+    //       Get.back();
+    //       Get.back();
+    //       print('back to input page');
+    //       TableController.to.emptyXOList();
+    //       TableController.to.clearInput();
+    //     },
+    //     child: const Text("Back"),
+    //   ),
+    // ],
   );
 }

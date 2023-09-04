@@ -49,8 +49,10 @@ class GamePage extends StatelessWidget {
         ]),
       ),
     );
-  }
 
+    
+  }
+  
   Positioned _buildPlayersBottomBar() {
     return Positioned(
       left: 0,
@@ -148,3 +150,5 @@ Widget _buildBoard(BuildContext context) {
     ),
   );
 }
+
+

@@ -1,6 +1,7 @@
 import 'package:tic_tac_toe/utils/winner_dialog.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
+import 'package:tic_tac_toe/views/winner_page.dart';
 
 class TableController extends GetxController {
   static TableController get to => Get.find();
@@ -12,6 +13,7 @@ class TableController extends GetxController {
   var currentPlayerXO = 'X';
   var player1 = 'Player 1';
   var player2 = 'Player 2';
+  var winner = '';
 
   var inputRowsController = TextEditingController();
   var inputColumnsController = TextEditingController();
@@ -125,12 +127,16 @@ class TableController extends GetxController {
             listXO[i][j] == listXO[i][j + 4] &&
             listXO[i][j] != '') {
           if (listXO[i][j] == 'X') {
-            print('x win, i = $i, j = $j');
-            showWinnerDialog('X');
+            print('Winner is $winner');
+            winner = player1;
+            Get.toNamed('\winner');
+            update();
           }
           if (listXO[i][j] == 'O') {
-            print('O win, i = $i, j = $j');
-            showWinnerDialog('O');
+            print('Winner is $winner');
+            winner = player2;
+            Get.toNamed('\winner');
+            update();
           }
         }
       }
@@ -144,12 +150,16 @@ class TableController extends GetxController {
             listXO[i][j] == listXO[i + 4][j] &&
             listXO[i][j] != '') {
           if (listXO[i][j] == 'X') {
-            print('x win, i = $i,  j = $j');
-            showWinnerDialog('X');
+            print('Winner is $winner');
+            winner = player1;
+            Get.toNamed('\winner');
+            update();
           }
           if (listXO[i][j] == 'O') {
-            print('O win, i = $i, j = $j');
-            showWinnerDialog('O');
+            print('Winner is $winner');
+            winner = player2;
+            Get.toNamed('\winner');
+            update();
           }
         }
       }
@@ -163,12 +173,16 @@ class TableController extends GetxController {
             listXO[i][j] == listXO[i + 4][j + 4] &&
             listXO[i][j] != '') {
           if (listXO[i][j] == 'X') {
-            print('x win, i = $i, j = $j');
-            showWinnerDialog('X');
+            print('Winner is $winner');
+            winner = player1;
+            Get.toNamed('\winner');
+            update();
           }
           if (listXO[i][j] == 'O') {
-            print('O win, i = $i, j = $j');
-            showWinnerDialog('O');
+            print('Winner is $winner');
+            winner = player2;
+            Get.toNamed('\winner');
+            update();
           }
         }
       }
@@ -182,12 +196,16 @@ class TableController extends GetxController {
             listXO[i][j] == listXO[i + 4][j - 4] &&
             listXO[i][j] != '') {
           if (listXO[i][j] == 'X') {
-            print('x win, i = $i, j = $j');
-            showWinnerDialog('X');
+            print('Winner is $winner');
+            winner = player1;
+            Get.toNamed('\winner');
+            update();
           }
           if (listXO[i][j] == 'O') {
-            print('O win, i = $i, j = $j');
-            showWinnerDialog('O');
+            print('Winner is $winner');
+            winner = player2;
+            Get.toNamed('\winner');
+            update();
           }
         }
       }
