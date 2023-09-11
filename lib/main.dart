@@ -1,10 +1,9 @@
-import 'package:tic_tac_toe/_temp/_my_button.dart';
-import 'package:tic_tac_toe/views/input_page.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:tic_tac_toe/views/winner_page.dart';
+import 'package:tic_tac_toe/views/pages/input_page.dart';
+import 'package:tic_tac_toe/views/pages/winner_page.dart';
 
-import 'controllers/table_controller.dart';
+import 'controllers/global_controller.dart';
 
 void main() {
   runApp(MyApp());
@@ -13,7 +12,7 @@ void main() {
 class MyApp extends StatelessWidget {
   MyApp({super.key});
 
-  final TableController tableController = Get.put(TableController());
+  final GlobalController tableController = Get.put(GlobalController());
 
   // This widget is the root of your application.
   @override
@@ -24,11 +23,10 @@ class MyApp extends StatelessWidget {
       getPages: [
         GetPage(
           name: '/winner',
-          page: () => WinnerPage(),
+          page: () => const WinnerPage(),
           opaque: false,
-          transitionDuration: Duration(seconds: 0),
+          transitionDuration: const Duration(seconds: 0),
           // transition: Transition.downToUp
-          
         )
       ],
       home: InputPage(),

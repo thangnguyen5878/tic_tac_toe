@@ -1,19 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:tic_tac_toe/controllers/table_controller.dart';
-import 'package:tic_tac_toe/views/game_page.dart';
+import 'package:tic_tac_toe/controllers/global_controller.dart';
+import 'package:tic_tac_toe/views/pages/game_page.dart';
 
 class InputPage extends StatelessWidget {
   final _formKey = GlobalKey<FormState>();
-
-  final TextEditingController _inputColumnsController = TextEditingController();
-  final TextEditingController _inputRowsController = TextEditingController();
 
   InputPage({super.key});
 
   @override
   Widget build(BuildContext context) {
-    print('build input page');
+    print('build input page...');
     return Scaffold(
       appBar: AppBar(
         title: const Text('Input Page'),
@@ -34,7 +31,7 @@ class InputPage extends StatelessWidget {
                 const SizedBox(height: 16),
                 _buildColumnsInputField(),
                 const SizedBox(height: 16),
-                _playButton(context),
+                _buildPlayButton(context),
               ],
             ),
           ),
@@ -43,54 +40,53 @@ class InputPage extends StatelessWidget {
     );
   }
 
-  ElevatedButton _playButton(BuildContext context) {
-    print('build play button');
+  ElevatedButton _buildPlayButton(BuildContext context) {
+    // print('build play button');
     return ElevatedButton(
       onPressed: () {
         if (_formKey.currentState!.validate()) {
+          print('press play button');
           _formKey.currentState!.save();
-          TableController.to.createListXO();
-          Get.to(() => GamePage());
+          GlobalController.to.initGame();
+          Get.to(() => const GamePage());
           FocusScope.of(context).unfocus();
-          TableController.to.clearInput();
+          GlobalController.to.clearInput();
         }
-
-        // Get.to(() => const TablePage());
       },
       child: const Text('Play'),
     );
   }
 
   TextFormField _buildPlayer1InputField() {
-    print('build player 1 input field');
+    // print('build player 1 input field');
     return TextFormField(
-      controller: TableController.to.inputPlayer1Controller,
+      controller: GlobalController.to.inputPlayer1Controller,
       keyboardType: TextInputType.text,
       autofocus: false,
       onSaved: (value) {
-        if (value != '') TableController.to.setPlayer1(value!);
+        if (value != '') GlobalController.to.game.player1.name = value!;
       },
       decoration: const InputDecoration(labelText: 'Player 1'),
     );
   }
 
   TextFormField _buildPlayer2InputField() {
-    print('build player 2 input field');
+    // print('build player 2 input field');
     return TextFormField(
-      controller: TableController.to.inputPlayer2Controller,
+      controller: GlobalController.to.inputPlayer2Controller,
       keyboardType: TextInputType.text,
       autofocus: false,
       onSaved: (value) {
-        if (value != '') TableController.to.setPlayer2(value!);
+        if (value != '') GlobalController.to.game.player2.name = value!;
       },
       decoration: const InputDecoration(labelText: 'Player 2'),
     );
   }
 
   TextFormField _buildColumnsInputField() {
-    print('build columns input field');
+    // print('build columns input field');
     return TextFormField(
-      controller: TableController.to.inputColumnsController,
+      controller: GlobalController.to.inputColumnsController,
       keyboardType: TextInputType.number,
       autofocus: false,
       validator: (value) {
@@ -104,16 +100,16 @@ class InputPage extends StatelessWidget {
         return null;
       },
       onSaved: (value) {
-        TableController.to.setColumns(int.tryParse(value!) ?? 0);
+        GlobalController.to.game.board.columns = int.tryParse(value!) ?? 0; 
       },
       decoration: const InputDecoration(labelText: 'Enter Column Count (5-12)'),
     );
   }
 
   TextFormField _buildRowsInputField() {
-    print('build rows input field');
+    // print('build rows input field');
     return TextFormField(
-      controller: TableController.to.inputRowsController,
+      controller: GlobalController.to.inputRowsController,
       keyboardType: TextInputType.number,
       autofocus: false,
       validator: (value) {
@@ -127,12 +123,9 @@ class InputPage extends StatelessWidget {
         return null;
       },
       onSaved: (value) {
-        TableController.to.setRows(int.tryParse(value!) ?? 0);
+        GlobalController.to.game.board.rows = int.tryParse(value!) ?? 0;
       },
       decoration: const InputDecoration(labelText: 'Enter Row Count (5-18)'),
     );
   }
-
-  
 }
-

@@ -1,4 +1,0 @@
-enum CellStatus {
-  normal,
-  win
-}
