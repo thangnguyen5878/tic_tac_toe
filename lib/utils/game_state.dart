@@ -1,1 +1,0 @@
-enum GameState { playing, stop }

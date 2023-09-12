@@ -45,8 +45,8 @@ class CellWidget extends StatelessWidget {
       ),
       onTap: () {
         // GlobalController.to.game.nextTurn();
-        print('Ontap: ${GlobalController.to.game.currentPlayer.seed}');
-        return GlobalController.to.drawSeed(row, column, GlobalController.to.game.currentPlayer.seed);
+        print('Tap cell($row, $column) : ${GlobalController.to.game.currentPlayer.seed}');
+        GlobalController.to.drawSeed(row, column, GlobalController.to.game.currentPlayer.seed);
       },
     );
   }

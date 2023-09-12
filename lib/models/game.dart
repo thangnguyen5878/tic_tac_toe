@@ -1,34 +1,40 @@
 import 'package:get/get.dart';
 import 'package:tic_tac_toe/models/board.dart';
 import 'package:tic_tac_toe/models/player.dart';
+import 'package:tic_tac_toe/models/round.dart';
 import 'package:tic_tac_toe/utils/cell_state.dart';
-import 'package:tic_tac_toe/utils/game_state.dart';
+import 'package:tic_tac_toe/utils/round_state.dart';
 import 'package:tic_tac_toe/utils/seed.dart';
 
 class Game {
   Player player1;
   Player player2;
   late Player currentPlayer;
-  Player? winner;
   Board board;
   int roundCount;
-  GameState state;
+  List<Round?>? rounds;
+  Round currentRound;
   final winCount = 5;
 
   Game({Player? player1, Player? player2})
       : player1 = player1 ?? Player('Player 1', Seed.cross),
         player2 = player2 ?? Player('Player 2', Seed.nought),
         board = Board(),
-        state = GameState.playing,
-        roundCount = 1 {
+        
+        roundCount = 1,
+        currentRound = Round(1) {
     currentPlayer = this.player1;
+    currentRound.state = RoundState.playing;
+    rounds?.add(currentRound);
   }
 
   void nextTurn() {
     if (currentPlayer.seed == Seed.cross) {
       currentPlayer = player2;
+      currentRound.turnCount++;
     } else {
       currentPlayer = player1;
+      currentRound.turnCount++;
     }
     print('next turn, currentplayer: ${currentPlayer.name}');
   }
@@ -37,13 +43,13 @@ class Game {
     currentPlayer = player1;
     player1 = Player('Player 1', Seed.cross);
     player2 = Player('Player 2', Seed.nought);
-    state = GameState.playing;
-    winner = null;
+    currentRound.state = RoundState.playing;
+    rounds?.clear();
     board = Board();
-    print('reset player');
-    print('Current player: $currentPlayer');
-    print('Player 1: ${player1.name}');
-    print('Player 2: ${player2.name}');
+    // print('reset player');
+    // print('Current player: $currentPlayer');
+    // print('Player 1: ${player1.name}');
+    // print('Player 2: ${player2.name}');
   }
 
   void checkWinner() {
@@ -58,26 +64,32 @@ class Game {
             board.cells[i][j].content != '') {
           // X wins
           if (board.cells[i][j].content == Seed.cross) {
-            winner = player1;
-            player1.score++;
-            state = GameState.stop;
+            if(currentRound.winner != null)
+            {
+              player1.score++;
+            }
+            currentRound.winner = player1;
+            currentRound.state = RoundState.stop;
             for (int offset = 0; offset < 5; offset++) {
               board.cells[i][j + offset].state = CellState.crossWin;
             }
-            print('Winner is ${winner!.name}, score: ${winner!.score}');
+            print('Winner is ${currentRound.winner!.name}, score: ${currentRound.winner!.score}');
             print(
                 'Win Cells: ($i, $j) ${board.cells[i][j].state}, ($i, ${j + 1}) ${board.cells[i][j].state},($i, ${j + 2}) ${board.cells[i][j].state},($i, ${j + 3}) ${board.cells[i][j].state},($i, ${j + 4}) ${board.cells[i][j].state}');
             Get.toNamed('winner');
           }
           // O wins
           if (board.cells[i][j].content == Seed.nought) {
-            winner = player2;
-            player2.score++;
-            state = GameState.stop;
+            if(currentRound.winner != null)
+            {
+              player2.score++;
+            }
+            currentRound.winner = player2;
+            currentRound.state = RoundState.stop;
             for (int offset = 0; offset < 5; offset++) {
               board.cells[i][j + offset].state = CellState.noughtWin;
             }
-            print('Winner is ${winner!.name}, score: ${winner!.score}');
+            print('Winner is ${currentRound.winner!.name}, score: ${currentRound.winner!.score}');
             Get.toNamed('winner');
           }
         }
@@ -93,26 +105,32 @@ class Game {
             board.cells[i][j].content != '') {
           // X wins
           if (board.cells[i][j].content == Seed.cross) {
-            winner = player1;
-            player1.score++;
-            state = GameState.stop;
+            if(currentRound.winner != null)
+            {
+              player1.score++;
+            }
+            currentRound.winner = player1;
+            currentRound.state = RoundState.stop;
             for (int offset = 0; offset < 5; offset++) {
               board.cells[i + offset][j].state = CellState.crossWin;
             }
-            print('Winner is ${winner!.name}, score: ${winner!.score}');
+            print('Winner is ${currentRound.winner!.name}, score: ${currentRound.winner!.score}');
             print(
                 'Win Cells: ($i, $j) ${board.cells[i][j].state}, ($i, ${j + 1}) ${board.cells[i][j].state},($i, ${j + 2}) ${board.cells[i][j].state},($i, ${j + 3}) ${board.cells[i][j].state},($i, ${j + 4}) ${board.cells[i][j].state}');
             Get.toNamed('winner');
           }
           // O wins
           if (board.cells[i][j].content == Seed.nought) {
-            winner = player2;
-            player2.score++;
-            state = GameState.stop;
+            if(currentRound.winner != null)
+            {
+              player2.score++;
+            }
+            currentRound.winner = player2;
+            currentRound.state = RoundState.stop;
             for (int offset = 0; offset < 5; offset++) {
               board.cells[i + offset][j].state = CellState.noughtWin;
             }
-            print('Winner is ${winner!.name}, score: ${winner!.score}');
+            print('Winner is ${currentRound.winner!.name}, score: ${currentRound.winner!.score}');
             Get.toNamed('winner');
           }
         }
@@ -128,27 +146,33 @@ class Game {
             board.cells[i][j].content != '') {
           // X wins
           if (board.cells[i][j].content == Seed.cross) {
-            winner = player1;
-            player1.score++;
-            state = GameState.stop;
+            if(currentRound.winner != null)
+            {
+              player1.score++;
+            }
+            currentRound.winner = player1;
+            currentRound.state = RoundState.stop;
             // update cell state to change the cell color
             for (int offset = 0; offset < 5; offset++) {
               board.cells[i + offset][j + offset].state = CellState.crossWin;
             }
-            print('Winner is ${winner!.name}, score: ${winner!.score}');
+            print('Winner is ${currentRound.winner!.name}, score: ${currentRound.winner!.score}');
             print(
                 'Win Cells: ($i, $j) ${board.cells[i][j].state}, ($i, ${j + 1}) ${board.cells[i][j].state},($i, ${j + 2}) ${board.cells[i][j].state},($i, ${j + 3}) ${board.cells[i][j].state},($i, ${j + 4}) ${board.cells[i][j].state}');
             Get.toNamed('winner');
           }
           // O wins
           if (board.cells[i][j].content == Seed.nought) {
-            winner = player2;
-            player2.score++;
-            state = GameState.stop;
+            if(currentRound.winner != null)
+            {
+              player2.score++;
+            }
+            currentRound.winner = player2;
+            currentRound.state = RoundState.stop;
             for (int offset = 0; offset < 5; offset++) {
               board.cells[i + offset][j + offset].state = CellState.noughtWin;
             }
-            print('Winner is ${winner!.name}, score: ${winner!.score}');
+            print('Winner is ${currentRound.winner!.name}, score: ${currentRound.winner!.score}');
             Get.toNamed('winner');
           }
         }
@@ -164,26 +188,32 @@ class Game {
             board.cells[i][j].content != '') {
           // X wins
           if (board.cells[i][j].content == Seed.cross) {
-            winner = player1;
-            player1.score++;
-            state = GameState.stop;
+            if(currentRound.winner != null)
+            {
+              player1.score++;
+            }
+            currentRound.winner = player1;
+            currentRound.state = RoundState.stop;
             for (int offset = 0; offset < 5; offset++) {
               board.cells[i + offset][j - offset].state = CellState.crossWin;
             }
-            print('Winner is ${winner!.name}, score: ${winner!.score}');
+            print('Winner is ${currentRound.winner!.name}, score: ${currentRound.winner!.score}');
             print(
                 'Win Cells: ($i, $j) ${board.cells[i][j].state}, ($i, ${j + 1}) ${board.cells[i][j].state},($i, ${j + 2}) ${board.cells[i][j].state},($i, ${j + 3}) ${board.cells[i][j].state},($i, ${j + 4}) ${board.cells[i][j].state}');
             Get.toNamed('winner');
           }
           // O wins
           if (board.cells[i][j].content == Seed.nought) {
-            winner = player2;
-            player2.score++;
-            state = GameState.stop;
+            if(currentRound.winner != null)
+            {
+              player2.score++;
+            }
+            currentRound.winner = player2;
+            currentRound.state = RoundState.stop;
             for (int offset = 0; offset < 5; offset++) {
               board.cells[i + offset][j - offset].state = CellState.noughtWin;
             }
-            print('Winner is ${winner!.name}, score: ${winner!.score}');
+            print('Winner is ${currentRound.winner!.name}, score: ${currentRound.winner!.score}');
             Get.toNamed('winner');
           }
         }
@@ -192,24 +222,26 @@ class Game {
   }
 
   nextRound() {
-    state = GameState.playing;
+    currentRound.state = RoundState.playing;
     board.reset();
-    winner = null;
+    currentRound.winner = null;
     currentPlayer = player1;
     roundCount++;
+    currentRound = Round(roundCount);
+    rounds?.add(currentRound);
   }
 
   showWinner(Seed seed) {
     if (seed == Seed.cross) {
-      winner = player1;
-      state = GameState.stop;
-      print('Winner is ${winner!.name}');
+      currentRound.winner = player1;
+      currentRound.state = RoundState.stop;
+      print('Winner is ${currentRound.winner!.name}');
       Get.toNamed('winner');
     }
     if (seed == Seed.nought) {
-      winner = player2;
-      state = GameState.stop;
-      print('Winner is ${winner!.name}');
+      currentRound.winner = player2;
+      currentRound.state = RoundState.stop;
+      print('Winner is ${currentRound.winner!.name}');
       Get.toNamed('winner');
     }
   }
@@ -217,11 +249,11 @@ class Game {
   @override
   String toString() {
     return '''Game
-    State: $state,
+    State: $currentRound.state,
     Player 1: $player1, 
     Player 2: $player2,
     Current player: $currentPlayer, 
-    Winner: $winner,
+    Rounds: $rounds,
     Board: $board''';
   }
 }

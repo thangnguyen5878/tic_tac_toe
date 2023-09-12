@@ -2,16 +2,12 @@ import 'package:tic_tac_toe/models/cell.dart';
 import 'package:tic_tac_toe/models/game.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
-import 'package:tic_tac_toe/utils/game_state.dart';
+import 'package:tic_tac_toe/utils/round_state.dart';
 import 'package:tic_tac_toe/utils/seed.dart';
 
 class GlobalController extends GetxController {
   static GlobalController get to => Get.find();
 
-  // int rows = 5;
-  // int columns = 5;
-  // Player player1 = Player('Player 1', Seed.cross);
-  // Player player2 = Player('Player 2', Seed.nought);
   Game game = Game();
 
   var inputRowsController = TextEditingController();
@@ -26,14 +22,15 @@ class GlobalController extends GetxController {
   }
 
   drawSeed(int row, int column, Seed seed) {
+    print('draw seed...');
     Cell cell = game.board.cells[row][column];
-    if (game.state == GameState.playing &&
+    if (game.currentRound.state == RoundState.playing &&
         (cell.content != Seed.cross && cell.content != Seed.nought)) {
       print(
           '${game.currentPlayer.name} draw seed $seed at cell($row, $column)');
       cell.content = seed;
       game.checkWinner();
-      if (game.winner == null) {
+      if (game.currentRound.winner == null) {
         game.nextTurn();
       }
       // print(game.board.cells);
@@ -44,12 +41,14 @@ class GlobalController extends GetxController {
   nextRound() {
     game.nextRound();
     update();
+    print('next round, current round: ${game.currentRound.number}');
   }
 
   resetGame() {
     clearInput();
     game.reset();
     update();
+    print('reset game');
   }
 
   clearInput() {

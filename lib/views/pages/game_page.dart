@@ -22,8 +22,8 @@ class GamePage extends StatelessWidget {
             title: GetBuilder<GlobalController>(
               builder: (controller) {
                 return Text(
-                  'Round: ${controller.game.roundCount}',
-                  style: TextStyle(fontSize: 18),
+                  'Round: ${controller.game.roundCount}, Turn: ${controller.game.currentRound.turnCount}',
+                  style: const TextStyle(fontSize: 18),
                 );
               },
             ),
@@ -76,18 +76,10 @@ class GamePage extends StatelessWidget {
           final player1 = GlobalController.to.game.player1;
           final player2 = GlobalController.to.game.player2;
 
-          final xColor = currentPlayer.seed == Seed.cross
-              ? Colors.black
-              : const Color.fromARGB(200, 100, 100, 100);
-          final oColor = currentPlayer.seed == Seed.nought
-              ? Colors.black
-              : const Color.fromARGB(200, 100, 100, 100);
-          final xBoxColor = currentPlayer.seed == Seed.cross
-              ? const Color.fromARGB(211, 193, 100, 100)
-              : Colors.grey;
-          final oBoxColor = currentPlayer.seed == Seed.nought
-              ? const Color.fromARGB(211, 193, 100, 100)
-              : Colors.grey;
+          final xColor = currentPlayer.seed == Seed.cross ? Colors.black : const Color.fromARGB(200, 100, 100, 100);
+          final oColor = currentPlayer.seed == Seed.nought ? Colors.black : const Color.fromARGB(200, 100, 100, 100);
+          final xBoxColor = currentPlayer.seed == Seed.cross ? const Color.fromARGB(211, 193, 100, 100) : Colors.grey;
+          final oBoxColor = currentPlayer.seed == Seed.nought ? const Color.fromARGB(211, 193, 100, 100) : Colors.grey;
 
           // final player1Color = currentPlayerXO == player1 ? Colors.black : Colors.grey;
           // final player2Color = currentPlayerXO == player2 ? Colors.black : Colors.grey;
@@ -105,12 +97,9 @@ class GamePage extends StatelessWidget {
                       if (player1.name.isNotEmpty)
                         Text(
                           '${player1.name}: X',
-                          style: TextStyle(
-                              color: xColor, fontWeight: FontWeight.bold),
+                          style: TextStyle(color: xColor, fontWeight: FontWeight.bold),
                         ),
-                  Text('Score: ${player1.score}',
-                          style: TextStyle(
-                              color: xColor, fontWeight: FontWeight.bold)),
+                      Text('Score: ${player1.score}', style: TextStyle(color: xColor, fontWeight: FontWeight.bold)),
                     ],
                   ),
                 ),
@@ -125,13 +114,11 @@ class GamePage extends StatelessWidget {
                       if (player2.name.isNotEmpty)
                         Text(
                           '${player2.name}: O',
-                          style: TextStyle(
-                              color: oColor, fontWeight: FontWeight.bold),
+                          style: TextStyle(color: oColor, fontWeight: FontWeight.bold),
                         ),
                       Text(
                         'Score: ${player2.score}',
-                        style: TextStyle(
-                            color: oColor, fontWeight: FontWeight.bold),
+                        style: TextStyle(color: oColor, fontWeight: FontWeight.bold),
                       ),
                     ],
                   ),
@@ -166,7 +153,7 @@ Widget _buildBoard(BuildContext context) {
       itemBuilder: (context, index) {
         return CellWidget(
           row: index ~/ columns,
-          column: index % columns as int,
+          column: index % columns,
         );
       },
     ),

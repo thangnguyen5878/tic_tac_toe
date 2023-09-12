@@ -27,7 +27,7 @@ class WinnerPage extends StatelessWidget {
                   style: TextStyle(color: Colors.white, fontSize: 23),
                 ),
                 Text(
-                  GlobalController.to.game.winner!.name,
+                  GlobalController.to.game.currentRound.winner!.name,
                   style: const TextStyle(color: Colors.white, fontSize: 28),
                 ),
               ],
