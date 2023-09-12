@@ -46,7 +46,7 @@ class GlobalController extends GetxController {
 
   resetGame() {
     clearInput();
-    game.reset();
+    game = Game();
     update();
     print('reset game');
   }

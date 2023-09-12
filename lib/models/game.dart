@@ -39,18 +39,20 @@ class Game {
     print('next turn, currentplayer: ${currentPlayer.name}');
   }
 
-  void reset() {
-    currentPlayer = player1;
-    player1 = Player('Player 1', Seed.cross);
-    player2 = Player('Player 2', Seed.nought);
-    currentRound.state = RoundState.playing;
-    rounds?.clear();
-    board = Board();
-    // print('reset player');
-    // print('Current player: $currentPlayer');
-    // print('Player 1: ${player1.name}');
-    // print('Player 2: ${player2.name}');
-  }
+  // void reset() {
+  //   currentPlayer = player1;
+  //   player1 = Player('Player 1', Seed.cross);
+  //   player2 = Player('Player 2', Seed.nought);
+  //   currentRound.state = RoundState.playing;
+  //   currentRound.number = 0;
+  //   roundCount = 1;
+  //   rounds?.clear();
+  //   board = Board();
+  //   // print('reset player');
+  //   // print('Current player: $currentPlayer');
+  //   // print('Player 1: ${player1.name}');
+  //   // print('Player 2: ${player2.name}');
+  // }
 
   void checkWinner() {
     print('check winner...');
@@ -64,7 +66,7 @@ class Game {
             board.cells[i][j].content != '') {
           // X wins
           if (board.cells[i][j].content == Seed.cross) {
-            if(currentRound.winner != null)
+            if(currentRound.winner == null)
             {
               player1.score++;
             }
@@ -80,7 +82,7 @@ class Game {
           }
           // O wins
           if (board.cells[i][j].content == Seed.nought) {
-            if(currentRound.winner != null)
+            if(currentRound.winner == null)
             {
               player2.score++;
             }
@@ -105,7 +107,7 @@ class Game {
             board.cells[i][j].content != '') {
           // X wins
           if (board.cells[i][j].content == Seed.cross) {
-            if(currentRound.winner != null)
+            if(currentRound.winner == null)
             {
               player1.score++;
             }
@@ -121,7 +123,7 @@ class Game {
           }
           // O wins
           if (board.cells[i][j].content == Seed.nought) {
-            if(currentRound.winner != null)
+            if(currentRound.winner == null)
             {
               player2.score++;
             }
@@ -146,7 +148,7 @@ class Game {
             board.cells[i][j].content != '') {
           // X wins
           if (board.cells[i][j].content == Seed.cross) {
-            if(currentRound.winner != null)
+            if(currentRound.winner == null)
             {
               player1.score++;
             }
@@ -163,7 +165,7 @@ class Game {
           }
           // O wins
           if (board.cells[i][j].content == Seed.nought) {
-            if(currentRound.winner != null)
+            if(currentRound.winner == null)
             {
               player2.score++;
             }
@@ -188,7 +190,7 @@ class Game {
             board.cells[i][j].content != '') {
           // X wins
           if (board.cells[i][j].content == Seed.cross) {
-            if(currentRound.winner != null)
+            if(currentRound.winner == null)
             {
               player1.score++;
             }
@@ -204,7 +206,7 @@ class Game {
           }
           // O wins
           if (board.cells[i][j].content == Seed.nought) {
-            if(currentRound.winner != null)
+            if(currentRound.winner == null)
             {
               player2.score++;
             }
