@@ -1,9 +1,9 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:tic_tac_toe/views/pages/signin_page.dart';
-import 'package:tic_tac_toe/views/pages/winner_page.dart';
-
+import 'package:tic_tac_toe/screens/input_screen.dart';
+import 'package:tic_tac_toe/screens/main_memu_screen.dart';
+import 'package:tic_tac_toe/screens/winner_screen.dart';
 import 'controllers/global_controller.dart';
 
 void main() async {
@@ -24,15 +24,16 @@ class MyApp extends StatelessWidget {
       title: 'Flutter Demo',
       debugShowCheckedModeBanner: false,
       getPages: [
+        
         GetPage(
           name: '/winner',
-          page: () => const WinnerPage(),
+          page: () => const WinnerScreen(),
           opaque: false,
           transitionDuration: const Duration(seconds: 0),
           // transition: Transition.downToUp
         )
       ],
-      home: SigninPage(),
+      home: InputScreen(),
     );
   }
 }

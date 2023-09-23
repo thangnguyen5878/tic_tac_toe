@@ -1,10 +1,10 @@
 enum Seed {
   cross,
   nought,
-  noSeed,
-}
-extension SeedExtension on Seed {
-  String toStringValue() {
+  noSeed;
+
+  @override
+  String toString() {
     switch (this) {
       case Seed.cross:
         return "X";
@@ -14,6 +14,17 @@ extension SeedExtension on Seed {
         return "";
       default:
         return "";
+    }
+  }
+
+  static Seed fromString(String value) {
+    switch (value) {
+      case "X":
+        return Seed.cross;
+      case "O":
+        return Seed.nought;
+      default:
+        return Seed.noSeed;
     }
   }
 }

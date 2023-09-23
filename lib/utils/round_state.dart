@@ -1,1 +1,0 @@
-enum RoundState { playing, stop }
