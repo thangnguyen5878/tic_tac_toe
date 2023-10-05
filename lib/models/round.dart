@@ -1,37 +1,41 @@
-import 'package:tic_tac_toe/models/player.dart';
-import 'package:json_annotation/json_annotation.dart';
+// ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'package:flutter_tic_tac_toe/models/room.dart';
+import 'package:isar/isar.dart';
+
+import 'package:flutter_tic_tac_toe/models/cell.dart';
+import 'package:flutter_tic_tac_toe/models/player.dart';
 
 part 'round.g.dart';
 
-@JsonSerializable(explicitToJson: true)
+@embedded
 class Round {
-  int number;
-  int turnCount;
-  Player? winner;
+  int? number;
 
-// round constructor with default values
-  Round(int number)
-      : number = 0,
-        turnCount = 0;
+  int? turnCount;
 
-// round constructor with all parameters
-  Round.all({required this.number, required this.turnCount, required this.winner});
+  int? winnerIndex;
 
-  factory Round.fromJson(Map<String, dynamic> json) => _$RoundFromJson(json);
-  Map<String, dynamic> toJson() => _$RoundToJson(this);
+  List<int> scores = [0, 0];
 
-  Round copyWith({
-    int? number,
-    int? turnCount,
-    Player? winner,
-  }) {
-    return Round(number ?? this.number)
-      ..turnCount = turnCount ?? this.turnCount
-      ..winner = winner ?? this.winner;
+  List<Cell?> turns = [];
+
+  Round({this.number, int? turnCount, this.winnerIndex})
+      : this.turnCount = turnCount ?? 1;
+
+  reset() {
+    if (winnerIndex == 0) {
+      scores[0]--;
+    }
+    if (winnerIndex == 1) {
+      scores[1]--;
+    }
+    winnerIndex = null;
+    turnCount = 0;
+    turns = [];
   }
 
   @override
   String toString() {
-    return 'Round $number, turnCount: $turnCount, winner: $winner\n';
+    return 'Round(number: $number, turnCount: $turnCount, winnerId: $winnerIndex, scores: $scores, turns: $turns)';
   }
 }

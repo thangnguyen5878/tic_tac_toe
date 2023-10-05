@@ -1,41 +1,20 @@
-import 'package:json_annotation/json_annotation.dart';
+import 'package:flutter_tic_tac_toe/utils/seed.dart';
+import 'package:isar/isar.dart';
 
-import 'package:tic_tac_toe/utils/seed.dart';
 
 part 'player.g.dart';
 
-@JsonSerializable()
+@embedded
 class Player {
-  String name;
-  Seed seed;
-  int score;
+  String? name;
 
-// player constructor with default score is 0
-  Player(this.name, this.seed) : score = 0;
-  
-  // player constructor with all parameters
-  Player.all(
-      {required this.name,
-      required this.seed,
-      required this.score});
+  @Enumerated(EnumType.name)
+  Seed? seed;
+
+  int? score;
+
+  Player({this.name, this.seed, int? score}) : score = score ?? 0;
 
   @override
-  String toString() {
-    return '''$name, Seed: $seed, Score: $score\n''';
-  }
-
-  factory Player.fromJson(Map<String, dynamic> json) => _$PlayerFromJson(json);
-
-  Map<String, dynamic> toJson() => _$PlayerToJson(this);
-
-  Player copyWith({
-    String? name,
-    Seed? seed,
-    int? score,
-  }) {
-    return Player(
-      name ?? this.name,
-      seed ?? this.seed,
-    )..score = score ?? this.score;
-  }
+  String toString() => 'Player(name: $name, seed: $seed, score: $score)';
 }

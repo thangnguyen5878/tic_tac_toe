@@ -1,60 +1,61 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
-import 'package:tic_tac_toe/models/cell.dart';
-import 'package:json_annotation/json_annotation.dart';
+import 'package:flutter_tic_tac_toe/models/cell.dart';
+import 'package:flutter_tic_tac_toe/utils/cell_state.dart';
+import 'package:flutter_tic_tac_toe/utils/seed.dart';
+import 'package:isar/isar.dart';
 
 part 'board.g.dart';
 
-@JsonSerializable(explicitToJson: true)
+@embedded
 class Board {
-  int _rows;
-  int _columns;
+  int? rowCount;
+
+  int? columnCount;
+
+  @ignore
   late List<List<Cell>> cells;
 
-  // board constructor with default values
-  Board({int? rows, int? columns})
-      : _rows = rows ?? 5,
-        _columns = columns ?? 5 {
+  // Board({this.rowCount, this.columnCount});
+
+  /// Board constructor with the default 5x5 board
+  Board({int? rowCount, int? columnCount})
+      : rowCount = rowCount ?? 10,
+        columnCount = columnCount ?? 10 {
     cells = List.generate(
-      this.rows,
+      this.rowCount!,
       (row) => List.generate(
-        this.columns,
-        (column) => Cell(row, column),
-      ),
-      growable: true,
-    );
-  }
-  
-  // getters and setters
-  int get rows => _rows;
-  set rows(int value) {
-    _rows = value;
-    cells = List.generate(
-      _rows,
-      (row) => List.generate(
-        _columns,
-        (column) => Cell(row, column),
+        this.columnCount!,
+        (column) => Cell(row: row, column: column, content: Seed.noSeed, state: CellState.normal),
       ),
       growable: true,
     );
   }
 
-  int get columns => _columns;
-  set columns(int value) {
-    _columns = value;
+  /// Rebuild the board with the lastest row and column
+  rebuild() {
     cells = List.generate(
-      _rows,
+      this.rowCount!,
       (row) => List.generate(
-        _columns,
-        (column) => Cell(row, column),
+        this.columnCount!,
+        (column) => Cell(row: row, column: column, content: Seed.noSeed, state: CellState.normal),
       ),
       growable: true,
     );
   }
 
-  // methods
+  /// Load drew cells from turns list in Round object to the board
+  void load(List<Cell?> turns) {
+    for (int t = 0; t < turns.length; t++) {
+      int row = turns[t]!.row!;
+      int column = turns[t]!.column!;
+      cells[row][column] = turns[t]!;
+    }
+  }
+
+  /// Reset all cells in the board
   void reset() {
-    for (int i = 0; i < rows; i++) {
-      for (int j = 0; j < columns; j++) {
+    for (int i = 0; i < rowCount!; i++) {
+      for (int j = 0; j < columnCount!; j++) {
         cells[i][j].reset();
       }
     }
@@ -62,29 +63,7 @@ class Board {
     print(toString());
   }
 
-  factory Board.fromJson(Map<String, dynamic> json) => _$BoardFromJson(json);
-  Map<String, dynamic> toJson() => _$BoardToJson(this);
-
-  Board copyWith({
-    int? rows,
-    int? columns,
-    List<List<Cell>>? cells,
-  }) {
-    return Board(
-      rows: rows ?? _rows,
-      columns: columns ?? _columns,
-    )..cells = cells ?? List.generate(
-        _rows,
-        (row) => List.generate(
-          _columns,
-          (column) => Cell(row, column),
-        ),
-        growable: true,
-      );
-  }
-  
-
-  // toString() method
   @override
-  String toString() => 'Board(_rows: $_rows, _columns: $_columns, cells: $cells)';
+  String toString() =>
+      'Board(rowCount: $rowCount, columnCount: $columnCount, cells: $cells)';
 }

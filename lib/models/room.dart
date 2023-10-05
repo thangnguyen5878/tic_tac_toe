@@ -1,68 +1,70 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'package:flutter_tic_tac_toe/models/board.dart';
+import 'package:flutter_tic_tac_toe/models/cell.dart';
+import 'package:flutter_tic_tac_toe/models/player.dart';
+import 'package:flutter_tic_tac_toe/models/round.dart';
+import 'package:flutter_tic_tac_toe/utils/cell_state.dart';
+import 'package:flutter_tic_tac_toe/utils/game_state.dart';
+import 'package:flutter_tic_tac_toe/utils/seed.dart';
 import 'package:get/get.dart';
-
-import 'package:tic_tac_toe/models/board.dart';
-import 'package:tic_tac_toe/models/cell.dart';
-import 'package:tic_tac_toe/models/player.dart';
-import 'package:tic_tac_toe/models/round.dart';
-import 'package:tic_tac_toe/utils/cell_state.dart';
-import 'package:tic_tac_toe/utils/game_state.dart';
-import 'package:tic_tac_toe/utils/seed.dart';
-import 'package:json_annotation/json_annotation.dart';
-
+import 'package:get/get_core/src/get_main.dart';
+import 'package:isar/isar.dart';
 part 'room.g.dart';
 
-@JsonSerializable(explicitToJson: true)
+@collection
 class Room {
-  Player player1;
-  Player player2;
+  Id id = Isar.autoIncrement;
+
+  String name;
+
+  List<Player> players;
+
   late Player currentPlayer;
+
   Board board;
-  GameState state;
+
+  @Enumerated(EnumType.name)
+  late GameState state;
+
   List<Round?>? rounds;
+
   int roundCount;
+
   Round currentRound;
-  List<Cell>? checkingCells = [];
+
+  @ignore
+  List<Cell>? checkingCells = List<Cell>.empty(growable: true);
+
   final winCount = 5;
 
-// game constructor with default values
-Room({Player? player1, Player? player2})
-      : player1 = player1 ?? Player('Player 1', Seed.cross, ''),
-        player2 = player2 ?? Player('Player 2', Seed.nought, ''),
+  Room({Player? player1, Player? player2})
+      : name = 'Unttited Room',
+        players = [
+          Player(name: 'Player 1', seed: Seed.cross, score: 0),
+          Player(name: 'Player 2', seed: Seed.nought, score: 0)
+        ],
         board = Board(),
         roundCount = 1,
         state = GameState.playing,
-        currentRound = Round(1) {
-    currentPlayer = this.player1;
-    rounds?.add(currentRound);
+        currentRound = Round(number: 1, turnCount: 1) {
+    rounds = [Round(number: 1, turnCount: 1)];
+    currentPlayer = this.players[0];
   }
 
-  // game constructor with all parameters
-  Room.all({
-    required this.player1,
-    required this.player2,
-    required this.currentPlayer,
-    required this.board,
-    required this.state,
-    required this.roundCount,
-    this.rounds,
-    required this.currentRound,
-    this.checkingCells,
-  });
-
-  
-
+  /// When draw Seed at a cell, automatically change to next turn.
+  /// - Change the player when the board move to next turn (player 1 -> player 2, player 2 -> player 1)
+  /// - Increment turnCount
   void nextTurn() {
     if (currentPlayer.seed == Seed.cross) {
-      currentPlayer = player2;
-      currentRound.turnCount++;
+      currentPlayer = players[1];
+      currentRound.turnCount = currentRound.turnCount! + 1;
     } else {
-      currentPlayer = player1;
-      currentRound.turnCount++;
+      currentPlayer = players[0];
+      currentRound.turnCount = currentRound.turnCount! + 1;
     }
     print('next turn, currentplayer: ${currentPlayer.name}');
   }
 
+  /// Check whether adjacent cells are the same or not to check the winner
   bool areAllCellContentEqual(List<Cell> list) {
     if (list.isEmpty) {
       return false;
@@ -76,235 +78,236 @@ Room({Player? player1, Player? player2})
     return true;
   }
 
+  /// Scan the board to check the winner.
+  /// - If a winner found, move to `Winner Screen` to notify the winner
+  /// - If no winner found, move to the next turn
   void checkWinner() {
     print('check winner...');
-    // 5 seeds in a row
-    for (int i = 0; i < board.rows; i++) {
-      for (int j = 0; j <= board.columns - winCount; j++) {
+    // Case 1: Multiple seeds in a row
+    for (int i = 0; i < board.rowCount!; i++) {
+      for (int j = 0; j <= board.columnCount! - winCount; j++) {
         checkingCells?.clear();
         for (int k = 0; k < winCount; k++) {
-          checkingCells?.add(board.cells[i][j + k]);
+          checkingCells?.add(board.cells[i][j + k]!);
         }
         if (areAllCellContentEqual(checkingCells!) &&
-            board.cells[i][j].content != '') {
-          // X wins
-          if (board.cells[i][j].content == Seed.cross) {
-            if (currentRound.winner == null) {
-              player1.score++;
+            board.cells[i][j]?.content != '') {
+          // Case 1.1: X wins
+          if (board.cells[i][j]?.content == Seed.cross) {
+            if (currentRound.winnerIndex == null) {
+              players[0].score = players[0].score! + 1;
             }
-            currentRound.winner = player1;
+            currentRound.winnerIndex = 0;
             state = GameState.stop;
             for (int offset = 0; offset < winCount; offset++) {
-              board.cells[i][j + offset].state = CellState.crossWin;
+              board.cells[i][j + offset]?.state = CellState.crossWin;
             }
             print(
-                'Winner is ${currentRound.winner!.name}, score: ${currentRound.winner!.score}');
+                'Winner is ${players[currentRound.winnerIndex!].name}, score: ${players[currentRound.winnerIndex!].score}');
             // print(
             // 'Win Cells: ($i, $j) ${board.cells[i][j].state}, ($i, ${j + 1}) ${board.cells[i][j].state},($i, ${j + 2}) ${board.cells[i][j].state},($i, ${j + 3}) ${board.cells[i][j].state},($i, ${j + 4}) ${board.cells[i][j].state}');
+            currentRound.scores[0]++;
             Get.toNamed('winner');
           }
-          // O wins
+          // Case 1.2: O wins
           if (board.cells[i][j].content == Seed.nought) {
-            if (currentRound.winner == null) {
-              player2.score++;
+            if (currentRound.winnerIndex == null) {
+              players[1].score = players[1].score! + 1;
             }
-            currentRound.winner = player2;
+            currentRound.winnerIndex = 1;
             state = GameState.stop;
             for (int offset = 0; offset < winCount; offset++) {
               board.cells[i][j + offset].state = CellState.noughtWin;
             }
             print(
-                'Winner is ${currentRound.winner!.name}, score: ${currentRound.winner!.score}');
+                'Winner is ${players[currentRound.winnerIndex!].name}, score: ${players[currentRound.winnerIndex!].score}');
+            currentRound.scores[1]++;
             Get.toNamed('winner');
           }
         }
       }
     }
-    // 5 seeds in a column
-    for (int j = 0; j < board.columns; j++) {
-      for (int i = 0; i <= board.rows - winCount; i++) {
+    // Case 2: Multiple seeds in a column
+    for (int j = 0; j < board.columnCount!; j++) {
+      for (int i = 0; i <= board.rowCount! - winCount; i++) {
         checkingCells?.clear();
         for (int k = 0; k < winCount; k++) {
           checkingCells?.add(board.cells[i + k][j]);
         }
         if (areAllCellContentEqual(checkingCells!) &&
             board.cells[i][j].content != '') {
-          // X wins
+          // Case 2.1: X wins
           if (board.cells[i][j].content == Seed.cross) {
-            if (currentRound.winner == null) {
-              player1.score++;
+            if (currentRound.winnerIndex == null) {
+              players[0].score = players[0].score! + 1;
             }
-            currentRound.winner = player1;
+            currentRound.winnerIndex = 0;
             state = GameState.stop;
             for (int offset = 0; offset < winCount; offset++) {
               board.cells[i + offset][j].state = CellState.crossWin;
             }
             print(
-                'Winner is ${currentRound.winner!.name}, score: ${currentRound.winner!.score}');
+                'Winner is ${players[currentRound.winnerIndex!].name}, score: ${players[currentRound.winnerIndex!].score}');
             print(
                 'Win Cells: ($i, $j) ${board.cells[i][j].state}, ($i, ${j + 1}) ${board.cells[i][j].state},($i, ${j + 2}) ${board.cells[i][j].state},($i, ${j + 3}) ${board.cells[i][j].state},($i, ${j + 4}) ${board.cells[i][j].state}');
+            currentRound.scores[0]++;
             Get.toNamed('winner');
           }
-          // O wins
+          // Case 2.2: O wins
           if (board.cells[i][j].content == Seed.nought) {
-            if (currentRound.winner == null) {
-              player2.score++;
+            if (currentRound.winnerIndex == null) {
+              players[1].score = players[1].score! + 1;
             }
-            currentRound.winner = player2;
+            currentRound.winnerIndex = 1;
             state = GameState.stop;
             for (int offset = 0; offset < winCount; offset++) {
               board.cells[i + offset][j].state = CellState.noughtWin;
             }
             print(
-                'Winner is ${currentRound.winner!.name}, score: ${currentRound.winner!.score}');
+                'Winner is ${players[currentRound.winnerIndex!].name}, score: ${players[currentRound.winnerIndex!].score}');
+            currentRound.scores[1]++;
             Get.toNamed('winner');
           }
         }
       }
     }
-    // 3 seeds in a diagonal type: \
-    for (int i = 0; i <= board.rows - winCount; i++) {
-      for (int j = 0; j <= board.columns - winCount; j++) {
+    // Case 3: Multiple seeds in a diagonal "\"
+    for (int i = 0; i <= board.rowCount! - winCount; i++) {
+      for (int j = 0; j <= board.columnCount! - winCount; j++) {
         checkingCells?.clear();
         for (int k = 0; k < winCount; k++) {
           checkingCells?.add(board.cells[i + k][j + k]);
         }
         if (areAllCellContentEqual(checkingCells!) &&
             board.cells[i][j].content != '') {
-          // X wins
+          // Case 3.1: X wins
           if (board.cells[i][j].content == Seed.cross) {
-            if (currentRound.winner == null) {
-              player1.score++;
+            if (currentRound.winnerIndex == null) {
+              players[0].score = players[0].score! + 1;
             }
-            currentRound.winner = player1;
+            currentRound.winnerIndex = 0;
             state = GameState.stop;
             // update cell state to change the cell color
             for (int offset = 0; offset < winCount; offset++) {
               board.cells[i + offset][j + offset].state = CellState.crossWin;
             }
             print(
-                'Winner is ${currentRound.winner!.name}, score: ${currentRound.winner!.score}');
+                'Winner is ${players[currentRound.winnerIndex!].name}, score: ${players[currentRound.winnerIndex!].score}');
             // print('Win Cells: ($i, $j) ${board.cells[i][j].state}, ($i, ${j + 1}) ${board.cells[i][j].state},($i, ${j + 2}) ${board.cells[i][j].state},($i, ${j + 3}) ${board.cells[i][j].state},($i, ${j + 4}) ${board.cells[i][j].state}');
+            currentRound.scores[0]++;
             Get.toNamed('winner');
           }
-          // O wins
+          // Case 3.2: O wins
           if (board.cells[i][j].content == Seed.nought) {
-            if (currentRound.winner == null) {
-              player2.score++;
+            if (currentRound.winnerIndex == null) {
+              players[1].score = players[1].score! + 1;
             }
-            currentRound.winner = player2;
+            currentRound.winnerIndex = 1;
             state = GameState.stop;
             for (int offset = 0; offset < winCount; offset++) {
               board.cells[i + offset][j + offset].state = CellState.noughtWin;
             }
             print(
-                'Winner is ${currentRound.winner!.name}, score: ${currentRound.winner!.score}');
+                'Winner is ${players[currentRound.winnerIndex!].name}, score: ${players[currentRound.winnerIndex!].score}');
+            currentRound.scores[1]++;
             Get.toNamed('winner');
           }
         }
       }
     }
-    // 3 seeds in a diagonal type: /
-    for (int i = 0; i <= board.rows - winCount; i++) {
-      for (int j = winCount - 1; j < board.columns; j++) {
+    // Case 4: Multiple seeds in a diagonal "/"
+    for (int i = 0; i <= board.rowCount! - winCount; i++) {
+      for (int j = winCount - 1; j < board.columnCount!; j++) {
         checkingCells?.clear();
         for (int k = 0; k < winCount; k++) {
           checkingCells?.add(board.cells[i + k][j - k]);
         }
         if (areAllCellContentEqual(checkingCells!) &&
             board.cells[i][j].content != '') {
-          // X wins
+          // Case 4.1: X wins
           if (board.cells[i][j].content == Seed.cross) {
-            if (currentRound.winner == null) {
-              player1.score++;
+            if (currentRound.winnerIndex == null) {
+              players[0].score = players[0].score! + 1;
             }
-            currentRound.winner = player1;
+            currentRound.winnerIndex = 0;
             state = GameState.stop;
             for (int offset = 0; offset < winCount; offset++) {
               board.cells[i + offset][j - offset].state = CellState.crossWin;
             }
             print(
-                'Winner is ${currentRound.winner!.name}, score: ${currentRound.winner!.score}');
+                'Winner is ${players[currentRound.winnerIndex!].name}, score: ${players[currentRound.winnerIndex!].score}');
             // print('Win Cells: ($i, $j) ${board.cells[i][j].state}, ($i, ${j + 1}) ${board.cells[i][j].state},($i, ${j + 2}) ${board.cells[i][j].state},($i, ${j + 3}) ${board.cells[i][j].state},($i, ${j + 4}) ${board.cells[i][j].state}');
+            currentRound.scores[0]++;
             Get.toNamed('winner');
           }
-          // O wins
+          // Case 4.2: O wins
           if (board.cells[i][j].content == Seed.nought) {
-            if (currentRound.winner == null) {
-              player2.score++;
+            if (currentRound.winnerIndex == null) {
+              players[1].score = players[1].score! + 1;
             }
-            currentRound.winner = player2;
+            currentRound.winnerIndex = 1;
             state = GameState.stop;
             for (int offset = 0; offset < winCount; offset++) {
               board.cells[i + offset][j - offset].state = CellState.noughtWin;
             }
             print(
-                'Winner is ${currentRound.winner!.name}, score: ${currentRound.winner!.score}');
+                'Winner is ${players[currentRound.winnerIndex!].name}, score: ${players[currentRound.winnerIndex!].score}');
+            currentRound.scores[1]++;
             Get.toNamed('winner');
           }
         }
       }
     }
+    if (currentRound.winnerIndex == null) {
+      nextTurn();
+    }
   }
 
+  /// Move to the next round when a player wins and the player press the `Next round button`
   nextRound() {
     state = GameState.playing;
     board.reset();
-    currentRound.winner = null;
-    currentPlayer = player1;
+    currentRound.winnerIndex = null;
+    currentPlayer = players[0];
     roundCount++;
-    currentRound = Round(roundCount);
-    rounds?.add(currentRound);
+    currentRound = Round(number: roundCount, turnCount: 1);
+    rounds = [...?rounds, currentRound];
   }
 
-  showWinner(Seed seed) {
-    if (seed == Seed.cross) {
-      currentRound.winner = player1;
-      state = GameState.stop;
-      print('Winner is ${currentRound.winner!.name}');
-      Get.toNamed('winner');
-    }
-    if (seed == Seed.nought) {
-      currentRound.winner = player2;
-      state = GameState.stop;
-      print('Winner is ${currentRound.winner!.name}');
-      Get.toNamed('winner');
-    }
+  reset() {
+    state = GameState.playing;
+    board.reset();
+    currentRound.reset();
   }
 
-  factory Room.fromJson(Map<String, dynamic> json) => _$RoomFromJson(json);
-  Map<String, dynamic> toJson() => _$RoomToJson(this);
+  // showWinner(Seed seed) {
+  //   if (seed == Seed.cross) {
+  //     currentRound.winner = player1;
+  //     state = GameState.stop;
+  //     print('Winner is ${currentRound.winner!.name}');
+  //     Get.toNamed('winner');
+  //   }
+  //   if (seed == Seed.nought) {
+  //     currentRound.winner = player2;
+  //     state = GameState.stop;
+  //     print('Winner is ${currentRound.winner!.name}');
+  //     Get.toNamed('winner');
+  //   }
+  // }
 
-    Room copyWith({
-    GameState? state,
-    Player? player1,
-    Player? player2,
-    Player? currentPlayer,
-    int? roundCount,
-    Round? currentRound,
-    List<Round>? rounds,
-    Board? board,
-  }) {
-    return Room.all(
-      state: state ?? this.state,
-      player1: player1 ?? this.player1,
-      player2: player2 ?? this.player2,
-      currentPlayer: currentPlayer ?? this.currentPlayer,
-      roundCount: roundCount ?? this.roundCount,
-      currentRound: currentRound ?? this.currentRound,
-      rounds: rounds ?? this.rounds,
-      board: board ?? this.board,
-    );
-  }
+  // @override
+  // String toString() {
+  //   return '''Game
+  //   State: $sta,
+  //   Player 1: $player1,
+  //   Player 2: $player2,
+  //   Current player: $currentPlayer,
+  //   Rounds: $rounds,
+  //   Board: $board''';
+  // }
 
   @override
   String toString() {
-    return '''Game
-    State: $state,
-    Player 1: $player1, 
-    Player 2: $player2,
-    Current player: $currentPlayer, 
-    Rounds: $rounds,
-    Board: $board''';
+    return 'Room(players: $players, currentPlayer: $currentPlayer, board: $board, state: $state, rounds: $rounds, roundCount: $roundCount, currentRound: $currentRound, checkingCells: $checkingCells)';
   }
 }
