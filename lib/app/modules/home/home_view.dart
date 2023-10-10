@@ -28,8 +28,16 @@ class HomeView extends StatelessWidget {
                 builder: (gameController) {
                   return FutureBuilder<List<Room>>(
                     future: gameController.isarService.getAllRooms(),
-                    builder: (context, snapshot) {   
-                      if (snapshot.hasData) {     
+                    builder: (context, snapshot) {
+                      if (snapshot.hasError) {
+                        return Center(
+                          child: Text('Đã xảy ra lỗi'),
+                        );
+                      } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                        return Center(
+                          child: Text('Không có phòng nào'),
+                        );
+                      } else if (snapshot.hasData) {
                         final rooms = snapshot.data!;
                         return Expanded(
                           child: ListView.builder(
@@ -37,8 +45,10 @@ class HomeView extends StatelessWidget {
                             itemBuilder: (context, index) {
                               final room = rooms[index];
                               return ListTile(
-                                onTap: () => Get.toNamed(Routes.GAME,
-                                    arguments: room.id),
+                                onTap: () async {
+                                  await gameController.loadRoomById(room.id);
+                                  Get.toNamed(Routes.GAME, arguments: room.id);
+                                },
                                 title: Text(room.name),
                                 subtitle: Text(
                                     '${room.players[0].name} (${room.players[0].score}) - ${room.players[1].name} (${room.players[1].score}), round: ${room.roundCount}'),
@@ -46,14 +56,6 @@ class HomeView extends StatelessWidget {
                               );
                             },
                           ),
-                        );
-                      } else if (snapshot.hasError) {
-                        return Center(
-                          child: Text('Đã xảy ra lỗi'),
-                        );
-                      } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                        return Center(
-                          child: Text('Không có phòng nào'),
                         );
                       } else {
                         return Center(

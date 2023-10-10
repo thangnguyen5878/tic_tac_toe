@@ -14,7 +14,6 @@ class GameView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     print('build game page...');
-    if (roomId != null) game.loadRoomById(roomId);
 
     return WillPopScope(
       onWillPop: () async {
@@ -205,8 +204,10 @@ class GameView extends StatelessWidget {
 
 Widget buildBoard(BuildContext context) {
   print('build board...');
-  final columns = GameController.to.room.board.columnCount;
-  final rows = GameController.to.room.board.rowCount;
+  final columnCount = GameController.to.room.board.columnCount;
+  final rowCount = GameController.to.room.board.rowCount;
+  print('columnCount: $columnCount');
+  print('rowCount: $rowCount');
 
   return Container(
     decoration: BoxDecoration(border: Border.all(width: 1)),
@@ -215,16 +216,16 @@ Widget buildBoard(BuildContext context) {
       physics: const NeverScrollableScrollPhysics(),
       shrinkWrap: true,
       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: columns!,
+        crossAxisCount: columnCount!,
         crossAxisSpacing: 0,
         mainAxisSpacing: 0,
         childAspectRatio: 1,
       ),
-      itemCount: columns * rows!,
+      itemCount: columnCount * rowCount!,
       itemBuilder: (context, index) {
         return CellWidget(
-          row: index ~/ columns,
-          column: index % columns,
+          row: index ~/ columnCount,
+          column: index % columnCount,
         );
       },
     ),
