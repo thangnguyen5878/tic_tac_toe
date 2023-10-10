@@ -1,15 +1,15 @@
+import 'package:flutter_tic_tac_toe/app/modules/create_room/create_room_binding.dart';
+import 'package:flutter_tic_tac_toe/app/modules/create_room/create_room_view.dart';
+import 'package:flutter_tic_tac_toe/app/modules/winner/winner_binding.dart';
+import 'package:flutter_tic_tac_toe/app/modules/winner/winner_view.dart';
 import 'package:get/get.dart';
 
-import '../app/modules/create_room/bindings/create_room_binding.dart';
-import '../app/modules/create_room/views/create_room_view.dart';
 import '../app/modules/game/game_binding.dart';
 import '../app/modules/game/game_view.dart';
 import '../app/modules/history/history_binding.dart';
 import '../app/modules/history/history_view.dart';
 import '../app/modules/home/home_binding.dart';
 import '../app/modules/home/home_view.dart';
-import '../app/modules/winner/bindings/winner_binding.dart';
-import '../app/modules/winner/views/winner_view.dart';
 
 part 'app_routes.dart';
 

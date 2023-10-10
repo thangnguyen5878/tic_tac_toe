@@ -1,4 +1,4 @@
-import 'package:flutter_tic_tac_toe/app/modules/create_room/controllers/create_room_controller.dart';
+import 'package:flutter_tic_tac_toe/app/modules/create_room/create_room_controller.dart';
 import 'package:flutter_tic_tac_toe/isar_service.dart';
 import 'package:flutter_tic_tac_toe/models/cell.dart';
 import 'package:flutter_tic_tac_toe/models/room.dart';
