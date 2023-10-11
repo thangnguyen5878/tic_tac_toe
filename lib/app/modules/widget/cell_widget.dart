@@ -9,8 +9,8 @@ class CellWidget extends StatelessWidget {
   // initialize a dump value for row and column
   int row = -1;
   int column = -1;
-  
-  final game = Get.find<GameController>();
+
+  final gameController = Get.find<GameController>();
 
   CellWidget({super.key, required this.row, required this.column});
 
@@ -30,8 +30,7 @@ class CellWidget extends StatelessWidget {
             state = CellState.crossWin;
             bColor = lightRed;
           }
-          if (state ==
-              CellState.noughtWin) {
+          if (state == CellState.noughtWin) {
             state = CellState.noughtWin;
             bColor = lightGreen;
           }
@@ -52,9 +51,12 @@ class CellWidget extends StatelessWidget {
         },
       ),
       onTap: () {
+        final currentPlayer = gameController.room.currentRound.currentPlayer;
         // game.game.nextTurn();
-        print('Tap cell($row, $column) : ${game.room.currentPlayer.seed}');
-        game.drawSeed(row, column, game.room.currentPlayer.seed!);
+        print(
+            'Tap cell($row, $column) : ${currentPlayer!.seed}');
+        gameController.drawSeed(
+            row, column, currentPlayer.seed!);
       },
     );
   }

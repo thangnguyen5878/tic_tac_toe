@@ -8,8 +8,8 @@ class WinnerView extends StatelessWidget {
   WinnerView({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    final winnerId = game.room.currentRound.winnerIndex;
-    final winnerName = game.room.players[winnerId!].name;
+    final winnerIdex = game.room.currentRound.winnerIndex;
+    final winnerName = game.room.currentRound.players![winnerIdex!].name;
 
     return SafeArea(
       child: GestureDetector(

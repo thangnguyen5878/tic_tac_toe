@@ -13,29 +13,36 @@ const RoundSchema = Schema(
   name: r'Round',
   id: 8762410198825043196,
   properties: {
-    r'number': PropertySchema(
+    r'currentPlayer': PropertySchema(
       id: 0,
+      name: r'currentPlayer',
+      type: IsarType.object,
+      target: r'Player',
+    ),
+    r'number': PropertySchema(
+      id: 1,
       name: r'number',
       type: IsarType.long,
     ),
-    r'scores': PropertySchema(
-      id: 1,
-      name: r'scores',
-      type: IsarType.longList,
+    r'players': PropertySchema(
+      id: 2,
+      name: r'players',
+      type: IsarType.objectList,
+      target: r'Player',
     ),
     r'turnCount': PropertySchema(
-      id: 2,
+      id: 3,
       name: r'turnCount',
       type: IsarType.long,
     ),
     r'turns': PropertySchema(
-      id: 3,
+      id: 4,
       name: r'turns',
       type: IsarType.objectList,
       target: r'Cell',
     ),
     r'winnerIndex': PropertySchema(
-      id: 4,
+      id: 5,
       name: r'winnerIndex',
       type: IsarType.long,
     )
@@ -52,7 +59,26 @@ int _roundEstimateSize(
   Map<Type, List<int>> allOffsets,
 ) {
   var bytesCount = offsets.last;
-  bytesCount += 3 + object.scores.length * 8;
+  {
+    final value = object.currentPlayer;
+    if (value != null) {
+      bytesCount +=
+          3 + PlayerSchema.estimateSize(value, allOffsets[Player]!, allOffsets);
+    }
+  }
+  {
+    final list = object.players;
+    if (list != null) {
+      bytesCount += 3 + list.length * 3;
+      {
+        final offsets = allOffsets[Player]!;
+        for (var i = 0; i < list.length; i++) {
+          final value = list[i];
+          bytesCount += PlayerSchema.estimateSize(value, offsets, allOffsets);
+        }
+      }
+    }
+  }
   bytesCount += 3 + object.turns.length * 3;
   {
     final offsets = allOffsets[Cell]!;
@@ -72,16 +98,27 @@ void _roundSerialize(
   List<int> offsets,
   Map<Type, List<int>> allOffsets,
 ) {
-  writer.writeLong(offsets[0], object.number);
-  writer.writeLongList(offsets[1], object.scores);
-  writer.writeLong(offsets[2], object.turnCount);
+  writer.writeObject<Player>(
+    offsets[0],
+    allOffsets,
+    PlayerSchema.serialize,
+    object.currentPlayer,
+  );
+  writer.writeLong(offsets[1], object.number);
+  writer.writeObjectList<Player>(
+    offsets[2],
+    allOffsets,
+    PlayerSchema.serialize,
+    object.players,
+  );
+  writer.writeLong(offsets[3], object.turnCount);
   writer.writeObjectList<Cell>(
-    offsets[3],
+    offsets[4],
     allOffsets,
     CellSchema.serialize,
     object.turns,
   );
-  writer.writeLong(offsets[4], object.winnerIndex);
+  writer.writeLong(offsets[5], object.winnerIndex);
 }
 
 Round _roundDeserialize(
@@ -91,13 +128,23 @@ Round _roundDeserialize(
   Map<Type, List<int>> allOffsets,
 ) {
   final object = Round(
-    number: reader.readLongOrNull(offsets[0]),
-    turnCount: reader.readLongOrNull(offsets[2]),
-    winnerIndex: reader.readLongOrNull(offsets[4]),
+    number: reader.readLongOrNull(offsets[1]),
+    players: reader.readObjectList<Player>(
+      offsets[2],
+      PlayerSchema.deserialize,
+      allOffsets,
+      Player(),
+    ),
+    turnCount: reader.readLongOrNull(offsets[3]),
+    winnerIndex: reader.readLongOrNull(offsets[5]),
   );
-  object.scores = reader.readLongList(offsets[1]) ?? [];
+  object.currentPlayer = reader.readObjectOrNull<Player>(
+    offsets[0],
+    PlayerSchema.deserialize,
+    allOffsets,
+  );
   object.turns = reader.readObjectOrNullList<Cell>(
-        offsets[3],
+        offsets[4],
         CellSchema.deserialize,
         allOffsets,
       ) ??
@@ -113,19 +160,30 @@ P _roundDeserializeProp<P>(
 ) {
   switch (propertyId) {
     case 0:
-      return (reader.readLongOrNull(offset)) as P;
+      return (reader.readObjectOrNull<Player>(
+        offset,
+        PlayerSchema.deserialize,
+        allOffsets,
+      )) as P;
     case 1:
-      return (reader.readLongList(offset) ?? []) as P;
-    case 2:
       return (reader.readLongOrNull(offset)) as P;
+    case 2:
+      return (reader.readObjectList<Player>(
+        offset,
+        PlayerSchema.deserialize,
+        allOffsets,
+        Player(),
+      )) as P;
     case 3:
+      return (reader.readLongOrNull(offset)) as P;
+    case 4:
       return (reader.readObjectOrNullList<Cell>(
             offset,
             CellSchema.deserialize,
             allOffsets,
           ) ??
           []) as P;
-    case 4:
+    case 5:
       return (reader.readLongOrNull(offset)) as P;
     default:
       throw IsarError('Unknown property with id $propertyId');
@@ -133,6 +191,22 @@ P _roundDeserializeProp<P>(
 }
 
 extension RoundQueryFilter on QueryBuilder<Round, Round, QFilterCondition> {
+  QueryBuilder<Round, Round, QAfterFilterCondition> currentPlayerIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNull(
+        property: r'currentPlayer',
+      ));
+    });
+  }
+
+  QueryBuilder<Round, Round, QAfterFilterCondition> currentPlayerIsNotNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNotNull(
+        property: r'currentPlayer',
+      ));
+    });
+  }
+
   QueryBuilder<Round, Round, QAfterFilterCondition> numberIsNull() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(const FilterCondition.isNull(
@@ -201,64 +275,27 @@ extension RoundQueryFilter on QueryBuilder<Round, Round, QFilterCondition> {
     });
   }
 
-  QueryBuilder<Round, Round, QAfterFilterCondition> scoresElementEqualTo(
-      int value) {
+  QueryBuilder<Round, Round, QAfterFilterCondition> playersIsNull() {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'scores',
-        value: value,
+      return query.addFilterCondition(const FilterCondition.isNull(
+        property: r'players',
       ));
     });
   }
 
-  QueryBuilder<Round, Round, QAfterFilterCondition> scoresElementGreaterThan(
-    int value, {
-    bool include = false,
-  }) {
+  QueryBuilder<Round, Round, QAfterFilterCondition> playersIsNotNull() {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        include: include,
-        property: r'scores',
-        value: value,
+      return query.addFilterCondition(const FilterCondition.isNotNull(
+        property: r'players',
       ));
     });
   }
 
-  QueryBuilder<Round, Round, QAfterFilterCondition> scoresElementLessThan(
-    int value, {
-    bool include = false,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.lessThan(
-        include: include,
-        property: r'scores',
-        value: value,
-      ));
-    });
-  }
-
-  QueryBuilder<Round, Round, QAfterFilterCondition> scoresElementBetween(
-    int lower,
-    int upper, {
-    bool includeLower = true,
-    bool includeUpper = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.between(
-        property: r'scores',
-        lower: lower,
-        includeLower: includeLower,
-        upper: upper,
-        includeUpper: includeUpper,
-      ));
-    });
-  }
-
-  QueryBuilder<Round, Round, QAfterFilterCondition> scoresLengthEqualTo(
+  QueryBuilder<Round, Round, QAfterFilterCondition> playersLengthEqualTo(
       int length) {
     return QueryBuilder.apply(this, (query) {
       return query.listLength(
-        r'scores',
+        r'players',
         length,
         true,
         length,
@@ -267,10 +304,10 @@ extension RoundQueryFilter on QueryBuilder<Round, Round, QFilterCondition> {
     });
   }
 
-  QueryBuilder<Round, Round, QAfterFilterCondition> scoresIsEmpty() {
+  QueryBuilder<Round, Round, QAfterFilterCondition> playersIsEmpty() {
     return QueryBuilder.apply(this, (query) {
       return query.listLength(
-        r'scores',
+        r'players',
         0,
         true,
         0,
@@ -279,10 +316,10 @@ extension RoundQueryFilter on QueryBuilder<Round, Round, QFilterCondition> {
     });
   }
 
-  QueryBuilder<Round, Round, QAfterFilterCondition> scoresIsNotEmpty() {
+  QueryBuilder<Round, Round, QAfterFilterCondition> playersIsNotEmpty() {
     return QueryBuilder.apply(this, (query) {
       return query.listLength(
-        r'scores',
+        r'players',
         0,
         false,
         999999,
@@ -291,13 +328,13 @@ extension RoundQueryFilter on QueryBuilder<Round, Round, QFilterCondition> {
     });
   }
 
-  QueryBuilder<Round, Round, QAfterFilterCondition> scoresLengthLessThan(
+  QueryBuilder<Round, Round, QAfterFilterCondition> playersLengthLessThan(
     int length, {
     bool include = false,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.listLength(
-        r'scores',
+        r'players',
         0,
         true,
         length,
@@ -306,13 +343,13 @@ extension RoundQueryFilter on QueryBuilder<Round, Round, QFilterCondition> {
     });
   }
 
-  QueryBuilder<Round, Round, QAfterFilterCondition> scoresLengthGreaterThan(
+  QueryBuilder<Round, Round, QAfterFilterCondition> playersLengthGreaterThan(
     int length, {
     bool include = false,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.listLength(
-        r'scores',
+        r'players',
         length,
         include,
         999999,
@@ -321,7 +358,7 @@ extension RoundQueryFilter on QueryBuilder<Round, Round, QFilterCondition> {
     });
   }
 
-  QueryBuilder<Round, Round, QAfterFilterCondition> scoresLengthBetween(
+  QueryBuilder<Round, Round, QAfterFilterCondition> playersLengthBetween(
     int lower,
     int upper, {
     bool includeLower = true,
@@ -329,7 +366,7 @@ extension RoundQueryFilter on QueryBuilder<Round, Round, QFilterCondition> {
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.listLength(
-        r'scores',
+        r'players',
         lower,
         includeLower,
         upper,
@@ -578,6 +615,20 @@ extension RoundQueryFilter on QueryBuilder<Round, Round, QFilterCondition> {
 }
 
 extension RoundQueryObject on QueryBuilder<Round, Round, QFilterCondition> {
+  QueryBuilder<Round, Round, QAfterFilterCondition> currentPlayer(
+      FilterQuery<Player> q) {
+    return QueryBuilder.apply(this, (query) {
+      return query.object(q, r'currentPlayer');
+    });
+  }
+
+  QueryBuilder<Round, Round, QAfterFilterCondition> playersElement(
+      FilterQuery<Player> q) {
+    return QueryBuilder.apply(this, (query) {
+      return query.object(q, r'players');
+    });
+  }
+
   QueryBuilder<Round, Round, QAfterFilterCondition> turnsElement(
       FilterQuery<Cell> q) {
     return QueryBuilder.apply(this, (query) {

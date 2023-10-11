@@ -19,8 +19,8 @@ class GameController extends GetxController {
   createRoom() async {
     Room newRoom = Room();
     if (input.room.text != '') newRoom.name = input.room.text;
-    if (input.player1.text != '') newRoom.players![0].name = input.player1.text;
-    if (input.player2.text != '') newRoom.players![1].name = input.player2.text;
+    if (input.player1.text != '') newRoom.currentRound.players![0].name = input.player1.text;
+    if (input.player2.text != '') newRoom.currentRound.players![1].name = input.player2.text;
     if (input.rowCount.text != '')
       newRoom.board!.rowCount = int.tryParse(input.rowCount.text) ?? 10;
     if (input.columnCount.text != '')
@@ -57,7 +57,7 @@ class GameController extends GetxController {
     if (room.state == GameState.playing &&
         (cell.content != Seed.cross && cell.content != Seed.nought)) {
       print(
-          '${room.currentPlayer.name} draw seed $seed at cell($row, $column)');
+          '${room.currentRound.currentPlayer!.name} draw seed $seed at cell($row, $column)');
       cell.content = seed;
 
       room.currentRound.turns = [...room.currentRound.turns, cell];
@@ -91,10 +91,10 @@ class GameController extends GetxController {
   @override
   Future<void> onInit() async {
     super.onInit();
-
-//   @override
-//   void onClose() {
-//     super.onClose();
-//   }
   }
+
+  //   @override
+  //   void onClose() {
+  //     super.onClose();
+  //   }
 }

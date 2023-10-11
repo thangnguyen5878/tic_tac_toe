@@ -44,6 +44,8 @@ class HomeView extends StatelessWidget {
                             itemCount: rooms.length,
                             itemBuilder: (context, index) {
                               final room = rooms[index];
+                              final player1 = room.currentRound.players![0];
+                              final player2 = room.currentRound.players![1];
                               return ListTile(
                                 onTap: () async {
                                   await gameController.loadRoomById(room.id);
@@ -51,7 +53,7 @@ class HomeView extends StatelessWidget {
                                 },
                                 title: Text(room.name),
                                 subtitle: Text(
-                                    '${room.players[0].name} (${room.players[0].score}) - ${room.players[1].name} (${room.players[1].score}), round: ${room.roundCount}'),
+                                    '${player1.name} (${player1.score}) - ${player2.name} (${player2.score}), round: ${room.roundCount}'),
                                 // Add more widgets to display additional room information
                               );
                             },

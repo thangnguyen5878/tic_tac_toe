@@ -8,7 +8,7 @@ import 'package:get/get.dart';
 
 class GameView extends StatelessWidget {
   final roomId = Get.arguments;
-  final GameController game = Get.find<GameController>();
+  final GameController gameController = Get.find<GameController>();
 
   GameView({super.key});
   @override
@@ -18,7 +18,7 @@ class GameView extends StatelessWidget {
     return WillPopScope(
       onWillPop: () async {
         Get.back();
-        game.saveRoom();
+        gameController.saveRoom();
         Get.toNamed(Routes.HOME);
         return true;
       },
@@ -64,7 +64,7 @@ class GameView extends StatelessWidget {
       icon: const Icon(Icons.arrow_back),
       onPressed: () {
         Get.back();
-        game.saveRoom();
+        gameController.saveRoom();
         Get.toNamed(Routes.HOME);
         // FocusScope.of(context).unfocus();
       },
@@ -75,18 +75,19 @@ class GameView extends StatelessWidget {
     return PopupMenuButton<String>(
       // offset: Offset(0, 57),
       itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
-        PopupMenuItem<String>(
+        const PopupMenuItem<String>(
           value: 'reset',
           child: Text('Reset'),
         ),
-        PopupMenuItem<String>(
+        const PopupMenuItem<String>(
           value: 'history',
           child: Text('History'),
         ),
       ],
       onSelected: (String value) {
         if (value == 'reset') {
-          game.resetBoard();
+          gameController.resetBoard();
+          gameController.saveRoom();
         } else if (value == 'history') {
           Get.toNamed(Routes.HISTORY, arguments: roomId);
         }
@@ -134,11 +135,11 @@ class GameView extends StatelessWidget {
         color: Colors.grey,
         height: 50,
         child: GetBuilder(builder: (GameController game) {
-          final currentPlayer = game.room.currentPlayer;
-          final player1 = game.room.players[0];
-          final player2 = game.room.players[1];
+          final currentPlayer = game.room.currentRound.currentPlayer;
+          final player1 = game.room.currentRound.players![0];
+          final player2 = game.room.currentRound.players![1];
 
-          final xColor = currentPlayer.seed == Seed.cross
+          final xColor = currentPlayer!.seed == Seed.cross
               ? Colors.black
               : const Color.fromARGB(200, 100, 100, 100);
           final oColor = currentPlayer.seed == Seed.nought

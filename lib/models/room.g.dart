@@ -23,48 +23,36 @@ const RoomSchema = CollectionSchema(
       type: IsarType.object,
       target: r'Board',
     ),
-    r'currentPlayer': PropertySchema(
-      id: 1,
-      name: r'currentPlayer',
-      type: IsarType.object,
-      target: r'Player',
-    ),
     r'currentRound': PropertySchema(
-      id: 2,
+      id: 1,
       name: r'currentRound',
       type: IsarType.object,
       target: r'Round',
     ),
     r'name': PropertySchema(
-      id: 3,
+      id: 2,
       name: r'name',
       type: IsarType.string,
     ),
-    r'players': PropertySchema(
-      id: 4,
-      name: r'players',
-      type: IsarType.objectList,
-      target: r'Player',
-    ),
     r'roundCount': PropertySchema(
-      id: 5,
+      id: 3,
       name: r'roundCount',
       type: IsarType.long,
     ),
     r'rounds': PropertySchema(
-      id: 6,
+      id: 4,
       name: r'rounds',
       type: IsarType.objectList,
       target: r'Round',
     ),
     r'state': PropertySchema(
-      id: 7,
+      id: 5,
       name: r'state',
       type: IsarType.string,
       enumMap: _RoomstateEnumValueMap,
     ),
     r'winCount': PropertySchema(
-      id: 8,
+      id: 6,
       name: r'winCount',
       type: IsarType.long,
     )
@@ -77,9 +65,9 @@ const RoomSchema = CollectionSchema(
   indexes: {},
   links: {},
   embeddedSchemas: {
-    r'Player': PlayerSchema,
     r'Board': BoardSchema,
     r'Round': RoundSchema,
+    r'Player': PlayerSchema,
     r'Cell': CellSchema
   },
   getId: _roomGetId,
@@ -97,20 +85,9 @@ int _roomEstimateSize(
   bytesCount += 3 +
       BoardSchema.estimateSize(object.board, allOffsets[Board]!, allOffsets);
   bytesCount += 3 +
-      PlayerSchema.estimateSize(
-          object.currentPlayer, allOffsets[Player]!, allOffsets);
-  bytesCount += 3 +
       RoundSchema.estimateSize(
           object.currentRound, allOffsets[Round]!, allOffsets);
   bytesCount += 3 + object.name.length * 3;
-  bytesCount += 3 + object.players.length * 3;
-  {
-    final offsets = allOffsets[Player]!;
-    for (var i = 0; i < object.players.length; i++) {
-      final value = object.players[i];
-      bytesCount += PlayerSchema.estimateSize(value, offsets, allOffsets);
-    }
-  }
   {
     final list = object.rounds;
     if (list != null) {
@@ -142,34 +119,22 @@ void _roomSerialize(
     BoardSchema.serialize,
     object.board,
   );
-  writer.writeObject<Player>(
-    offsets[1],
-    allOffsets,
-    PlayerSchema.serialize,
-    object.currentPlayer,
-  );
   writer.writeObject<Round>(
-    offsets[2],
+    offsets[1],
     allOffsets,
     RoundSchema.serialize,
     object.currentRound,
   );
-  writer.writeString(offsets[3], object.name);
-  writer.writeObjectList<Player>(
-    offsets[4],
-    allOffsets,
-    PlayerSchema.serialize,
-    object.players,
-  );
-  writer.writeLong(offsets[5], object.roundCount);
+  writer.writeString(offsets[2], object.name);
+  writer.writeLong(offsets[3], object.roundCount);
   writer.writeObjectList<Round>(
-    offsets[6],
+    offsets[4],
     allOffsets,
     RoundSchema.serialize,
     object.rounds,
   );
-  writer.writeString(offsets[7], object.state.name);
-  writer.writeLong(offsets[8], object.winCount);
+  writer.writeString(offsets[5], object.state.name);
+  writer.writeLong(offsets[6], object.winCount);
 }
 
 Room _roomDeserialize(
@@ -185,34 +150,21 @@ Room _roomDeserialize(
         allOffsets,
       ) ??
       Board();
-  object.currentPlayer = reader.readObjectOrNull<Player>(
-        offsets[1],
-        PlayerSchema.deserialize,
-        allOffsets,
-      ) ??
-      Player();
   object.currentRound = reader.readObjectOrNull<Round>(
-        offsets[2],
+        offsets[1],
         RoundSchema.deserialize,
         allOffsets,
       ) ??
       Round();
   object.id = id;
-  object.name = reader.readString(offsets[3]);
-  object.players = reader.readObjectList<Player>(
-        offsets[4],
-        PlayerSchema.deserialize,
-        allOffsets,
-        Player(),
-      ) ??
-      [];
-  object.roundCount = reader.readLong(offsets[5]);
+  object.name = reader.readString(offsets[2]);
+  object.roundCount = reader.readLong(offsets[3]);
   object.rounds = reader.readObjectOrNullList<Round>(
-    offsets[6],
+    offsets[4],
     RoundSchema.deserialize,
     allOffsets,
   );
-  object.state = _RoomstateValueEnumMap[reader.readStringOrNull(offsets[7])] ??
+  object.state = _RoomstateValueEnumMap[reader.readStringOrNull(offsets[5])] ??
       GameState.playing;
   return object;
 }
@@ -232,41 +184,26 @@ P _roomDeserializeProp<P>(
           ) ??
           Board()) as P;
     case 1:
-      return (reader.readObjectOrNull<Player>(
-            offset,
-            PlayerSchema.deserialize,
-            allOffsets,
-          ) ??
-          Player()) as P;
-    case 2:
       return (reader.readObjectOrNull<Round>(
             offset,
             RoundSchema.deserialize,
             allOffsets,
           ) ??
           Round()) as P;
-    case 3:
+    case 2:
       return (reader.readString(offset)) as P;
-    case 4:
-      return (reader.readObjectList<Player>(
-            offset,
-            PlayerSchema.deserialize,
-            allOffsets,
-            Player(),
-          ) ??
-          []) as P;
-    case 5:
+    case 3:
       return (reader.readLong(offset)) as P;
-    case 6:
+    case 4:
       return (reader.readObjectOrNullList<Round>(
         offset,
         RoundSchema.deserialize,
         allOffsets,
       )) as P;
-    case 7:
+    case 5:
       return (_RoomstateValueEnumMap[reader.readStringOrNull(offset)] ??
           GameState.playing) as P;
-    case 8:
+    case 6:
       return (reader.readLong(offset)) as P;
     default:
       throw IsarError('Unknown property with id $propertyId');
@@ -547,90 +484,6 @@ extension RoomQueryFilter on QueryBuilder<Room, Room, QFilterCondition> {
         property: r'name',
         value: '',
       ));
-    });
-  }
-
-  QueryBuilder<Room, Room, QAfterFilterCondition> playersLengthEqualTo(
-      int length) {
-    return QueryBuilder.apply(this, (query) {
-      return query.listLength(
-        r'players',
-        length,
-        true,
-        length,
-        true,
-      );
-    });
-  }
-
-  QueryBuilder<Room, Room, QAfterFilterCondition> playersIsEmpty() {
-    return QueryBuilder.apply(this, (query) {
-      return query.listLength(
-        r'players',
-        0,
-        true,
-        0,
-        true,
-      );
-    });
-  }
-
-  QueryBuilder<Room, Room, QAfterFilterCondition> playersIsNotEmpty() {
-    return QueryBuilder.apply(this, (query) {
-      return query.listLength(
-        r'players',
-        0,
-        false,
-        999999,
-        true,
-      );
-    });
-  }
-
-  QueryBuilder<Room, Room, QAfterFilterCondition> playersLengthLessThan(
-    int length, {
-    bool include = false,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.listLength(
-        r'players',
-        0,
-        true,
-        length,
-        include,
-      );
-    });
-  }
-
-  QueryBuilder<Room, Room, QAfterFilterCondition> playersLengthGreaterThan(
-    int length, {
-    bool include = false,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.listLength(
-        r'players',
-        length,
-        include,
-        999999,
-        true,
-      );
-    });
-  }
-
-  QueryBuilder<Room, Room, QAfterFilterCondition> playersLengthBetween(
-    int lower,
-    int upper, {
-    bool includeLower = true,
-    bool includeUpper = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.listLength(
-        r'players',
-        lower,
-        includeLower,
-        upper,
-        includeUpper,
-      );
     });
   }
 
@@ -990,24 +843,10 @@ extension RoomQueryObject on QueryBuilder<Room, Room, QFilterCondition> {
     });
   }
 
-  QueryBuilder<Room, Room, QAfterFilterCondition> currentPlayer(
-      FilterQuery<Player> q) {
-    return QueryBuilder.apply(this, (query) {
-      return query.object(q, r'currentPlayer');
-    });
-  }
-
   QueryBuilder<Room, Room, QAfterFilterCondition> currentRound(
       FilterQuery<Round> q) {
     return QueryBuilder.apply(this, (query) {
       return query.object(q, r'currentRound');
-    });
-  }
-
-  QueryBuilder<Room, Room, QAfterFilterCondition> playersElement(
-      FilterQuery<Player> q) {
-    return QueryBuilder.apply(this, (query) {
-      return query.object(q, r'players');
     });
   }
 
@@ -1174,12 +1013,6 @@ extension RoomQueryProperty on QueryBuilder<Room, Room, QQueryProperty> {
     });
   }
 
-  QueryBuilder<Room, Player, QQueryOperations> currentPlayerProperty() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addPropertyName(r'currentPlayer');
-    });
-  }
-
   QueryBuilder<Room, Round, QQueryOperations> currentRoundProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'currentRound');
@@ -1189,12 +1022,6 @@ extension RoomQueryProperty on QueryBuilder<Room, Room, QQueryProperty> {
   QueryBuilder<Room, String, QQueryOperations> nameProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'name');
-    });
-  }
-
-  QueryBuilder<Room, List<Player>, QQueryOperations> playersProperty() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addPropertyName(r'players');
     });
   }
 
