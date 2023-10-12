@@ -69,7 +69,6 @@ class Room {
     final player1 = currentRound.players![0];
     final player2 = currentRound.players![1];
     
-
     // Case 1: Multiple seeds in a row
     for (int i = 0; i < board.rowCount!; i++) {
       for (int j = 0; j <= board.columnCount! - winCount; j++) {
@@ -277,10 +276,10 @@ class Room {
     // reset the game
     state = GameState.playing;
     board.reset();
-    currentRound.winnerIndex = null;
     // move to the next round
     roundCount++;
     currentRound = Round(number: roundCount, turnCount: 1, players: currentRound.players);
+    currentRound.winnerIndex = null;
     rounds = [...?rounds, currentRound];
   }
 

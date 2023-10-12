@@ -8,6 +8,7 @@ abstract class Routes {
   static const CREATE_ROOM = _Paths.CREATE_ROOM;
   static const WINNER = _Paths.WINNER;
   static const HISTORY = _Paths.HISTORY;
+  static const HISTORY_DETAILS = _Paths.HISTORY_DETAILS;
 }
 
 abstract class _Paths {
@@ -17,4 +18,5 @@ abstract class _Paths {
   static const CREATE_ROOM = '/create-room';
   static const WINNER = '/winner';
   static const HISTORY = '/history';
+  static const HISTORY_DETAILS = '/history-details';
 }

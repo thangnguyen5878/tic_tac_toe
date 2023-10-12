@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_tic_tac_toe/app/modules/game/game_controller.dart';
 import 'package:flutter_tic_tac_toe/utils/cell_state.dart';
+import 'package:flutter_tic_tac_toe/values/app_colors.dart';
 import 'package:flutter_tic_tac_toe/values/color_constants.dart';
 import 'package:get/get.dart';
 
@@ -42,21 +43,19 @@ class CellWidget extends StatelessWidget {
           return Container(
               alignment: Alignment.center,
               decoration: BoxDecoration(
-                  border: Border.all(color: Colors.black, width: 1),
+                  border: Border.all(color: AppColors.black, width: 1),
                   color: bColor),
               child: Text(
                 content,
-                style: const TextStyle(fontSize: 20, color: Colors.black),
+                style: const TextStyle(fontSize: 20, color: AppColors.black),
               ));
         },
       ),
       onTap: () {
         final currentPlayer = gameController.room.currentRound.currentPlayer;
         // game.game.nextTurn();
-        print(
-            'Tap cell($row, $column) : ${currentPlayer!.seed}');
-        gameController.drawSeed(
-            row, column, currentPlayer.seed!);
+        print('Tap cell($row, $column) : ${currentPlayer!.seed}');
+        gameController.drawSeed(row, column, currentPlayer.seed!);
       },
     );
   }

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-import 'color_manager.dart';
+import 'app_colors.dart';
 import 'font_styles_manager.dart';
 import 'size_manager.dart';
 
@@ -9,16 +9,16 @@ ThemeData getApplicationTheme() {
   return ThemeData(
       //main colors of the app
       scaffoldBackgroundColor: Color.fromARGB(255, 247, 245, 245),
-      primaryColor: ColorsManger.primary,
-      primaryColorLight: ColorsManger.primary.withOpacity(.7),
-      disabledColor: ColorsManger.grey,
+      primaryColor: AppColors.primary,
+      primaryColorLight: AppColors.primary.withOpacity(.7),
+      disabledColor: AppColors.grey,
       platform: TargetPlatform.iOS,
-      splashColor: ColorsManger.primary.withOpacity(.7),
+      splashColor: AppColors.primary.withOpacity(.7),
 
       //card theme for the cards
       cardTheme: CardTheme(
-        color: ColorsManger.white,
-        shadowColor: ColorsManger.grey,
+        color: AppColors.white,
+        shadowColor: AppColors.grey,
         elevation: AppSize.size4,
         margin: const EdgeInsets.all(AppMargin.margin8),
         shape: RoundedRectangleBorder(
@@ -27,22 +27,22 @@ ThemeData getApplicationTheme() {
       ),
       appBarTheme: AppBarTheme(
         elevation: AppSize.size4,
-        iconTheme: const IconThemeData(color: ColorsManger.primary),
-        backgroundColor: ColorsManger.primary,
-        shadowColor: ColorsManger.grey1,
+        iconTheme: const IconThemeData(color: AppColors.primary),
+        backgroundColor: AppColors.primary,
+        shadowColor: AppColors.grey1,
         systemOverlayStyle: const SystemUiOverlayStyle(
           systemNavigationBarIconBrightness: Brightness.dark,
           statusBarIconBrightness: Brightness.dark,
-          systemNavigationBarColor: ColorsManger.primary, // Navigation bar
-          statusBarColor: ColorsManger.primary, // Status bar
+          systemNavigationBarColor: AppColors.primary, // Navigation bar
+          statusBarColor: AppColors.primary, // Status bar
         ),
         titleTextStyle: getRegularTextStyle(
-            color: ColorsManger.white, fontSize: AppSize.size18),
+            color: AppColors.white, fontSize: AppSize.size18),
       ),
       buttonTheme: ButtonThemeData(
-        buttonColor: ColorsManger.primary,
-        disabledColor: ColorsManger.grey1,
-        splashColor: ColorsManger.primary.withOpacity(.7),
+        buttonColor: AppColors.primary,
+        disabledColor: AppColors.grey1,
+        splashColor: AppColors.primary.withOpacity(.7),
         textTheme: ButtonTextTheme.primary,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(10),
@@ -50,9 +50,9 @@ ThemeData getApplicationTheme() {
       ),
       elevatedButtonTheme: ElevatedButtonThemeData(
         style: ElevatedButton.styleFrom(
-          primary: ColorsManger.primary,
+          primary: AppColors.primary,
           textStyle: getRegularTextStyle(
-            color: ColorsManger.white,
+            color: AppColors.white,
           ),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(10),
@@ -61,40 +61,40 @@ ThemeData getApplicationTheme() {
       ),
       textTheme: TextTheme(
           headline1: getMediumTextStyle(
-              color: ColorsManger.darkGrey, fontSize: AppSize.size18),
+              color: AppColors.darkGrey, fontSize: AppSize.size18),
           subtitle1: getMediumTextStyle(
-              color: ColorsManger.darkGrey, fontSize: AppSize.size16),
+              color: AppColors.darkGrey, fontSize: AppSize.size16),
           subtitle2: getMediumTextStyle(
-              color: ColorsManger.darkGrey, fontSize: AppSize.size14),
+              color: AppColors.darkGrey, fontSize: AppSize.size14),
           caption: getRegularTextStyle(
-            color: ColorsManger.grey1,
+            color: AppColors.grey1,
           ),
-          bodyText1: getRegularTextStyle(color: ColorsManger.grey)),
+          bodyText1: getRegularTextStyle(color: AppColors.grey)),
       inputDecorationTheme: InputDecorationTheme(
           //border
           border: UnderlineInputBorder(
             borderRadius: BorderRadius.circular(10),
-            borderSide: const BorderSide(color: ColorsManger.grey1),
+            borderSide: const BorderSide(color: AppColors.grey1),
           ),
           //hint text style
-          hintStyle: getRegularTextStyle(color: ColorsManger.grey1),
+          hintStyle: getRegularTextStyle(color: AppColors.grey1),
           //focused ERROR border
           errorBorder: UnderlineInputBorder(
             borderRadius: BorderRadius.circular(10),
-            borderSide: const BorderSide(color: ColorsManger.error),
+            borderSide: const BorderSide(color: AppColors.error),
           ),
           //focused border
           focusedBorder: UnderlineInputBorder(
-            borderRadius: BorderRadius.circular(10),
-            borderSide: const BorderSide(color: ColorsManger.primary),
+            borderRadius: BorderRadius.ecircular(10),
+            borderSide: const BorderSid(color: AppColors.primary),
           ),
           //focused ERROR hint text style
-          errorStyle: getRegularTextStyle(color: ColorsManger.error),
+          errorStyle: getRegularTextStyle(color: AppColors.error),
           //focused Label text style
-          labelStyle: getMediumTextStyle(color: ColorsManger.grey),
+          labelStyle: getMediumTextStyle(color: AppColors.grey),
 
           ///fill COLOR
           filled: true,
-          fillColor: ColorsManger.white,
+          fillColor: AppColors.white,
           contentPadding: const EdgeInsets.all(AppPadding.padding8)));
 }

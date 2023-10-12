@@ -1,4 +1,5 @@
 import 'package:flutter_tic_tac_toe/models/room.dart';
+import 'package:flutter_tic_tac_toe/models/round.dart';
 import 'package:isar/isar.dart';
 import 'package:path_provider/path_provider.dart';
 
@@ -37,7 +38,7 @@ class IsarService {
     final isar = await db;
     yield* isar.rooms.where().watch();
   }
-  
+
   // ROOM: INSERT AND UPDATE
   Future<void> saveRoom(Room room) async {
     final isar = await db;
@@ -56,8 +57,9 @@ class IsarService {
   }
 
   // ROUND: GET
-  // Future<Room?> getRound(int id) async {
-  //   final isar = await db;
-  //   return isar.rounds.get(id);
-  // }
+  Future<List<Round?>?> getAllRoundsInRoom(int roomId) async {
+    final isar = await db;
+    final room = await getRoom(roomId);
+    return room?.rounds;
+  }
 }

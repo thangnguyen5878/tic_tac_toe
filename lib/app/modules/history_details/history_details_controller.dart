@@ -1,6 +1,6 @@
 import 'package:get/get.dart';
 
-class HistoryDetailController extends GetxController {
+class HistoryDetailsController extends GetxController {
   //TODO: Implement HistoryDetailController
 
   final count = 0.obs;

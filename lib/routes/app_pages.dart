@@ -1,5 +1,7 @@
 import 'package:flutter_tic_tac_toe/app/modules/create_room/create_room_binding.dart';
 import 'package:flutter_tic_tac_toe/app/modules/create_room/create_room_view.dart';
+import 'package:flutter_tic_tac_toe/app/modules/history_details/history_details_binding.dart';
+import 'package:flutter_tic_tac_toe/app/modules/history_details/history_details_view.dart';
 import 'package:flutter_tic_tac_toe/app/modules/winner/winner_binding.dart';
 import 'package:flutter_tic_tac_toe/app/modules/winner/winner_view.dart';
 import 'package:get/get.dart';
@@ -40,6 +42,16 @@ class AppPages {
       binding: WinnerBinding(),
       opaque: false,
       transitionDuration: const Duration(seconds: 0),
+    ),
+    GetPage(
+      name: _Paths.HISTORY,
+      page: () => HistoryView(),
+      binding: HistoryBinding(),
+    ),
+    GetPage(
+      name: _Paths.HISTORY_DETAILS,
+      page: () => HistoryDetailsView(),
+      binding: HistoryDetailsBinding(),
     ),
   ];
 }

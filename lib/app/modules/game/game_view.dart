@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_tic_tac_toe/app/modules/game/components/next_round_button.dart';
 import 'package:flutter_tic_tac_toe/app/modules/game/game_controller.dart';
+import 'package:flutter_tic_tac_toe/app/modules/widget/board_widget.dart';
 import 'package:flutter_tic_tac_toe/app/modules/widget/cell_widget.dart';
+import 'package:flutter_tic_tac_toe/app/modules/widget/player_bottom_bar.dart';
 import 'package:flutter_tic_tac_toe/routes/app_pages.dart';
 import 'package:flutter_tic_tac_toe/utils/game_state.dart';
 import 'package:flutter_tic_tac_toe/utils/seed.dart';
+import 'package:flutter_tic_tac_toe/values/app_colors.dart';
 import 'package:get/get.dart';
 
 class GameView extends StatelessWidget {
@@ -24,19 +28,20 @@ class GameView extends StatelessWidget {
       },
       child: Scaffold(
         appBar: AppBar(
+          backgroundColor: AppColors.brown,
           title: GetBuilder<GameController>(
             builder: (game) {
               return Text(
                 'Round: ${game.room.roundCount}, Turn: ${game.room.currentRound.turnCount}',
-                style: const TextStyle(fontSize: 18),
+                style: const TextStyle(fontSize: 18, color: AppColors.black),
               );
             },
           ),
-          leading: buildBackButton(),
+          leading: BackButton(gameController: gameController),
           actions: [
             // buildResetBoardButton(),
-            buildNextRoundButton(),
-            buildPopupMenuButton(),
+            NextRoundButton(),
+            GamePopupMenuButton(gameController: gameController, roomId: roomId),
           ],
         ),
         body: Stack(children: [
@@ -47,32 +52,33 @@ class GameView extends StatelessWidget {
                 scrollDirection: Axis.vertical,
                 children: [
                   const SizedBox(height: 10),
-                  buildBoard(context),
+                  BoardWidget(),
                   const SizedBox(height: 60),
                 ],
               ),
             ),
           ),
-          buildPlayersBottomBar(),
+          Positioned(bottom: 0, left: 0, right: 0, child: PlayerBottomBar()),
         ]),
       ),
     );
   }
+}
 
-  IconButton buildBackButton() {
-    return IconButton(
-      icon: const Icon(Icons.arrow_back),
-      onPressed: () {
-        Get.back();
-        gameController.saveRoom();
-        Get.toNamed(Routes.HOME);
-        // FocusScope.of(context).unfocus();
-      },
-    );
-  }
+class GamePopupMenuButton extends StatelessWidget {
+  const GamePopupMenuButton({
+    super.key,
+    required this.gameController,
+    required this.roomId,
+  });
 
-  buildPopupMenuButton() {
+  final GameController gameController;
+  final roomId;
+
+  @override
+  Widget build(BuildContext context) {
     return PopupMenuButton<String>(
+      color: AppColors.black,
       // offset: Offset(0, 57),
       itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
         const PopupMenuItem<String>(
@@ -89,146 +95,36 @@ class GameView extends StatelessWidget {
           gameController.resetBoard();
           gameController.saveRoom();
         } else if (value == 'history') {
+          print('Going to History Page, roomId = $roomId');
+          gameController.saveRoom();
           Get.toNamed(Routes.HISTORY, arguments: roomId);
         }
       },
     );
   }
-
-  GetBuilder<GameController> buildResetBoardButton() {
-    return GetBuilder<GameController>(
-      builder: (game) {
-        // final isGameOver = game.room.state == GameState.stop;
-        return IconButton(
-          icon: const Icon(Icons.refresh),
-          onPressed: () {
-            game.resetBoard();
-          },
-        );
-      },
-    );
-  }
-
-  GetBuilder<GameController> buildNextRoundButton() {
-    return GetBuilder<GameController>(
-      builder: (game) {
-        final isGameOver = game.room.state == GameState.stop;
-        if (isGameOver) {
-          return IconButton(
-            icon: const Icon(Icons.forward),
-            onPressed: () {
-              game.nextRound();
-            },
-          );
-        }
-        return Container();
-      },
-    );
-  }
-
-  Positioned buildPlayersBottomBar() {
-    return Positioned(
-      left: 0,
-      right: 0,
-      bottom: 0,
-      child: Container(
-        color: Colors.grey,
-        height: 50,
-        child: GetBuilder(builder: (GameController game) {
-          final currentPlayer = game.room.currentRound.currentPlayer;
-          final player1 = game.room.currentRound.players![0];
-          final player2 = game.room.currentRound.players![1];
-
-          final xColor = currentPlayer!.seed == Seed.cross
-              ? Colors.black
-              : const Color.fromARGB(200, 100, 100, 100);
-          final oColor = currentPlayer.seed == Seed.nought
-              ? Colors.black
-              : const Color.fromARGB(200, 100, 100, 100);
-          final xBoxColor = currentPlayer.seed == Seed.cross
-              ? const Color.fromARGB(211, 193, 100, 100)
-              : Colors.grey;
-          final oBoxColor = currentPlayer.seed == Seed.nought
-              ? const Color.fromARGB(211, 193, 100, 100)
-              : Colors.grey;
-
-          return Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              // Player 1 Box
-              Expanded(
-                child: Container(
-                  color: xBoxColor,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        '${player1.name}: X',
-                        style: TextStyle(
-                            color: xColor, fontWeight: FontWeight.bold),
-                      ),
-                      Text('Score: ${player1.score}',
-                          style: TextStyle(
-                              color: xColor, fontWeight: FontWeight.bold)),
-                    ],
-                  ),
-                ),
-              ),
-              // Player 2 Box
-              Expanded(
-                child: Container(
-                  color: oBoxColor,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        '${player2.name}: O',
-                        style: TextStyle(
-                            color: oColor, fontWeight: FontWeight.bold),
-                      ),
-                      Text(
-                        'Score: ${player2.score}',
-                        style: TextStyle(
-                            color: oColor, fontWeight: FontWeight.bold),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            ],
-          );
-        }),
-      ),
-    );
-  }
 }
 
-Widget buildBoard(BuildContext context) {
-  print('build board...');
-  final columnCount = GameController.to.room.board.columnCount;
-  final rowCount = GameController.to.room.board.rowCount;
-  print('columnCount: $columnCount');
-  print('rowCount: $rowCount');
+class BackButton extends StatelessWidget {
+  const BackButton({
+    super.key,
+    required this.gameController,
+  });
 
-  return Container(
-    decoration: BoxDecoration(border: Border.all(width: 1)),
-    child: GridView.builder(
-      padding: EdgeInsets.zero,
-      physics: const NeverScrollableScrollPhysics(),
-      shrinkWrap: true,
-      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: columnCount!,
-        crossAxisSpacing: 0,
-        mainAxisSpacing: 0,
-        childAspectRatio: 1,
+  final GameController gameController;
+
+  @override
+  Widget build(BuildContext context) {
+    return IconButton(
+      icon: const Icon(
+        Icons.arrow_back,
+        color: AppColors.black,
       ),
-      itemCount: columnCount * rowCount!,
-      itemBuilder: (context, index) {
-        return CellWidget(
-          row: index ~/ columnCount,
-          column: index % columnCount,
-        );
+      onPressed: () {
+        Get.back();
+        gameController.saveRoom();
+        Get.toNamed(Routes.HOME);
+        // FocusScope.of(context).unfocus();
       },
-    ),
-  );
+    );
+  }
 }
