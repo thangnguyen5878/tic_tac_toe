@@ -8,7 +8,7 @@ class PlayButton extends StatelessWidget {
       child: Icon(Icons.play_arrow, color: Colors.black, size: 35),
       onPressed: () {},
       style: TextButton.styleFrom(
-          elevation: 1, backgroundColor: AppColors.lightPurple),
+          elevation: 1, backgroundColor: AppColors.purple30),
     );
   }
 }

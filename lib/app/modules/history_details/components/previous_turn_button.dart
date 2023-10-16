@@ -12,7 +12,7 @@ class PreviousTurnButton extends StatelessWidget {
       ),
       onPressed: () {},
       style: TextButton.styleFrom(
-          elevation: 1, backgroundColor: AppColors.lightBlue),
+          elevation: 1, backgroundColor: AppColors.blue30),
     );
   }
 }

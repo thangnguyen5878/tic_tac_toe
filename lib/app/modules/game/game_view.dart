@@ -28,7 +28,7 @@ class GameView extends StatelessWidget {
       },
       child: Scaffold(
         appBar: AppBar(
-          backgroundColor: AppColors.brown,
+          backgroundColor: AppColors.brown40,
           title: GetBuilder<GameController>(
             builder: (game) {
               return Text(
@@ -66,7 +66,7 @@ class GameView extends StatelessWidget {
 }
 
 class GamePopupMenuButton extends StatelessWidget {
-  const GamePopupMenuButton({
+  GamePopupMenuButton({
     super.key,
     required this.gameController,
     required this.roomId,
@@ -78,16 +78,16 @@ class GamePopupMenuButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return PopupMenuButton<String>(
-      color: AppColors.black,
-      // offset: Offset(0, 57),
       itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
-        const PopupMenuItem<String>(
+        PopupMenuItem<String>(
           value: 'reset',
           child: Text('Reset'),
+          // Remove the style parameter
         ),
-        const PopupMenuItem<String>(
+        PopupMenuItem<String>(
           value: 'history',
           child: Text('History'),
+          // Remove the style parameter
         ),
       ],
       onSelected: (String value) {
@@ -100,6 +100,10 @@ class GamePopupMenuButton extends StatelessWidget {
           Get.toNamed(Routes.HISTORY, arguments: roomId);
         }
       },
+      icon: Icon(
+        Icons.more_vert,
+        color: Colors.black, // Set the color of the three dots icon to black
+      ),
     );
   }
 }

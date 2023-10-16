@@ -8,7 +8,7 @@ class NextTurnButton extends StatelessWidget {
       child: Icon(Icons.chevron_right, color: Colors.black, size: 35),
       onPressed: () {},
       style: TextButton.styleFrom(
-          elevation: 1, backgroundColor: AppColors.lightBlue),
+          elevation: 1, backgroundColor: AppColors.blue30),
     );
   }
 }

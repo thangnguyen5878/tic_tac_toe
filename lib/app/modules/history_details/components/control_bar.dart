@@ -14,7 +14,7 @@ class ControlBar extends StatelessWidget {
     return Stack(
       children: [
         Container(
-          color: AppColors.lightBrown2,
+          color: AppColors.brown10,
           height: 50,
         ),
         Positioned(left: 5, width: 90, child: PlayButton()),
