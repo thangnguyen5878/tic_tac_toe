@@ -73,7 +73,7 @@ class GamePopupMenuButton extends StatelessWidget {
   });
 
   final GameController gameController;
-  final roomId;
+  var roomId;
 
   @override
   Widget build(BuildContext context) {
@@ -90,13 +90,13 @@ class GamePopupMenuButton extends StatelessWidget {
           // Remove the style parameter
         ),
       ],
-      onSelected: (String value) {
+      onSelected: (String value) async {
         if (value == 'reset') {
           gameController.resetBoard();
           gameController.saveRoom();
         } else if (value == 'history') {
           print('Going to History Page, roomId = $roomId');
-          gameController.saveRoom();
+          roomId = await gameController.saveRoom();
           Get.toNamed(Routes.HISTORY, arguments: roomId);
         }
       },

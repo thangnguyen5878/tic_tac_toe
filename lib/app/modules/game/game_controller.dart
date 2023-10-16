@@ -19,8 +19,10 @@ class GameController extends GetxController {
   createRoom() async {
     Room newRoom = Room();
     if (input.room.text != '') newRoom.name = input.room.text;
-    if (input.player1.text != '') newRoom.currentRound.players![0].name = input.player1.text;
-    if (input.player2.text != '') newRoom.currentRound.players![1].name = input.player2.text;
+    if (input.player1.text != '')
+      newRoom.currentRound.players![0].name = input.player1.text;
+    if (input.player2.text != '')
+      newRoom.currentRound.players![1].name = input.player2.text;
     if (input.rowCount.text != '')
       newRoom.board!.rowCount = int.tryParse(input.rowCount.text) ?? 10;
     if (input.columnCount.text != '')
@@ -31,9 +33,10 @@ class GameController extends GetxController {
     update();
   }
 
-  saveRoom() async {
+  Future<int> saveRoom() async {
     await isarService.saveRoom(room);
     update();
+    return room.id;
   }
 
   loadRoomById(id) async {
