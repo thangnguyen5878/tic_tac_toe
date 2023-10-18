@@ -8,8 +8,6 @@ import 'package:flutter_tic_tac_toe/app/modules/widget/player_bottom_bar.dart';
 import 'package:flutter_tic_tac_toe/app/modules/history_details/components/previous_turn_button.dart';
 import 'package:flutter_tic_tac_toe/app/modules/widget/cell_widget.dart';
 import 'package:flutter_tic_tac_toe/routes/app_pages.dart';
-import 'package:flutter_tic_tac_toe/utils/seed.dart';
-import 'package:flutter_tic_tac_toe/values/app_colors.dart';
 
 import 'package:get/get.dart';
 

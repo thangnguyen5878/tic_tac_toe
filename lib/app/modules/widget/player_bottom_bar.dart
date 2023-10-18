@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_tic_tac_toe/app/modules/game/game_controller.dart';
+import 'package:flutter_tic_tac_toe/constants/app_colors.dart';
 import 'package:flutter_tic_tac_toe/utils/seed.dart';
-import 'package:flutter_tic_tac_toe/values/app_colors.dart';
 import 'package:get/get_state_manager/src/simple/get_state.dart';
 
 class PlayerBottomBar extends StatelessWidget {
@@ -19,18 +19,11 @@ class PlayerBottomBar extends StatelessWidget {
         final player1 = game.room.currentRound.players![0];
         final player2 = game.room.currentRound.players![1];
 
-        final xColor = currentPlayer!.seed == Seed.cross
-            ? AppColors.black
-            : AppColors.grey45;
-        final oColor = currentPlayer.seed == Seed.nought
-            ? AppColors.black
-            : AppColors.grey45;
-        final xBoxColor = currentPlayer.seed == Seed.cross
-            ? AppColors.brown30
-            : AppColors.grey30;
-        final oBoxColor = currentPlayer.seed == Seed.nought
-            ? AppColors.brown30
-            : AppColors.grey30;
+        final xColor = currentPlayer!.seed == Seed.cross ? kBlack : kGrey45;
+        final oColor = currentPlayer.seed == Seed.nought ? kBlack : kGrey45;
+        final xBoxColor = currentPlayer.seed == Seed.cross ? kBrown30 : kGrey30;
+        final oBoxColor =
+            currentPlayer.seed == Seed.nought ? kBrown30 : kGrey30;
 
         return Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,

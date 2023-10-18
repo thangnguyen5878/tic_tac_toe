@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_tic_tac_toe/values/app_colors.dart';
+import 'package:flutter_tic_tac_toe/constants/app_colors.dart';
 
 class NextTurnButton extends StatelessWidget {
   @override
@@ -7,8 +7,7 @@ class NextTurnButton extends StatelessWidget {
     return ElevatedButton(
       child: Icon(Icons.chevron_right, color: Colors.black, size: 35),
       onPressed: () {},
-      style: TextButton.styleFrom(
-          elevation: 1, backgroundColor: AppColors.blue30),
+      style: TextButton.styleFrom(elevation: 1, backgroundColor: kBlue30),
     );
   }
 }

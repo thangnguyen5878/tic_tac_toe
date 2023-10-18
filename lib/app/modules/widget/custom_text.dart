@@ -1,5 +1,4 @@
 import 'package:flutter/widgets.dart';
-import 'package:flutter_tic_tac_toe/values/font_manager.dart';
 
 class CustomText extends StatelessWidget {
   final String text;

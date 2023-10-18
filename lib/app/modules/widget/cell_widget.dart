@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_tic_tac_toe/app/modules/game/game_controller.dart';
+import 'package:flutter_tic_tac_toe/constants/app_colors.dart';
 import 'package:flutter_tic_tac_toe/utils/cell_state.dart';
-import 'package:flutter_tic_tac_toe/values/app_colors.dart';
-import 'package:flutter_tic_tac_toe/values/color_constants.dart';
 import 'package:get/get.dart';
 
 // ignore: must_be_immutable
@@ -29,11 +28,11 @@ class CellWidget extends StatelessWidget {
 
           if (state == CellState.crossWin) {
             state = CellState.crossWin;
-            bColor = lightRed;
+            bColor = kRed20;
           }
           if (state == CellState.noughtWin) {
             state = CellState.noughtWin;
-            bColor = lightGreen;
+            bColor = kGreen30;
           }
           if (state == CellState.normal) {
             state = CellState.normal;
@@ -43,11 +42,10 @@ class CellWidget extends StatelessWidget {
           return Container(
               alignment: Alignment.center,
               decoration: BoxDecoration(
-                  border: Border.all(color: AppColors.black, width: 1),
-                  color: bColor),
+                  border: Border.all(color: kBlack, width: 1), color: bColor),
               child: Text(
                 content,
-                style: const TextStyle(fontSize: 20, color: AppColors.black),
+                style: const TextStyle(fontSize: 20, color: kBlack),
               ));
         },
       ),

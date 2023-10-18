@@ -2,10 +2,10 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:flutter_tic_tac_toe/constants.dart';
+import 'package:flutter_tic_tac_toe/constants/app_colors.dart';
+import 'package:flutter_tic_tac_toe/constants/app_styles.dart';
 import 'package:get/get_rx/src/rx_typedefs/rx_typedefs.dart';
 
-import 'package:flutter_tic_tac_toe/values/app_styles.dart';
 
 class CustomCard extends StatelessWidget {
   final onTap;
@@ -31,11 +31,11 @@ class CustomCard extends StatelessWidget {
         onTap: onTap,
         title: Padding(
           padding: EdgeInsets.only(bottom: 10), // Add padding here
-          child: Text(title, style: AppStyles.heading2),
+          child: Text(title, style: kHeading2),
         ),
         subtitle: Text(
           subtitle,
-          style: AppStyles.normal,
+          style: kNormal,
         ),
       ),
     );

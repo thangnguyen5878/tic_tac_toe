@@ -4,10 +4,10 @@ import 'package:flutter_tic_tac_toe/app/modules/game/game_controller.dart';
 import 'package:flutter_tic_tac_toe/app/modules/widget/board_widget.dart';
 import 'package:flutter_tic_tac_toe/app/modules/widget/cell_widget.dart';
 import 'package:flutter_tic_tac_toe/app/modules/widget/player_bottom_bar.dart';
+import 'package:flutter_tic_tac_toe/constants/app_colors.dart';
 import 'package:flutter_tic_tac_toe/routes/app_pages.dart';
 import 'package:flutter_tic_tac_toe/utils/game_state.dart';
 import 'package:flutter_tic_tac_toe/utils/seed.dart';
-import 'package:flutter_tic_tac_toe/values/app_colors.dart';
 import 'package:get/get.dart';
 
 class GameView extends StatelessWidget {
@@ -28,12 +28,12 @@ class GameView extends StatelessWidget {
       },
       child: Scaffold(
         appBar: AppBar(
-          backgroundColor: AppColors.brown40,
+          backgroundColor: kBrown40,
           title: GetBuilder<GameController>(
             builder: (game) {
               return Text(
                 'Round: ${game.room.roundCount}, Turn: ${game.room.currentRound.turnCount}',
-                style: const TextStyle(fontSize: 18, color: AppColors.black),
+                style: const TextStyle(fontSize: 18, color: kBlack),
               );
             },
           ),
@@ -121,7 +121,7 @@ class BackButton extends StatelessWidget {
     return IconButton(
       icon: const Icon(
         Icons.arrow_back,
-        color: AppColors.black,
+        color: kBlack,
       ),
       onPressed: () {
         Get.back();

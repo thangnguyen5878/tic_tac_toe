@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_tic_tac_toe/app/modules/game/game_controller.dart';
 import 'package:flutter_tic_tac_toe/app/modules/home/home_controller.dart';
 import 'package:flutter_tic_tac_toe/app/modules/widget/custom_text.dart';
-import 'package:flutter_tic_tac_toe/constants.dart';
+import 'package:flutter_tic_tac_toe/constants/app_colors.dart';
+import 'package:flutter_tic_tac_toe/constants/app_styles.dart';
 import 'package:flutter_tic_tac_toe/models/room.dart';
 import 'package:flutter_tic_tac_toe/routes/app_pages.dart';
-import 'package:flutter_tic_tac_toe/values/app_colors.dart';
 import 'package:get/get.dart';
 import 'package:get/get_state_manager/src/simple/get_view.dart';
 
@@ -75,7 +75,7 @@ class HomeView extends StatelessWidget {
             Get.toNamed(Routes.CREATE_ROOM);
           },
           child: Icon(Icons.add),
-          backgroundColor: AppColors.brown40,
+          backgroundColor: kBrown40,
         ),
       ),
     );
