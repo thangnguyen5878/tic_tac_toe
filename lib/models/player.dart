@@ -1,4 +1,4 @@
-import 'package:flutter_tic_tac_toe/utils/seed.dart';
+import 'package:flutter_tic_tac_toe/utils/enums/seed.dart';
 import 'package:isar/isar.dart';
 
 

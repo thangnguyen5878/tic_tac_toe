@@ -24,3 +24,15 @@ const kDefaultShadow = BoxShadow(
   blurRadius: 27,
   color: Colors.black12, // Black color with 12% opacity
 );
+
+// TEXT FIELD STYLES
+InputDecoration kTextField({String labelText = "", String hintText = ""}) {
+  return InputDecoration(
+    contentPadding: EdgeInsets.symmetric(horizontal: 10),
+    labelText: labelText,
+    hintText: hintText,
+    border: OutlineInputBorder(
+      borderRadius: BorderRadius.circular(10),
+    ),
+  );
+}

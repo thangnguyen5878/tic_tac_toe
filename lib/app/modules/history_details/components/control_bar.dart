@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_tic_tac_toe/app/modules/history_details/components/next_turn_button.dart';
 import 'package:flutter_tic_tac_toe/app/modules/history_details/components/play_button.dart';
 import 'package:flutter_tic_tac_toe/app/modules/history_details/components/previous_turn_button.dart';
-import 'package:flutter_tic_tac_toe/constants/app_colors.dart';
+import 'package:flutter_tic_tac_toe/utils/constants/app_colors.dart';
 
 class ControlBar extends StatelessWidget {
   const ControlBar({

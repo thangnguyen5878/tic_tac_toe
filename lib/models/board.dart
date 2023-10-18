@@ -1,7 +1,7 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter_tic_tac_toe/models/cell.dart';
-import 'package:flutter_tic_tac_toe/utils/cell_state.dart';
-import 'package:flutter_tic_tac_toe/utils/seed.dart';
+import 'package:flutter_tic_tac_toe/utils/enums/cell_state.dart';
+import 'package:flutter_tic_tac_toe/utils/enums/seed.dart';
 import 'package:isar/isar.dart';
 
 part 'board.g.dart';

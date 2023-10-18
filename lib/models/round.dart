@@ -1,6 +1,6 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter_tic_tac_toe/models/room.dart';
-import 'package:flutter_tic_tac_toe/utils/seed.dart';
+import 'package:flutter_tic_tac_toe/utils/enums/seed.dart';
 import 'package:isar/isar.dart';
 
 import 'package:flutter_tic_tac_toe/models/cell.dart';

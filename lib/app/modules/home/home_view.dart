@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_tic_tac_toe/app/modules/game/game_controller.dart';
 import 'package:flutter_tic_tac_toe/app/modules/home/home_controller.dart';
 import 'package:flutter_tic_tac_toe/app/modules/widget/custom_text.dart';
-import 'package:flutter_tic_tac_toe/constants/app_colors.dart';
-import 'package:flutter_tic_tac_toe/constants/app_styles.dart';
+import 'package:flutter_tic_tac_toe/utils/constants/app_colors.dart';
+import 'package:flutter_tic_tac_toe/utils/constants/app_styles.dart';
 import 'package:flutter_tic_tac_toe/models/room.dart';
 import 'package:flutter_tic_tac_toe/routes/app_pages.dart';
 import 'package:get/get.dart';
@@ -45,15 +45,22 @@ class HomeView extends StatelessWidget {
                               final room = rooms[index];
                               final player1 = room.currentRound.players![0];
                               final player2 = room.currentRound.players![1];
-                              return ListTile(
+                              return InkWell(
                                 onTap: () async {
                                   await gameController.loadRoomById(room.id);
                                   Get.toNamed(Routes.GAME, arguments: room.id);
                                 },
-                                title: Text(room.name),
-                                subtitle: Text(
-                                    '${player1.name} (${player1.score}) - ${player2.name} (${player2.score}), round: ${room.roundCount}'),
-                                // Add more widgets to display additional room information
+                                child: Container(
+                                  child: Column(
+                                    children: [
+                                      Text(room.name),
+                                      Text(
+                                        '${player1.name} (${player1.score}) - ${player2.name} (${player2.score}), round: ${room.roundCount}',
+                                      ),
+                                      // Add more widgets to display additional room information
+                                    ],
+                                  ),
+                                ),
                               );
                             },
                           ),

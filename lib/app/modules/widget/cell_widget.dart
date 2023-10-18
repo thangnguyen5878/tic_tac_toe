@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_tic_tac_toe/app/modules/game/game_controller.dart';
-import 'package:flutter_tic_tac_toe/constants/app_colors.dart';
-import 'package:flutter_tic_tac_toe/utils/cell_state.dart';
+import 'package:flutter_tic_tac_toe/utils/constants/app_colors.dart';
+import 'package:flutter_tic_tac_toe/utils/enums/cell_state.dart';
 import 'package:get/get.dart';
 
 // ignore: must_be_immutable

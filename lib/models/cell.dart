@@ -1,5 +1,5 @@
-import 'package:flutter_tic_tac_toe/utils/cell_state.dart';
-import 'package:flutter_tic_tac_toe/utils/seed.dart';
+import 'package:flutter_tic_tac_toe/utils/enums/cell_state.dart';
+import 'package:flutter_tic_tac_toe/utils/enums/seed.dart';
 import 'package:isar/isar.dart';
 
 part 'cell.g.dart';

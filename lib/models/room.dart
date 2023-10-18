@@ -7,9 +7,9 @@ import 'package:flutter_tic_tac_toe/models/board.dart';
 import 'package:flutter_tic_tac_toe/models/cell.dart';
 import 'package:flutter_tic_tac_toe/models/player.dart';
 import 'package:flutter_tic_tac_toe/models/round.dart';
-import 'package:flutter_tic_tac_toe/utils/cell_state.dart';
-import 'package:flutter_tic_tac_toe/utils/game_state.dart';
-import 'package:flutter_tic_tac_toe/utils/seed.dart';
+import 'package:flutter_tic_tac_toe/utils/enums/cell_state.dart';
+import 'package:flutter_tic_tac_toe/utils/enums/game_state.dart';
+import 'package:flutter_tic_tac_toe/utils/enums/seed.dart';
 
 part 'room.g.dart';
 

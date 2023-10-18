@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_tic_tac_toe/constants/app_colors.dart';
+import 'package:flutter_tic_tac_toe/utils/constants/app_colors.dart';
 
 class PlayButton extends StatelessWidget {
   @override

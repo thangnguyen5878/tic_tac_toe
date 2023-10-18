@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_tic_tac_toe/app/modules/game/game_controller.dart';
 import 'package:flutter_tic_tac_toe/app/modules/home/home_controller.dart';
+import 'package:flutter_tic_tac_toe/utils/constants/app_styles.dart';
 import 'package:flutter_tic_tac_toe/routes/app_pages.dart';
-import 'package:flutter_tic_tac_toe/utils/custom_style.dart';
 
 import 'package:get/get.dart';
 
@@ -89,7 +89,7 @@ class CreateRoomView extends StatelessWidget {
   TextFormField _buildRoomField() {
     return TextFormField(
       controller: createRoomController.room,
-      decoration: CustomStyle.textField(labelText: 'Room'),
+      decoration: kTextField(labelText: 'Room'),
       validator: (value) {
         if (value!.isEmpty) {
           return null;
@@ -105,7 +105,7 @@ class CreateRoomView extends StatelessWidget {
   TextFormField _buildPlayer1Field() {
     return TextFormField(
       controller: createRoomController.player1,
-      decoration: CustomStyle.textField(labelText: 'Player 1'),
+      decoration: kTextField(labelText: 'Player 1'),
       validator: (value) {
         if (value!.isEmpty) {
           return null;
@@ -121,7 +121,7 @@ class CreateRoomView extends StatelessWidget {
   TextFormField _buildPlayer2Field() {
     return TextFormField(
       controller: createRoomController.player2,
-      decoration: CustomStyle.textField(labelText: 'Player 2'),
+      decoration: kTextField(labelText: 'Player 2'),
       validator: (value) {
         if (value!.isEmpty) {
           return null;
@@ -137,7 +137,7 @@ class CreateRoomView extends StatelessWidget {
   TextFormField _buildRowCountField() {
     return TextFormField(
       controller: createRoomController.rowCount,
-      decoration: CustomStyle.textField(
+      decoration: kTextField(
           // hintText: 'Number of rows (5-18)',
           labelText: 'Number of rows (5-18)'),
       keyboardType: TextInputType.number,
@@ -157,7 +157,7 @@ class CreateRoomView extends StatelessWidget {
   TextFormField _buildColumnCountField() {
     return TextFormField(
       controller: createRoomController.columnCount,
-      decoration: CustomStyle.textField(
+      decoration: kTextField(
         // hintText: 'Number of columns (5-12)',
         labelText: 'Number of columns (5-12)',
       ),

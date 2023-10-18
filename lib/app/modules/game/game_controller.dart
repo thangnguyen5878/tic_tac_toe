@@ -2,8 +2,8 @@ import 'package:flutter_tic_tac_toe/app/modules/create_room/create_room_controll
 import 'package:flutter_tic_tac_toe/isar_service.dart';
 import 'package:flutter_tic_tac_toe/models/cell.dart';
 import 'package:flutter_tic_tac_toe/models/room.dart';
-import 'package:flutter_tic_tac_toe/utils/game_state.dart';
-import 'package:flutter_tic_tac_toe/utils/seed.dart';
+import 'package:flutter_tic_tac_toe/utils/enums/game_state.dart';
+import 'package:flutter_tic_tac_toe/utils/enums/seed.dart';
 import 'package:get/get.dart';
 import 'package:isar/isar.dart';
 import 'package:path_provider/path_provider.dart';

@@ -2,8 +2,8 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:flutter_tic_tac_toe/constants/app_colors.dart';
-import 'package:flutter_tic_tac_toe/constants/app_styles.dart';
+import 'package:flutter_tic_tac_toe/utils/constants/app_colors.dart';
+import 'package:flutter_tic_tac_toe/utils/constants/app_styles.dart';
 import 'package:get/get_rx/src/rx_typedefs/rx_typedefs.dart';
 
 
