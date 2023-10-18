@@ -13,6 +13,7 @@ dependencies:
   isar: ^3.1.0+1
   isar_flutter_libs: ^3.1.0+1
   path_provider: ^2.1.1
+  google_fonts: ^6.1.0
 
 
 dev_dependencies: 
@@ -25,4 +26,8 @@ dev_dependencies:
 
 flutter: 
   uses-material-design: true
+  fonts:
+    - family: Jomhuria     
+      fonts:
+        - asset: assets/fonts/Jomhuria-Regular.ttf
 

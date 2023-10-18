@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_tic_tac_toe/app/modules/game/game_controller.dart';
 import 'package:flutter_tic_tac_toe/app/modules/home/home_controller.dart';
 import 'package:flutter_tic_tac_toe/app/modules/widget/custom_text.dart';
+import 'package:flutter_tic_tac_toe/constants.dart';
 import 'package:flutter_tic_tac_toe/models/room.dart';
 import 'package:flutter_tic_tac_toe/routes/app_pages.dart';
 import 'package:flutter_tic_tac_toe/values/app_colors.dart';
@@ -21,10 +22,7 @@ class HomeView extends StatelessWidget {
           alignment: Alignment.topCenter,
           child: Column(
             children: [
-              CustomText(
-                text: 'Tic-tac-toe',
-                fontSize: 30,
-              ),
+              Text('Tic-tac-toe', style: kHeading1),
               GetBuilder<GameController>(
                 builder: (gameController) {
                   return FutureBuilder<List<Room>>(

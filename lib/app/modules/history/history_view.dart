@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_tic_tac_toe/app/modules/game/game_controller.dart';
+import 'package:flutter_tic_tac_toe/constants.dart';
 import 'package:flutter_tic_tac_toe/models/room.dart';
 import 'package:flutter_tic_tac_toe/models/round.dart';
 import 'package:flutter_tic_tac_toe/routes/app_pages.dart';
@@ -23,7 +24,7 @@ class HistoryView extends StatelessWidget {
           alignment: Alignment.topCenter,
           child: Column(
             children: [
-              Text('History', style: TextStyle(fontSize: 30)),
+              const Text('History', style: kHeading1),
               GetBuilder<GameController>(
                 builder: (gameController) {
                   return FutureBuilder<List<Round?>?>(
@@ -50,14 +51,17 @@ class HistoryView extends StatelessWidget {
                               final player2 = round.players![1];
 
                               return ListTile(
-                                onTap: () => Get.toNamed(Routes.HISTORY_DETAILS),
+                                onTap: () =>
+                                    Get.toNamed(Routes.HISTORY_DETAILS),
                                 title: Text('Round ${round!.number}'),
                                 subtitle: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     if (winnerIndex != null)
-                                      Text('Winner: ${round.players![winnerIndex].name}'),
-                                    Text('${player1.name} (${player1.score}) - ${player2.name} (${player2.score})'),
+                                      Text(
+                                          'Winner: ${round.players![winnerIndex].name}'),
+                                    Text(
+                                        '${player1.name} (${player1.score}) - ${player2.name} (${player2.score})'),
                                   ],
                                 ),
                                 // Add more widgets to display additional room information
