@@ -25,7 +25,7 @@ class HistoryView extends StatelessWidget {
           alignment: Alignment.topCenter,
           child: Column(
             children: [
-              const Text('History', style: kHeading1),
+              const Text('History', style: kTitle1),
               GetBuilder<GameController>(
                 builder: (gameController) {
                   return FutureBuilder<List<Round?>?>(

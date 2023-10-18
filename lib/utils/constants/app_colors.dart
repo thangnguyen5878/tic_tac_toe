@@ -15,6 +15,7 @@ const kBlue30 = Color(0xFFA6A0CB);
 const kPurple30 = Color(0xFFCBA0C2);
 const kGreen30 = Color(0xFFCAF5C0);
 const kRed20 = Color(0xFFFFD4C7);
+const kWhite = Colors.white;
 
 
 

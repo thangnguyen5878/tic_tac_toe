@@ -31,7 +31,7 @@ class CustomCard extends StatelessWidget {
         onTap: onTap,
         title: Padding(
           padding: EdgeInsets.only(bottom: 10), // Add padding here
-          child: Text(title, style: kHeading2),
+          child: Text(title, style: kHeading1),
         ),
         subtitle: Text(
           subtitle,

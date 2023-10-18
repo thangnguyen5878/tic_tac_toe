@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_tic_tac_toe/utils/constants/app_colors.dart';
 
 // TEXT STYLES
-const kHeading1 = TextStyle(
+const kTitle1 = TextStyle(
   fontFamily: 'Jomhuria',
   fontSize: 48,
   color: Colors.black,
+
 );
 
-const kHeading2 = TextStyle(
+const kHeading1 = TextStyle(
   fontSize: 20,
   color: Colors.black,
   fontWeight: FontWeight.bold,
@@ -20,9 +22,17 @@ const kNormal = TextStyle(
 
 // BOX DECORATION STYLES
 const kDefaultShadow = BoxShadow(
-  offset: Offset(0, 15),
-  blurRadius: 27,
-  color: Colors.black12, // Black color with 12% opacity
+  offset: Offset(0, 4),
+  blurRadius: 8,
+  color: Colors.black26, // Black color with 12% opacity
+);
+
+const kCardStyle = BoxDecoration(
+  color: kBrown15,
+  borderRadius: BorderRadius.all(
+    Radius.circular(4),
+  ),
+  boxShadow: [kDefaultShadow],
 );
 
 // TEXT FIELD STYLES
