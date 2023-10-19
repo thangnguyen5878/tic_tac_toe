@@ -12,8 +12,9 @@ import 'package:get/get_core/get_core.dart';
 class RoundCard extends StatelessWidget {
   final gameController = Get.find<GameController>();
   final Round round;
+  final int roomId;
 
-  RoundCard(this.round, {super.key});
+  RoundCard({super.key,required this.round, required this.roomId});
 
   @override
   Widget build(BuildContext context) {
@@ -30,8 +31,8 @@ class RoundCard extends StatelessWidget {
 
     return InkWell(
       onTap: () async {
-        await gameController.loadRoomById(round.number);
-        Get.toNamed(Routes.GAME, arguments: round.number);
+        await gameController.loadRoomById(roomId);
+        Get.toNamed(Routes.HISTORY_DETAILS, arguments: [roomId, round.number]);
       },
       child: Container(
         padding: EdgeInsets.all(kPadding12),

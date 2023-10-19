@@ -1,14 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_tic_tac_toe/app/modules/game/components/game_back_button.dart';
+import 'package:flutter_tic_tac_toe/app/modules/game/components/game_popup_menu_button.dart';
 import 'package:flutter_tic_tac_toe/app/modules/game/components/next_round_button.dart';
 import 'package:flutter_tic_tac_toe/app/modules/game/game_controller.dart';
 import 'package:flutter_tic_tac_toe/app/modules/widget/board_widget.dart';
-import 'package:flutter_tic_tac_toe/app/modules/widget/cell_widget.dart';
 import 'package:flutter_tic_tac_toe/app/modules/widget/player_bottom_bar.dart';
 import 'package:flutter_tic_tac_toe/utils/constants/app_colors.dart';
 import 'package:flutter_tic_tac_toe/routes/app_pages.dart';
-import 'package:flutter_tic_tac_toe/utils/constants/app_size.dart';
-import 'package:flutter_tic_tac_toe/utils/enums/game_state.dart';
-import 'package:flutter_tic_tac_toe/utils/enums/seed.dart';
 import 'package:get/get.dart';
 
 class GameView extends StatelessWidget {
@@ -38,7 +36,7 @@ class GameView extends StatelessWidget {
               );
             },
           ),
-          leading: BackButton(gameController: gameController),
+          leading: GameBackButton(gameController: gameController),
           actions: [
             // buildResetBoardButton(),
             NextRoundButton(),
@@ -66,72 +64,6 @@ class GameView extends StatelessWidget {
   }
 }
 
-class GamePopupMenuButton extends StatelessWidget {
-  GamePopupMenuButton({
-    super.key,
-    required this.gameController,
-    required this.roomId,
-  });
 
-  final GameController gameController;
-  var roomId;
 
-  @override
-  Widget build(BuildContext context) {
-    return PopupMenuButton<String>(
-      itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
-        PopupMenuItem<String>(
-          value: 'reset',
-          child: Text('Reset'),
-          // Remove the style parameter
-        ),
-        PopupMenuItem<String>(
-          value: 'history',
-          child: Text('History'),
-          // Remove the style parameter
-        ),
-      ],
-      onSelected: (String value) async {
-        if (value == 'reset') {
-          gameController.resetBoard();
-          gameController.saveRoom();
-        } else if (value == 'history') {
-          print('Going to History Page, roomId = $roomId');
-          roomId = await gameController.saveRoom();
-          Get.toNamed(Routes.HISTORY, arguments: roomId);
-        }
-      },
-      icon: Icon(
-        Icons.more_vert,
-        color: Colors.black,
-        size: kIconSize,// Set the color of the three dots icon to black
-      ),
-    );
-  }
-}
 
-class BackButton extends StatelessWidget {
-  const BackButton({
-    super.key,
-    required this.gameController,
-  });
-
-  final GameController gameController;
-
-  @override
-  Widget build(BuildContext context) {
-    return IconButton(
-      icon: const Icon(
-        Icons.arrow_back,
-        color: kBlack,
-        size: kIconSize,
-      ),
-      onPressed: () {
-        Get.back();
-        gameController.saveRoom();
-        Get.toNamed(Routes.HOME);
-        // FocusScope.of(context).unfocus();
-      },
-    );
-  }
-}

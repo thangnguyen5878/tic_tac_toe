@@ -68,7 +68,7 @@ class HistoryView extends StatelessWidget {
                             itemCount: rounds.length,
                             itemBuilder: (context, index) {
                               final round = rounds[index];
-                              return RoundCard(round!);
+                              return RoundCard(round: round!, roomId: roomId,);
                             },
                           ),
                         );
