@@ -45,16 +45,20 @@ class RoundCard extends StatelessWidget {
             ),
             SizedBox(height: kPadding4),
             if (winnerIndex != null)
-              RichText(
-                text: TextSpan(
-                  style: kNormalLarge,
-                  children: <TextSpan>[
-                    TextSpan(text: 'Winner: '),
-                    TextSpan(text: '${round.players![winnerIndex].name}', style: TextStyle(color: winnerColor )),
-                  ],
-                ),
+              Column(
+                children: [
+                  RichText(
+                    text: TextSpan(
+                      style: kNormalLarge,
+                      children: <TextSpan>[
+                        TextSpan(text: 'Winner: '),
+                        TextSpan(text: '${round.players![winnerIndex].name}', style: TextStyle(color: winnerColor )),
+                      ],
+                    ),
+                  ),
+                  SizedBox(height: kPadding4),
+                ],
               ),
-            SizedBox(height: kPadding4),
             Text('${player1.name} (${player1.score}) - ${player2.name} (${player2.score})', style: kNormal,),
             // Add more widgets to display additional room information
           ],
