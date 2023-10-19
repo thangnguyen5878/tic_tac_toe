@@ -14,8 +14,10 @@ const kGrey45 = Color(0xFFAAA8A8);
 const kBlue30 = Color(0xFFA6A0CB);
 const kPurple30 = Color(0xFFCBA0C2);
 const kGreen30 = Color(0xFFCAF5C0);
+const kGreen60 = Color(0xFF4D9218);
 const kRed20 = Color(0xFFFFD4C7);
-const kWhite = Colors.white;
+const kRed70 = Color(0xFFA32424);
+const kWhite = Color(0xFFF7F7F7);
 
 
 

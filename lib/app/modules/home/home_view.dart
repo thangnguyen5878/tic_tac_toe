@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_tic_tac_toe/app/modules/game/game_controller.dart';
+import 'package:flutter_tic_tac_toe/app/modules/home/components/room_card.dart';
+import 'package:flutter_tic_tac_toe/models/player.dart';
 import 'package:flutter_tic_tac_toe/models/room.dart';
 import 'package:flutter_tic_tac_toe/routes/app_pages.dart';
 import 'package:flutter_tic_tac_toe/utils/constants/app_colors.dart';
@@ -17,24 +19,24 @@ class HomeView extends StatelessWidget {
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
-          leading: Icon(
-            Icons.menu,
-            color: kBlack,
-            size: 30,
-          ),
+          // leading: Icon(
+          //   Icons.menu,
+          //   color: kBlack,
+          //   size: kIconSize,
+          // ),
           title: Container(
-            padding: EdgeInsets.only(top: kPadding8),
+            padding: EdgeInsets.only(top: kPadding8, right: kPadding48),
             alignment: Alignment.center,
             child: Text('Tic-tac-toe', style: kTitle1),
           ),
-          actions: [
-            Icon(
-              Icons.more_vert,
-              color: kBlack,
-              size: 30,
-            ),
-            SizedBox(width: kPadding8,)
-          ],
+          // actions: [
+          //   Icon(
+          //     Icons.more_vert,
+          //     color: kBlack,
+          //     size: kIconSize,
+          //   ),
+          //   SizedBox(width: kPadding8,)
+          // ],
           backgroundColor: kWhite,
         ),
         body: Container(
@@ -58,41 +60,15 @@ class HomeView extends StatelessWidget {
                       } else if (snapshot.hasData) {
                         final rooms = snapshot.data!;
                         return Expanded(
-                          child: ListView.builder(
+                          child: ListView.separated(
+                            padding: EdgeInsets.symmetric(horizontal: kPadding16, vertical: kPadding12),
+                            separatorBuilder: (BuildContext context, int index) {
+                              return SizedBox(height: kPadding12);
+                            },
                             itemCount: rooms.length,
                             itemBuilder: (context, index) {
                               final room = rooms[index];
-                              final player1 = room.currentRound.players![0];
-                              final player2 = room.currentRound.players![1];
-                              return InkWell(
-                                onTap: () async {
-                                  await gameController.loadRoomById(room.id);
-                                  Get.toNamed(Routes.GAME, arguments: room.id);
-                                },
-                                child: Container(
-                                  margin: EdgeInsets.symmetric(
-                                      horizontal: kPadding16,
-                                      vertical: kPadding8),
-                                  padding: EdgeInsets.all(kPadding12),
-                                  decoration: kCardStyle,
-                                  child: Column(
-                                    crossAxisAlignment:
-                                    CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        room.name,
-                                        style: kHeading1,
-                                      ),
-                                      SizedBox(height: kPadding8),
-                                      Text(
-                                        style: kNormal,
-                                        '${player1.name} (${player1.score}) - ${player2.name} (${player2.score}), round: ${room.roundCount}',
-                                      ),
-                                      // Add more widgets to display additional room information
-                                    ],
-                                  ),
-                                ),
-                              );
+                              return RoomCard(room);
                             },
                           ),
                         );
@@ -112,10 +88,11 @@ class HomeView extends StatelessWidget {
           onPressed: () {
             Get.toNamed(Routes.CREATE_ROOM);
           },
-          child: Icon(Icons.add),
+          child: Icon(Icons.add, size: kIconSize,),
           backgroundColor: kBrown40,
         ),
       ),
     );
   }
 }
+

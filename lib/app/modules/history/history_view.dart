@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_tic_tac_toe/app/modules/game/game_controller.dart';
+import 'package:flutter_tic_tac_toe/app/modules/history/components/round_card.dart';
 import 'package:flutter_tic_tac_toe/utils/constants/app_colors.dart';
+import 'package:flutter_tic_tac_toe/utils/constants/app_size.dart';
 import 'package:flutter_tic_tac_toe/utils/constants/app_styles.dart';
 import 'package:flutter_tic_tac_toe/models/room.dart';
 import 'package:flutter_tic_tac_toe/models/round.dart';
@@ -21,11 +23,26 @@ class HistoryView extends StatelessWidget {
     print('build home screen...');
     return SafeArea(
       child: Scaffold(
+        appBar: AppBar(
+          backgroundColor: kWhite,
+          leading: IconButton(
+            icon: const Icon(Icons.arrow_back),
+            iconSize: kIconSize,
+            color: kBlack,
+            onPressed: () {
+              Get.back();
+            },
+          ),
+          title: Container(
+              alignment: Alignment.center,
+              padding: EdgeInsets.only(top: kPadding8, right: kPadding48),
+              child: Text('History', style: kTitle1),
+          ),
+        ),
         body: Container(
           alignment: Alignment.topCenter,
           child: Column(
             children: [
-              const Text('History', style: kTitle1),
               GetBuilder<GameController>(
                 builder: (gameController) {
                   return FutureBuilder<List<Round?>?>(
@@ -43,30 +60,15 @@ class HistoryView extends StatelessWidget {
                       } else if (snapshot.hasData) {
                         final rounds = snapshot.data!;
                         return Expanded(
-                          child: ListView.builder(
+                          child: ListView.separated(
+                            padding: EdgeInsets.symmetric(horizontal: kPadding16, vertical: kPadding12),
+                            separatorBuilder: (BuildContext context, int index) {
+                              return SizedBox(height: kPadding12);
+                            },
                             itemCount: rounds.length,
                             itemBuilder: (context, index) {
                               final round = rounds[index];
-                              final winnerIndex = round!.winnerIndex;
-                              final player1 = round.players![0];
-                              final player2 = round.players![1];
-
-                              return ListTile(
-                                onTap: () =>
-                                    Get.toNamed(Routes.HISTORY_DETAILS),
-                                title: Text('Round ${round!.number}'),
-                                subtitle: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    if (winnerIndex != null)
-                                      Text(
-                                          'Winner: ${round.players![winnerIndex].name}'),
-                                    Text(
-                                        '${player1.name} (${player1.score}) - ${player2.name} (${player2.score})'),
-                                  ],
-                                ),
-                                // Add more widgets to display additional room information
-                              );
+                              return RoundCard(round!);
                             },
                           ),
                         );

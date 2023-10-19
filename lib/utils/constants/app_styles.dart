@@ -20,6 +20,11 @@ const kNormal = TextStyle(
   color: Colors.black,
 );
 
+const kNormalLarge = TextStyle(
+  fontSize: 17,
+  color: Colors.black,
+);
+
 // BOX DECORATION STYLES
 const kDefaultShadow = BoxShadow(
   offset: Offset(0, 4),

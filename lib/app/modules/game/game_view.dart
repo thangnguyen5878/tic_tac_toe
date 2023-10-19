@@ -6,6 +6,7 @@ import 'package:flutter_tic_tac_toe/app/modules/widget/cell_widget.dart';
 import 'package:flutter_tic_tac_toe/app/modules/widget/player_bottom_bar.dart';
 import 'package:flutter_tic_tac_toe/utils/constants/app_colors.dart';
 import 'package:flutter_tic_tac_toe/routes/app_pages.dart';
+import 'package:flutter_tic_tac_toe/utils/constants/app_size.dart';
 import 'package:flutter_tic_tac_toe/utils/enums/game_state.dart';
 import 'package:flutter_tic_tac_toe/utils/enums/seed.dart';
 import 'package:get/get.dart';
@@ -102,7 +103,8 @@ class GamePopupMenuButton extends StatelessWidget {
       },
       icon: Icon(
         Icons.more_vert,
-        color: Colors.black, // Set the color of the three dots icon to black
+        color: Colors.black,
+        size: kIconSize,// Set the color of the three dots icon to black
       ),
     );
   }
@@ -122,6 +124,7 @@ class BackButton extends StatelessWidget {
       icon: const Icon(
         Icons.arrow_back,
         color: kBlack,
+        size: kIconSize,
       ),
       onPressed: () {
         Get.back();
