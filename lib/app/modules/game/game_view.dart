@@ -33,7 +33,7 @@ class GameView extends StatelessWidget {
           title: GetBuilder<GameController>(
             builder: (game) {
               return Text(
-                'Round: ${game.room.roundCount}, Turn: ${game.room.currentRound.turnCount}',
+                'Round: ${game.room.roundCount}, Turn: ${game.room.currentRound.turnCount! + 1}',
                 style: const TextStyle(fontSize: 18, color: kBlack),
               );
             },
