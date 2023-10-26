@@ -1,13 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_tic_tac_toe/app/modules/game/game_controller.dart';
-import 'package:flutter_tic_tac_toe/models/room.dart';
 import 'package:flutter_tic_tac_toe/models/round.dart';
 import 'package:flutter_tic_tac_toe/routes/app_pages.dart';
 import 'package:flutter_tic_tac_toe/utils/constants/app_colors.dart';
 import 'package:flutter_tic_tac_toe/utils/constants/app_size.dart';
 import 'package:flutter_tic_tac_toe/utils/constants/app_styles.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/get_core.dart';
 
 class RoundCard extends StatelessWidget {
   final gameController = Get.find<GameController>();
@@ -18,20 +16,21 @@ class RoundCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final winnerIndex = round!.winnerIndex;
+    final winnerIndex = round.winnerIndex;
     final player1 = round.players![0];
     final player2 = round.players![1];
     Color winnerColor;
-    if (winnerIndex == 0)
+    if (winnerIndex == 0) {
       winnerColor = kRed70;
-    else if (winnerIndex == 1)
+    } else if (winnerIndex == 1) {
       winnerColor = kGreen60;
-    else
+    }
+    else {
       winnerColor = kBlack; // You can choose another color
-
+    }
     return InkWell(
-      onTap: () async {
-        await gameController.loadRoomById(roomId);
+      onTap: () {
+        gameController.room.historyRoundIndex = round.number! - 1;
         Get.toNamed(Routes.HISTORY_DETAILS, arguments: [roomId, round.number]);
       },
       child: Container(

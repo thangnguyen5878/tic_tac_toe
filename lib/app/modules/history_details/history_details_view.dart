@@ -2,13 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_tic_tac_toe/app/modules/game/game_controller.dart';
 import 'package:flutter_tic_tac_toe/app/modules/history/components/history_details_back_button.dart';
 import 'package:flutter_tic_tac_toe/app/modules/history_details/components/control_bar.dart';
-import 'package:flutter_tic_tac_toe/app/modules/history_details/components/next_turn_button.dart';
-import 'package:flutter_tic_tac_toe/app/modules/history_details/components/play_button.dart';
-import 'package:flutter_tic_tac_toe/app/modules/widget/board_widget.dart';
+import 'package:flutter_tic_tac_toe/app/modules/history_details/components/history_board.dart';
 import 'package:flutter_tic_tac_toe/app/modules/widget/player_bottom_bar.dart';
-import 'package:flutter_tic_tac_toe/app/modules/history_details/components/previous_turn_button.dart';
-import 'package:flutter_tic_tac_toe/app/modules/widget/cell_widget.dart';
-import 'package:flutter_tic_tac_toe/routes/app_pages.dart';
 import 'package:flutter_tic_tac_toe/utils/constants/app_colors.dart';
 
 import 'package:get/get.dart';
@@ -17,7 +12,9 @@ import 'history_details_controller.dart';
 
 class HistoryDetailsView extends GetView<HistoryDetailsController> {
   HistoryDetailsView({Key? key}) : super(key: key);
-  final roomId = Get.arguments;
+
+  // final roomId = Get.arguments[0];
+  // final roundNumber = Get.arguments[1] - 1;
   final GameController gameController = Get.find<GameController>();
 
   @override
@@ -33,11 +30,14 @@ class HistoryDetailsView extends GetView<HistoryDetailsController> {
       child: Scaffold(
         appBar: AppBar(
         backgroundColor: kBrown40,
-        leading: HistoryDetailsBackButton(gameController: gameController,),
+        leading: HistoryDetailsBackButton(gameController: gameController),
         title: GetBuilder<GameController>(
-          builder: (game) {
+          builder: (gameController) {
+            final roundIndex = gameController.room.historyRoundIndex;
+            final round = gameController.room.rounds![roundIndex];
+            final turnIndex = round!.historyCurrentTurnIndex;
             return Text(
-              'Round: ${game.room.roundCount}, Turn: ${game.room.currentRound.turnCount! + 1}',
+              'Round: ${roundIndex + 1}, Turn: $turnIndex',
               style: const TextStyle(fontSize: 18, color: kBlack),
             );
           },
@@ -52,13 +52,13 @@ class HistoryDetailsView extends GetView<HistoryDetailsController> {
                 scrollDirection: Axis.vertical,
                 children: [
                   const SizedBox(height: 10),
-                  BoardWidget(),
+                  HistoryBoard(),
                   const SizedBox(height: 60),
                 ],
               ),
             ),
           ),
-          Positioned(
+          const Positioned(
             left: 0,
             right: 0,
             bottom: 0,
@@ -83,8 +83,6 @@ class BackButton extends StatelessWidget {
       icon: const Icon(Icons.arrow_back),
       onPressed: () {
         Get.back();
-        Get.toNamed(Routes.HISTORY_DETAILS);
-        // FocusScope.of(context).unfocus();
       },
     );
   }

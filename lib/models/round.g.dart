@@ -19,30 +19,35 @@ const RoundSchema = Schema(
       type: IsarType.object,
       target: r'Player',
     ),
-    r'number': PropertySchema(
+    r'historyCurrentTurnIndex': PropertySchema(
       id: 1,
+      name: r'historyCurrentTurnIndex',
+      type: IsarType.long,
+    ),
+    r'number': PropertySchema(
+      id: 2,
       name: r'number',
       type: IsarType.long,
     ),
     r'players': PropertySchema(
-      id: 2,
+      id: 3,
       name: r'players',
       type: IsarType.objectList,
       target: r'Player',
     ),
     r'turnCount': PropertySchema(
-      id: 3,
+      id: 4,
       name: r'turnCount',
       type: IsarType.long,
     ),
     r'turns': PropertySchema(
-      id: 4,
+      id: 5,
       name: r'turns',
       type: IsarType.objectList,
       target: r'Cell',
     ),
     r'winnerIndex': PropertySchema(
-      id: 5,
+      id: 6,
       name: r'winnerIndex',
       type: IsarType.long,
     )
@@ -104,21 +109,22 @@ void _roundSerialize(
     PlayerSchema.serialize,
     object.currentPlayer,
   );
-  writer.writeLong(offsets[1], object.number);
+  writer.writeLong(offsets[1], object.historyCurrentTurnIndex);
+  writer.writeLong(offsets[2], object.number);
   writer.writeObjectList<Player>(
-    offsets[2],
+    offsets[3],
     allOffsets,
     PlayerSchema.serialize,
     object.players,
   );
-  writer.writeLong(offsets[3], object.turnCount);
+  writer.writeLong(offsets[4], object.turnCount);
   writer.writeObjectList<Cell>(
-    offsets[4],
+    offsets[5],
     allOffsets,
     CellSchema.serialize,
     object.turns,
   );
-  writer.writeLong(offsets[5], object.winnerIndex);
+  writer.writeLong(offsets[6], object.winnerIndex);
 }
 
 Round _roundDeserialize(
@@ -128,23 +134,24 @@ Round _roundDeserialize(
   Map<Type, List<int>> allOffsets,
 ) {
   final object = Round(
-    number: reader.readLongOrNull(offsets[1]),
+    number: reader.readLongOrNull(offsets[2]),
     players: reader.readObjectList<Player>(
-      offsets[2],
+      offsets[3],
       PlayerSchema.deserialize,
       allOffsets,
       Player(),
     ),
-    turnCount: reader.readLongOrNull(offsets[3]),
-    winnerIndex: reader.readLongOrNull(offsets[5]),
+    turnCount: reader.readLongOrNull(offsets[4]),
+    winnerIndex: reader.readLongOrNull(offsets[6]),
   );
   object.currentPlayer = reader.readObjectOrNull<Player>(
     offsets[0],
     PlayerSchema.deserialize,
     allOffsets,
   );
+  object.historyCurrentTurnIndex = reader.readLongOrNull(offsets[1]);
   object.turns = reader.readObjectOrNullList<Cell>(
-        offsets[4],
+        offsets[5],
         CellSchema.deserialize,
         allOffsets,
       ) ??
@@ -168,22 +175,24 @@ P _roundDeserializeProp<P>(
     case 1:
       return (reader.readLongOrNull(offset)) as P;
     case 2:
+      return (reader.readLongOrNull(offset)) as P;
+    case 3:
       return (reader.readObjectList<Player>(
         offset,
         PlayerSchema.deserialize,
         allOffsets,
         Player(),
       )) as P;
-    case 3:
-      return (reader.readLongOrNull(offset)) as P;
     case 4:
+      return (reader.readLongOrNull(offset)) as P;
+    case 5:
       return (reader.readObjectOrNullList<Cell>(
             offset,
             CellSchema.deserialize,
             allOffsets,
           ) ??
           []) as P;
-    case 5:
+    case 6:
       return (reader.readLongOrNull(offset)) as P;
     default:
       throw IsarError('Unknown property with id $propertyId');
@@ -203,6 +212,80 @@ extension RoundQueryFilter on QueryBuilder<Round, Round, QFilterCondition> {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(const FilterCondition.isNotNull(
         property: r'currentPlayer',
+      ));
+    });
+  }
+
+  QueryBuilder<Round, Round, QAfterFilterCondition>
+      historyCurrentTurnIndexIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNull(
+        property: r'historyCurrentTurnIndex',
+      ));
+    });
+  }
+
+  QueryBuilder<Round, Round, QAfterFilterCondition>
+      historyCurrentTurnIndexIsNotNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNotNull(
+        property: r'historyCurrentTurnIndex',
+      ));
+    });
+  }
+
+  QueryBuilder<Round, Round, QAfterFilterCondition>
+      historyCurrentTurnIndexEqualTo(int? value) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'historyCurrentTurnIndex',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<Round, Round, QAfterFilterCondition>
+      historyCurrentTurnIndexGreaterThan(
+    int? value, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'historyCurrentTurnIndex',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<Round, Round, QAfterFilterCondition>
+      historyCurrentTurnIndexLessThan(
+    int? value, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'historyCurrentTurnIndex',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<Round, Round, QAfterFilterCondition>
+      historyCurrentTurnIndexBetween(
+    int? lower,
+    int? upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'historyCurrentTurnIndex',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
       ));
     });
   }

@@ -17,9 +17,9 @@ class ResetBoardButton extends StatelessWidget {
             Icons.refresh,
             
           ),
-          onPressed: () {
+          onPressed: () async {
             gameController.resetBoard();
-            gameController.saveRoom();
+            await gameController.saveRoom();
           },
         );
       },

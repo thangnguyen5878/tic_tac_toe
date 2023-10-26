@@ -1,6 +1,6 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'package:flutter_tic_tac_toe/models/history.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 import 'package:isar/isar.dart';
 
 import 'package:flutter_tic_tac_toe/models/board.dart';
@@ -21,6 +21,10 @@ class Room {
 
   Board board;
 
+  Board historyBoard;
+
+  int historyRoundIndex;
+
   @Enumerated(EnumType.name)
   late GameState state;
 
@@ -36,10 +40,13 @@ class Room {
   final winCount = 5;
 
   Room({Player? player1, Player? player2})
-      : name = 'Unttited Room',
+      : name = 'Untitled Room',
         board = Board(),
+        historyBoard = Board(),
+        historyRoundIndex = 0,
         roundCount = 1,
-        state = GameState.playing {
+        state = GameState.playing
+       {
     currentRound = Round(number: 1, turnCount: 1, players: [
       Player(name: 'Player 1', seed: Seed.cross, score: 0),
       Player(name: 'Player 2', seed: Seed.nought, score: 0)
@@ -66,8 +73,8 @@ class Room {
   /// - If no winner found, move to the next turn
   void checkWinner() {
     print('check winner...');
-    final player1 = currentRound.players![0];
-    final player2 = currentRound.players![1];
+    Player player1 = currentRound.players![0];
+    Player player2 = currentRound.players![1];
     
     // Case 1: Multiple seeds in a row
     for (int i = 0; i < board.rowCount!; i++) {
@@ -75,9 +82,10 @@ class Room {
         // checking continuous cells if they are the same
         checkingCells?.clear();
         for (int k = 0; k < winCount; k++) {
-          checkingCells?.add(board.cells[i][j + k]!);
+          checkingCells?.add(board.cells[i][j + k]);
         }
         if (areAllCellContentEqual(checkingCells!) &&
+            // ignore: unrelated_type_equality_checks
             board.cells[i][j].content != '') {
           // Case 1.1: X wins
           if (board.cells[i][j].content == Seed.cross) {
@@ -92,13 +100,15 @@ class Room {
             }
             // log winner
             Player? winner = currentRound.players![currentRound.winnerIndex!];
-            print('Winner is ${winner.name}, score: ${winner.score}');
-            // print('Win Cells: ($i, $j) ${board.cells[i][j].state}, ($i, ${j + 1}) ${board.cells[i][j].state},($i, ${j + 2}) ${board.cells[i][j].state},($i, ${j + 3}) ${board.cells[i][j].state},($i, ${j + 4}) ${board.cells[i][j].state}');
+            print('Winner is ${winner.name}');
+            print('rounds: $rounds');
+
+
             // notify about the winner
             Get.toNamed('winner');
           }
           // Case 1.2: O wins
-          if (board.cells[i][j].content == Seed.nought) {          
+          if (board.cells[i][j].content == Seed.nought) {
             if (currentRound.winnerIndex == null) {
               player2.score = player2.score! + 1;
             }
@@ -110,8 +120,9 @@ class Room {
             }
             // log winner
             Player? winner = currentRound.players![currentRound.winnerIndex!];
-            print('Winner is ${winner.name}, score: ${winner.score}');
-            // print('Win Cells: ($i, $j) ${board.cells[i][j].state}, ($i, ${j + 1}) ${board.cells[i][j].state},($i, ${j + 2}) ${board.cells[i][j].state},($i, ${j + 3}) ${board.cells[i][j].state},($i, ${j + 4}) ${board.cells[i][j].state}');
+            print('Winner is ${winner.name}');
+            print('rounds: $rounds');
+
             // notify about the winner
             Get.toNamed('winner');
           }
@@ -127,7 +138,7 @@ class Room {
           checkingCells?.add(board.cells[i + k][j]);
         }
         if (areAllCellContentEqual(checkingCells!) &&
-            board.cells[i][j].content != '') {
+            board.cells[i][j].content != Seed.noSeed) {
           // Case 2.1: X wins
           if (board.cells[i][j].content == Seed.cross) {
             if (currentRound.winnerIndex == null) {
@@ -141,8 +152,9 @@ class Room {
             }
             // log winner
             Player? winner = currentRound.players![currentRound.winnerIndex!];
-            print('Winner is ${winner.name}, score: ${winner.score}');
-            // print('Win Cells: ($i, $j) ${board.cells[i][j].state}, ($i, ${j + 1}) ${board.cells[i][j].state},($i, ${j + 2}) ${board.cells[i][j].state},($i, ${j + 3}) ${board.cells[i][j].state},($i, ${j + 4}) ${board.cells[i][j].state}');
+            print('Winner is ${winner.name}');
+            print('rounds: $rounds');
+
             // notify about the winner
             Get.toNamed('winner');
           }
@@ -159,8 +171,9 @@ class Room {
             }
             // log winner
             Player? winner = currentRound.players![currentRound.winnerIndex!];
-            print('Winner is ${winner.name}, score: ${winner.score}');
-            // print('Win Cells: ($i, $j) ${board.cells[i][j].state}, ($i, ${j + 1}) ${board.cells[i][j].state},($i, ${j + 2}) ${board.cells[i][j].state},($i, ${j + 3}) ${board.cells[i][j].state},($i, ${j + 4}) ${board.cells[i][j].state}');
+            print('Winner is ${winner.name}');
+            print('rounds: $rounds');
+
             // notify about the winner
             Get.toNamed('winner');
           }
@@ -176,7 +189,7 @@ class Room {
           checkingCells?.add(board.cells[i + k][j + k]);
         }
         if (areAllCellContentEqual(checkingCells!) &&
-            board.cells[i][j].content != '') {
+            board.cells[i][j].content != Seed.noSeed) {
           // Case 3.1: X wins
           if (board.cells[i][j].content == Seed.cross) {
             if (currentRound.winnerIndex == null) {
@@ -190,8 +203,9 @@ class Room {
             }
             // log winner
             Player? winner = currentRound.players![currentRound.winnerIndex!];
-            print('Winner is ${winner.name}, score: ${winner.score}');
-            // print('Win Cells: ($i, $j) ${board.cells[i][j].state}, ($i, ${j + 1}) ${board.cells[i][j].state},($i, ${j + 2}) ${board.cells[i][j].state},($i, ${j + 3}) ${board.cells[i][j].state},($i, ${j + 4}) ${board.cells[i][j].state}');
+            print('Winner is ${winner.name}');
+            print('rounds: $rounds');
+
             // notify about the winner
             Get.toNamed('winner');
           }
@@ -208,8 +222,9 @@ class Room {
             }
             // log winner
             Player? winner = currentRound.players![currentRound.winnerIndex!];
-            print('Winner is ${winner.name}, score: ${winner.score}');
-            // print('Win Cells: ($i, $j) ${board.cells[i][j].state}, ($i, ${j + 1}) ${board.cells[i][j].state},($i, ${j + 2}) ${board.cells[i][j].state},($i, ${j + 3}) ${board.cells[i][j].state},($i, ${j + 4}) ${board.cells[i][j].state}');
+            print('Winner is ${winner.name}');
+            print('rounds: $rounds');
+
             // notify about the winner
             Get.toNamed('winner');
           }
@@ -225,7 +240,7 @@ class Room {
           checkingCells?.add(board.cells[i + k][j - k]);
         }
         if (areAllCellContentEqual(checkingCells!) &&
-            board.cells[i][j].content != '') {
+            board.cells[i][j].content != Seed.noSeed) {
           // Case 4.1: X wins
           if (board.cells[i][j].content == Seed.cross) {
             if (currentRound.winnerIndex == null) {
@@ -239,8 +254,9 @@ class Room {
             }
             // log winner
             Player? winner = currentRound.players![currentRound.winnerIndex!];
-            print('Winner is ${winner.name}, score: ${winner.score}');
-            // print('Win Cells: ($i, $j) ${board.cells[i][j].state}, ($i, ${j + 1}) ${board.cells[i][j].state},($i, ${j + 2}) ${board.cells[i][j].state},($i, ${j + 3}) ${board.cells[i][j].state},($i, ${j + 4}) ${board.cells[i][j].state}');
+            print('Winner is ${winner.name}');
+            print('rounds: $rounds');
+
             // notify about the winner
             Get.toNamed('winner');
           }
@@ -257,8 +273,9 @@ class Room {
             }
             // log winner
             Player? winner = currentRound.players![currentRound.winnerIndex!];
-            print('Winner is ${winner.name}, score: ${winner.score}');
-            // print('Win Cells: ($i, $j) ${board.cells[i][j].state}, ($i, ${j + 1}) ${board.cells[i][j].state},($i, ${j + 2}) ${board.cells[i][j].state},($i, ${j + 3}) ${board.cells[i][j].state},($i, ${j + 4}) ${board.cells[i][j].state}');
+            print('Winner is ${winner.name}');
+            print('rounds: $rounds');
+            
             // notify about the winner
             Get.toNamed('winner');
           }
@@ -278,15 +295,31 @@ class Room {
     board.reset();
     // move to the next round
     roundCount++;
-    currentRound = Round(number: roundCount, turnCount: 1, players: currentRound.players);
-    currentRound.winnerIndex = null;
-    rounds = [...?rounds, currentRound];
+    Round nextRound = Round(number: roundCount, turnCount: 1, players: currentRound.players?.map((player) {
+      return Player.clonePlayer(player);
+    }).toList());
+    nextRound.winnerIndex = null;
+    rounds = [...?rounds, nextRound];
+    currentRound = nextRound;
   }
 
+  /// Reset game to the original state
   reset() {
     state = GameState.playing;
     board.reset();
     currentRound.reset();
+  }
+
+  updateHistoryBoard() {
+    historyBoard.reset();
+    final historyRound = rounds![historyRoundIndex];
+    final turns = historyRound!.turns;
+    // print('Turns: $turns');
+    for(int i = 0; i < historyRound.historyCurrentTurnIndex!; i++) {
+      int row = turns[i]!.row!;
+      int column = turns[i]!.column!;
+      historyBoard.cells[row][column] = turns[i]!;
+    }
   }
 
   @override

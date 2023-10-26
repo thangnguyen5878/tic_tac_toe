@@ -17,13 +17,13 @@ class ControlBar extends StatelessWidget {
           color: kBrown10,
           height: 50,
         ),
-        Positioned(left: 5, width: 90, child: PlayButton()),
+        const Positioned(left: 5, width: 90, child: PlayButton()),
         Positioned(
           right: 5,
           child: Row(
             children: [
               PreviousTurnButton(),
-              SizedBox(
+              const SizedBox(
                 width: 5,
               ),
               NextTurnButton(),

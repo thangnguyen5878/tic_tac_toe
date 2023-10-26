@@ -21,7 +21,7 @@ class GameView extends StatelessWidget {
     return WillPopScope(
       onWillPop: () async {
         Get.back();
-        gameController.saveRoom();
+        await gameController.saveRoom();
         Get.toNamed(Routes.HOME);
         return true;
       },
@@ -31,7 +31,7 @@ class GameView extends StatelessWidget {
           title: GetBuilder<GameController>(
             builder: (game) {
               return Text(
-                'Round: ${game.room.roundCount}, Turn: ${game.room.currentRound.turnCount! + 1}',
+                'Round: ${game.room.roundCount}, Turn: ${game.room.currentRound.turnCount!}',
                 style: const TextStyle(fontSize: 18, color: kBlack),
               );
             },

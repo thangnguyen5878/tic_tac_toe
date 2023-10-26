@@ -5,8 +5,6 @@ import 'package:flutter_tic_tac_toe/models/room.dart';
 import 'package:flutter_tic_tac_toe/utils/enums/game_state.dart';
 import 'package:flutter_tic_tac_toe/utils/enums/seed.dart';
 import 'package:get/get.dart';
-import 'package:isar/isar.dart';
-import 'package:path_provider/path_provider.dart';
 
 class GameController extends GetxController {
   //TODO: Implement GameController
@@ -19,15 +17,22 @@ class GameController extends GetxController {
   createRoom() async {
     Room newRoom = Room();
     if (input.room.text != '') newRoom.name = input.room.text;
-    if (input.player1.text != '')
+    if (input.player1.text != '') {
       newRoom.currentRound.players![0].name = input.player1.text;
-    if (input.player2.text != '')
+    }
+    if (input.player2.text != '') {
       newRoom.currentRound.players![1].name = input.player2.text;
-    if (input.rowCount.text != '')
-      newRoom.board!.rowCount = int.tryParse(input.rowCount.text) ?? 10;
-    if (input.columnCount.text != '')
-      newRoom.board!.columnCount = int.tryParse(input.columnCount.text) ?? 10;
-    newRoom.board!.rebuild();
+    }
+    if (input.rowCount.text != '') {
+      newRoom.board.rowCount = int.tryParse(input.rowCount.text) ?? 10;
+      newRoom.historyBoard.rowCount = int.tryParse(input.rowCount.text) ?? 10;
+    }
+    if (input.columnCount.text != '') {
+      newRoom.board.columnCount = int.tryParse(input.columnCount.text) ?? 10;
+      newRoom.historyBoard.columnCount = int.tryParse(input.columnCount.text) ?? 10;
+    }
+    newRoom.board.rebuild();
+    newRoom.historyBoard!.rebuild();
     room = newRoom;
     await isarService.saveRoom(room);
     update();
@@ -39,6 +44,7 @@ class GameController extends GetxController {
     return room.id;
   }
 
+  /// Load room from database to memory
   loadRoomById(id) async {
     room = (await isarService.getRoom(id))!;
     var turns = room.currentRound.turns;
@@ -72,10 +78,24 @@ class GameController extends GetxController {
     }
   }
 
+  historyNextTurn() {
+    final historyRound = room.rounds![room.historyRoundIndex];
+    historyRound?.historyCurrentTurnIndex = historyRound.historyCurrentTurnIndex! + 1;
+    room.updateHistoryBoard();
+    update();
+  }
+
+  historyPreviousTurn() {
+    final historyRound = room.rounds![room.historyRoundIndex];
+    historyRound?.historyCurrentTurnIndex = historyRound.historyCurrentTurnIndex! - 1;
+    room.updateHistoryBoard();
+    update();
+  }
+
   /// Move to the next round when a player wins and the player press the `Next round button`, then update the board.
   nextRound() {
     room.nextRound();
-    print('next round, current round: ${room.currentRound.number}');
+    print('rounds: ${room.rounds}');
     update();
   }
 
@@ -85,11 +105,7 @@ class GameController extends GetxController {
     update();
   }
 
-//   updateRoomData(Map<String, dynamic> data) {
-//     roomRawData = data;
-//     update();
-//   }
-// }
+
 
   @override
   Future<void> onInit() async {

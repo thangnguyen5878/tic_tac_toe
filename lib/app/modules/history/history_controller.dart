@@ -1,23 +1,10 @@
+import 'package:flutter_tic_tac_toe/app/modules/game/game_controller.dart';
 import 'package:get/get.dart';
 
 class HistoryController extends GetxController {
-  //TODO: Implement HistoryController
-
-  // final count = 0.obs;
-  // @override
-  // void onInit() {
-  //   super.onInit();
-  // }
-
-  // @override
-  // void onReady() {
-  //   super.onReady();
-  // }
-
-  // @override
-  // void onClose() {
-  //   super.onClose();
-  // }
-
-  // void increment() => count.value++;
+  void dependencies() {
+    Get.lazyPut<GameController>(
+          () => GameController(),
+    );
+  }
 }

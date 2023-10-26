@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_tic_tac_toe/app/modules/game/game_controller.dart';
-import 'package:flutter_tic_tac_toe/routes/app_pages.dart';
 import 'package:flutter_tic_tac_toe/utils/constants/app_colors.dart';
 import 'package:flutter_tic_tac_toe/utils/constants/app_size.dart';
 import 'package:get/get.dart';
@@ -24,7 +23,7 @@ class HistoryDetailsBackButton extends StatelessWidget {
         size: kIconSize,
       ),
       onPressed: () {
-        Get.toNamed(Routes.HISTORY, arguments: roomId);
+        Get.back();
         // FocusScope.of(context).unfocus();
       },
     );

@@ -1,3 +1,5 @@
+// ignore_for_file: must_be_immutable, prefer_typing_uninitialized_variables
+
 import 'package:flutter/material.dart';
 import 'package:flutter_tic_tac_toe/app/modules/game/game_controller.dart';
 import 'package:flutter_tic_tac_toe/routes/app_pages.dart';
@@ -18,7 +20,7 @@ class GamePopupMenuButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return PopupMenuButton<String>(
       itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
-        PopupMenuItem<String>(
+        const PopupMenuItem<String>(
           value: 'reset',
           child: Text('Reset'),
           // Remove the style parameter
@@ -32,7 +34,7 @@ class GamePopupMenuButton extends StatelessWidget {
       onSelected: (String value) async {
         if (value == 'reset') {
           gameController.resetBoard();
-          gameController.saveRoom();
+          await gameController.saveRoom();
         } else if (value == 'history') {
           print('Going to History Page, roomId = $roomId');
           roomId = await gameController.saveRoom();

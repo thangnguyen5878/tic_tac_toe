@@ -21,9 +21,9 @@ class GameBackButton extends StatelessWidget {
         color: kBlack,
         size: kIconSize,
       ),
-      onPressed: () {
+      onPressed: () async {
         Get.back();
-        gameController.saveRoom();
+        await gameController.saveRoom();
         Get.toNamed(Routes.HOME);
         // FocusScope.of(context).unfocus();
       },

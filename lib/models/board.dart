@@ -31,7 +31,7 @@ class Board {
     );
   }
 
-  /// Rebuild the board with the lastest row and column
+  /// Rebuild the board with the lastest number of rows and columns
   rebuild() {
     cells = List.generate(
       this.rowCount!,
@@ -60,10 +60,10 @@ class Board {
       }
     }
     print('Board is empty');
-    print(toString());
   }
 
   @override
   String toString() =>
       'Board(rowCount: $rowCount, columnCount: $columnCount, cells: $cells)';
+
 }

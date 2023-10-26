@@ -4,13 +4,10 @@ import 'package:flutter_tic_tac_toe/app/modules/history/components/round_card.da
 import 'package:flutter_tic_tac_toe/utils/constants/app_colors.dart';
 import 'package:flutter_tic_tac_toe/utils/constants/app_size.dart';
 import 'package:flutter_tic_tac_toe/utils/constants/app_styles.dart';
-import 'package:flutter_tic_tac_toe/models/room.dart';
 import 'package:flutter_tic_tac_toe/models/round.dart';
-import 'package:flutter_tic_tac_toe/routes/app_pages.dart';
 
 import 'package:get/get.dart';
 
-import 'history_controller.dart';
 
 class HistoryView extends StatelessWidget {
   final roomId = Get.arguments;

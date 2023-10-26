@@ -14,6 +14,8 @@ class Round {
 
   int? turnCount;
 
+  int? historyCurrentTurnIndex;
+
   int? winnerIndex;
 
   Player? currentPlayer;
@@ -24,7 +26,8 @@ class Round {
 
   Round({this.number, int? turnCount, this.winnerIndex, this.players})
       : this.turnCount = turnCount ?? 1,
-        this.currentPlayer = players![0];
+        this.currentPlayer = players![0],
+        this.historyCurrentTurnIndex = 0;
 
   reset() {
     // if there's a winner
@@ -32,7 +35,7 @@ class Round {
       players![winnerIndex!].score = players![winnerIndex!].score! - 1;
     }
     winnerIndex = null;
-    turnCount = 0;
+    turnCount = 1;
     turns = [];
   }
 
