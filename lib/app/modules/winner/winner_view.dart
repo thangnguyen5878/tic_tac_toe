@@ -3,13 +3,16 @@ import 'package:flutter_tic_tac_toe/app/modules/game/game_controller.dart';
 import 'package:get/get.dart';
 
 class WinnerView extends StatelessWidget {
-  final GameController game = Get.find<GameController>();
+  final GameController gameController = Get.find<GameController>();
 
   WinnerView({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    final winnerIdex = game.room.currentRound.winnerIndex;
-    final winnerName = game.room.currentRound.players![winnerIdex!].name;
+    final room = gameController.room;
+    final round = room.rounds![room.currentRoundIndex];
+    final winnerIndex = round!.winnerIndex;
+    final winnerName = round.players![winnerIndex!].name;
+    final currentRoundIndex = room.currentRoundIndex;
 
     return SafeArea(
       child: GestureDetector(
@@ -22,7 +25,7 @@ class WinnerView extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(
-                  'Round ${game.room.roundCount}',
+                  'Round $currentRoundIndex',
                   style: TextStyle(
                       color: Color.fromARGB(255, 162, 180, 227),
                       fontSize: 25,

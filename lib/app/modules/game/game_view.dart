@@ -29,9 +29,11 @@ class GameView extends StatelessWidget {
         appBar: AppBar(
           backgroundColor: kBrown40,
           title: GetBuilder<GameController>(
-            builder: (game) {
+            builder: (gameController) {
+              final currentRoundIndex = gameController.room.currentRoundIndex;
+              final currentTurnIndex = gameController.room.rounds![currentRoundIndex]!.currentTurnIndex;
               return Text(
-                'Round: ${game.room.roundCount}, Turn: ${game.room.currentRound.turnCount!}',
+                'Round: ${currentRoundIndex + 1}, Turn: ${currentTurnIndex! + 1}',
                 style: const TextStyle(fontSize: 18, color: kBlack),
               );
             },

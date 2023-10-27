@@ -50,7 +50,9 @@ class CellWidget extends StatelessWidget {
         },
       ),
       onTap: () {
-        final currentPlayer = gameController.room.currentRound.currentPlayer;
+        final currentRoundIndex = gameController.room.currentRoundIndex;
+        final currentRound = gameController.room.rounds![currentRoundIndex];
+        final currentPlayer = currentRound!.players![currentRound.currentPlayerIndex!];
         print('Tap cell($row, $column) : ${currentPlayer!.seed}');
         gameController.drawSeed(row, column, currentPlayer.seed!);
       },

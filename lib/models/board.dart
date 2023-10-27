@@ -59,7 +59,7 @@ class Board {
         cells[i][j].reset();
       }
     }
-    print('Board is empty');
+    print('Reset board');
   }
 
   @override

@@ -16,8 +16,8 @@ class RoomCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final player1 = room.currentRound.players![0];
-    final player2 = room.currentRound.players![1];
+    final player1 = room.rounds![room.currentRoundIndex]!.players![0];
+    final player2 = room.rounds![room.currentRoundIndex]!.players![1];
     return InkWell(
       onTap: () async {
         await gameController.loadRoomById(room.id);
@@ -37,7 +37,7 @@ class RoomCard extends StatelessWidget {
             SizedBox(height: kPadding8),
             Text(
               style: kNormal,
-              '${player1.name} (${player1.score}) - ${player2.name} (${player2.score}), round: ${room.roundCount}',
+              '${player1.name} (${player1.score}) - ${player2.name} (${player2.score}), round: ${room.currentRoundIndex + 1}',
             ),
             // Add more widgets to display additional room information
           ],

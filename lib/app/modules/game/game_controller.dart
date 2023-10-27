@@ -18,10 +18,10 @@ class GameController extends GetxController {
     Room newRoom = Room();
     if (input.room.text != '') newRoom.name = input.room.text;
     if (input.player1.text != '') {
-      newRoom.currentRound.players![0].name = input.player1.text;
+      newRoom.rounds![room.currentRoundIndex]!.players![0].name = input.player1.text;
     }
     if (input.player2.text != '') {
-      newRoom.currentRound.players![1].name = input.player2.text;
+      newRoom.rounds![room.currentRoundIndex]!.players![1].name = input.player2.text;
     }
     if (input.rowCount.text != '') {
       newRoom.board.rowCount = int.tryParse(input.rowCount.text) ?? 10;
@@ -47,7 +47,7 @@ class GameController extends GetxController {
   /// Load room from database to memory
   loadRoomById(id) async {
     room = (await isarService.getRoom(id))!;
-    var turns = room.currentRound.turns;
+    var turns = room.rounds![room.currentRoundIndex]!.turns;
     room.board.load(turns);
     update();
   }
@@ -61,15 +61,13 @@ class GameController extends GetxController {
     print('draw seed...');
     // Update the cell
     Cell? cell = room.board.cells[row][column];
-    print(
-        'room state: ${room.state}, cell content: ${cell.content.toString()}');
+    print('room state: ${room.state}, cell content: ${cell.content.toString()}');
     if (room.state == GameState.playing &&
         (cell.content != Seed.cross && cell.content != Seed.nought)) {
-      print(
-          '${room.currentRound.currentPlayer!.name} draw seed $seed at cell($row, $column)');
+
       cell.content = seed;
 
-      room.currentRound.turns = [...room.currentRound.turns, cell];
+      room.rounds![room.currentRoundIndex]!.turns = [...room.rounds![room.currentRoundIndex]!.turns, cell];
 
       room.checkWinner();
 
@@ -79,17 +77,22 @@ class GameController extends GetxController {
   }
 
   historyNextTurn() {
-    final historyRound = room.rounds![room.historyRoundIndex];
-    historyRound?.historyCurrentTurnIndex = historyRound.historyCurrentTurnIndex! + 1;
-    room.updateHistoryBoard();
-    update();
+    final round = room.rounds![room.historyRoundIndex];
+    final turnCount = round!.turns.length;
+    if (round.historyCurrentTurnIndex! < turnCount) {
+      round.historyCurrentTurnIndex = round.historyCurrentTurnIndex! + 1;
+      room.updateHistoryBoard();
+      update();
+    }
   }
 
   historyPreviousTurn() {
-    final historyRound = room.rounds![room.historyRoundIndex];
-    historyRound?.historyCurrentTurnIndex = historyRound.historyCurrentTurnIndex! - 1;
-    room.updateHistoryBoard();
-    update();
+    final round = room.rounds![room.historyRoundIndex]!;
+    if (round.historyCurrentTurnIndex! > 0) {
+      round.historyCurrentTurnIndex = round.historyCurrentTurnIndex! - 1;
+      room.updateHistoryBoard();
+      update();
+    }
   }
 
   /// Move to the next round when a player wins and the player press the `Next round button`, then update the board.
