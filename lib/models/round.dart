@@ -15,9 +15,13 @@ class Round {
   
   int? currentPlayerIndex;
 
+  int? historyCurrentPlayerIndex;
+
   int? winnerIndex;
   
   List<Cell?> turns = [];
+
+  List<Cell?> historyTurns = [];
 
   int? currentTurnIndex;
 
@@ -26,7 +30,8 @@ class Round {
   Round({this.number, int? turnCount, this.winnerIndex, this.players})
       : currentTurnIndex = 0,
         historyCurrentTurnIndex = 0,
-        currentPlayerIndex = 0;
+        currentPlayerIndex = 0,
+        historyCurrentPlayerIndex = 0;
 
   reset() {
     // if there's a winner
@@ -41,7 +46,7 @@ class Round {
   /// When draw Seed at a cell, automatically change to next turn.
   /// - Change the player when the board move to next turn (player 1 -> player 2, player 2 -> player 1)
   /// - Increment turnCount
-  void nextTurn() {
+  nextTurn() {
     if (currentPlayerIndex == 0) {
       currentPlayerIndex = 1;
     } else {
@@ -49,6 +54,33 @@ class Round {
     }
     currentTurnIndex = currentTurnIndex! + 1;
     print('next turn, current player: ${currentPlayerIndex! + 1}');
+  }
+
+  historyNextTurn() {
+      // if (historyCurrentTurnIndex == 0) {
+      //   historyCurrentPlayerIndex = 0;
+      // }
+      if (historyCurrentPlayerIndex == 0) {
+        historyCurrentPlayerIndex = 1;
+      } else {
+        historyCurrentPlayerIndex = 0;
+      }
+      historyCurrentTurnIndex = historyCurrentTurnIndex! + 1;
+      print('next turn, current player: ${historyCurrentPlayerIndex! + 1}');
+
+  }
+
+  historyPreviousTurn() {
+      // if (historyCurrentTurnIndex == 1) {
+      //   historyCurrentPlayerIndex = null;
+      // }
+      if (historyCurrentPlayerIndex == 0) {
+        historyCurrentPlayerIndex = 1;
+      } else {
+        historyCurrentPlayerIndex = 0;
+      }
+      historyCurrentTurnIndex = historyCurrentTurnIndex! - 1;
+      print('next turn, current player: ${historyCurrentPlayerIndex! + 1}');
   }
 
   @override

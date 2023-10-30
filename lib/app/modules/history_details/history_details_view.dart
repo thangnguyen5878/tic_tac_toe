@@ -3,6 +3,7 @@ import 'package:flutter_tic_tac_toe/app/modules/game/game_controller.dart';
 import 'package:flutter_tic_tac_toe/app/modules/history/components/history_details_back_button.dart';
 import 'package:flutter_tic_tac_toe/app/modules/history_details/components/control_bar.dart';
 import 'package:flutter_tic_tac_toe/app/modules/history_details/components/history_board.dart';
+import 'package:flutter_tic_tac_toe/app/modules/history_details/components/history_player_bottom_bar.dart';
 import 'package:flutter_tic_tac_toe/app/modules/widget/player_bottom_bar.dart';
 import 'package:flutter_tic_tac_toe/utils/constants/app_colors.dart';
 
@@ -37,7 +38,7 @@ class HistoryDetailsView extends GetView<HistoryDetailsController> {
             final round = gameController.room.rounds![roundIndex];
             final turnIndex = round!.historyCurrentTurnIndex;
             return Text(
-              'Round: ${roundIndex + 1}, Turn: $turnIndex',
+              'Round: ${roundIndex + 1}, Turn: ${turnIndex! + 1}',
               style: const TextStyle(fontSize: 18, color: kBlack),
             );
           },
@@ -58,12 +59,12 @@ class HistoryDetailsView extends GetView<HistoryDetailsController> {
               ),
             ),
           ),
-          const Positioned(
+          Positioned(
             left: 0,
             right: 0,
             bottom: 0,
             child: Column(
-              children: [PlayerBottomBar(), ControlBar()],
+              children: [HistoryPlayerBottomBar(), ControlBar()],
             ),
           ),
         ]),

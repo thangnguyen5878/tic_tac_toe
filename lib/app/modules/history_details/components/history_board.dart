@@ -13,6 +13,7 @@ class HistoryBoard extends StatelessWidget {
     print('build board...');
     final columnCount = gameController.room.historyBoard.columnCount;
     final rowCount = gameController.room.historyBoard.rowCount;
+    gameController.room.updateHistoryBoard();
     print('columnCount: $columnCount');
     print('rowCount: $rowCount');
     return Container(

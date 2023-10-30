@@ -313,14 +313,17 @@ class Room {
     historyBoard.reset();
     final historyRound = rounds![historyRoundIndex];
     final turns = historyRound!.turns;
-    print('Turns: $turns');
-    for (int i = 0; i < historyRound.historyCurrentTurnIndex!; i++) {
-      int row = turns[i]!.row!;
-      int column = turns[i]!.column!;
-      historyBoard.cells[row][column].content = turns[i]!.content;
-      print('cell($row, $column)');
-      print('History board: $historyBoard');
+    // print('Turns: $turns');
+    if(historyRound.historyCurrentTurnIndex! >= 0) {
+      for (int i = 0; i <= historyRound.historyCurrentTurnIndex!; i++) {
+        int row = turns[i]!.row!;
+        int column = turns[i]!.column!;
+        historyBoard.cells[row][column].content = turns[i]!.content;
+        print('cell($row, $column)');
+        // print('History board: $historyBoard');
+      }
     }
+
   }
 
   @override
