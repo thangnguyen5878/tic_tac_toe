@@ -13,18 +13,28 @@ const PlayerSchema = Schema(
   name: r'Player',
   id: -1052842935974721688,
   properties: {
-    r'name': PropertySchema(
+    r'finalScore': PropertySchema(
       id: 0,
+      name: r'finalScore',
+      type: IsarType.long,
+    ),
+    r'initialScore': PropertySchema(
+      id: 1,
+      name: r'initialScore',
+      type: IsarType.long,
+    ),
+    r'name': PropertySchema(
+      id: 2,
       name: r'name',
       type: IsarType.string,
     ),
     r'score': PropertySchema(
-      id: 1,
+      id: 3,
       name: r'score',
       type: IsarType.long,
     ),
     r'seed': PropertySchema(
-      id: 2,
+      id: 4,
       name: r'seed',
       type: IsarType.string,
       enumMap: _PlayerseedEnumValueMap,
@@ -63,9 +73,11 @@ void _playerSerialize(
   List<int> offsets,
   Map<Type, List<int>> allOffsets,
 ) {
-  writer.writeString(offsets[0], object.name);
-  writer.writeLong(offsets[1], object.score);
-  writer.writeString(offsets[2], object.seed?.name);
+  writer.writeLong(offsets[0], object.finalScore);
+  writer.writeLong(offsets[1], object.initialScore);
+  writer.writeString(offsets[2], object.name);
+  writer.writeLong(offsets[3], object.score);
+  writer.writeString(offsets[4], object.seed?.name);
 }
 
 Player _playerDeserialize(
@@ -75,10 +87,12 @@ Player _playerDeserialize(
   Map<Type, List<int>> allOffsets,
 ) {
   final object = Player(
-    name: reader.readStringOrNull(offsets[0]),
-    score: reader.readLongOrNull(offsets[1]),
-    seed: _PlayerseedValueEnumMap[reader.readStringOrNull(offsets[2])],
+    name: reader.readStringOrNull(offsets[2]),
+    score: reader.readLongOrNull(offsets[3]),
+    seed: _PlayerseedValueEnumMap[reader.readStringOrNull(offsets[4])],
   );
+  object.finalScore = reader.readLongOrNull(offsets[0]);
+  object.initialScore = reader.readLongOrNull(offsets[1]);
   return object;
 }
 
@@ -90,10 +104,14 @@ P _playerDeserializeProp<P>(
 ) {
   switch (propertyId) {
     case 0:
-      return (reader.readStringOrNull(offset)) as P;
+      return (reader.readLongOrNull(offset)) as P;
     case 1:
       return (reader.readLongOrNull(offset)) as P;
     case 2:
+      return (reader.readStringOrNull(offset)) as P;
+    case 3:
+      return (reader.readLongOrNull(offset)) as P;
+    case 4:
       return (_PlayerseedValueEnumMap[reader.readStringOrNull(offset)]) as P;
     default:
       throw IsarError('Unknown property with id $propertyId');
@@ -112,6 +130,144 @@ const _PlayerseedValueEnumMap = {
 };
 
 extension PlayerQueryFilter on QueryBuilder<Player, Player, QFilterCondition> {
+  QueryBuilder<Player, Player, QAfterFilterCondition> finalScoreIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNull(
+        property: r'finalScore',
+      ));
+    });
+  }
+
+  QueryBuilder<Player, Player, QAfterFilterCondition> finalScoreIsNotNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNotNull(
+        property: r'finalScore',
+      ));
+    });
+  }
+
+  QueryBuilder<Player, Player, QAfterFilterCondition> finalScoreEqualTo(
+      int? value) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'finalScore',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<Player, Player, QAfterFilterCondition> finalScoreGreaterThan(
+    int? value, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'finalScore',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<Player, Player, QAfterFilterCondition> finalScoreLessThan(
+    int? value, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'finalScore',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<Player, Player, QAfterFilterCondition> finalScoreBetween(
+    int? lower,
+    int? upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'finalScore',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
+      ));
+    });
+  }
+
+  QueryBuilder<Player, Player, QAfterFilterCondition> initialScoreIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNull(
+        property: r'initialScore',
+      ));
+    });
+  }
+
+  QueryBuilder<Player, Player, QAfterFilterCondition> initialScoreIsNotNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNotNull(
+        property: r'initialScore',
+      ));
+    });
+  }
+
+  QueryBuilder<Player, Player, QAfterFilterCondition> initialScoreEqualTo(
+      int? value) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'initialScore',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<Player, Player, QAfterFilterCondition> initialScoreGreaterThan(
+    int? value, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'initialScore',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<Player, Player, QAfterFilterCondition> initialScoreLessThan(
+    int? value, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'initialScore',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<Player, Player, QAfterFilterCondition> initialScoreBetween(
+    int? lower,
+    int? upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'initialScore',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
+      ));
+    });
+  }
+
   QueryBuilder<Player, Player, QAfterFilterCondition> nameIsNull() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(const FilterCondition.isNull(

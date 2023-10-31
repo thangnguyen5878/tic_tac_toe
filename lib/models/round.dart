@@ -25,6 +25,8 @@ class Round {
 
   int? currentTurnIndex;
 
+  int? winTurnIndex;
+
   int? historyCurrentTurnIndex;
 
   Round({this.number, int? turnCount, this.winnerIndex, this.players})
@@ -81,6 +83,10 @@ class Round {
       }
       historyCurrentTurnIndex = historyCurrentTurnIndex! - 1;
       print('next turn, current player: ${historyCurrentPlayerIndex! + 1}');
+  }
+
+  updateFinalScore() {
+    players!.map((player) => player.finalScore = player.score);
   }
 
   @override

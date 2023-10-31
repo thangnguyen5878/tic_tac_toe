@@ -19,11 +19,15 @@ class HistoryPlayerBottomBar extends StatelessWidget {
         final player1 = round!.players![0];
         final player2 = round!.players![1];;
 
+        final isWinTurn = round.historyCurrentTurnIndex == round.winTurnIndex;
+        final player1Score = isWinTurn ? player1.finalScore : player1.initialScore;
+        final player2Score = isWinTurn ? player2.finalScore : player2.initialScore;
+
         final player1TextColor = historyCurrentPlayerIndex == 0 ? kBlack : kGrey45;
         final player2TextColor = historyCurrentPlayerIndex == 1 ? kBlack : kGrey45;
         final player1BoxColor = historyCurrentPlayerIndex == 0 ? kBrown30 : kGrey30;
         final player2BoxColor = historyCurrentPlayerIndex == 1 ? kBrown30 : kGrey30;
-
+        print('Player 1, 2 scores: ${round.historyCurrentTurnIndex}, ${round.winTurnIndex}, $isWinTurn, $player1Score, $player2Score');
         return Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
@@ -39,7 +43,7 @@ class HistoryPlayerBottomBar extends StatelessWidget {
                       style:
                       TextStyle(color: player1TextColor, fontWeight: FontWeight.bold),
                     ),
-                    Text('Score: ${player1.score}',
+                    Text('Score: $player1Score',
                         style: TextStyle(
                             color: player1TextColor, fontWeight: FontWeight.bold)),
                   ],
@@ -59,7 +63,7 @@ class HistoryPlayerBottomBar extends StatelessWidget {
                       TextStyle(color: player2TextColor, fontWeight: FontWeight.bold),
                     ),
                     Text(
-                      'Score: ${player2.score}',
+                      'Score: $player2Score',
                       style:
                       TextStyle(color: player2TextColor, fontWeight: FontWeight.bold),
                     ),

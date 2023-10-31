@@ -10,10 +10,17 @@ class HistoryBoard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print('build board...');
+    print('build history board...');
+    final room = gameController.room;
     final columnCount = gameController.room.historyBoard.columnCount;
     final rowCount = gameController.room.historyBoard.rowCount;
+    final historyRound = room.rounds![room.historyRoundIndex];
+    bool isWinTurn = historyRound!.historyCurrentTurnIndex == historyRound.winTurnIndex;
     gameController.room.updateHistoryBoard();
+    print(isWinTurn);
+    print(historyRound!.historyCurrentTurnIndex);
+    print(historyRound.winTurnIndex);
+
     print('columnCount: $columnCount');
     print('rowCount: $rowCount');
     return Container(
@@ -32,7 +39,8 @@ class HistoryBoard extends StatelessWidget {
         itemBuilder: (context, index) {
           return HistoryCell(
             row: index ~/ columnCount,
-            column: index % columnCount,
+            column: index % columnCount
+
           );
         },
       ),
