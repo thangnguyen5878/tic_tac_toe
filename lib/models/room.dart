@@ -1,5 +1,4 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
-import 'package:flutter_tic_tac_toe/models/history.dart';
 import 'package:get/get.dart';
 import 'package:isar/isar.dart';
 
@@ -30,7 +29,7 @@ class Room {
 
   int currentRoundIndex;
 
-  int historyRoundIndex;
+  int currentHistoryRoundIndex;
 
   @ignore
   List<Cell>? checkingCells = List<Cell>.empty(growable: true);
@@ -41,11 +40,11 @@ class Room {
       : name = 'Untitled Room',
         board = Board(),
         historyBoard = Board(),
-        historyRoundIndex = 0,
+        currentHistoryRoundIndex = 0,
         state = GameState.playing,
         currentRoundIndex = 0 {
     rounds = [
-      Round(number: 1, turnCount: 1, players: [
+      Round(number: 1, players: [
         Player(name: 'Player 1', seed: Seed.cross, score: 0),
         Player(name: 'Player 2', seed: Seed.nought, score: 0)
       ])
@@ -312,17 +311,12 @@ class Room {
 
   /// Move to the next round when a player wins and the player press the `Next round button`
   void nextRound() {
+    final currentRound = rounds![currentRoundIndex];
     // reset the game
     state = GameState.playing;
     board.reset();
     // move to the next round
-    Round nextRound = Round(
-        number: rounds!.length + 1,
-        turnCount: 1,
-        players: rounds![currentRoundIndex]!.players?.map((player) {
-          return Player.clonePlayer(player);
-        }).toList());
-    nextRound.winnerIndex = null;
+    Round nextRound = Round.cloneNextRound(currentRound!);
     rounds = [...?rounds, nextRound];
     currentRoundIndex++;
   }
@@ -337,22 +331,23 @@ class Room {
   /// Load cell from turns to history board according to historyCurrentTurnIndex
   void updateHistoryBoard() {
     historyBoard.reset();
-    final historyRound = rounds![historyRoundIndex];
-    final turns = historyRound!.turns;
-    // print('Turns: $turns');
-    if (historyRound.historyCurrentTurnIndex! >= 0) {
-      for (int i = 0; i <= historyRound.historyCurrentTurnIndex!; i++) {
-        int row = turns[i]!.row!;
-        int column = turns[i]!.column!;
-        historyBoard!.cells[row][column] = Cell.clone(turns[i]!);
+    final currenthistoryRound = rounds![currentHistoryRoundIndex];
+    final turns = currenthistoryRound!.turns;
+    print('Turns: $turns');
+    if (currenthistoryRound.historyCurrentTurnIndex! >= 0) {
+      historyBoard.load(turns, currenthistoryRound.historyCurrentTurnIndex! + 1);
+      // for (int i = 0; i < currenthistoryRound.historyCurrentTurnIndex!; i++) {
+      //   int row = turns[i]!.row!;
+      //   int column = turns[i]!.column!;
+      //   historyBoard.cells[row][column] = Cell.clone(turns[i]!);
         // print('cell($row, $column)');
         // print('History board: $historyBoard');
-      }
+      // }
     }
   }
 
   @override
   String toString() {
-    return 'Room{name: $name, board: $board, historyBoard: $historyBoard, historyRoundIndex: $historyRoundIndex, state: $state, rounds: $rounds, currentRoundIndex: $currentRoundIndex, checkingCells: $checkingCells, winCount: $winCount}';
+    return 'Room{name: $name, board: $board, historyBoard: $historyBoard, historyRoundIndex: $currentHistoryRoundIndex, state: $state, rounds: $rounds, currentRoundIndex: $currentRoundIndex, checkingCells: $checkingCells, winCount: $winCount}';
   }
 }

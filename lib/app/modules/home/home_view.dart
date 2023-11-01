@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_tic_tac_toe/app/modules/game/game_controller.dart';
 import 'package:flutter_tic_tac_toe/app/modules/home/components/room_card.dart';
-import 'package:flutter_tic_tac_toe/models/player.dart';
 import 'package:flutter_tic_tac_toe/models/room.dart';
 import 'package:flutter_tic_tac_toe/routes/app_pages.dart';
 import 'package:flutter_tic_tac_toe/utils/constants/app_colors.dart';
@@ -25,7 +24,7 @@ class HomeView extends StatelessWidget {
           //   size: kIconSize,
           // ),
           title: Container(
-            padding: EdgeInsets.only(top: kPadding8),
+            padding: const EdgeInsets.only(top: kPadding8),
             alignment: Alignment.center,
             child: Text('Tic-tac-toe', style: kTitle1),
           ),

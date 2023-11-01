@@ -58,7 +58,6 @@ class IsarService {
 
   // ROUND: GET
   Future<List<Round?>?> getAllRoundsInRoom(int roomId) async {
-    final isar = await db;
     final room = await getRoom(roomId);
     return room?.rounds;
   }

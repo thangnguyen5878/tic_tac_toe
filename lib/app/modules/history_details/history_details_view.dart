@@ -4,7 +4,6 @@ import 'package:flutter_tic_tac_toe/app/modules/history/components/history_detai
 import 'package:flutter_tic_tac_toe/app/modules/history_details/components/control_bar.dart';
 import 'package:flutter_tic_tac_toe/app/modules/history_details/components/history_board.dart';
 import 'package:flutter_tic_tac_toe/app/modules/history_details/components/history_player_bottom_bar.dart';
-import 'package:flutter_tic_tac_toe/app/modules/widget/player_bottom_bar.dart';
 import 'package:flutter_tic_tac_toe/utils/constants/app_colors.dart';
 
 import 'package:get/get.dart';
@@ -24,8 +23,7 @@ class HistoryDetailsView extends GetView<HistoryDetailsController> {
 
     return WillPopScope(
       onWillPop: () async {
-        // Get.back();
-        // Get.toNamed(Routes.HISTORY_DETAILS);
+        gameController.pauseHistoryAutoPlay();
         return true;
       },
       child: Scaffold(
@@ -34,11 +32,13 @@ class HistoryDetailsView extends GetView<HistoryDetailsController> {
         leading: HistoryDetailsBackButton(gameController: gameController),
         title: GetBuilder<GameController>(
           builder: (gameController) {
-            final roundIndex = gameController.room.historyRoundIndex;
+            final roundIndex = gameController.room.currentHistoryRoundIndex;
             final round = gameController.room.rounds![roundIndex];
             final turnIndex = round!.historyCurrentTurnIndex;
+            final roundCount = roundIndex + 1;
+            final turnCount = turnIndex! + 1;
             return Text(
-              'Round: ${roundIndex + 1}, Turn: ${turnIndex! + 1}',
+              'Round: $roundCount, Turn: $turnCount',
               style: const TextStyle(fontSize: 18, color: kBlack),
             );
           },
@@ -73,18 +73,3 @@ class HistoryDetailsView extends GetView<HistoryDetailsController> {
   }
 }
 
-class BackButton extends StatelessWidget {
-  const BackButton({
-    super.key,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return IconButton(
-      icon: const Icon(Icons.arrow_back),
-      onPressed: () {
-        Get.back();
-      },
-    );
-  }
-}

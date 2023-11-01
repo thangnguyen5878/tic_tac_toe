@@ -44,11 +44,19 @@ class Board {
   }
 
   /// Load drew cells from turns list in Round object to the board
-  void load(List<Cell?> turns) {
+  void loadAll(List<Cell?> turns) {
     for (int t = 0; t < turns.length; t++) {
       int row = turns[t]!.row!;
       int column = turns[t]!.column!;
-      cells[row][column] = turns[t]!;
+      cells[row][column] = Cell.clone(turns[t]!);
+    }
+  }
+
+  void load(List<Cell?> turns, int size) {
+    for (int t = 0; t < size; t++) {
+      int row = turns[t]!.row!;
+      int column = turns[t]!.column!;
+      cells[row][column] = Cell.clone(turns[t]!);
     }
   }
 

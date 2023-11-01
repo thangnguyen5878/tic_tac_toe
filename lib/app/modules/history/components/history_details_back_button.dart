@@ -23,8 +23,8 @@ class HistoryDetailsBackButton extends StatelessWidget {
         size: kIconSize,
       ),
       onPressed: () {
+        gameController.pauseHistoryAutoPlay();
         Get.back();
-        // FocusScope.of(context).unfocus();
       },
     );
   }

@@ -17,8 +17,11 @@ class RoundCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final winnerIndex = round.winnerIndex;
-    final player1 = round.players![0];
-    final player2 = round.players![1];
+    final player1Name = round.players![0].name;
+    final player1Score = round.players![0].score;
+    final player2Name = round.players![1].name;
+    final player2Score = round.players![1].score;
+
     Color winnerColor;
     if (winnerIndex == 0) {
       winnerColor = kRed70;
@@ -30,11 +33,11 @@ class RoundCard extends StatelessWidget {
     }
     return InkWell(
       onTap: () {
-        gameController.room.historyRoundIndex = round.number! - 1;
-        Get.toNamed(Routes.HISTORY_DETAILS, arguments: [roomId, round.number]);
+        gameController.room.currentHistoryRoundIndex = round.number! - 1;
+        Get.toNamed(Routes.HISTORY_DETAILS, arguments: [roomId, gameController.room.currentHistoryRoundIndex]);
       },
       child: Container(
-        padding: EdgeInsets.all(kPadding12),
+        padding: const EdgeInsets.all(kPadding12),
         decoration: kCardStyle,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -43,7 +46,7 @@ class RoundCard extends StatelessWidget {
               'Round ${round.number}',
               style: kHeading1,
             ),
-            SizedBox(height: kPadding4),
+            const SizedBox(height: kPadding4),
             if (winnerIndex != null)
               Column(
                 children: [
@@ -51,15 +54,15 @@ class RoundCard extends StatelessWidget {
                     text: TextSpan(
                       style: kNormalLarge,
                       children: <TextSpan>[
-                        TextSpan(text: 'Winner: '),
+                        const TextSpan(text: 'Winner: '),
                         TextSpan(text: '${round.players![winnerIndex].name}', style: TextStyle(color: winnerColor )),
                       ],
                     ),
                   ),
-                  SizedBox(height: kPadding4),
+                  const SizedBox(height: kPadding4),
                 ],
               ),
-            Text('${player1.name} (${player1.score}) - ${player2.name} (${player2.score})', style: kNormal,),
+            Text('$player1Name ($player1Score) - $player2Name ($player2Score)', style: kNormal,),
             // Add more widgets to display additional room information
           ],
         ),

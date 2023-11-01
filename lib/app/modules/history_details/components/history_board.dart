@@ -14,11 +14,11 @@ class HistoryBoard extends StatelessWidget {
     final room = gameController.room;
     final columnCount = gameController.room.historyBoard.columnCount;
     final rowCount = gameController.room.historyBoard.rowCount;
-    final historyRound = room.rounds![room.historyRoundIndex];
+    final historyRound = room.rounds![room.currentHistoryRoundIndex];
     bool isWinTurn = historyRound!.historyCurrentTurnIndex == historyRound.winTurnIndex;
     gameController.room.updateHistoryBoard();
     print(isWinTurn);
-    print(historyRound!.historyCurrentTurnIndex);
+    print(historyRound.historyCurrentTurnIndex);
     print(historyRound.winTurnIndex);
 
     print('columnCount: $columnCount');

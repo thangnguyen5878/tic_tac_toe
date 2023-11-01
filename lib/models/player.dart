@@ -21,11 +21,12 @@ class Player {
     initialScore = score;
   }
 
-  Player.clonePlayer(Player player) {
-    this.name = player.name;
-    this.seed = player.seed;
-    this.score = player.score;
-    this.initialScore = player.score;
+  Player.clone(Player player) {
+    name = player.name;
+    seed = player.seed;
+    score = player.score;
+    initialScore = player.score;
+    finalScore = null;
   }
 
   @override

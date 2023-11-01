@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_tic_tac_toe/app/modules/game/game_controller.dart';
 import 'package:flutter_tic_tac_toe/utils/constants/app_colors.dart';
-import 'package:flutter_tic_tac_toe/utils/enums/seed.dart';
 import 'package:get/get_state_manager/src/simple/get_state.dart';
 
 class HistoryPlayerBottomBar extends StatelessWidget {
@@ -14,10 +13,10 @@ class HistoryPlayerBottomBar extends StatelessWidget {
       height: 48,
       child: GetBuilder(builder: (GameController gameController) {
         final room = gameController.room;
-        final round = room.rounds![room.historyRoundIndex];
+        final round = room.rounds![room.currentHistoryRoundIndex];
         int? historyCurrentPlayerIndex = round!.historyCurrentPlayerIndex;
-        final player1 = round!.players![0];
-        final player2 = round!.players![1];;
+        final player1 = round.players![0];
+        final player2 = round.players![1];;
 
         final isWinTurn = round.historyCurrentTurnIndex == round.winTurnIndex;
         final player1Score = isWinTurn ? player1.finalScore : player1.initialScore;

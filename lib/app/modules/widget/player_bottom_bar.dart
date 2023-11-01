@@ -18,10 +18,10 @@ class PlayerBottomBar extends StatelessWidget {
         final room = gameController.room;
         final round = room.rounds![room.currentRoundIndex];
         final currentPlayer = round!.players![round.currentPlayerIndex!];
-        final player1 = round!.players![0];
-        final player2 = round!.players![1];;
+        final player1 = round.players![0];
+        final player2 = round.players![1];;
 
-        final xColor = currentPlayer!.seed == Seed.cross ? kBlack : kGrey45;
+        final xColor = currentPlayer.seed == Seed.cross ? kBlack : kGrey45;
         final oColor = currentPlayer.seed == Seed.nought ? kBlack : kGrey45;
         final xBoxColor = currentPlayer.seed == Seed.cross ? kBrown30 : kGrey30;
         final oBoxColor =

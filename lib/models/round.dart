@@ -1,5 +1,4 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
-import 'package:flutter_tic_tac_toe/models/board.dart';
 import 'package:isar/isar.dart';
 
 import 'package:flutter_tic_tac_toe/models/cell.dart';
@@ -29,11 +28,25 @@ class Round {
 
   int? historyCurrentTurnIndex;
 
-  Round({this.number, int? turnCount, this.winnerIndex, this.players})
+  Round({this.number, this.winnerIndex, this.players})
       : currentTurnIndex = 0,
         historyCurrentTurnIndex = 0,
         currentPlayerIndex = 0,
         historyCurrentPlayerIndex = 0;
+
+  Round.cloneNextRound(Round round) {
+    number = round.number! + 1;
+    players = round.players!.map((player) => Player.clone(player)).toList();
+    currentPlayerIndex = 0;
+    historyCurrentPlayerIndex = 0;
+    winnerIndex = null;
+    // turns = [];
+    // historyTurns = [];
+    currentTurnIndex = 0;
+    historyCurrentTurnIndex = 0;
+    winTurnIndex = -1;
+  }
+
 
   reset() {
     // if there's a winner
@@ -59,17 +72,15 @@ class Round {
   }
 
   historyNextTurn() {
-      // if (historyCurrentTurnIndex == 0) {
-      //   historyCurrentPlayerIndex = 0;
-      // }
       if (historyCurrentPlayerIndex == 0) {
         historyCurrentPlayerIndex = 1;
       } else {
         historyCurrentPlayerIndex = 0;
       }
-      historyCurrentTurnIndex = historyCurrentTurnIndex! + 1;
-      print('next turn, current player: ${historyCurrentPlayerIndex! + 1}');
 
+       historyCurrentTurnIndex = historyCurrentTurnIndex! + 1;
+
+      print('next turn, current player: ${historyCurrentPlayerIndex! + 1}');
   }
 
   historyPreviousTurn() {

@@ -20,6 +20,7 @@ class PreviousTurnButton extends StatelessWidget {
       ),
       onPressed: () {
         print('Press Previous Next Turn Button...');
+        gameController.pauseHistoryAutoPlay();
         gameController.historyPreviousTurn();
       },
       style: TextButton.styleFrom(elevation: 1, backgroundColor: kBlue30),

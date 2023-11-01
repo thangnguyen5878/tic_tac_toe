@@ -43,8 +43,7 @@ class HistoryView extends StatelessWidget {
               GetBuilder<GameController>(
                 builder: (gameController) {
                   return FutureBuilder<List<Round?>?>(
-                    future:
-                        gameController.isarService.getAllRoundsInRoom(roomId),
+                    future: gameController.isarService.getAllRoundsInRoom(roomId),
                     builder: (context, snapshot) {
                       if (snapshot.hasError) {
                         return Center(

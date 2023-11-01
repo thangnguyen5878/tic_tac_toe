@@ -23,21 +23,21 @@ const RoomSchema = CollectionSchema(
       type: IsarType.object,
       target: r'Board',
     ),
-    r'currentRoundIndex': PropertySchema(
+    r'currentHistoryRoundIndex': PropertySchema(
       id: 1,
+      name: r'currentHistoryRoundIndex',
+      type: IsarType.long,
+    ),
+    r'currentRoundIndex': PropertySchema(
+      id: 2,
       name: r'currentRoundIndex',
       type: IsarType.long,
     ),
     r'historyBoard': PropertySchema(
-      id: 2,
+      id: 3,
       name: r'historyBoard',
       type: IsarType.object,
       target: r'Board',
-    ),
-    r'historyRoundIndex': PropertySchema(
-      id: 3,
-      name: r'historyRoundIndex',
-      type: IsarType.long,
     ),
     r'name': PropertySchema(
       id: 4,
@@ -124,14 +124,14 @@ void _roomSerialize(
     BoardSchema.serialize,
     object.board,
   );
-  writer.writeLong(offsets[1], object.currentRoundIndex);
+  writer.writeLong(offsets[1], object.currentHistoryRoundIndex);
+  writer.writeLong(offsets[2], object.currentRoundIndex);
   writer.writeObject<Board>(
-    offsets[2],
+    offsets[3],
     allOffsets,
     BoardSchema.serialize,
     object.historyBoard,
   );
-  writer.writeLong(offsets[3], object.historyRoundIndex);
   writer.writeString(offsets[4], object.name);
   writer.writeObjectList<Round>(
     offsets[5],
@@ -156,14 +156,14 @@ Room _roomDeserialize(
         allOffsets,
       ) ??
       Board();
-  object.currentRoundIndex = reader.readLong(offsets[1]);
+  object.currentHistoryRoundIndex = reader.readLong(offsets[1]);
+  object.currentRoundIndex = reader.readLong(offsets[2]);
   object.historyBoard = reader.readObjectOrNull<Board>(
-        offsets[2],
+        offsets[3],
         BoardSchema.deserialize,
         allOffsets,
       ) ??
       Board();
-  object.historyRoundIndex = reader.readLong(offsets[3]);
   object.id = id;
   object.name = reader.readString(offsets[4]);
   object.rounds = reader.readObjectOrNullList<Round>(
@@ -193,14 +193,14 @@ P _roomDeserializeProp<P>(
     case 1:
       return (reader.readLong(offset)) as P;
     case 2:
+      return (reader.readLong(offset)) as P;
+    case 3:
       return (reader.readObjectOrNull<Board>(
             offset,
             BoardSchema.deserialize,
             allOffsets,
           ) ??
           Board()) as P;
-    case 3:
-      return (reader.readLong(offset)) as P;
     case 4:
       return (reader.readString(offset)) as P;
     case 5:
@@ -316,6 +316,62 @@ extension RoomQueryWhere on QueryBuilder<Room, Room, QWhereClause> {
 }
 
 extension RoomQueryFilter on QueryBuilder<Room, Room, QFilterCondition> {
+  QueryBuilder<Room, Room, QAfterFilterCondition>
+      currentHistoryRoundIndexEqualTo(int value) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'currentHistoryRoundIndex',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<Room, Room, QAfterFilterCondition>
+      currentHistoryRoundIndexGreaterThan(
+    int value, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'currentHistoryRoundIndex',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<Room, Room, QAfterFilterCondition>
+      currentHistoryRoundIndexLessThan(
+    int value, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'currentHistoryRoundIndex',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<Room, Room, QAfterFilterCondition>
+      currentHistoryRoundIndexBetween(
+    int lower,
+    int upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'currentHistoryRoundIndex',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
+      ));
+    });
+  }
+
   QueryBuilder<Room, Room, QAfterFilterCondition> currentRoundIndexEqualTo(
       int value) {
     return QueryBuilder.apply(this, (query) {
@@ -361,59 +417,6 @@ extension RoomQueryFilter on QueryBuilder<Room, Room, QFilterCondition> {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.between(
         property: r'currentRoundIndex',
-        lower: lower,
-        includeLower: includeLower,
-        upper: upper,
-        includeUpper: includeUpper,
-      ));
-    });
-  }
-
-  QueryBuilder<Room, Room, QAfterFilterCondition> historyRoundIndexEqualTo(
-      int value) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'historyRoundIndex',
-        value: value,
-      ));
-    });
-  }
-
-  QueryBuilder<Room, Room, QAfterFilterCondition> historyRoundIndexGreaterThan(
-    int value, {
-    bool include = false,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        include: include,
-        property: r'historyRoundIndex',
-        value: value,
-      ));
-    });
-  }
-
-  QueryBuilder<Room, Room, QAfterFilterCondition> historyRoundIndexLessThan(
-    int value, {
-    bool include = false,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.lessThan(
-        include: include,
-        property: r'historyRoundIndex',
-        value: value,
-      ));
-    });
-  }
-
-  QueryBuilder<Room, Room, QAfterFilterCondition> historyRoundIndexBetween(
-    int lower,
-    int upper, {
-    bool includeLower = true,
-    bool includeUpper = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.between(
-        property: r'historyRoundIndex',
         lower: lower,
         includeLower: includeLower,
         upper: upper,
@@ -924,6 +927,18 @@ extension RoomQueryObject on QueryBuilder<Room, Room, QFilterCondition> {
 extension RoomQueryLinks on QueryBuilder<Room, Room, QFilterCondition> {}
 
 extension RoomQuerySortBy on QueryBuilder<Room, Room, QSortBy> {
+  QueryBuilder<Room, Room, QAfterSortBy> sortByCurrentHistoryRoundIndex() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'currentHistoryRoundIndex', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Room, Room, QAfterSortBy> sortByCurrentHistoryRoundIndexDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'currentHistoryRoundIndex', Sort.desc);
+    });
+  }
+
   QueryBuilder<Room, Room, QAfterSortBy> sortByCurrentRoundIndex() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'currentRoundIndex', Sort.asc);
@@ -933,18 +948,6 @@ extension RoomQuerySortBy on QueryBuilder<Room, Room, QSortBy> {
   QueryBuilder<Room, Room, QAfterSortBy> sortByCurrentRoundIndexDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'currentRoundIndex', Sort.desc);
-    });
-  }
-
-  QueryBuilder<Room, Room, QAfterSortBy> sortByHistoryRoundIndex() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'historyRoundIndex', Sort.asc);
-    });
-  }
-
-  QueryBuilder<Room, Room, QAfterSortBy> sortByHistoryRoundIndexDesc() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'historyRoundIndex', Sort.desc);
     });
   }
 
@@ -986,6 +989,18 @@ extension RoomQuerySortBy on QueryBuilder<Room, Room, QSortBy> {
 }
 
 extension RoomQuerySortThenBy on QueryBuilder<Room, Room, QSortThenBy> {
+  QueryBuilder<Room, Room, QAfterSortBy> thenByCurrentHistoryRoundIndex() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'currentHistoryRoundIndex', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Room, Room, QAfterSortBy> thenByCurrentHistoryRoundIndexDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'currentHistoryRoundIndex', Sort.desc);
+    });
+  }
+
   QueryBuilder<Room, Room, QAfterSortBy> thenByCurrentRoundIndex() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'currentRoundIndex', Sort.asc);
@@ -995,18 +1010,6 @@ extension RoomQuerySortThenBy on QueryBuilder<Room, Room, QSortThenBy> {
   QueryBuilder<Room, Room, QAfterSortBy> thenByCurrentRoundIndexDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'currentRoundIndex', Sort.desc);
-    });
-  }
-
-  QueryBuilder<Room, Room, QAfterSortBy> thenByHistoryRoundIndex() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'historyRoundIndex', Sort.asc);
-    });
-  }
-
-  QueryBuilder<Room, Room, QAfterSortBy> thenByHistoryRoundIndexDesc() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'historyRoundIndex', Sort.desc);
     });
   }
 
@@ -1060,15 +1063,15 @@ extension RoomQuerySortThenBy on QueryBuilder<Room, Room, QSortThenBy> {
 }
 
 extension RoomQueryWhereDistinct on QueryBuilder<Room, Room, QDistinct> {
-  QueryBuilder<Room, Room, QDistinct> distinctByCurrentRoundIndex() {
+  QueryBuilder<Room, Room, QDistinct> distinctByCurrentHistoryRoundIndex() {
     return QueryBuilder.apply(this, (query) {
-      return query.addDistinctBy(r'currentRoundIndex');
+      return query.addDistinctBy(r'currentHistoryRoundIndex');
     });
   }
 
-  QueryBuilder<Room, Room, QDistinct> distinctByHistoryRoundIndex() {
+  QueryBuilder<Room, Room, QDistinct> distinctByCurrentRoundIndex() {
     return QueryBuilder.apply(this, (query) {
-      return query.addDistinctBy(r'historyRoundIndex');
+      return query.addDistinctBy(r'currentRoundIndex');
     });
   }
 
@@ -1106,6 +1109,12 @@ extension RoomQueryProperty on QueryBuilder<Room, Room, QQueryProperty> {
     });
   }
 
+  QueryBuilder<Room, int, QQueryOperations> currentHistoryRoundIndexProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'currentHistoryRoundIndex');
+    });
+  }
+
   QueryBuilder<Room, int, QQueryOperations> currentRoundIndexProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'currentRoundIndex');
@@ -1115,12 +1124,6 @@ extension RoomQueryProperty on QueryBuilder<Room, Room, QQueryProperty> {
   QueryBuilder<Room, Board, QQueryOperations> historyBoardProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'historyBoard');
-    });
-  }
-
-  QueryBuilder<Room, int, QQueryOperations> historyRoundIndexProperty() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addPropertyName(r'historyRoundIndex');
     });
   }
 

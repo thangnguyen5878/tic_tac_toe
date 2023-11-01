@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter_tic_tac_toe/app/modules/create_room/create_room_controller.dart';
 import 'package:flutter_tic_tac_toe/isar_service.dart';
 import 'package:flutter_tic_tac_toe/models/cell.dart';
@@ -10,6 +12,7 @@ class GameController extends GetxController {
   //TODO: Implement GameController
   static GameController get to => Get.find();
   final input = Get.find<CreateRoomController>();
+  bool isHistoryAutoPlay = false;
   Room room = Room();
 
   IsarService isarService = IsarService();
@@ -32,7 +35,7 @@ class GameController extends GetxController {
       newRoom.historyBoard.columnCount = int.tryParse(input.columnCount.text) ?? 10;
     }
     newRoom.board.rebuild();
-    newRoom.historyBoard!.rebuild();
+    newRoom.historyBoard.rebuild();
     room = newRoom;
     await isarService.saveRoom(room);
     update();
@@ -48,7 +51,7 @@ class GameController extends GetxController {
   loadRoomById(id) async {
     room = (await isarService.getRoom(id))!;
     var turns = room.rounds![room.currentRoundIndex]!.turns;
-    room.board.load(turns);
+    room.board.loadAll(turns);
     update();
   }
 
@@ -71,15 +74,14 @@ class GameController extends GetxController {
 
       room.checkWinner();
 
-      // print(game.board.cells);
+      print('Draw seed, turns: ${room.rounds![room.currentRoundIndex]!.turns}');
       update();
     }
   }
 
   historyNextTurn() {
-    final round = room.rounds![room.historyRoundIndex];
-    final turnCount = round!.turns.length;
-    if (round.historyCurrentTurnIndex! < turnCount) {
+    final round = room.rounds![room.currentHistoryRoundIndex];
+    if (round!.historyCurrentTurnIndex! < round.turns.length - 1) {
       round.historyNextTurn();
       room.updateHistoryBoard();
       update();
@@ -87,13 +89,50 @@ class GameController extends GetxController {
   }
 
   historyPreviousTurn() {
-    final round = room.rounds![room.historyRoundIndex]!;
+    final round = room.rounds![room.currentHistoryRoundIndex]!;
     if (round.historyCurrentTurnIndex! > 0) {
       round.historyPreviousTurn();
       room.updateHistoryBoard();
       update();
       print('previos turn');
     }
+  }
+
+  pauseHistoryAutoPlay() {
+    isHistoryAutoPlay = false;
+    update();
+  }
+
+  void resumeHistoryAutoPlay() async {
+    isHistoryAutoPlay = true;
+    update();
+
+    Timer.periodic(Duration(seconds: 1), (timer) {
+      final historyCurrentRound = room.rounds![room.currentHistoryRoundIndex];
+      final historyCurrentTurnIndex = historyCurrentRound!.historyCurrentTurnIndex;
+      final turnCount = historyCurrentRound.turns.length;
+
+      if (isHistoryAutoPlay) {
+        historyNextTurn();
+        update();
+
+        if (historyCurrentTurnIndex! >= turnCount - 1) {
+          pauseHistoryAutoPlay();
+          timer.cancel();
+        }
+      } else {
+        timer.cancel();
+      }
+    });
+  }
+
+  toggleHistoryAutoPlay() {
+    if(isHistoryAutoPlay) {
+      pauseHistoryAutoPlay();
+    } else {
+      resumeHistoryAutoPlay();
+    }
+    update();
   }
 
   /// Move to the next round when a player wins and the player press the `Next round button`, then update the board.
@@ -109,15 +148,8 @@ class GameController extends GetxController {
     update();
   }
 
-
-
   @override
   Future<void> onInit() async {
     super.onInit();
   }
-
-  //   @override
-  //   void onClose() {
-  //     super.onClose();
-  //   }
 }

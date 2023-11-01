@@ -1,12 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_tic_tac_toe/app/modules/game/game_binding.dart';
 import 'package:flutter_tic_tac_toe/app/modules/home/home_binding.dart';
-import 'package:flutter_tic_tac_toe/isar_service.dart';
 import 'package:flutter_tic_tac_toe/routes/app_pages.dart';
 
 import 'package:get/get.dart';
-import 'package:isar/isar.dart';
-import 'package:path_provider/path_provider.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();

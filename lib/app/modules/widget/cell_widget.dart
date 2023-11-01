@@ -22,7 +22,7 @@ class CellWidget extends StatelessWidget {
         init: GameController(),
         builder: (GameController gameController) {
           final content =
-              gameController.room.board!.cells[row][column]!.content.toString();
+              gameController.room.board.cells[row][column].content.toString();
           CellState state = gameController.room.board.cells[row][column].state!;
           Color bColor = Colors.white;
 
@@ -53,7 +53,7 @@ class CellWidget extends StatelessWidget {
         final currentRoundIndex = gameController.room.currentRoundIndex;
         final currentRound = gameController.room.rounds![currentRoundIndex];
         final currentPlayer = currentRound!.players![currentRound.currentPlayerIndex!];
-        print('Tap cell($row, $column) : ${currentPlayer!.seed}');
+        print('Tap cell($row, $column) : ${currentPlayer.seed}');
         gameController.drawSeed(row, column, currentPlayer.seed!);
       },
     );

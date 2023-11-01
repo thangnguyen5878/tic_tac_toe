@@ -21,10 +21,10 @@ class Cell {
         this.state = state ?? CellState.normal;
 
   Cell.clone(Cell cell) {
-    this.row = cell.row;
-    this.column = cell.column;
-    this.content = cell.content;
-    this.state = cell.state;
+    row = cell.row;
+    column = cell.column;
+    content = cell.content;
+    state = cell.state;
   }
 
   /// Reset a cell to default state

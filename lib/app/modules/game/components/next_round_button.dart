@@ -17,7 +17,7 @@ class NextRoundButton extends StatelessWidget {
         final isGameOver = gameController.room.state == GameState.stop;
         if (isGameOver) {
           return IconButton(
-            icon: Icon(
+            icon: const Icon(
               Icons.forward,
               color: kBlack,
               size: kIconSize,
