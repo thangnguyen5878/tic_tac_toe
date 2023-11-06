@@ -2,6 +2,8 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_tic_tac_toe/app/modules/game/game_controller.dart';
+import 'package:flutter_tic_tac_toe/utils/constants/app_colors.dart';
+import 'package:flutter_tic_tac_toe/utils/constants/app_size.dart';
 import 'package:flutter_tic_tac_toe/utils/constants/app_styles.dart';
 import 'package:flutter_tic_tac_toe/routes/app_pages.dart';
 
@@ -74,6 +76,13 @@ class CreateRoomView extends StatelessWidget {
 
   ElevatedButton buildCreateRoomButton() {
     return ElevatedButton(
+      style: ElevatedButton.styleFrom(
+          backgroundColor: kBrown30,
+          foregroundColor: kBlack,
+          // minimumSize: Size(double.infinity, 48),
+          padding: EdgeInsets.symmetric(horizontal: kPadding48, vertical: kPadding8),
+      ),
+
       child: const Text('Create Room'),
       onPressed: () {
         if (_formKey.currentState!.validate()) {

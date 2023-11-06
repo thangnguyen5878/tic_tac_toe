@@ -24,8 +24,7 @@ class PlayerBottomBar extends StatelessWidget {
         final xColor = currentPlayer.seed == Seed.cross ? kBlack : kGrey45;
         final oColor = currentPlayer.seed == Seed.nought ? kBlack : kGrey45;
         final xBoxColor = currentPlayer.seed == Seed.cross ? kBrown30 : kGrey30;
-        final oBoxColor =
-            currentPlayer.seed == Seed.nought ? kBrown30 : kGrey30;
+        final oBoxColor = currentPlayer.seed == Seed.nought ? kBrown30 : kGrey30;
 
         return Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,

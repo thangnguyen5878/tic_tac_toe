@@ -11,13 +11,13 @@ class Round {
   int? number;
 
   List<Player>? players;
-  
+
   int? currentPlayerIndex;
 
   int? historyCurrentPlayerIndex;
 
   int? winnerIndex;
-  
+
   List<Cell?> turns = [];
 
   List<Cell?> historyTurns = [];
@@ -47,7 +47,6 @@ class Round {
     winTurnIndex = -1;
   }
 
-
   reset() {
     // if there's a winner
     if (winnerIndex != null) {
@@ -72,28 +71,31 @@ class Round {
   }
 
   historyNextTurn() {
-      if (historyCurrentPlayerIndex == 0) {
-        historyCurrentPlayerIndex = 1;
-      } else {
-        historyCurrentPlayerIndex = 0;
-      }
-
-       historyCurrentTurnIndex = historyCurrentTurnIndex! + 1;
-
-      print('next turn, current player: ${historyCurrentPlayerIndex! + 1}');
+    if (historyCurrentPlayerIndex == 0) {
+      historyCurrentPlayerIndex = 1;
+    } else {
+      historyCurrentPlayerIndex = 0;
+    }
+    historyCurrentTurnIndex = historyCurrentTurnIndex! + 1;
+    // if (historyCurrentTurnIndex! >= winTurnIndex! - 1) {
+    //   historyCurrentPlayerIndex = winnerIndex;
+    //   historyCurrentTurnIndex = winTurnIndex;
+    // }
+    // print('next turn, current player: ${historyCurrentPlayerIndex! + 1}');
   }
 
+
   historyPreviousTurn() {
-      // if (historyCurrentTurnIndex == 1) {
-      //   historyCurrentPlayerIndex = null;
-      // }
-      if (historyCurrentPlayerIndex == 0) {
-        historyCurrentPlayerIndex = 1;
-      } else {
-        historyCurrentPlayerIndex = 0;
-      }
-      historyCurrentTurnIndex = historyCurrentTurnIndex! - 1;
-      print('next turn, current player: ${historyCurrentPlayerIndex! + 1}');
+    // if (historyCurrentTurnIndex == 1) {
+    //   historyCurrentPlayerIndex = null;
+    // }
+    if (historyCurrentPlayerIndex == 0) {
+      historyCurrentPlayerIndex = 1;
+    } else {
+      historyCurrentPlayerIndex = 0;
+    }
+    historyCurrentTurnIndex = historyCurrentTurnIndex! - 1;
+    print('next turn, current player: ${historyCurrentPlayerIndex! + 1}');
   }
 
   updateFinalScore() {

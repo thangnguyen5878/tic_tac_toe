@@ -81,10 +81,11 @@ class GameController extends GetxController {
 
   historyNextTurn() {
     final round = room.rounds![room.currentHistoryRoundIndex];
-    if (round!.historyCurrentTurnIndex! < round.turns.length - 1) {
+    if (round!.historyCurrentTurnIndex! < round.turns.length) {
       round.historyNextTurn();
       room.updateHistoryBoard();
       update();
+      print('History next turn: ${round.historyCurrentTurnIndex}, ${round.winTurnIndex}');
     }
   }
 

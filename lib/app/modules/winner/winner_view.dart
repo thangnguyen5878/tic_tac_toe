@@ -12,7 +12,7 @@ class WinnerView extends StatelessWidget {
     final round = room.rounds![room.currentRoundIndex];
     final winnerIndex = round!.winnerIndex;
     final winnerName = round.players![winnerIndex!].name;
-    final currentRoundIndex = room.currentRoundIndex;
+    final roundCount = room.currentRoundIndex + 1;
 
     return SafeArea(
       child: GestureDetector(
@@ -25,7 +25,7 @@ class WinnerView extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(
-                  'Round $currentRoundIndex',
+                  'Round $roundCount',
                   style: TextStyle(
                       color: Color.fromARGB(255, 162, 180, 227),
                       fontSize: 25,

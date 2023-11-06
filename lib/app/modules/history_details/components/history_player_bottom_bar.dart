@@ -14,19 +14,24 @@ class HistoryPlayerBottomBar extends StatelessWidget {
       child: GetBuilder(builder: (GameController gameController) {
         final room = gameController.room;
         final round = room.rounds![room.currentHistoryRoundIndex];
+        final currentTurn = round!.historyCurrentTurnIndex;
         int? historyCurrentPlayerIndex = round!.historyCurrentPlayerIndex;
+        if(round.winTurnIndex != -1 && round!.historyCurrentTurnIndex == round.winTurnIndex! + 1) {
+          print('history win turn!!!');
+          historyCurrentPlayerIndex = round!.winnerIndex!;
+        }
         final player1 = round.players![0];
         final player2 = round.players![1];;
-
         final isWinTurn = round.historyCurrentTurnIndex == round.winTurnIndex;
+
         final player1Score = isWinTurn ? player1.finalScore : player1.initialScore;
         final player2Score = isWinTurn ? player2.finalScore : player2.initialScore;
-
         final player1TextColor = historyCurrentPlayerIndex == 0 ? kBlack : kGrey45;
         final player2TextColor = historyCurrentPlayerIndex == 1 ? kBlack : kGrey45;
         final player1BoxColor = historyCurrentPlayerIndex == 0 ? kBrown30 : kGrey30;
         final player2BoxColor = historyCurrentPlayerIndex == 1 ? kBrown30 : kGrey30;
-        print('Player 1, 2 scores: ${round.historyCurrentTurnIndex}, ${round.winTurnIndex}, $isWinTurn, $player1Score, $player2Score');
+
+        print('history player bottom bar: $isWinTurn, ${round.winTurnIndex}, $historyCurrentPlayerIndex');
         return Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [

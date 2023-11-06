@@ -333,9 +333,9 @@ class Room {
     historyBoard.reset();
     final currenthistoryRound = rounds![currentHistoryRoundIndex];
     final turns = currenthistoryRound!.turns;
-    print('Turns: $turns');
+    // print('Turns: $turns');
     if (currenthistoryRound.historyCurrentTurnIndex! >= 0) {
-      historyBoard.load(turns, currenthistoryRound.historyCurrentTurnIndex! + 1);
+      historyBoard.load(turns, currenthistoryRound.historyCurrentTurnIndex!);
       // for (int i = 0; i < currenthistoryRound.historyCurrentTurnIndex!; i++) {
       //   int row = turns[i]!.row!;
       //   int column = turns[i]!.column!;
