@@ -51,8 +51,16 @@ class Room {
     ];
   }
 
+  Round getCurrentRound() {
+    return rounds![currentRoundIndex]!;
+  }
+
+  Round getCurrentHistoryRound() {
+    return rounds![currentHistoryRoundIndex]!;
+  }
+
   /// Check whether adjacent cells are the same or not to check the winner
-  bool isWinningRow(List<Cell> list) {
+  isWinningRow(List<Cell> list) {
     if (list.isEmpty) {
       return false;
     }
@@ -68,11 +76,10 @@ class Room {
   /// Scan the board to check the winner.
   /// - If a winner found, move to `Winner Screen` to notify the winner
   /// - If no winner found, move to the next turn
-  void checkWinner() {
+  checkWinner() {
     print('check winner...');
-    Player player1 = rounds![currentRoundIndex]!.players![0];
-    Player player2 = rounds![currentRoundIndex]!.players![1];
-    final currentRound = rounds![currentRoundIndex]!;
+    Player player1 = getCurrentRound().players![0];
+    Player player2 = getCurrentRound().players![1];
 
     // Case 1: Multiple seeds in a row
     for (int i = 0; i < board.rowCount!; i++) {
@@ -87,20 +94,20 @@ class Room {
             board.cells[i][j].content != '') {
           // Case 1.1: X wins
           if (board.cells[i][j].content == Seed.cross) {
-            if (currentRound.winnerIndex == null) {
+            if (getCurrentRound().winnerIndex == null) {
               player1.score = player1.score! + 1;
             }
-            currentRound.winnerIndex = 0;
+            getCurrentRound().winnerIndex = 0;
             player1.finalScore = player1.score;
             player2.finalScore = player2.score;
-            currentRound.winTurnIndex = currentRound.turns.length - 1;
+            getCurrentRound().winTurnIndex = getCurrentRound().turns.length - 1;
             state = GameState.stop;
             // color the winning cells
             for (int offset = 0; offset < winCount; offset++) {
               board.cells[i][j + offset].state = CellState.crossWin;
             }
             // log winner
-            Player? winner = currentRound.players![currentRound.winnerIndex!];
+            Player? winner = getCurrentRound().getWinner();
             print('Winner is ${winner.name}');
             print('rounds: $rounds');
 
@@ -108,20 +115,20 @@ class Room {
             Get.toNamed('winner');
             // Case 1.2: O wins
             if (board.cells[i][j].content == Seed.nought) {
-              if (currentRound.winnerIndex == null) {
+              if (getCurrentRound().winnerIndex == null) {
                 player2.score = player2.score! + 1;
               }
-              currentRound.winnerIndex = 1;
+              getCurrentRound().winnerIndex = 1;
               player1.finalScore = player1.score;
               player2.finalScore = player2.score;
-              currentRound.winTurnIndex = currentRound.turns.length - 1;
+              getCurrentRound().winTurnIndex = getCurrentRound().turns.length - 1;
               state = GameState.stop;
               // color the winning cells
               for (int offset = 0; offset < winCount; offset++) {
                 board.cells[i][j + offset].state = CellState.noughtWin;
               }
               // log winner
-              Player? winner = currentRound.players![currentRound.winnerIndex!];
+              Player? winner = getCurrentRound().getWinner();
               print('Winner is ${winner.name}');
               print('rounds: $rounds');
 
@@ -144,20 +151,20 @@ class Room {
             board.cells[i][j].content != Seed.noSeed) {
           // Case 2.1: X wins
           if (board.cells[i][j].content == Seed.cross) {
-            if (currentRound.winnerIndex == null) {
+            if (getCurrentRound().winnerIndex == null) {
               player1.score = player1.score! + 1;
             }
-            currentRound.winnerIndex = 0;
+            getCurrentRound().winnerIndex = 0;
             player1.finalScore = player1.score;
             player2.finalScore = player2.score;
-            currentRound.winTurnIndex = currentRound.turns.length - 1;
+            getCurrentRound().winTurnIndex = getCurrentRound().turns.length - 1;
             state = GameState.stop;
             // color the winning cells
             for (int offset = 0; offset < winCount; offset++) {
               board.cells[i + offset][j].state = CellState.crossWin;
             }
             // log winner
-            Player? winner = currentRound.players![currentRound.winnerIndex!];
+            Player? winner = getCurrentRound().getWinner();
             print('Winner is ${winner.name}');
             print('rounds: $rounds');
 
@@ -166,20 +173,20 @@ class Room {
           }
           // Case 2.2: O wins
           if (board.cells[i][j].content == Seed.nought) {
-            if (currentRound.winnerIndex == null) {
+            if (getCurrentRound().winnerIndex == null) {
               player2.score = player2.score! + 1;
             }
-            currentRound.winnerIndex = 1;
+            getCurrentRound().winnerIndex = 1;
             player1.finalScore = player1.score;
             player2.finalScore = player2.score;
-            currentRound.winTurnIndex = currentRound.turns.length - 1;
+            getCurrentRound().winTurnIndex = getCurrentRound().turns.length - 1;
             state = GameState.stop;
             // color the winning cells
             for (int offset = 0; offset < winCount; offset++) {
               board.cells[i + offset][j].state = CellState.noughtWin;
             }
             // log winner
-            Player? winner = currentRound.players![currentRound.winnerIndex!];
+            Player? winner = getCurrentRound().getWinner();
             print('Winner is ${winner.name}');
             print('rounds: $rounds');
 
@@ -201,20 +208,20 @@ class Room {
             board.cells[i][j].content != Seed.noSeed) {
           // Case 3.1: X wins
           if (board.cells[i][j].content == Seed.cross) {
-            if (currentRound.winnerIndex == null) {
+            if (getCurrentRound().winnerIndex == null) {
               player1.score = player1.score! + 1;
             }
-            currentRound.winnerIndex = 0;
+            getCurrentRound().winnerIndex = 0;
             player1.finalScore = player1.score;
             player2.finalScore = player2.score;
-            currentRound.winTurnIndex = currentRound.turns.length - 1;
+            getCurrentRound().winTurnIndex = getCurrentRound().turns.length - 1;
             state = GameState.stop;
             // color the winning cells
             for (int offset = 0; offset < winCount; offset++) {
               board.cells[i + offset][j + offset].state = CellState.crossWin;
             }
             // log winner
-            Player? winner = currentRound.players![currentRound.winnerIndex!];
+            Player? winner = getCurrentRound().getWinner();
             print('Winner is ${winner.name}');
             print('rounds: $rounds');
 
@@ -223,20 +230,20 @@ class Room {
           }
           // Case 3.2: O wins
           if (board.cells[i][j].content == Seed.nought) {
-            if (currentRound.winnerIndex == null) {
+            if (getCurrentRound().winnerIndex == null) {
               player2.score = player2.score! + 1;
             }
-            currentRound.winnerIndex = 1;
+            getCurrentRound().winnerIndex = 1;
             player1.finalScore = player1.score;
             player2.finalScore = player2.score;
-            currentRound.winTurnIndex = currentRound.turns.length - 1;
+            getCurrentRound().winTurnIndex = getCurrentRound().turns.length - 1;
             state = GameState.stop;
             // color the winning cells
             for (int offset = 0; offset < winCount; offset++) {
               board.cells[i + offset][j + offset].state = CellState.noughtWin;
             }
             // log winner
-            Player? winner = currentRound.players![currentRound.winnerIndex!];
+            Player? winner = getCurrentRound().getWinner();
             print('Winner is ${winner.name}');
             print('rounds: $rounds');
 
@@ -258,20 +265,20 @@ class Room {
             board.cells[i][j].content != Seed.noSeed) {
           // Case 4.1: X wins
           if (board.cells[i][j].content == Seed.cross) {
-            if (currentRound.winnerIndex == null) {
+            if (getCurrentRound().winnerIndex == null) {
               player1.score = player1.score! + 1;
             }
-            currentRound.winnerIndex = 0;
+            getCurrentRound().winnerIndex = 0;
             player1.finalScore = player1.score;
             player2.finalScore = player2.score;
-            currentRound.winTurnIndex = currentRound.turns.length - 1;
+            getCurrentRound().winTurnIndex = getCurrentRound().turns.length - 1;
             state = GameState.stop;
             // color the winning cells
             for (int offset = 0; offset < winCount; offset++) {
               board.cells[i + offset][j - offset].state = CellState.crossWin;
             }
             // log winner
-            Player? winner = currentRound.players![currentRound.winnerIndex!];
+            Player? winner = getCurrentRound().getWinner();
             print('Winner is ${winner.name}');
             print('rounds: $rounds');
 
@@ -280,20 +287,20 @@ class Room {
           }
           // Case 4.2: O wins
           if (board.cells[i][j].content == Seed.nought) {
-            if (currentRound.winnerIndex == null) {
+            if (getCurrentRound().winnerIndex == null) {
               player2.score = player2.score! + 1;
             }
-            currentRound.winnerIndex = 1;
+            getCurrentRound().winnerIndex = 1;
             player1.finalScore = player1.score;
             player2.finalScore = player2.score;
-            currentRound.winTurnIndex = currentRound.turns.length - 1;
+            getCurrentRound().winTurnIndex = getCurrentRound().turns.length - 1;
             state = GameState.stop;
             // color the winning cells
             for (int offset = 0; offset < winCount; offset++) {
               board.cells[i + offset][j - offset].state = CellState.noughtWin;
             }
             // log winner
-            Player? winner = currentRound.players![currentRound.winnerIndex!];
+            Player? winner = getCurrentRound().getWinner();
             print('Winner is ${winner.name}');
             print('rounds: $rounds');
 
@@ -304,20 +311,20 @@ class Room {
       }
     }
     // if there is no winner in this round, move to the next turn
-    if (currentRound.winnerIndex == null) {
-      currentRound.nextTurn();
+    if (getCurrentRound().winnerIndex == null) {
+      getCurrentRound().nextTurn();
     }
   }
 
   /// Move to the next round when a player wins and the player press the `Next round button`
   void nextRound() {
-    final currentRound = rounds![currentRoundIndex];
     // reset the game
     state = GameState.playing;
     board.reset();
     // move to the next round
-    Round nextRound = Round.cloneNextRound(currentRound!);
-    rounds = [...?rounds, nextRound];
+    Round nextRound = Round.cloneNextRound(getCurrentRound());
+    // rounds = [...?rounds, nextRound];
+    rounds!.add(nextRound);
     currentRoundIndex++;
   }
 
@@ -325,24 +332,17 @@ class Room {
   void reset() {
     state = GameState.playing;
     board.reset();
-    rounds![currentRoundIndex]!.reset();
+    getCurrentRound().reset();
   }
 
   /// Load cell from turns to history board according to historyCurrentTurnIndex
   void updateHistoryBoard() {
     historyBoard.reset();
-    final currenthistoryRound = rounds![currentHistoryRoundIndex];
-    final turns = currenthistoryRound!.turns;
-    // print('Turns: $turns');
-    if (currenthistoryRound.historyCurrentTurnIndex! >= 0) {
-      historyBoard.load(turns, currenthistoryRound.historyCurrentTurnIndex!);
-      // for (int i = 0; i < currenthistoryRound.historyCurrentTurnIndex!; i++) {
-      //   int row = turns[i]!.row!;
-      //   int column = turns[i]!.column!;
-      //   historyBoard.cells[row][column] = Cell.clone(turns[i]!);
-        // print('cell($row, $column)');
-        // print('History board: $historyBoard');
-      // }
+    final turns = getCurrentHistoryRound().turns;
+    final currentHistoryTurnIndex = getCurrentHistoryRound().currentHistoryTurnIndex!;
+    print('Turns: $turns');
+    if (currentHistoryTurnIndex >= 0) {
+      historyBoard.load(turns, currentHistoryTurnIndex);
     }
   }
 

@@ -31,7 +31,7 @@ class IsarService {
 
   Future<Room?> getRoom(int id) async {
     final isar = await db;
-    return isar.rooms.get(id);
+    return isar.rooms.getSync(id);
   }
 
   Stream<List<Room>> watchAllRooms() async* {
@@ -59,6 +59,6 @@ class IsarService {
   // ROUND: GET
   Future<List<Round?>?> getAllRoundsInRoom(int roomId) async {
     final room = await getRoom(roomId);
-    return room?.rounds;
+    return room!.rounds;
   }
 }

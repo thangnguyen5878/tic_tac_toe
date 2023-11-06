@@ -7,13 +7,6 @@ import 'package:get/get.dart';
 class HistoryDetailsBackButton extends StatelessWidget {
   final int roomId = Get.arguments[0];
 
-  HistoryDetailsBackButton({
-    super.key,
-    required this.gameController,
-  });
-
-  final GameController gameController;
-
   @override
   Widget build(BuildContext context) {
     return IconButton(
@@ -23,7 +16,7 @@ class HistoryDetailsBackButton extends StatelessWidget {
         size: kIconSize,
       ),
       onPressed: () {
-        gameController.pauseHistoryAutoPlay();
+        GameController.to.pauseHistoryAutoPlay();
         Get.back();
       },
     );

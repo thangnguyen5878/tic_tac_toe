@@ -11,7 +11,7 @@ import 'package:get/get.dart';
 class GameController extends GetxController {
   //TODO: Implement GameController
   static GameController get to => Get.find();
-  final input = Get.find<CreateRoomController>();
+  final createRoomController = Get.find<CreateRoomController>();
   bool isHistoryAutoPlay = false;
   Room room = Room();
 
@@ -19,20 +19,20 @@ class GameController extends GetxController {
 
   createRoom() async {
     Room newRoom = Room();
-    if (input.room.text != '') newRoom.name = input.room.text;
-    if (input.player1.text != '') {
-      newRoom.rounds![room.currentRoundIndex]!.players![0].name = input.player1.text;
+    if (createRoomController.room.text != '') newRoom.name = createRoomController.room.text;
+    if (createRoomController.player1.text != '') {
+      newRoom.getCurrentRound().players![0].name = createRoomController.player1.text;
     }
-    if (input.player2.text != '') {
-      newRoom.rounds![room.currentRoundIndex]!.players![1].name = input.player2.text;
+    if (createRoomController.player2.text != '') {
+      newRoom.getCurrentRound().players![1].name = createRoomController.player2.text;
     }
-    if (input.rowCount.text != '') {
-      newRoom.board.rowCount = int.tryParse(input.rowCount.text) ?? 10;
-      newRoom.historyBoard.rowCount = int.tryParse(input.rowCount.text) ?? 10;
+    if (createRoomController.rowCount.text != '') {
+      newRoom.board.rowCount = int.tryParse(createRoomController.rowCount.text) ?? 10;
+      newRoom.historyBoard.rowCount = int.tryParse(createRoomController.rowCount.text) ?? 10;
     }
-    if (input.columnCount.text != '') {
-      newRoom.board.columnCount = int.tryParse(input.columnCount.text) ?? 10;
-      newRoom.historyBoard.columnCount = int.tryParse(input.columnCount.text) ?? 10;
+    if (createRoomController.columnCount.text != '') {
+      newRoom.board.columnCount = int.tryParse(createRoomController.columnCount.text) ?? 10;
+      newRoom.historyBoard.columnCount = int.tryParse(createRoomController.columnCount.text) ?? 10;
     }
     newRoom.board.rebuild();
     newRoom.historyBoard.rebuild();
@@ -50,7 +50,7 @@ class GameController extends GetxController {
   /// Load room from database to memory
   loadRoomById(id) async {
     room = (await isarService.getRoom(id))!;
-    var turns = room.rounds![room.currentRoundIndex]!.turns;
+    var turns = room.getCurrentRound().turns;
     room.board.loadAll(turns);
     update();
   }
@@ -65,37 +65,33 @@ class GameController extends GetxController {
     // Update the cell
     Cell? cell = room.board.cells[row][column];
     print('room state: ${room.state}, cell content: ${cell.content.toString()}');
-    if (room.state == GameState.playing &&
-        (cell.content != Seed.cross && cell.content != Seed.nought)) {
-
+    if (room.state == GameState.playing && (cell.content != Seed.cross && cell.content != Seed.nought)) {
       cell.content = seed;
-
-      room.rounds![room.currentRoundIndex]!.turns = [...room.rounds![room.currentRoundIndex]!.turns, cell];
-
+      room.getCurrentRound().turns = [...room.getCurrentRound().turns, cell];
       room.checkWinner();
-
-      print('Draw seed, turns: ${room.rounds![room.currentRoundIndex]!.turns}');
+      print('Draw seed, turns: ${room.getCurrentRound().turns}');
       update();
     }
   }
 
   historyNextTurn() {
-    final round = room.rounds![room.currentHistoryRoundIndex];
-    if (round!.historyCurrentTurnIndex! < round.turns.length) {
-      round.historyNextTurn();
+    final currentHistoryTurnIndex = room.getCurrentHistoryRound().currentHistoryTurnIndex!;
+    final historyTurnCount = room.getCurrentHistoryRound().turns.length;
+    if (currentHistoryTurnIndex < historyTurnCount) {
+      room.getCurrentHistoryRound().historyNextTurn();
       room.updateHistoryBoard();
       update();
-      print('History next turn: ${round.historyCurrentTurnIndex}, ${round.winTurnIndex}');
+      print('historyNextTurn()');
     }
   }
 
   historyPreviousTurn() {
-    final round = room.rounds![room.currentHistoryRoundIndex]!;
-    if (round.historyCurrentTurnIndex! > 0) {
-      round.historyPreviousTurn();
+    final currentHistoryTurnIndex = room.getCurrentHistoryRound().currentHistoryTurnIndex;
+    if (currentHistoryTurnIndex! > 0) {
+      room.getCurrentHistoryRound().historyPreviousTurn();
       room.updateHistoryBoard();
       update();
-      print('previos turn');
+      print('historyPreviousTurn()');
     }
   }
 
@@ -109,9 +105,8 @@ class GameController extends GetxController {
     update();
 
     Timer.periodic(Duration(seconds: 1), (timer) {
-      final historyCurrentRound = room.rounds![room.currentHistoryRoundIndex];
-      final historyCurrentTurnIndex = historyCurrentRound!.historyCurrentTurnIndex;
-      final turnCount = historyCurrentRound.turns.length;
+      final historyCurrentTurnIndex = room.getCurrentHistoryRound().currentHistoryTurnIndex;
+      final turnCount = room.getCurrentHistoryRound().turns.length;
 
       if (isHistoryAutoPlay) {
         historyNextTurn();
@@ -147,10 +142,5 @@ class GameController extends GetxController {
     room.reset();
     print('reset game');
     update();
-  }
-
-  @override
-  Future<void> onInit() async {
-    super.onInit();
   }
 }

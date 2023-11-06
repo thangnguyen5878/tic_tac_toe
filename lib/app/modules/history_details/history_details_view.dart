@@ -15,7 +15,6 @@ class HistoryDetailsView extends GetView<HistoryDetailsController> {
 
   // final roomId = Get.arguments[0];
   // final roundNumber = Get.arguments[1] - 1;
-  final GameController gameController = Get.find<GameController>();
 
   @override
   Widget build(BuildContext context) {
@@ -23,23 +22,23 @@ class HistoryDetailsView extends GetView<HistoryDetailsController> {
 
     return WillPopScope(
       onWillPop: () async {
-        gameController.pauseHistoryAutoPlay();
+        GameController.to.pauseHistoryAutoPlay();
         return true;
       },
       child: Scaffold(
         appBar: AppBar(
         backgroundColor: kBrown40,
-        leading: HistoryDetailsBackButton(gameController: gameController),
+        leading: HistoryDetailsBackButton(),
         title: GetBuilder<GameController>(
           builder: (gameController) {
-            final roundIndex = gameController.room.currentHistoryRoundIndex;
-            final round = gameController.room.rounds![roundIndex];
-            final turnIndex = round!.historyCurrentTurnIndex;
+            final roundIndex = GameController.to.room.currentHistoryRoundIndex;
+            final round = GameController.to.room.getCurrentHistoryRound();
+            final turnIndex = round.currentHistoryTurnIndex;
             int roundCount = roundIndex + 1;
             int turnCount = turnIndex! + 1;
-            if(round.winTurnIndex != null && round!.historyCurrentTurnIndex == round!.winTurnIndex! + 1) {
+            if(round.winTurnIndex != null && round.currentHistoryTurnIndex == round.winTurnIndex! + 1) {
               print('history win turn!');
-              turnCount = round!.historyCurrentTurnIndex!;
+              turnCount = round.currentHistoryTurnIndex!;
             }
             return Text(
               'Round: $roundCount, Turn: $turnCount',

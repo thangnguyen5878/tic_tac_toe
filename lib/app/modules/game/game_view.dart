@@ -1,17 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_tic_tac_toe/app/modules/game/components/board_widget.dart';
 import 'package:flutter_tic_tac_toe/app/modules/game/components/game_back_button.dart';
 import 'package:flutter_tic_tac_toe/app/modules/game/components/game_popup_menu_button.dart';
 import 'package:flutter_tic_tac_toe/app/modules/game/components/next_round_button.dart';
+import 'package:flutter_tic_tac_toe/app/modules/game/components/player_bottom_bar.dart';
 import 'package:flutter_tic_tac_toe/app/modules/game/game_controller.dart';
-import 'package:flutter_tic_tac_toe/app/modules/widget/board_widget.dart';
-import 'package:flutter_tic_tac_toe/app/modules/widget/player_bottom_bar.dart';
 import 'package:flutter_tic_tac_toe/utils/constants/app_colors.dart';
 import 'package:flutter_tic_tac_toe/routes/app_pages.dart';
 import 'package:get/get.dart';
 
 class GameView extends StatelessWidget {
   final roomId = Get.arguments;
-  final GameController gameController = Get.find<GameController>();
 
   GameView({super.key});
   @override
@@ -21,7 +20,7 @@ class GameView extends StatelessWidget {
     return WillPopScope(
       onWillPop: () async {
         Get.back();
-        await gameController.saveRoom();
+        await GameController.to.saveRoom();
         Get.toNamed(Routes.HOME);
         return true;
       },
@@ -30,19 +29,19 @@ class GameView extends StatelessWidget {
           backgroundColor: kBrown40,
           title: GetBuilder<GameController>(
             builder: (gameController) {
-              final currentRoundIndex = gameController.room.currentRoundIndex;
-              final currentTurnIndex = gameController.room.rounds![currentRoundIndex]!.currentTurnIndex;
+              final currentRoundIndex = GameController.to.room.currentRoundIndex;
+              final currentTurnIndex = GameController.to.room.rounds![currentRoundIndex]!.currentTurnIndex;
               return Text(
                 'Round: ${currentRoundIndex + 1}, Turn: ${currentTurnIndex! + 1}',
                 style: const TextStyle(fontSize: 18, color: kBlack),
               );
             },
           ),
-          leading: GameBackButton(gameController: gameController),
+          leading: GameBackButton(),
           actions: [
             // buildResetBoardButton(),
             NextRoundButton(),
-            GamePopupMenuButton(gameController: gameController, roomId: roomId),
+            GamePopupMenuButton(roomId: roomId),
           ],
         ),
         body: Stack(children: [

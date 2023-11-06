@@ -10,8 +10,6 @@ class HistoryCell extends StatelessWidget {
   int row = -1;
   int column = -1;
 
-  final gameController = Get.find<GameController>();
-
   HistoryCell({super.key, required this.row, required this.column});
 
   @override
@@ -21,12 +19,12 @@ class HistoryCell extends StatelessWidget {
       child: GetBuilder(
         init: GameController(),
         builder: (GameController gameController) {
-          final room = gameController.room;
+          final room = GameController.to.room;
           final historyBoard = room.historyBoard;
           final content = historyBoard.cells[row][column].content.toString();
           CellState state = historyBoard.cells[row][column].state!;
           final historyRound = room.rounds![room.currentHistoryRoundIndex];
-          bool isWinTurn = historyRound!.historyCurrentTurnIndex == historyRound.winTurnIndex! + 1;
+          bool isWinTurn = historyRound!.currentHistoryTurnIndex == historyRound.winTurnIndex! + 1;
 
           Color bColor = Colors.white;
 

@@ -8,11 +8,8 @@ import 'package:get/get.dart';
 class GameBackButton extends StatelessWidget {
   GameBackButton({
     super.key,
-    required this.gameController,
   });
-
-  final GameController gameController;
-
+  
   @override
   Widget build(BuildContext context) {
     return IconButton(
@@ -23,9 +20,8 @@ class GameBackButton extends StatelessWidget {
       ),
       onPressed: () async {
         Get.back();
-        await gameController.saveRoom();
+        await GameController.to.saveRoom();
         Get.toNamed(Routes.HOME);
-        // FocusScope.of(context).unfocus();
       },
     );
   }

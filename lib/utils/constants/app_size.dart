@@ -11,3 +11,4 @@ const kPadding28 = 28.0;
 const kPadding48 = 48.0;
 
 const kIconSize = 28.0;
+

@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_tic_tac_toe/app/modules/game/game_controller.dart';
 import 'package:flutter_tic_tac_toe/utils/constants/app_colors.dart';
+import 'package:flutter_tic_tac_toe/utils/constants/app_input.dart';
 import 'package:flutter_tic_tac_toe/utils/constants/app_size.dart';
 import 'package:flutter_tic_tac_toe/utils/constants/app_styles.dart';
 import 'package:flutter_tic_tac_toe/routes/app_pages.dart';
@@ -14,19 +15,15 @@ import 'create_room_controller.dart';
 class CreateRoomView extends StatelessWidget {
   final createRoomController = Get.find<CreateRoomController>();
   final gameController = Get.find<GameController>();
+
   final _formKey = GlobalKey<FormState>();
 
-  String roomName = '';
-  String player1Name = '';
-  String player2Name = '';
-  int rows = 5;
-  int columns = 5;
   CreateRoomView({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-        margin: const EdgeInsets.symmetric(horizontal: 10),
+        margin: EdgeInsets.symmetric(horizontal: kPadding16),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -41,30 +38,18 @@ class CreateRoomView extends StatelessWidget {
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: <Widget>[
-                  Padding(
-                    padding: const EdgeInsets.all(8),
-                    child: _buildRoomField(),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(8),
-                    child: _buildPlayer1Field(),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(8),
-                    child: _buildPlayer2Field(),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(8),
-                    child: _buildRowCountField(),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(8),
-                    child: _buildColumnCountField(),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(8),
-                    child: buildCreateRoomButton(),
-                  )
+                  SizedBox(height: kPadding8),
+                  buildRoomField(),
+                  SizedBox(height: kPadding8),
+                  buildPlayer1Field(),
+                  SizedBox(height: kPadding8),
+                  buildPlayer2Field(),
+                  SizedBox(height: kPadding8),
+                  buildRowCountField(),
+                  SizedBox(height: kPadding8),
+                  buildColumnCountField(),
+                  SizedBox(height: kPadding8),
+                  buildCreateRoomButton(),
                 ],
               ),
             ),
@@ -77,18 +62,17 @@ class CreateRoomView extends StatelessWidget {
   ElevatedButton buildCreateRoomButton() {
     return ElevatedButton(
       style: ElevatedButton.styleFrom(
-          backgroundColor: kBrown30,
-          foregroundColor: kBlack,
-          // minimumSize: Size(double.infinity, 48),
-          padding: EdgeInsets.symmetric(horizontal: kPadding48, vertical: kPadding8),
+        backgroundColor: kBrown30,
+        foregroundColor: kBlack,
+        padding:
+            EdgeInsets.symmetric(horizontal: kPadding48, vertical: kPadding8),
       ),
-
       child: const Text('Create Room'),
       onPressed: () {
         if (_formKey.currentState!.validate()) {
           print('press create room button');
-          gameController.createRoom();
-          print('Room Created: ${gameController.room}');
+          GameController.to.createRoom();
+          print('Room Created: ${GameController.to.room}');
           createRoomController.clear();
           Get.toNamed(Routes.GAME);
         }
@@ -96,7 +80,7 @@ class CreateRoomView extends StatelessWidget {
     );
   }
 
-  TextFormField _buildRoomField() {
+  TextFormField buildRoomField() {
     return TextFormField(
       controller: createRoomController.room,
       decoration: kTextField(labelText: 'Room'),
@@ -104,15 +88,15 @@ class CreateRoomView extends StatelessWidget {
         if (value!.isEmpty) {
           return null;
         }
-        if (value.length > 30) {
-          return 'Room\'s name must be less than or equal to 30 characters';
+        if (value.length > roomFieldMaxLength) {
+          return 'Room\'s name must be less than or equal to $roomFieldMaxLength characters';
         }
         return null;
       },
     );
   }
 
-  TextFormField _buildPlayer1Field() {
+  TextFormField buildPlayer1Field() {
     return TextFormField(
       controller: createRoomController.player1,
       decoration: kTextField(labelText: 'Player 1'),
@@ -120,15 +104,15 @@ class CreateRoomView extends StatelessWidget {
         if (value!.isEmpty) {
           return null;
         }
-        if (value.length > 50) {
-          return 'Player 1\'s name must be less than or equal to 50 characters';
+        if (value.length > player1FieldMaxLength) {
+          return 'Player 1\'s name must be less than or equal to $player1FieldMaxLength characters';
         }
         return null;
       },
     );
   }
 
-  TextFormField _buildPlayer2Field() {
+  TextFormField buildPlayer2Field() {
     return TextFormField(
       controller: createRoomController.player2,
       decoration: kTextField(labelText: 'Player 2'),
@@ -136,40 +120,38 @@ class CreateRoomView extends StatelessWidget {
         if (value!.isEmpty) {
           return null;
         }
-        if (value.length > 50) {
-          return 'Player 2 name must be less than or equal to 50 characters';
+        if (value.length > player2FieldMaxLength) {
+          return 'Player 2 name must be less than or equal to $player2FieldMaxLength characters';
         }
         return null;
       },
     );
   }
 
-  TextFormField _buildRowCountField() {
+  TextFormField buildRowCountField() {
     return TextFormField(
       controller: createRoomController.rowCount,
       decoration: kTextField(
-          // hintText: 'Number of rows (5-18)',
-          labelText: 'Number of rows (5-18)'),
+          labelText: 'Number of rows ($rowCountFieldMinLength-$rowCountFieldMaxLength)'),
       keyboardType: TextInputType.number,
       validator: (value) {
         if (value!.isEmpty) {
           return null;
         }
         int? rowsValue = int.tryParse(value);
-        if (rowsValue == null || rowsValue < 5 || rowsValue > 18) {
-          return 'The board must has nummber of rows from 5 to 18';
+        if (rowsValue == null || rowsValue < rowCountFieldMinLength || rowsValue > rowCountFieldMaxLength) {
+          return 'The board must has nummber of rows from $rowCountFieldMinLength to $rowCountFieldMaxLength';
         }
         return null;
       },
     );
   }
 
-  TextFormField _buildColumnCountField() {
+  TextFormField buildColumnCountField() {
     return TextFormField(
       controller: createRoomController.columnCount,
       decoration: kTextField(
-        // hintText: 'Number of columns (5-12)',
-        labelText: 'Number of columns (5-12)',
+        labelText: 'Number of columns ($columnCountFieldMinLength-$columnCountFieldMaxLength)',
       ),
       keyboardType: TextInputType.number,
       validator: (value) {
@@ -177,8 +159,8 @@ class CreateRoomView extends StatelessWidget {
           return null;
         }
         int? columnsValue = int.tryParse(value);
-        if (columnsValue == null || columnsValue < 5 || columnsValue > 12) {
-          return 'The board must has number of columns from 5 to 12';
+        if (columnsValue == null || columnsValue < columnCountFieldMinLength || columnsValue > columnCountFieldMaxLength) {
+          return 'The board must has number of columns from $columnCountFieldMinLength to $columnCountFieldMaxLength';
         }
         return null;
       },

@@ -14,7 +14,7 @@ class NextRoundButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return GetBuilder<GameController>(
       builder: (gameController) {
-        final isGameOver = gameController.room.state == GameState.stop;
+        final isGameOver = GameController.to.room.state == GameState.stop;
         if (isGameOver) {
           return IconButton(
             icon: const Icon(
@@ -23,8 +23,8 @@ class NextRoundButton extends StatelessWidget {
               size: kIconSize,
             ),
             onPressed: () async {
-              gameController.nextRound();
-              await gameController.saveRoom();
+              GameController.to.nextRound();
+              await GameController.to.saveRoom();
             },
           );
         }

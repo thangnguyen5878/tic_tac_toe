@@ -8,7 +8,6 @@ import 'package:get/get.dart';
 import 'package:get/get_core/get_core.dart';
 
 class RoomCard extends StatelessWidget {
-  final gameController = Get.find<GameController>();
   final Room room;
   RoomCard(
       this.room, {super.key}
@@ -16,11 +15,11 @@ class RoomCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final player1 = room.rounds![room.currentRoundIndex]!.players![0];
-    final player2 = room.rounds![room.currentRoundIndex]!.players![1];
+    final player1 = room.getCurrentRound().players![0];
+    final player2 = room.getCurrentRound().players![1];
     return InkWell(
       onTap: () async {
-        await gameController.loadRoomById(room.id);
+        await GameController.to.loadRoomById(room.id);
         Get.toNamed(Routes.GAME, arguments: room.id);
       },
       child: Container(

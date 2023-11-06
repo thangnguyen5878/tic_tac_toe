@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_tic_tac_toe/app/modules/game/game_controller.dart';
-import 'package:flutter_tic_tac_toe/app/modules/widget/cell_widget.dart';
+import 'package:flutter_tic_tac_toe/app/modules/game/components/cell_widget.dart';
 
 class BoardWidget extends StatelessWidget {
   const BoardWidget({super.key});

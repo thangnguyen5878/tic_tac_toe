@@ -8,7 +8,6 @@ import 'package:flutter_tic_tac_toe/utils/constants/app_styles.dart';
 import 'package:get/get.dart';
 
 class RoundCard extends StatelessWidget {
-  final gameController = Get.find<GameController>();
   final Round round;
   final int roomId;
 
@@ -31,10 +30,11 @@ class RoundCard extends StatelessWidget {
     else {
       winnerColor = kBlack; // You can choose another color
     }
+
     return InkWell(
       onTap: () {
-        gameController.room.currentHistoryRoundIndex = round.number! - 1;
-        Get.toNamed(Routes.HISTORY_DETAILS, arguments: [roomId, gameController.room.currentHistoryRoundIndex]);
+        GameController.to.room.currentHistoryRoundIndex = round.number! - 1;
+        Get.toNamed(Routes.HISTORY_DETAILS, arguments: [roomId, GameController.to.room.currentHistoryRoundIndex]);
       },
       child: Container(
         padding: const EdgeInsets.all(kPadding12),

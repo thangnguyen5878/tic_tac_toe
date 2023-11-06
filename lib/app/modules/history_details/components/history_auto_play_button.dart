@@ -10,10 +10,10 @@ class HistoryAutoPlayButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return GetBuilder<GameController>(builder: (gameController) {
 
-      IconData icon = gameController.isHistoryAutoPlay == false ? Icons.play_arrow : Icons.pause;
+      IconData icon = GameController.to.isHistoryAutoPlay == false ? Icons.play_arrow : Icons.pause;
       return ElevatedButton(
         onPressed: () {
-          gameController.toggleHistoryAutoPlay();
+          GameController.to.toggleHistoryAutoPlay();
         },
         style: TextButton.styleFrom(elevation: 1, backgroundColor: kPurple30),
         child: Icon(icon, color: Colors.black, size: 35),

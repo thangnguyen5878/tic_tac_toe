@@ -9,7 +9,6 @@ import 'package:flutter_tic_tac_toe/utils/constants/app_styles.dart';
 import 'package:get/get.dart';
 
 class HomeView extends StatelessWidget {
-  final GameController gameController = Get.find<GameController>();
   HomeView({super.key});
 
   @override
@@ -46,7 +45,7 @@ class HomeView extends StatelessWidget {
               GetBuilder<GameController>(
                 builder: (gameController) {
                   return FutureBuilder<List<Room>>(
-                    future: gameController.isarService.getAllRooms(),
+                    future: GameController.to.isarService.getAllRooms(),
                     builder: (context, snapshot) {
                       if (snapshot.hasError) {
                         return Center(

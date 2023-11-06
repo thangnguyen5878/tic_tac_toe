@@ -12,17 +12,17 @@ class HistoryPlayerBottomBar extends StatelessWidget {
       color: Colors.grey,
       height: 48,
       child: GetBuilder(builder: (GameController gameController) {
-        final room = gameController.room;
-        final round = room.rounds![room.currentHistoryRoundIndex];
-        final currentTurn = round!.historyCurrentTurnIndex;
-        int? historyCurrentPlayerIndex = round!.historyCurrentPlayerIndex;
-        if(round.winTurnIndex != -1 && round!.historyCurrentTurnIndex == round.winTurnIndex! + 1) {
+        final room = GameController.to.room;
+        final round = room.getCurrentHistoryRound();
+
+        int? historyCurrentPlayerIndex = round.currentHistoryPlayerIndex;
+        if(round.winTurnIndex != -1 && round.currentHistoryTurnIndex == round.winTurnIndex! + 1) {
           print('history win turn!!!');
-          historyCurrentPlayerIndex = round!.winnerIndex!;
+          historyCurrentPlayerIndex = round.winnerIndex!;
         }
         final player1 = round.players![0];
         final player2 = round.players![1];;
-        final isWinTurn = round.historyCurrentTurnIndex == round.winTurnIndex;
+        final isWinTurn = round.currentHistoryTurnIndex == round.winTurnIndex;
 
         final player1Score = isWinTurn ? player1.finalScore : player1.initialScore;
         final player2Score = isWinTurn ? player2.finalScore : player2.initialScore;

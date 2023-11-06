@@ -15,9 +15,9 @@ class PlayerBottomBar extends StatelessWidget {
       color: Colors.grey,
       height: 48,
       child: GetBuilder(builder: (GameController gameController) {
-        final room = gameController.room;
-        final round = room.rounds![room.currentRoundIndex];
-        final currentPlayer = round!.players![round.currentPlayerIndex!];
+        final room = GameController.to.room;
+        final round = room.getCurrentRound();
+        final currentPlayer = round.players![round.currentPlayerIndex!];
         final player1 = round.players![0];
         final player2 = round.players![1];;
 

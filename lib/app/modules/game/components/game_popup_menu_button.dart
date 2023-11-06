@@ -9,11 +9,9 @@ import 'package:get/get.dart';
 class GamePopupMenuButton extends StatelessWidget {
   GamePopupMenuButton({
     super.key,
-    required this.gameController,
     required this.roomId,
   });
-
-  final GameController gameController;
+  
   var roomId;
 
   @override
@@ -33,11 +31,11 @@ class GamePopupMenuButton extends StatelessWidget {
       ],
       onSelected: (String value) async {
         if (value == 'reset') {
-          gameController.resetBoard();
-          await gameController.saveRoom();
+          GameController.to.resetBoard();
+          await GameController.to.saveRoom();
         } else if (value == 'history') {
           print('Going to History Page, roomId = $roomId');
-          roomId = await gameController.saveRoom();
+          roomId = await GameController.to.saveRoom();
           Get.toNamed(Routes.HISTORY, arguments: roomId);
         }
       },

@@ -15,8 +15,6 @@ class Board {
   @ignore
   late List<List<Cell>> cells;
 
-  // Board({this.rowCount, this.columnCount});
-
   /// Board constructor with the default 5x5 board
   Board({int? rowCount, int? columnCount})
       : rowCount = rowCount ?? 10,
@@ -43,7 +41,7 @@ class Board {
     );
   }
 
-  /// Load drew cells from turns list in Round object to the board
+  /// Load from turns list to the board
   void loadAll(List<Cell?> turns) {
     for (int t = 0; t < turns.length; t++) {
       int row = turns[t]!.row!;
@@ -70,10 +68,7 @@ class Board {
     print('Reset board');
   }
 
-
-
   @override
   String toString() =>
       'Board(rowCount: $rowCount, columnCount: $columnCount, cells: $cells)';
-
 }
