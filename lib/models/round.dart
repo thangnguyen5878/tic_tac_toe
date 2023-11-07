@@ -108,7 +108,6 @@ class Round {
     // print('next turn, current player: ${historyCurrentPlayerIndex! + 1}');
   }
 
-
   historyPreviousTurn() {
     // if (historyCurrentTurnIndex == 1) {
     //   historyCurrentPlayerIndex = null;

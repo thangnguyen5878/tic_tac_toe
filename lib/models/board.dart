@@ -62,7 +62,7 @@ class Board {
   void reset() {
     for (int i = 0; i < rowCount!; i++) {
       for (int j = 0; j < columnCount!; j++) {
-        cells[i][j].reset();
+        cells[i][j] = Cell.cloneReset(cells[i][j]);
       }
     }
     print('Reset board');

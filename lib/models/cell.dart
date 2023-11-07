@@ -27,10 +27,16 @@ class Cell {
     state = cell.state;
   }
 
-  /// Reset a cell to default state
-  reset() {
+  Cell.cloneReset(Cell cell) {
+    row = cell.row;
+    column = cell.column;
     content = Seed.noSeed;
     state = CellState.normal;
+  }
+
+  /// Reset a cell to default state
+  reset() {
+
   }
 
   @override

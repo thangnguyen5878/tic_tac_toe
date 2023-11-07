@@ -105,7 +105,7 @@ class Room {
   void logWinnerAndNotify() {
     Player? winner = getCurrentRound().getWinner();
     print('Winner is ${winner.name}');
-    print('rounds: $rounds');
+    // print('rounds: $rounds');
     Get.toNamed('winner');
   }
 
@@ -160,7 +160,6 @@ class Room {
     return false;
   }
 
-
   bool checkDiagonals() {
     // Check descending diagonal (\)
     for (int row = 0; row <= board.rowCount! - winCount; row++) {
@@ -175,6 +174,7 @@ class Room {
         }
       }
     }
+
     // Check ascending diagonal (/)
     for (int row = 0; row <= board.rowCount! - winCount; row++) {
       for (int col = winCount - 1; col < board.columnCount!; col++) {
@@ -196,11 +196,15 @@ class Room {
     // reset the game
     state = GameState.playing;
     board.reset();
+
     // move to the next round
     Round nextRound = Round.cloneNextRound(getCurrentRound());
     // rounds = [...?rounds, nextRound];
     rounds!.add(nextRound);
     currentRoundIndex++;
+    // print('nextRound()\n');
+    // print('current round: ${rounds![currentRoundIndex - 1]}\n');
+    // print('next round: ${rounds![currentRoundIndex]}\n');
   }
 
   /// Reset game to the original state
@@ -215,7 +219,7 @@ class Room {
     historyBoard.reset();
     final turns = getCurrentHistoryRound().turns;
     final currentHistoryTurnIndex = getCurrentHistoryRound().currentHistoryTurnIndex!;
-    print('Turns: $turns');
+    // print('Turns: $turns');
     if (currentHistoryTurnIndex >= 0) {
       historyBoard.load(turns, currentHistoryTurnIndex);
     }
