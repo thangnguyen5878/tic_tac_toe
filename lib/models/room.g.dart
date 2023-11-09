@@ -23,10 +23,11 @@ const RoomSchema = CollectionSchema(
       type: IsarType.object,
       target: r'Board',
     ),
-    r'currentHistoryRoundIndex': PropertySchema(
+    r'currentRound': PropertySchema(
       id: 1,
-      name: r'currentHistoryRoundIndex',
-      type: IsarType.long,
+      name: r'currentRound',
+      type: IsarType.object,
+      target: r'Round',
     ),
     r'currentRoundIndex': PropertySchema(
       id: 2,
@@ -39,25 +40,46 @@ const RoomSchema = CollectionSchema(
       type: IsarType.object,
       target: r'Board',
     ),
-    r'name': PropertySchema(
+    r'historyRound': PropertySchema(
       id: 4,
+      name: r'historyRound',
+      type: IsarType.object,
+      target: r'Round',
+    ),
+    r'historyRoundCount': PropertySchema(
+      id: 5,
+      name: r'historyRoundCount',
+      type: IsarType.long,
+    ),
+    r'historyRoundIndex': PropertySchema(
+      id: 6,
+      name: r'historyRoundIndex',
+      type: IsarType.long,
+    ),
+    r'name': PropertySchema(
+      id: 7,
       name: r'name',
       type: IsarType.string,
     ),
+    r'roundCount': PropertySchema(
+      id: 8,
+      name: r'roundCount',
+      type: IsarType.long,
+    ),
     r'rounds': PropertySchema(
-      id: 5,
+      id: 9,
       name: r'rounds',
       type: IsarType.objectList,
       target: r'Round',
     ),
     r'state': PropertySchema(
-      id: 6,
+      id: 10,
       name: r'state',
       type: IsarType.string,
       enumMap: _RoomstateEnumValueMap,
     ),
     r'winCount': PropertySchema(
-      id: 7,
+      id: 11,
       name: r'winCount',
       type: IsarType.long,
     )
@@ -90,8 +112,14 @@ int _roomEstimateSize(
   bytesCount += 3 +
       BoardSchema.estimateSize(object.board, allOffsets[Board]!, allOffsets);
   bytesCount += 3 +
+      RoundSchema.estimateSize(
+          object.currentRound, allOffsets[Round]!, allOffsets);
+  bytesCount += 3 +
       BoardSchema.estimateSize(
           object.historyBoard, allOffsets[Board]!, allOffsets);
+  bytesCount += 3 +
+      RoundSchema.estimateSize(
+          object.historyRound, allOffsets[Round]!, allOffsets);
   bytesCount += 3 + object.name.length * 3;
   {
     final list = object.rounds;
@@ -124,7 +152,12 @@ void _roomSerialize(
     BoardSchema.serialize,
     object.board,
   );
-  writer.writeLong(offsets[1], object.currentHistoryRoundIndex);
+  writer.writeObject<Round>(
+    offsets[1],
+    allOffsets,
+    RoundSchema.serialize,
+    object.currentRound,
+  );
   writer.writeLong(offsets[2], object.currentRoundIndex);
   writer.writeObject<Board>(
     offsets[3],
@@ -132,15 +165,24 @@ void _roomSerialize(
     BoardSchema.serialize,
     object.historyBoard,
   );
-  writer.writeString(offsets[4], object.name);
+  writer.writeObject<Round>(
+    offsets[4],
+    allOffsets,
+    RoundSchema.serialize,
+    object.historyRound,
+  );
+  writer.writeLong(offsets[5], object.historyRoundCount);
+  writer.writeLong(offsets[6], object.historyRoundIndex);
+  writer.writeString(offsets[7], object.name);
+  writer.writeLong(offsets[8], object.roundCount);
   writer.writeObjectList<Round>(
-    offsets[5],
+    offsets[9],
     allOffsets,
     RoundSchema.serialize,
     object.rounds,
   );
-  writer.writeString(offsets[6], object.state.name);
-  writer.writeLong(offsets[7], object.winCount);
+  writer.writeString(offsets[10], object.state.name);
+  writer.writeLong(offsets[11], object.winCount);
 }
 
 Room _roomDeserialize(
@@ -156,7 +198,6 @@ Room _roomDeserialize(
         allOffsets,
       ) ??
       Board();
-  object.currentHistoryRoundIndex = reader.readLong(offsets[1]);
   object.currentRoundIndex = reader.readLong(offsets[2]);
   object.historyBoard = reader.readObjectOrNull<Board>(
         offsets[3],
@@ -164,14 +205,15 @@ Room _roomDeserialize(
         allOffsets,
       ) ??
       Board();
+  object.historyRoundIndex = reader.readLong(offsets[6]);
   object.id = id;
-  object.name = reader.readString(offsets[4]);
+  object.name = reader.readString(offsets[7]);
   object.rounds = reader.readObjectOrNullList<Round>(
-    offsets[5],
+    offsets[9],
     RoundSchema.deserialize,
     allOffsets,
   );
-  object.state = _RoomstateValueEnumMap[reader.readStringOrNull(offsets[6])] ??
+  object.state = _RoomstateValueEnumMap[reader.readStringOrNull(offsets[10])] ??
       GameState.playing;
   return object;
 }
@@ -191,7 +233,12 @@ P _roomDeserializeProp<P>(
           ) ??
           Board()) as P;
     case 1:
-      return (reader.readLong(offset)) as P;
+      return (reader.readObjectOrNull<Round>(
+            offset,
+            RoundSchema.deserialize,
+            allOffsets,
+          ) ??
+          Round()) as P;
     case 2:
       return (reader.readLong(offset)) as P;
     case 3:
@@ -202,17 +249,30 @@ P _roomDeserializeProp<P>(
           ) ??
           Board()) as P;
     case 4:
-      return (reader.readString(offset)) as P;
+      return (reader.readObjectOrNull<Round>(
+            offset,
+            RoundSchema.deserialize,
+            allOffsets,
+          ) ??
+          Round()) as P;
     case 5:
+      return (reader.readLong(offset)) as P;
+    case 6:
+      return (reader.readLong(offset)) as P;
+    case 7:
+      return (reader.readString(offset)) as P;
+    case 8:
+      return (reader.readLong(offset)) as P;
+    case 9:
       return (reader.readObjectOrNullList<Round>(
         offset,
         RoundSchema.deserialize,
         allOffsets,
       )) as P;
-    case 6:
+    case 10:
       return (_RoomstateValueEnumMap[reader.readStringOrNull(offset)] ??
           GameState.playing) as P;
-    case 7:
+    case 11:
       return (reader.readLong(offset)) as P;
     default:
       throw IsarError('Unknown property with id $propertyId');
@@ -229,7 +289,7 @@ const _RoomstateValueEnumMap = {
 };
 
 Id _roomGetId(Room object) {
-  return object.id;
+  return object.id ?? Isar.autoIncrement;
 }
 
 List<IsarLinkBase<dynamic>> _roomGetLinks(Room object) {
@@ -316,62 +376,6 @@ extension RoomQueryWhere on QueryBuilder<Room, Room, QWhereClause> {
 }
 
 extension RoomQueryFilter on QueryBuilder<Room, Room, QFilterCondition> {
-  QueryBuilder<Room, Room, QAfterFilterCondition>
-      currentHistoryRoundIndexEqualTo(int value) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'currentHistoryRoundIndex',
-        value: value,
-      ));
-    });
-  }
-
-  QueryBuilder<Room, Room, QAfterFilterCondition>
-      currentHistoryRoundIndexGreaterThan(
-    int value, {
-    bool include = false,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        include: include,
-        property: r'currentHistoryRoundIndex',
-        value: value,
-      ));
-    });
-  }
-
-  QueryBuilder<Room, Room, QAfterFilterCondition>
-      currentHistoryRoundIndexLessThan(
-    int value, {
-    bool include = false,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.lessThan(
-        include: include,
-        property: r'currentHistoryRoundIndex',
-        value: value,
-      ));
-    });
-  }
-
-  QueryBuilder<Room, Room, QAfterFilterCondition>
-      currentHistoryRoundIndexBetween(
-    int lower,
-    int upper, {
-    bool includeLower = true,
-    bool includeUpper = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.between(
-        property: r'currentHistoryRoundIndex',
-        lower: lower,
-        includeLower: includeLower,
-        upper: upper,
-        includeUpper: includeUpper,
-      ));
-    });
-  }
-
   QueryBuilder<Room, Room, QAfterFilterCondition> currentRoundIndexEqualTo(
       int value) {
     return QueryBuilder.apply(this, (query) {
@@ -425,7 +429,129 @@ extension RoomQueryFilter on QueryBuilder<Room, Room, QFilterCondition> {
     });
   }
 
-  QueryBuilder<Room, Room, QAfterFilterCondition> idEqualTo(Id value) {
+  QueryBuilder<Room, Room, QAfterFilterCondition> historyRoundCountEqualTo(
+      int value) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'historyRoundCount',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<Room, Room, QAfterFilterCondition> historyRoundCountGreaterThan(
+    int value, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'historyRoundCount',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<Room, Room, QAfterFilterCondition> historyRoundCountLessThan(
+    int value, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'historyRoundCount',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<Room, Room, QAfterFilterCondition> historyRoundCountBetween(
+    int lower,
+    int upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'historyRoundCount',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
+      ));
+    });
+  }
+
+  QueryBuilder<Room, Room, QAfterFilterCondition> historyRoundIndexEqualTo(
+      int value) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'historyRoundIndex',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<Room, Room, QAfterFilterCondition> historyRoundIndexGreaterThan(
+    int value, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'historyRoundIndex',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<Room, Room, QAfterFilterCondition> historyRoundIndexLessThan(
+    int value, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'historyRoundIndex',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<Room, Room, QAfterFilterCondition> historyRoundIndexBetween(
+    int lower,
+    int upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'historyRoundIndex',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
+      ));
+    });
+  }
+
+  QueryBuilder<Room, Room, QAfterFilterCondition> idIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNull(
+        property: r'id',
+      ));
+    });
+  }
+
+  QueryBuilder<Room, Room, QAfterFilterCondition> idIsNotNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNotNull(
+        property: r'id',
+      ));
+    });
+  }
+
+  QueryBuilder<Room, Room, QAfterFilterCondition> idEqualTo(Id? value) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
         property: r'id',
@@ -435,7 +561,7 @@ extension RoomQueryFilter on QueryBuilder<Room, Room, QFilterCondition> {
   }
 
   QueryBuilder<Room, Room, QAfterFilterCondition> idGreaterThan(
-    Id value, {
+    Id? value, {
     bool include = false,
   }) {
     return QueryBuilder.apply(this, (query) {
@@ -448,7 +574,7 @@ extension RoomQueryFilter on QueryBuilder<Room, Room, QFilterCondition> {
   }
 
   QueryBuilder<Room, Room, QAfterFilterCondition> idLessThan(
-    Id value, {
+    Id? value, {
     bool include = false,
   }) {
     return QueryBuilder.apply(this, (query) {
@@ -461,8 +587,8 @@ extension RoomQueryFilter on QueryBuilder<Room, Room, QFilterCondition> {
   }
 
   QueryBuilder<Room, Room, QAfterFilterCondition> idBetween(
-    Id lower,
-    Id upper, {
+    Id? lower,
+    Id? upper, {
     bool includeLower = true,
     bool includeUpper = true,
   }) {
@@ -601,6 +727,58 @@ extension RoomQueryFilter on QueryBuilder<Room, Room, QFilterCondition> {
       return query.addFilterCondition(FilterCondition.greaterThan(
         property: r'name',
         value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<Room, Room, QAfterFilterCondition> roundCountEqualTo(int value) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'roundCount',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<Room, Room, QAfterFilterCondition> roundCountGreaterThan(
+    int value, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'roundCount',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<Room, Room, QAfterFilterCondition> roundCountLessThan(
+    int value, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'roundCount',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<Room, Room, QAfterFilterCondition> roundCountBetween(
+    int lower,
+    int upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'roundCount',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
       ));
     });
   }
@@ -909,10 +1087,24 @@ extension RoomQueryObject on QueryBuilder<Room, Room, QFilterCondition> {
     });
   }
 
+  QueryBuilder<Room, Room, QAfterFilterCondition> currentRound(
+      FilterQuery<Round> q) {
+    return QueryBuilder.apply(this, (query) {
+      return query.object(q, r'currentRound');
+    });
+  }
+
   QueryBuilder<Room, Room, QAfterFilterCondition> historyBoard(
       FilterQuery<Board> q) {
     return QueryBuilder.apply(this, (query) {
       return query.object(q, r'historyBoard');
+    });
+  }
+
+  QueryBuilder<Room, Room, QAfterFilterCondition> historyRound(
+      FilterQuery<Round> q) {
+    return QueryBuilder.apply(this, (query) {
+      return query.object(q, r'historyRound');
     });
   }
 
@@ -927,18 +1119,6 @@ extension RoomQueryObject on QueryBuilder<Room, Room, QFilterCondition> {
 extension RoomQueryLinks on QueryBuilder<Room, Room, QFilterCondition> {}
 
 extension RoomQuerySortBy on QueryBuilder<Room, Room, QSortBy> {
-  QueryBuilder<Room, Room, QAfterSortBy> sortByCurrentHistoryRoundIndex() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'currentHistoryRoundIndex', Sort.asc);
-    });
-  }
-
-  QueryBuilder<Room, Room, QAfterSortBy> sortByCurrentHistoryRoundIndexDesc() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'currentHistoryRoundIndex', Sort.desc);
-    });
-  }
-
   QueryBuilder<Room, Room, QAfterSortBy> sortByCurrentRoundIndex() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'currentRoundIndex', Sort.asc);
@@ -951,6 +1131,30 @@ extension RoomQuerySortBy on QueryBuilder<Room, Room, QSortBy> {
     });
   }
 
+  QueryBuilder<Room, Room, QAfterSortBy> sortByHistoryRoundCount() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'historyRoundCount', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Room, Room, QAfterSortBy> sortByHistoryRoundCountDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'historyRoundCount', Sort.desc);
+    });
+  }
+
+  QueryBuilder<Room, Room, QAfterSortBy> sortByHistoryRoundIndex() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'historyRoundIndex', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Room, Room, QAfterSortBy> sortByHistoryRoundIndexDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'historyRoundIndex', Sort.desc);
+    });
+  }
+
   QueryBuilder<Room, Room, QAfterSortBy> sortByName() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'name', Sort.asc);
@@ -960,6 +1164,18 @@ extension RoomQuerySortBy on QueryBuilder<Room, Room, QSortBy> {
   QueryBuilder<Room, Room, QAfterSortBy> sortByNameDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'name', Sort.desc);
+    });
+  }
+
+  QueryBuilder<Room, Room, QAfterSortBy> sortByRoundCount() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'roundCount', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Room, Room, QAfterSortBy> sortByRoundCountDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'roundCount', Sort.desc);
     });
   }
 
@@ -989,18 +1205,6 @@ extension RoomQuerySortBy on QueryBuilder<Room, Room, QSortBy> {
 }
 
 extension RoomQuerySortThenBy on QueryBuilder<Room, Room, QSortThenBy> {
-  QueryBuilder<Room, Room, QAfterSortBy> thenByCurrentHistoryRoundIndex() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'currentHistoryRoundIndex', Sort.asc);
-    });
-  }
-
-  QueryBuilder<Room, Room, QAfterSortBy> thenByCurrentHistoryRoundIndexDesc() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'currentHistoryRoundIndex', Sort.desc);
-    });
-  }
-
   QueryBuilder<Room, Room, QAfterSortBy> thenByCurrentRoundIndex() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'currentRoundIndex', Sort.asc);
@@ -1010,6 +1214,30 @@ extension RoomQuerySortThenBy on QueryBuilder<Room, Room, QSortThenBy> {
   QueryBuilder<Room, Room, QAfterSortBy> thenByCurrentRoundIndexDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'currentRoundIndex', Sort.desc);
+    });
+  }
+
+  QueryBuilder<Room, Room, QAfterSortBy> thenByHistoryRoundCount() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'historyRoundCount', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Room, Room, QAfterSortBy> thenByHistoryRoundCountDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'historyRoundCount', Sort.desc);
+    });
+  }
+
+  QueryBuilder<Room, Room, QAfterSortBy> thenByHistoryRoundIndex() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'historyRoundIndex', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Room, Room, QAfterSortBy> thenByHistoryRoundIndexDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'historyRoundIndex', Sort.desc);
     });
   }
 
@@ -1034,6 +1262,18 @@ extension RoomQuerySortThenBy on QueryBuilder<Room, Room, QSortThenBy> {
   QueryBuilder<Room, Room, QAfterSortBy> thenByNameDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'name', Sort.desc);
+    });
+  }
+
+  QueryBuilder<Room, Room, QAfterSortBy> thenByRoundCount() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'roundCount', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Room, Room, QAfterSortBy> thenByRoundCountDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'roundCount', Sort.desc);
     });
   }
 
@@ -1063,15 +1303,21 @@ extension RoomQuerySortThenBy on QueryBuilder<Room, Room, QSortThenBy> {
 }
 
 extension RoomQueryWhereDistinct on QueryBuilder<Room, Room, QDistinct> {
-  QueryBuilder<Room, Room, QDistinct> distinctByCurrentHistoryRoundIndex() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addDistinctBy(r'currentHistoryRoundIndex');
-    });
-  }
-
   QueryBuilder<Room, Room, QDistinct> distinctByCurrentRoundIndex() {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'currentRoundIndex');
+    });
+  }
+
+  QueryBuilder<Room, Room, QDistinct> distinctByHistoryRoundCount() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'historyRoundCount');
+    });
+  }
+
+  QueryBuilder<Room, Room, QDistinct> distinctByHistoryRoundIndex() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'historyRoundIndex');
     });
   }
 
@@ -1079,6 +1325,12 @@ extension RoomQueryWhereDistinct on QueryBuilder<Room, Room, QDistinct> {
       {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'name', caseSensitive: caseSensitive);
+    });
+  }
+
+  QueryBuilder<Room, Room, QDistinct> distinctByRoundCount() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'roundCount');
     });
   }
 
@@ -1109,9 +1361,9 @@ extension RoomQueryProperty on QueryBuilder<Room, Room, QQueryProperty> {
     });
   }
 
-  QueryBuilder<Room, int, QQueryOperations> currentHistoryRoundIndexProperty() {
+  QueryBuilder<Room, Round, QQueryOperations> currentRoundProperty() {
     return QueryBuilder.apply(this, (query) {
-      return query.addPropertyName(r'currentHistoryRoundIndex');
+      return query.addPropertyName(r'currentRound');
     });
   }
 
@@ -1127,9 +1379,33 @@ extension RoomQueryProperty on QueryBuilder<Room, Room, QQueryProperty> {
     });
   }
 
+  QueryBuilder<Room, Round, QQueryOperations> historyRoundProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'historyRound');
+    });
+  }
+
+  QueryBuilder<Room, int, QQueryOperations> historyRoundCountProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'historyRoundCount');
+    });
+  }
+
+  QueryBuilder<Room, int, QQueryOperations> historyRoundIndexProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'historyRoundIndex');
+    });
+  }
+
   QueryBuilder<Room, String, QQueryOperations> nameProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'name');
+    });
+  }
+
+  QueryBuilder<Room, int, QQueryOperations> roundCountProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'roundCount');
     });
   }
 

@@ -20,7 +20,10 @@ class GameBackButton extends StatelessWidget {
       ),
       onPressed: () async {
         Get.back();
-        await GameController.to.saveRoom();
+        print('Object before save: ${GameController.to.room}');
+        final newId = await GameController.to.saveRoom();
+        final room = await GameController.to.isarService.getRoom(newId);
+        print('Object after save (from database): $room');
         Get.toNamed(Routes.HOME);
       },
     );

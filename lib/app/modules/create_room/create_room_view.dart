@@ -68,13 +68,17 @@ class CreateRoomView extends StatelessWidget {
             EdgeInsets.symmetric(horizontal: kPadding48, vertical: kPadding8),
       ),
       child: const Text('Create Room'),
-      onPressed: () {
+      onPressed: () async {
         if (_formKey.currentState!.validate()) {
           print('press create room button');
           GameController.to.createRoom();
+          print('room before save: ${GameController.to.room}');
+          final id = await GameController.to.saveRoom();
+          final newRoom = await GameController.to.isarService.getRoom(id);
+          print('room after save (load from database): $newRoom');
           print('Room Created: ${GameController.to.room}');
-          createRoomController.clear();
-          Get.toNamed(Routes.GAME);
+          createRoomController.clearInput();
+          Get.offNamed(Routes.GAME);
         }
       },
     );

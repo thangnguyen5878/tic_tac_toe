@@ -27,49 +27,47 @@ class HistoryView extends StatelessWidget {
 
   Container buildBody(roomId) {
     return Container(
-        alignment: Alignment.topCenter,
-        child: Column(
-          children: [
-            GetBuilder<GameController>(
-              builder: (gameController) {
-                return FutureBuilder<List<Round?>?>(
-                  future: GameController.to.isarService.getAllRoundsInRoom(roomId),
-                  builder: (context, snapshot) {
-                    if (snapshot.hasError) {
-                      return Center(
-                        child: Text('Đã xảy ra lỗi'),
-                      );
-                    } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                      return Center(
-                        child: Text('Không có phòng nào'),
-                      );
-                    } else if (snapshot.hasData) {
-                      final rounds = snapshot.data!;
-                      return Expanded(
-                        child: ListView.separated(
-                          padding: EdgeInsets.symmetric(horizontal: kPadding16, vertical: kPadding12),
-                          separatorBuilder: (BuildContext context, int index) {
-                            return SizedBox(height: kPadding12);
-                          },
-                          itemCount: rounds.length,
-                          itemBuilder: (context, index) {
-                            final round = rounds[index];
-                            return RoundCard(round: round!, roomId: roomId,);
-                          },
-                        ),
-                      );
-                    } else {
-                      return Center(
-                        child: CircularProgressIndicator(),
-                      );
-                    }
-                  },
+      alignment: Alignment.topCenter,
+      child: Column(
+        children: [
+          FutureBuilder<List<Round?>?>(
+            future: GameController.to.isarService.getAllRoundsInRoom(roomId),
+            builder: (context, snapshot) {
+              // Connecting to database
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return CircularProgressIndicator();
+                // Error
+              } else if (snapshot.hasError) {
+                return Center(
+                  child: Text('Error: ${snapshot.error}'),
                 );
-              },
-            )
-          ],
-        ),
-      );
+                // There are no rounds in this room
+              } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                return Center(
+                  child: Text('Không có phòng nào'),
+                );
+                // There are several rounds in this room and display it
+              } else {
+                List<Round?>? rounds = snapshot.data;
+                return Expanded(
+                  child: ListView.separated(
+                    padding: EdgeInsets.symmetric(horizontal: kPadding16, vertical: kPadding12),
+                    separatorBuilder: (BuildContext context, int index) {
+                      return SizedBox(height: kPadding12);
+                    },
+                    itemCount: rounds!.length,
+                    itemBuilder: (context, index) {
+                      final round = rounds[index];
+                      return RoundCard(round: round!, roomId: roomId);
+                    },
+                  ),
+                );
+              }
+            },
+          ),
+        ],
+      ),
+    );
   }
 
   AppBar buildAppBar() {

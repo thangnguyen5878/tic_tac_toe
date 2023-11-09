@@ -21,10 +21,10 @@ class GameController extends GetxController {
     Room newRoom = Room();
     if (createRoomController.room.text != '') newRoom.name = createRoomController.room.text;
     if (createRoomController.player1.text != '') {
-      newRoom.getCurrentRound().players![0].name = createRoomController.player1.text;
+      newRoom.currentRound.player1.name = createRoomController.player1.text;
     }
     if (createRoomController.player2.text != '') {
-      newRoom.getCurrentRound().players![1].name = createRoomController.player2.text;
+      newRoom.currentRound.player2.name = createRoomController.player2.text;
     }
     if (createRoomController.rowCount.text != '') {
       newRoom.board.rowCount = int.tryParse(createRoomController.rowCount.text) ?? 10;
@@ -37,11 +37,11 @@ class GameController extends GetxController {
     newRoom.board.rebuild();
     newRoom.historyBoard.rebuild();
     room = newRoom;
-    await isarService.saveRoom(room);
     update();
   }
 
-  Future<int> saveRoom() async {
+  /// Save current room to database and return room id
+  saveRoom() async {
     await isarService.saveRoom(room);
     update();
     return room.id;
@@ -50,16 +50,12 @@ class GameController extends GetxController {
   /// Load room from database to memory
   loadRoomById(id) async {
     room = (await isarService.getRoom(id))!;
-    var turns = room.getCurrentRound().turns;
+    var turns = room.currentRound.turns;
     room.board.loadAll(turns);
     update();
   }
 
   /// The player draw a Seed in a cell(row, column) on the board.
-  /// - Update the cell
-  /// - Add the cell to the turns list in Round object
-  /// - Scan the board to check the winner
-  /// - Update the UI
   drawSeed(int row, int column, Seed seed) {
     print('draw seed...');
     // Update the cell
@@ -67,18 +63,19 @@ class GameController extends GetxController {
     print('room state: ${room.state}, cell content: ${cell.content.toString()}');
     if (room.state == GameState.playing && (cell.content != Seed.cross && cell.content != Seed.nought)) {
       cell.content = seed;
-      room.getCurrentRound().turns = [...room.getCurrentRound().turns, cell];
+      room.currentRound.turns = [...room.currentRound.turns, cell];
       room.checkWinner();
-      print('Draw seed, turns: ${room.getCurrentRound().turns}');
+      print('Draw seed, turns: ${room.currentRound.turns}');
+
       update();
     }
   }
 
   historyNextTurn() {
-    final currentHistoryTurnIndex = room.getCurrentHistoryRound().currentHistoryTurnIndex!;
-    final historyTurnCount = room.getCurrentHistoryRound().turns.length;
+    final currentHistoryTurnIndex = room.historyRound.historyTurnIndex;
+    final historyTurnCount = room.historyRound.turns.length;
     if (currentHistoryTurnIndex < historyTurnCount) {
-      room.getCurrentHistoryRound().historyNextTurn();
+      room.historyRound.historyNextTurn();
       room.updateHistoryBoard();
       update();
       print('historyNextTurn()');
@@ -86,9 +83,9 @@ class GameController extends GetxController {
   }
 
   historyPreviousTurn() {
-    final currentHistoryTurnIndex = room.getCurrentHistoryRound().currentHistoryTurnIndex;
-    if (currentHistoryTurnIndex! > 0) {
-      room.getCurrentHistoryRound().historyPreviousTurn();
+    final currentHistoryTurnIndex = room.historyRound.historyTurnIndex;
+    if (currentHistoryTurnIndex > 0) {
+      room.historyRound.historyPreviousTurn();
       room.updateHistoryBoard();
       update();
       print('historyPreviousTurn()');
@@ -105,14 +102,14 @@ class GameController extends GetxController {
     update();
 
     Timer.periodic(Duration(seconds: 1), (timer) {
-      final historyCurrentTurnIndex = room.getCurrentHistoryRound().currentHistoryTurnIndex;
-      final turnCount = room.getCurrentHistoryRound().turns.length;
+      final historyCurrentTurnIndex = room.historyRound.historyTurnIndex;
+      final turnCount = room.historyRound.turns.length;
 
       if (isHistoryAutoPlay) {
         historyNextTurn();
         update();
 
-        if (historyCurrentTurnIndex! >= turnCount - 1) {
+        if (historyCurrentTurnIndex >= turnCount - 1) {
           pauseHistoryAutoPlay();
           timer.cancel();
         }
@@ -134,7 +131,7 @@ class GameController extends GetxController {
   /// Move to the next round when a player wins and the player press the `Next round button`, then update the board.
   nextRound() {
     room.nextRound();
-    print('rounds: ${room.rounds}');
+    // print('rounds: ${room.rounds}');
     update();
   }
 

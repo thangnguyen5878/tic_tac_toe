@@ -8,9 +8,9 @@ class WinnerView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final room = GameController.to.room;
-    final round = room.getCurrentRound();
+    final round = room.currentRound;
 
-    final winnerName = round.getWinner().name;
+    final winnerName = round.winner.name;
     final roundCount = room.currentRoundIndex + 1;
 
     return SafeArea(

@@ -11,7 +11,7 @@ class CreateRoomController extends GetxController {
   TextEditingController rowCount = TextEditingController();
   TextEditingController columnCount = TextEditingController();
 
-  clear() {
+  clearInput() {
     room.clear();
     player1.clear();
     player2.clear();

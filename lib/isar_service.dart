@@ -31,7 +31,7 @@ class IsarService {
 
   Future<Room?> getRoom(int id) async {
     final isar = await db;
-    return isar.rooms.getSync(id);
+    return isar.rooms.get(id);
   }
 
   Stream<List<Room>> watchAllRooms() async* {
@@ -40,12 +40,14 @@ class IsarService {
   }
 
   // ROOM: INSERT AND UPDATE
-  Future<void> saveRoom(Room room) async {
+  /// Save a Room object in the database
+   saveRoom(Room room) async {
     final isar = await db;
     isar.writeTxn(() => isar.rooms.put(room));
   }
 
   // ROOM: DELETE
+  /// Delete a Room  from database
   Future<void> deleteRoom(int id) async {
     final isar = await db;
     isar.rooms.delete(id);

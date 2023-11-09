@@ -14,7 +14,7 @@ part 'room.g.dart';
 
 @collection
 class Room {
-  Id id = Isar.autoIncrement;
+  Id? id = Isar.autoIncrement;
 
   String name;
 
@@ -29,7 +29,7 @@ class Room {
 
   int currentRoundIndex;
 
-  int currentHistoryRoundIndex;
+  int historyRoundIndex;
 
   @ignore
   List<Cell>? checkingCells = List<Cell>.empty(growable: true);
@@ -40,23 +40,30 @@ class Room {
       : name = 'Untitled Room',
         board = Board(),
         historyBoard = Board(),
-        currentHistoryRoundIndex = 0,
+        historyRoundIndex = 0,
         state = GameState.playing,
         currentRoundIndex = 0 {
     rounds = [
-      Round(number: 1, players: [
-        Player(name: 'Player 1', seed: Seed.cross, score: 0),
-        Player(name: 'Player 2', seed: Seed.nought, score: 0)
-      ])
+      Round(number: 1)
     ];
   }
 
-  Round getCurrentRound() {
+  // getters
+  int get roundCount {
+    return currentRoundIndex + 1;
+  }
+
+  Round get currentRound {
     return rounds![currentRoundIndex]!;
   }
 
-  Round getCurrentHistoryRound() {
-    return rounds![currentHistoryRoundIndex]!;
+  // getters history
+  Round get historyRound {
+    return rounds![historyRoundIndex]!;
+  }
+
+  int get historyRoundCount {
+    return historyRoundIndex + 1;
   }
 
   /// Check whether adjacent cells are the same or not to check the winner
@@ -74,8 +81,8 @@ class Room {
   }
 
   void handleWin(int winnerIndex) {
-    Player player1 = getCurrentRound().players![0];
-    Player player2 = getCurrentRound().players![1];
+    Player player1 = currentRound.players![0];
+    Player player2 = currentRound.players![1];
 
     if (winnerIndex == 0) {
       player1.score = player1.score! + 1;
@@ -85,10 +92,10 @@ class Room {
       colorWinningCells(CellState.noughtWin);
     }
 
-    getCurrentRound().winnerIndex = winnerIndex;
+    currentRound.winnerIndex = winnerIndex;
     player1.finalScore = player1.score;
     player2.finalScore = player2.score;
-    getCurrentRound().winTurnIndex = getCurrentRound().turns.length - 1;
+    currentRound.winTurnIndex = currentRound.turns.length - 1;
     state = GameState.stop;
 
     logWinnerAndNotify();
@@ -103,7 +110,7 @@ class Room {
 
   /// This method will log the winner and navigate to the winner screen.
   void logWinnerAndNotify() {
-    Player? winner = getCurrentRound().getWinner();
+    Player? winner = currentRound.winner;
     print('Winner is ${winner.name}');
     // print('rounds: $rounds');
     Get.toNamed('winner');
@@ -123,7 +130,7 @@ class Room {
       return; // Winner found and handled
     }
     // If no winner, move to next turn
-    getCurrentRound().nextTurn();
+    currentRound.nextTurn();
   }
 
   bool checkLines() {
@@ -193,13 +200,11 @@ class Room {
 
   /// Move to the next round when a player wins and the player press the `Next round button`
   void nextRound() {
-    // reset the game
     state = GameState.playing;
     board.reset();
 
-    // move to the next round
-    Round nextRound = Round.cloneNextRound(getCurrentRound());
-    // rounds = [...?rounds, nextRound];
+    Round nextRound = Round.cloneNextRound(currentRound);
+    // print('next round: $nextRound');
     rounds!.add(nextRound);
     currentRoundIndex++;
     // print('nextRound()\n');
@@ -211,14 +216,14 @@ class Room {
   void reset() {
     state = GameState.playing;
     board.reset();
-    getCurrentRound().reset();
+    currentRound.reset();
   }
 
   /// Load cell from turns to history board according to historyCurrentTurnIndex
   void updateHistoryBoard() {
     historyBoard.reset();
-    final turns = getCurrentHistoryRound().turns;
-    final currentHistoryTurnIndex = getCurrentHistoryRound().currentHistoryTurnIndex!;
+    final turns = historyRound.turns;
+    final currentHistoryTurnIndex = historyRound.historyTurnIndex;
     // print('Turns: $turns');
     if (currentHistoryTurnIndex >= 0) {
       historyBoard.load(turns, currentHistoryTurnIndex);
@@ -227,6 +232,6 @@ class Room {
 
   @override
   String toString() {
-    return 'Room{name: $name, board: $board, historyBoard: $historyBoard, historyRoundIndex: $currentHistoryRoundIndex, state: $state, rounds: $rounds, currentRoundIndex: $currentRoundIndex, checkingCells: $checkingCells, winCount: $winCount}';
+    return 'Room{id: $id, name: $name, state: $state, board: $board, historyBoard: $historyBoard, rounds: $rounds, currentRoundIndex: $currentRoundIndex, historyRoundIndex: $historyRoundIndex, checkingCells: $checkingCells, winCount: $winCount}';
   }
 }

@@ -20,18 +20,19 @@ class HistoryCell extends StatelessWidget {
         init: GameController(),
         builder: (GameController gameController) {
           final room = GameController.to.room;
-          final historyBoard = room.historyBoard;
-          final content = historyBoard.cells[row][column].content.toString();
-          CellState state = historyBoard.cells[row][column].state!;
-          final historyRound = room.rounds![room.currentHistoryRoundIndex];
-          bool isWinTurn = historyRound!.currentHistoryTurnIndex == historyRound.winTurnIndex! + 1;
+          final round = room.historyRound;
+          final board = room.historyBoard;
+
+          final content = board.cells[row][column].content.toString();
+          CellState state = board.cells[row][column].state!;
+
+
 
           Color bColor = Colors.white;
-
-          if (state == CellState.crossWin && isWinTurn == true) {
+          if (state == CellState.crossWin && round.isHistoryWinTurn == true) {
               bColor = kRed20;
           }
-          if (state == CellState.noughtWin && isWinTurn == true) {
+          if (state == CellState.noughtWin && round.isHistoryWinTurn == true) {
               bColor = kGreen30;
           }
           // print('build cell($row, $column), $state, $bColor, $isWinTurn, ${historyRound!.historyCurrentTurnIndex}, ${historyRound.winTurnIndex}');

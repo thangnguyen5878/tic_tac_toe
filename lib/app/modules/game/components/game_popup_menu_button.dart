@@ -9,7 +9,6 @@ import 'package:get/get.dart';
 class GamePopupMenuButton extends StatelessWidget {
   GamePopupMenuButton({
     super.key,
-    required this.roomId,
   });
   
   var roomId;
@@ -35,6 +34,7 @@ class GamePopupMenuButton extends StatelessWidget {
           await GameController.to.saveRoom();
         } else if (value == 'history') {
           print('Going to History Page, roomId = $roomId');
+          GameController.to.saveRoom();
           roomId = await GameController.to.saveRoom();
           Get.toNamed(Routes.HISTORY, arguments: roomId);
         }

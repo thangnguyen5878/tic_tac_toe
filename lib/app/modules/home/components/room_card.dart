@@ -15,8 +15,8 @@ class RoomCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final player1 = room.getCurrentRound().players![0];
-    final player2 = room.getCurrentRound().players![1];
+    final player1 = room.currentRound.players![0];
+    final player2 = room.currentRound.players![1];
     return InkWell(
       onTap: () async {
         await GameController.to.loadRoomById(room.id);

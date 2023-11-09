@@ -5,7 +5,6 @@ import 'package:flutter_tic_tac_toe/app/modules/history_details/components/contr
 import 'package:flutter_tic_tac_toe/app/modules/history_details/components/history_board.dart';
 import 'package:flutter_tic_tac_toe/app/modules/history_details/components/history_player_bottom_bar.dart';
 import 'package:flutter_tic_tac_toe/utils/constants/app_colors.dart';
-
 import 'package:get/get.dart';
 
 import 'history_details_controller.dart';
@@ -18,6 +17,8 @@ class HistoryDetailsView extends GetView<HistoryDetailsController> {
 
   @override
   Widget build(BuildContext context) {
+    final room = GameController.to.room;
+    final round = room.historyRound;
     print('build history details page...');
 
     return WillPopScope(
@@ -27,27 +28,17 @@ class HistoryDetailsView extends GetView<HistoryDetailsController> {
       },
       child: Scaffold(
         appBar: AppBar(
-        backgroundColor: kBrown40,
-        leading: HistoryDetailsBackButton(),
-        title: GetBuilder<GameController>(
-          builder: (gameController) {
-            final roundIndex = GameController.to.room.currentHistoryRoundIndex;
-            final round = GameController.to.room.getCurrentHistoryRound();
-            final turnIndex = round.currentHistoryTurnIndex;
-            int roundCount = roundIndex + 1;
-            int turnCount = turnIndex! + 1;
-            if(round.winTurnIndex != null && round.currentHistoryTurnIndex == round.winTurnIndex! + 1) {
-              print('history win turn!');
-              turnCount = round.currentHistoryTurnIndex!;
-            }
-            return Text(
-              'Round: $roundCount, Turn: $turnCount',
-              style: const TextStyle(fontSize: 18, color: kBlack),
-            );
-          },
+          backgroundColor: kBrown40,
+          leading: HistoryDetailsBackButton(),
+          title: GetBuilder<GameController>(
+            builder: (gameController) {
+              return Text(
+                'Round: ${room.historyRoundCount}, Turn: ${round.historyTurnCount}',
+                style: const TextStyle(fontSize: 18, color: kBlack),
+              );
+            },
+          ),
         ),
-
-      ),
         body: Stack(children: [
           Center(
             child: Padding(
@@ -75,4 +66,3 @@ class HistoryDetailsView extends GetView<HistoryDetailsController> {
     );
   }
 }
-

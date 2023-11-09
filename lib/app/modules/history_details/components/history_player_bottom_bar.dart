@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_tic_tac_toe/app/modules/game/game_controller.dart';
+import 'package:flutter_tic_tac_toe/models/round.dart';
 import 'package:flutter_tic_tac_toe/utils/constants/app_colors.dart';
 import 'package:get/get_state_manager/src/simple/get_state.dart';
 
@@ -13,71 +14,109 @@ class HistoryPlayerBottomBar extends StatelessWidget {
       height: 48,
       child: GetBuilder(builder: (GameController gameController) {
         final room = GameController.to.room;
-        final round = room.getCurrentHistoryRound();
+        final round = room.historyRound;
 
-        int? historyCurrentPlayerIndex = round.currentHistoryPlayerIndex;
-        if(round.winTurnIndex != -1 && round.currentHistoryTurnIndex == round.winTurnIndex! + 1) {
-          print('history win turn!!!');
-          historyCurrentPlayerIndex = round.winnerIndex!;
-        }
-        final player1 = round.players![0];
-        final player2 = round.players![1];;
-        final isWinTurn = round.currentHistoryTurnIndex == round.winTurnIndex;
+        final isPLayer1 = round.historyPlayer.index == 0;
+        final isPlayer2 = round.historyPlayer.index == 1;
 
-        final player1Score = isWinTurn ? player1.finalScore : player1.initialScore;
-        final player2Score = isWinTurn ? player2.finalScore : player2.initialScore;
-        final player1TextColor = historyCurrentPlayerIndex == 0 ? kBlack : kGrey45;
-        final player2TextColor = historyCurrentPlayerIndex == 1 ? kBlack : kGrey45;
-        final player1BoxColor = historyCurrentPlayerIndex == 0 ? kBrown30 : kGrey30;
-        final player2BoxColor = historyCurrentPlayerIndex == 1 ? kBrown30 : kGrey30;
+        final player1TextColor = isPLayer1 ? kBlack : kGrey45;
+        final player1BoxColor = isPLayer1 ? kBrown30 : kGrey30;
+        final player2TextColor = isPlayer2 ? kBlack : kGrey45;
+        final player2BoxColor = isPlayer2 ? kBrown30 : kGrey30;
 
-        print('history player bottom bar: $isWinTurn, ${round.winTurnIndex}, $historyCurrentPlayerIndex');
+        print('history player bottom bar');
+        print('isHistoryWinTurn: ${round.isHistoryWinTurn}');
+        print('player 1 score (score initial final): ${round.player1.score} ${round.player1.initialScore} ${round.player1.finalScore}');
+        print('player 2 score (score initial final): ${round.player2.score} ${round.player2.initialScore} ${round.player2.finalScore}');
+        print('history round: $round');
+
         return Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
-            // Player 1 Box
-            Expanded(
-              child: Container(
-                color: player1BoxColor,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      '${player1.name}: X',
-                      style:
-                      TextStyle(color: player1TextColor, fontWeight: FontWeight.bold),
-                    ),
-                    Text('Score: $player1Score',
-                        style: TextStyle(
-                            color: player1TextColor, fontWeight: FontWeight.bold)),
-                  ],
-                ),
-              ),
-            ),
+            Player1Container(
+                round: round,
+                player1BoxColor: player1BoxColor,
+                player1TextColor: player1TextColor),
             // Player 2 Box
-            Expanded(
-              child: Container(
-                color: player2BoxColor,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      '${player2.name}: O',
-                      style:
-                      TextStyle(color: player2TextColor, fontWeight: FontWeight.bold),
-                    ),
-                    Text(
-                      'Score: $player2Score',
-                      style:
-                      TextStyle(color: player2TextColor, fontWeight: FontWeight.bold),
-                    ),
-                  ],
-                ),
-              ),
-            ),
+            Player2Container(
+                round: round,
+                player2BoxColor: player2BoxColor,
+                player2TextColor: player2TextColor),
           ],
         );
       }),
+    );
+  }
+}
+
+class Player2Container extends StatelessWidget {
+  const Player2Container({
+    super.key,
+    required this.round,
+    required this.player2BoxColor,
+    required this.player2TextColor,
+  });
+
+  final Round round;
+  final Color player2BoxColor;
+  final Color player2TextColor;
+
+  @override
+  Widget build(BuildContext context) {
+    return Expanded(
+      child: Container(
+        color: player2BoxColor,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(
+              '${round.player2.name}: O',
+              style: TextStyle(
+                  color: player2TextColor, fontWeight: FontWeight.bold),
+            ),
+            Text(
+              'Score: ${round.historyPlayer2Score}',
+              style: TextStyle(
+                  color: player2TextColor, fontWeight: FontWeight.bold),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class Player1Container extends StatelessWidget {
+  const Player1Container({
+    super.key,
+    required this.round,
+    required this.player1BoxColor,
+    required this.player1TextColor,
+  });
+
+  final Round round;
+  final Color player1BoxColor;
+  final Color player1TextColor;
+
+  @override
+  Widget build(BuildContext context) {
+    return Expanded(
+      child: Container(
+        color: player1BoxColor,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(
+              '${round.player1.name}: X',
+              style: TextStyle(
+                  color: player1TextColor, fontWeight: FontWeight.bold),
+            ),
+            Text('Score: ${round.historyPlayer1Score}',
+                style: TextStyle(
+                    color: player1TextColor, fontWeight: FontWeight.bold)),
+          ],
+        ),
+      ),
     );
   }
 }
