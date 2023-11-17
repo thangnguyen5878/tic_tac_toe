@@ -34,11 +34,6 @@ class Cell {
     state = CellState.normal;
   }
 
-  /// Reset a cell to default state
-  reset() {
-
-  }
-
   @override
   String toString() {
     return '''cell($row, $column): $content, $state\n''';

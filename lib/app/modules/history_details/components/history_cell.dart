@@ -20,7 +20,7 @@ class HistoryCell extends StatelessWidget {
         init: GameController(),
         builder: (GameController gameController) {
           final room = GameController.to.room;
-          final round = room.getCurrentHistoryRound();
+          final round = room.getHistoryRound();
           final board = room.historyBoard;
 
           final content = board.cells[row][column].content.toString();

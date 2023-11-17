@@ -57,7 +57,7 @@ class Room {
   }
 
   // getters history
-  Round getCurrentHistoryRound() {
+  Round getHistoryRound() {
     return rounds![historyRoundIndex]!;
   }
 
@@ -222,8 +222,8 @@ class Room {
   /// Load cell from turns to history board according to historyCurrentTurnIndex
   void updateHistoryBoard() {
     historyBoard.reset();
-    final turns = getCurrentHistoryRound().turns;
-    final currentHistoryTurnIndex = getCurrentHistoryRound().historyTurnIndex!;
+    final turns = getHistoryRound().turns;
+    final currentHistoryTurnIndex = getHistoryRound().historyTurnIndex!;
     // print('Turns: $turns');
     if (currentHistoryTurnIndex >= 0) {
       historyBoard.load(turns, currentHistoryTurnIndex);

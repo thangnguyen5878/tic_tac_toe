@@ -13,7 +13,7 @@ class HistoryPlayerBottomBar extends StatelessWidget {
       height: 48,
       child: GetBuilder(builder: (GameController gameController) {
         final room = GameController.to.room;
-        final round = room.getCurrentHistoryRound();
+        final round = room.getHistoryRound();
 
         final player1TextColor = round.getHistoryPlayerIndex() == 0 ? kBlack : kGrey45;
         final player2TextColor = round.getHistoryPlayerIndex() == 1 ? kBlack : kGrey45;

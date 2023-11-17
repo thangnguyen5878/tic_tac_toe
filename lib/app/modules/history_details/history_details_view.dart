@@ -32,7 +32,7 @@ class HistoryDetailsView extends GetView<HistoryDetailsController> {
         title: GetBuilder<GameController>(
           builder: (gameController) {
             final room = GameController.to.room;
-            final round = GameController.to.room.getCurrentHistoryRound();
+            final round = GameController.to.room.getHistoryRound();
 
             return Text(
               'Round: ${room.getHistoryRoundCount()}, Turn: ${round.getHistoryTurnCount()}',

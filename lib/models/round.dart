@@ -72,7 +72,7 @@ class Round {
     return turns[currentTurnIndex!]!;
   }
 
-  Cell getCurrentHistoryTurn() {
+  Cell getHistoryTurn() {
     return turns[historyTurnIndex!]!;
   }
 

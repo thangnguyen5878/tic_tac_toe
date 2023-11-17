@@ -71,10 +71,10 @@ class GameController extends GetxController {
   }
 
   historyNextTurn() {
-    final currentHistoryTurnIndex = room.getCurrentHistoryRound().historyTurnIndex!;
-    final historyTurnCount = room.getCurrentHistoryRound().turns.length;
+    final currentHistoryTurnIndex = room.getHistoryRound().historyTurnIndex!;
+    final historyTurnCount = room.getHistoryRound().turns.length;
     if (currentHistoryTurnIndex < historyTurnCount) {
-      room.getCurrentHistoryRound().historyNextTurn();
+      room.getHistoryRound().historyNextTurn();
       room.updateHistoryBoard();
       update();
       print('historyNextTurn()');
@@ -82,9 +82,9 @@ class GameController extends GetxController {
   }
 
   historyPreviousTurn() {
-    final currentHistoryTurnIndex = room.getCurrentHistoryRound().historyTurnIndex;
+    final currentHistoryTurnIndex = room.getHistoryRound().historyTurnIndex;
     if (currentHistoryTurnIndex! > 0) {
-      room.getCurrentHistoryRound().historyPreviousTurn();
+      room.getHistoryRound().historyPreviousTurn();
       room.updateHistoryBoard();
       update();
       print('historyPreviousTurn()');
@@ -101,8 +101,8 @@ class GameController extends GetxController {
     update();
 
     Timer.periodic(Duration(seconds: 1), (timer) {
-      final historyCurrentTurnIndex = room.getCurrentHistoryRound().historyTurnIndex;
-      final turnCount = room.getCurrentHistoryRound().turns.length;
+      final historyCurrentTurnIndex = room.getHistoryRound().historyTurnIndex;
+      final turnCount = room.getHistoryRound().turns.length;
 
       if (isHistoryAutoPlay) {
         historyNextTurn();
