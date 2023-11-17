@@ -14,7 +14,7 @@ class Round {
 
   int? currentPlayerIndex;
 
-  int? historyPlayerIndex;
+  int? _historyPlayerIndex;
 
   int? winnerIndex;
 
@@ -32,18 +32,18 @@ class Round {
       : currentTurnIndex = 0,
         historyTurnIndex = 0,
         currentPlayerIndex = 0,
-        historyPlayerIndex = 0;
+        _historyPlayerIndex = 0;
 
   // getters
-  Player getPLayer1() {
+  Player getPlayer1() {
     return players![0];
   }
 
-  Player getPLayer2() {
+  Player getPlayer2() {
     return players![1];
   }
 
-  Player getCurrentPLayer() {
+  Player getCurrentPlayer() {
     return players![currentPlayerIndex!];
   }
 
@@ -53,7 +53,19 @@ class Round {
   }
 
   Player getCurrentHistoryPlayer() {
-    return players![historyPlayerIndex!];
+    return players![_historyPlayerIndex!];
+  }
+
+  int getHistoryPlayerIndex() {
+    return isHistoryWinTurn() ? winnerIndex! : _historyPlayerIndex!;
+  }
+
+  int getHistoryPlayer1Score() {
+    return isHistoryWinTurn() ? getPlayer1().finalScore! : getPlayer1().initialScore!;
+  }
+
+  int getHistoryPlayer2Score() {
+    return isHistoryWinTurn() ? getPlayer2().finalScore! : getPlayer2().initialScore!;
   }
 
   Cell getCurrentTurn() {
@@ -74,15 +86,16 @@ class Round {
 
   Round.cloneNextRound(Round round) {
     number = round.number! + 1;
-    players = round.players!.map((player) => Player.clone(player)).toList();
+    players = round.players!.map((player) => Player.cloneNextRound(player)).toList();
     currentPlayerIndex = 0;
-    historyPlayerIndex = 0;
+    _historyPlayerIndex = 0;
     winnerIndex = null;
     turns = [];
     historyTurns = [];
     currentTurnIndex = 0;
     historyTurnIndex = 0;
     winTurnIndex = null;
+    print('clone next round');
   }
 
   reset() {
@@ -107,10 +120,10 @@ class Round {
   }
 
   historyNextTurn() {
-    if (historyPlayerIndex == 0) {
-      historyPlayerIndex = 1;
+    if (_historyPlayerIndex == 0) {
+      _historyPlayerIndex = 1;
     } else {
-      historyPlayerIndex = 0;
+      _historyPlayerIndex = 0;
     }
     historyTurnIndex = historyTurnIndex! + 1;
     // if (historyCurrentTurnIndex! >= winTurnIndex! - 1) {
@@ -124,13 +137,13 @@ class Round {
     // if (historyCurrentTurnIndex == 1) {
     //   historyCurrentPlayerIndex = null;
     // }
-    if (historyPlayerIndex == 0) {
-      historyPlayerIndex = 1;
+    if (_historyPlayerIndex == 0) {
+      _historyPlayerIndex = 1;
     } else {
-      historyPlayerIndex = 0;
+      _historyPlayerIndex = 0;
     }
     historyTurnIndex = historyTurnIndex! - 1;
-    print('next turn, current player: ${historyPlayerIndex! + 1}');
+    print('next turn, current player: ${_historyPlayerIndex! + 1}');
   }
 
   updateFinalScore() {
@@ -139,6 +152,6 @@ class Round {
 
   @override
   String toString() {
-    return 'Round{number: $number, players: $players, currentPlayerIndex: $currentPlayerIndex, winnerIndex: $winnerIndex, turns: $turns, currentTurnIndex: $currentTurnIndex, historyCurrentTurnIndex: $historyTurnIndex}';
+    return 'Round{number: $number, players: $players, currentPlayerIndex: $currentPlayerIndex, _historyPlayerIndex: $_historyPlayerIndex, winnerIndex: $winnerIndex, turns: $turns, historyTurns: $historyTurns, currentTurnIndex: $currentTurnIndex, winTurnIndex: $winTurnIndex, historyTurnIndex: $historyTurnIndex}';
   }
 }

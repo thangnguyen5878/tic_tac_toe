@@ -130,7 +130,7 @@ class GameController extends GetxController {
   /// Move to the next round when a player wins and the player press the `Next round button`, then update the board.
   nextRound() {
     room.nextRound();
-    print('rounds: ${room.rounds}');
+    // print('rounds: ${room.rounds}');
     update();
   }
 

@@ -12,6 +12,8 @@ class NextRoundButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
+
     return GetBuilder<GameController>(
       builder: (gameController) {
         final isGameOver = GameController.to.room.state == GameState.stop;
@@ -23,7 +25,9 @@ class NextRoundButton extends StatelessWidget {
               size: kIconSize,
             ),
             onPressed: () async {
+              print('before next round: ${GameController.to.room.getCurrentRound()}');
               GameController.to.nextRound();
+              print('after next round: ${GameController.to.room.getCurrentRound()}');
               await GameController.to.saveRoom();
             },
           );

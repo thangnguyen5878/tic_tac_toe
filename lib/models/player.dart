@@ -5,6 +5,8 @@ part 'player.g.dart';
 
 @embedded
 class Player {
+  int? index;
+
   String? name;
 
   @Enumerated(EnumType.name)
@@ -16,12 +18,13 @@ class Player {
 
   int? finalScore;
 
-  Player({this.name, this.seed, int? score}) : score = score ?? 0
+  Player({this.index, this.name, this.seed, int? score}) : score = score ?? 0
   {
     initialScore = score;
   }
 
-  Player.clone(Player player) {
+  Player.cloneNextRound(Player player) {
+    index = player.index;
     name = player.name;
     seed = player.seed;
     score = player.score;
@@ -30,5 +33,7 @@ class Player {
   }
 
   @override
-  String toString() => 'Player(name: $name, seed: $seed, score: $score)';
+  String toString() {
+    return 'Player{index: $index, name: $name, seed: $seed, score: $score, initialScore: $initialScore, finalScore: $finalScore}';
+  }
 }

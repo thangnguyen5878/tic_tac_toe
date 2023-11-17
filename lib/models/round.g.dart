@@ -123,7 +123,7 @@ void _roundSerialize(
 ) {
   writer.writeLong(offsets[0], object.currentPlayerIndex);
   writer.writeLong(offsets[1], object.currentTurnIndex);
-  writer.writeLong(offsets[2], object.historyPlayerIndex);
+  writer.writeLong(offsets[2], object._historyPlayerIndex);
   writer.writeLong(offsets[3], object.historyTurnIndex);
   writer.writeObjectList<Cell>(
     offsets[4],
@@ -166,7 +166,7 @@ Round _roundDeserialize(
   );
   object.currentPlayerIndex = reader.readLongOrNull(offsets[0]);
   object.currentTurnIndex = reader.readLongOrNull(offsets[1]);
-  object.historyPlayerIndex = reader.readLongOrNull(offsets[2]);
+  object._historyPlayerIndex = reader.readLongOrNull(offsets[2]);
   object.historyTurnIndex = reader.readLongOrNull(offsets[3]);
   object.historyTurns = reader.readObjectOrNullList<Cell>(
         offsets[4],

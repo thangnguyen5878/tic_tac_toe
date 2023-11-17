@@ -15,24 +15,12 @@ class HistoryPlayerBottomBar extends StatelessWidget {
         final room = GameController.to.room;
         final round = room.getCurrentHistoryRound();
 
-        int? historyCurrentPlayerIndex = round.historyPlayerIndex;
-        if(round.winTurnIndex != null && round.historyTurnIndex == round.winTurnIndex! + 1) {
-          print('history win turn!!!');
-          historyCurrentPlayerIndex = round.winnerIndex!;
-        }
+        final player1TextColor = round.getHistoryPlayerIndex() == 0 ? kBlack : kGrey45;
+        final player2TextColor = round.getHistoryPlayerIndex() == 1 ? kBlack : kGrey45;
+        final player1BoxColor = round.getHistoryPlayerIndex() == 0 ? kBrown30 : kGrey30;
+        final player2BoxColor = round.getHistoryPlayerIndex() == 1 ? kBrown30 : kGrey30;
 
-        final player1 = round.players![0];
-        final player2 = round.players![1];;
-        final isWinTurn = round.historyTurnIndex == round.winTurnIndex;
-
-        final player1Score = isWinTurn ? player1.finalScore : player1.initialScore;
-        final player2Score = isWinTurn ? player2.finalScore : player2.initialScore;
-        final player1TextColor = historyCurrentPlayerIndex == 0 ? kBlack : kGrey45;
-        final player2TextColor = historyCurrentPlayerIndex == 1 ? kBlack : kGrey45;
-        final player1BoxColor = historyCurrentPlayerIndex == 0 ? kBrown30 : kGrey30;
-        final player2BoxColor = historyCurrentPlayerIndex == 1 ? kBrown30 : kGrey30;
-
-        print('history player bottom bar: $isWinTurn, ${round.winTurnIndex}, $historyCurrentPlayerIndex');
+        // print('history player bottom bar: ${round.winTurnIndex}');
         return Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
@@ -44,11 +32,11 @@ class HistoryPlayerBottomBar extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
-                      '${player1.name}: X',
+                      '${round.getPlayer1().name}: X',
                       style:
                       TextStyle(color: player1TextColor, fontWeight: FontWeight.bold),
                     ),
-                    Text('Score: $player1Score',
+                    Text('Score: ${round.getHistoryPlayer1Score()}',
                         style: TextStyle(
                             color: player1TextColor, fontWeight: FontWeight.bold)),
                   ],
@@ -63,12 +51,12 @@ class HistoryPlayerBottomBar extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
-                      '${player2.name}: O',
+                      '${round.getPlayer2().name}: O',
                       style:
                       TextStyle(color: player2TextColor, fontWeight: FontWeight.bold),
                     ),
                     Text(
-                      'Score: $player2Score',
+                      'Score: ${round.getHistoryPlayer2Score()}',
                       style:
                       TextStyle(color: player2TextColor, fontWeight: FontWeight.bold),
                     ),

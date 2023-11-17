@@ -45,8 +45,8 @@ class Room {
         currentRoundIndex = 0 {
     rounds = [
       Round(number: 1, players: [
-        Player(name: 'Player 1', seed: Seed.cross, score: 0),
-        Player(name: 'Player 2', seed: Seed.nought, score: 0)
+        Player(index: 0, name: 'Player 1', seed: Seed.cross, score: 0),
+        Player(index: 1, name: 'Player 2', seed: Seed.nought, score: 0)
       ])
     ];
   }
@@ -205,8 +205,7 @@ class Room {
 
     // move to the next round
     Round nextRound = Round.cloneNextRound(getCurrentRound());
-    // rounds = [...?rounds, nextRound];
-    rounds!.add(nextRound);
+    rounds = [...?rounds, nextRound];
     currentRoundIndex++;
     // print('nextRound()\n');
     // print('current round: ${rounds![currentRoundIndex - 1]}\n');
