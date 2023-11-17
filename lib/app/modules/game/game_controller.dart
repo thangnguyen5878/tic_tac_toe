@@ -56,10 +56,6 @@ class GameController extends GetxController {
   }
 
   /// The player draw a Seed in a cell(row, column) on the board.
-  /// - Update the cell
-  /// - Add the cell to the turns list in Round object
-  /// - Scan the board to check the winner
-  /// - Update the UI
   drawSeed(int row, int column, Seed seed) {
     print('draw seed...');
     // Update the cell
@@ -75,7 +71,7 @@ class GameController extends GetxController {
   }
 
   historyNextTurn() {
-    final currentHistoryTurnIndex = room.getCurrentHistoryRound().currentHistoryTurnIndex!;
+    final currentHistoryTurnIndex = room.getCurrentHistoryRound().historyTurnIndex!;
     final historyTurnCount = room.getCurrentHistoryRound().turns.length;
     if (currentHistoryTurnIndex < historyTurnCount) {
       room.getCurrentHistoryRound().historyNextTurn();
@@ -86,7 +82,7 @@ class GameController extends GetxController {
   }
 
   historyPreviousTurn() {
-    final currentHistoryTurnIndex = room.getCurrentHistoryRound().currentHistoryTurnIndex;
+    final currentHistoryTurnIndex = room.getCurrentHistoryRound().historyTurnIndex;
     if (currentHistoryTurnIndex! > 0) {
       room.getCurrentHistoryRound().historyPreviousTurn();
       room.updateHistoryBoard();
@@ -105,7 +101,7 @@ class GameController extends GetxController {
     update();
 
     Timer.periodic(Duration(seconds: 1), (timer) {
-      final historyCurrentTurnIndex = room.getCurrentHistoryRound().currentHistoryTurnIndex;
+      final historyCurrentTurnIndex = room.getCurrentHistoryRound().historyTurnIndex;
       final turnCount = room.getCurrentHistoryRound().turns.length;
 
       if (isHistoryAutoPlay) {

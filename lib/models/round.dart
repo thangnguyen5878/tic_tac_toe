@@ -14,7 +14,7 @@ class Round {
 
   int? currentPlayerIndex;
 
-  int? currentHistoryPlayerIndex;
+  int? historyPlayerIndex;
 
   int? winnerIndex;
 
@@ -26,48 +26,46 @@ class Round {
 
   int? winTurnIndex;
 
-  int? currentHistoryTurnIndex;
+  int? historyTurnIndex;
 
   Round({this.number, this.winnerIndex, this.players})
       : currentTurnIndex = 0,
-        currentHistoryTurnIndex = 0,
+        historyTurnIndex = 0,
         currentPlayerIndex = 0,
-        currentHistoryPlayerIndex = 0;
+        historyPlayerIndex = 0;
 
+  // getters
   Player getCurrentPLayer() {
     return players![currentPlayerIndex!];
   }
 
-  Player getCurrentHistoryPlayer() {
-    return players![currentHistoryPlayerIndex!];
-  }
-
+  // getters history
   Player getWinner() {
     return players![winnerIndex!];
+  }
+
+  Player getCurrentHistoryPlayer() {
+    return players![historyPlayerIndex!];
   }
 
   Cell getCurrentTurn() {
     return turns[currentTurnIndex!]!;
   }
 
-  Cell getWinTurn() {
-    return turns[winTurnIndex!]!;
-  }
-
   Cell getCurrentHistoryTurn() {
-    return turns[currentHistoryTurnIndex!]!;
+    return turns[historyTurnIndex!]!;
   }
 
   Round.cloneNextRound(Round round) {
     number = round.number! + 1;
     players = round.players!.map((player) => Player.clone(player)).toList();
     currentPlayerIndex = 0;
-    currentHistoryPlayerIndex = 0;
+    historyPlayerIndex = 0;
     winnerIndex = null;
     turns = [];
     historyTurns = [];
     currentTurnIndex = 0;
-    currentHistoryTurnIndex = 0;
+    historyTurnIndex = 0;
     winTurnIndex = -1;
   }
 
@@ -82,8 +80,6 @@ class Round {
   }
 
   /// When draw Seed at a cell, automatically change to next turn.
-  /// - Change the player when the board move to next turn (player 1 -> player 2, player 2 -> player 1)
-  /// - Increment turnCount
   nextTurn() {
     if (currentPlayerIndex == 0) {
       currentPlayerIndex = 1;
@@ -95,12 +91,12 @@ class Round {
   }
 
   historyNextTurn() {
-    if (currentHistoryPlayerIndex == 0) {
-      currentHistoryPlayerIndex = 1;
+    if (historyPlayerIndex == 0) {
+      historyPlayerIndex = 1;
     } else {
-      currentHistoryPlayerIndex = 0;
+      historyPlayerIndex = 0;
     }
-    currentHistoryTurnIndex = currentHistoryTurnIndex! + 1;
+    historyTurnIndex = historyTurnIndex! + 1;
     // if (historyCurrentTurnIndex! >= winTurnIndex! - 1) {
     //   historyCurrentPlayerIndex = winnerIndex;
     //   historyCurrentTurnIndex = winTurnIndex;
@@ -112,13 +108,13 @@ class Round {
     // if (historyCurrentTurnIndex == 1) {
     //   historyCurrentPlayerIndex = null;
     // }
-    if (currentHistoryPlayerIndex == 0) {
-      currentHistoryPlayerIndex = 1;
+    if (historyPlayerIndex == 0) {
+      historyPlayerIndex = 1;
     } else {
-      currentHistoryPlayerIndex = 0;
+      historyPlayerIndex = 0;
     }
-    currentHistoryTurnIndex = currentHistoryTurnIndex! - 1;
-    print('next turn, current player: ${currentHistoryPlayerIndex! + 1}');
+    historyTurnIndex = historyTurnIndex! - 1;
+    print('next turn, current player: ${historyPlayerIndex! + 1}');
   }
 
   updateFinalScore() {
@@ -127,6 +123,6 @@ class Round {
 
   @override
   String toString() {
-    return 'Round{number: $number, players: $players, currentPlayerIndex: $currentPlayerIndex, winnerIndex: $winnerIndex, turns: $turns, currentTurnIndex: $currentTurnIndex, historyCurrentTurnIndex: $currentHistoryTurnIndex}';
+    return 'Round{number: $number, players: $players, currentPlayerIndex: $currentPlayerIndex, winnerIndex: $winnerIndex, turns: $turns, currentTurnIndex: $currentTurnIndex, historyCurrentTurnIndex: $historyTurnIndex}';
   }
 }

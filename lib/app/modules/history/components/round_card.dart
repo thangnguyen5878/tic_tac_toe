@@ -33,8 +33,8 @@ class RoundCard extends StatelessWidget {
 
     return InkWell(
       onTap: () {
-        GameController.to.room.currentHistoryRoundIndex = round.number! - 1;
-        Get.toNamed(Routes.HISTORY_DETAILS, arguments: [roomId, GameController.to.room.currentHistoryRoundIndex]);
+        GameController.to.room.historyRoundIndex = round.number! - 1;
+        Get.toNamed(Routes.HISTORY_DETAILS, arguments: [roomId, GameController.to.room.historyRoundIndex]);
       },
       child: Container(
         padding: const EdgeInsets.all(kPadding12),

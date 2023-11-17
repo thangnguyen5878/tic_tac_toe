@@ -13,24 +13,24 @@ const RoundSchema = Schema(
   name: r'Round',
   id: 8762410198825043196,
   properties: {
-    r'currentHistoryPlayerIndex': PropertySchema(
-      id: 0,
-      name: r'currentHistoryPlayerIndex',
-      type: IsarType.long,
-    ),
-    r'currentHistoryTurnIndex': PropertySchema(
-      id: 1,
-      name: r'currentHistoryTurnIndex',
-      type: IsarType.long,
-    ),
     r'currentPlayerIndex': PropertySchema(
-      id: 2,
+      id: 0,
       name: r'currentPlayerIndex',
       type: IsarType.long,
     ),
     r'currentTurnIndex': PropertySchema(
-      id: 3,
+      id: 1,
       name: r'currentTurnIndex',
+      type: IsarType.long,
+    ),
+    r'historyPlayerIndex': PropertySchema(
+      id: 2,
+      name: r'historyPlayerIndex',
+      type: IsarType.long,
+    ),
+    r'historyTurnIndex': PropertySchema(
+      id: 3,
+      name: r'historyTurnIndex',
       type: IsarType.long,
     ),
     r'historyTurns': PropertySchema(
@@ -121,10 +121,10 @@ void _roundSerialize(
   List<int> offsets,
   Map<Type, List<int>> allOffsets,
 ) {
-  writer.writeLong(offsets[0], object.currentHistoryPlayerIndex);
-  writer.writeLong(offsets[1], object.currentHistoryTurnIndex);
-  writer.writeLong(offsets[2], object.currentPlayerIndex);
-  writer.writeLong(offsets[3], object.currentTurnIndex);
+  writer.writeLong(offsets[0], object.currentPlayerIndex);
+  writer.writeLong(offsets[1], object.currentTurnIndex);
+  writer.writeLong(offsets[2], object.historyPlayerIndex);
+  writer.writeLong(offsets[3], object.historyTurnIndex);
   writer.writeObjectList<Cell>(
     offsets[4],
     allOffsets,
@@ -164,10 +164,10 @@ Round _roundDeserialize(
     ),
     winnerIndex: reader.readLongOrNull(offsets[9]),
   );
-  object.currentHistoryPlayerIndex = reader.readLongOrNull(offsets[0]);
-  object.currentHistoryTurnIndex = reader.readLongOrNull(offsets[1]);
-  object.currentPlayerIndex = reader.readLongOrNull(offsets[2]);
-  object.currentTurnIndex = reader.readLongOrNull(offsets[3]);
+  object.currentPlayerIndex = reader.readLongOrNull(offsets[0]);
+  object.currentTurnIndex = reader.readLongOrNull(offsets[1]);
+  object.historyPlayerIndex = reader.readLongOrNull(offsets[2]);
+  object.historyTurnIndex = reader.readLongOrNull(offsets[3]);
   object.historyTurns = reader.readObjectOrNullList<Cell>(
         offsets[4],
         CellSchema.deserialize,
@@ -232,154 +232,6 @@ P _roundDeserializeProp<P>(
 }
 
 extension RoundQueryFilter on QueryBuilder<Round, Round, QFilterCondition> {
-  QueryBuilder<Round, Round, QAfterFilterCondition>
-      currentHistoryPlayerIndexIsNull() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(const FilterCondition.isNull(
-        property: r'currentHistoryPlayerIndex',
-      ));
-    });
-  }
-
-  QueryBuilder<Round, Round, QAfterFilterCondition>
-      currentHistoryPlayerIndexIsNotNull() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(const FilterCondition.isNotNull(
-        property: r'currentHistoryPlayerIndex',
-      ));
-    });
-  }
-
-  QueryBuilder<Round, Round, QAfterFilterCondition>
-      currentHistoryPlayerIndexEqualTo(int? value) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'currentHistoryPlayerIndex',
-        value: value,
-      ));
-    });
-  }
-
-  QueryBuilder<Round, Round, QAfterFilterCondition>
-      currentHistoryPlayerIndexGreaterThan(
-    int? value, {
-    bool include = false,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        include: include,
-        property: r'currentHistoryPlayerIndex',
-        value: value,
-      ));
-    });
-  }
-
-  QueryBuilder<Round, Round, QAfterFilterCondition>
-      currentHistoryPlayerIndexLessThan(
-    int? value, {
-    bool include = false,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.lessThan(
-        include: include,
-        property: r'currentHistoryPlayerIndex',
-        value: value,
-      ));
-    });
-  }
-
-  QueryBuilder<Round, Round, QAfterFilterCondition>
-      currentHistoryPlayerIndexBetween(
-    int? lower,
-    int? upper, {
-    bool includeLower = true,
-    bool includeUpper = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.between(
-        property: r'currentHistoryPlayerIndex',
-        lower: lower,
-        includeLower: includeLower,
-        upper: upper,
-        includeUpper: includeUpper,
-      ));
-    });
-  }
-
-  QueryBuilder<Round, Round, QAfterFilterCondition>
-      currentHistoryTurnIndexIsNull() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(const FilterCondition.isNull(
-        property: r'currentHistoryTurnIndex',
-      ));
-    });
-  }
-
-  QueryBuilder<Round, Round, QAfterFilterCondition>
-      currentHistoryTurnIndexIsNotNull() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(const FilterCondition.isNotNull(
-        property: r'currentHistoryTurnIndex',
-      ));
-    });
-  }
-
-  QueryBuilder<Round, Round, QAfterFilterCondition>
-      currentHistoryTurnIndexEqualTo(int? value) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'currentHistoryTurnIndex',
-        value: value,
-      ));
-    });
-  }
-
-  QueryBuilder<Round, Round, QAfterFilterCondition>
-      currentHistoryTurnIndexGreaterThan(
-    int? value, {
-    bool include = false,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        include: include,
-        property: r'currentHistoryTurnIndex',
-        value: value,
-      ));
-    });
-  }
-
-  QueryBuilder<Round, Round, QAfterFilterCondition>
-      currentHistoryTurnIndexLessThan(
-    int? value, {
-    bool include = false,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.lessThan(
-        include: include,
-        property: r'currentHistoryTurnIndex',
-        value: value,
-      ));
-    });
-  }
-
-  QueryBuilder<Round, Round, QAfterFilterCondition>
-      currentHistoryTurnIndexBetween(
-    int? lower,
-    int? upper, {
-    bool includeLower = true,
-    bool includeUpper = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.between(
-        property: r'currentHistoryTurnIndex',
-        lower: lower,
-        includeLower: includeLower,
-        upper: upper,
-        includeUpper: includeUpper,
-      ));
-    });
-  }
-
   QueryBuilder<Round, Round, QAfterFilterCondition> currentPlayerIndexIsNull() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(const FilterCondition.isNull(
@@ -513,6 +365,147 @@ extension RoundQueryFilter on QueryBuilder<Round, Round, QFilterCondition> {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.between(
         property: r'currentTurnIndex',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
+      ));
+    });
+  }
+
+  QueryBuilder<Round, Round, QAfterFilterCondition> historyPlayerIndexIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNull(
+        property: r'historyPlayerIndex',
+      ));
+    });
+  }
+
+  QueryBuilder<Round, Round, QAfterFilterCondition>
+      historyPlayerIndexIsNotNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNotNull(
+        property: r'historyPlayerIndex',
+      ));
+    });
+  }
+
+  QueryBuilder<Round, Round, QAfterFilterCondition> historyPlayerIndexEqualTo(
+      int? value) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'historyPlayerIndex',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<Round, Round, QAfterFilterCondition>
+      historyPlayerIndexGreaterThan(
+    int? value, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'historyPlayerIndex',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<Round, Round, QAfterFilterCondition> historyPlayerIndexLessThan(
+    int? value, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'historyPlayerIndex',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<Round, Round, QAfterFilterCondition> historyPlayerIndexBetween(
+    int? lower,
+    int? upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'historyPlayerIndex',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
+      ));
+    });
+  }
+
+  QueryBuilder<Round, Round, QAfterFilterCondition> historyTurnIndexIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNull(
+        property: r'historyTurnIndex',
+      ));
+    });
+  }
+
+  QueryBuilder<Round, Round, QAfterFilterCondition>
+      historyTurnIndexIsNotNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNotNull(
+        property: r'historyTurnIndex',
+      ));
+    });
+  }
+
+  QueryBuilder<Round, Round, QAfterFilterCondition> historyTurnIndexEqualTo(
+      int? value) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'historyTurnIndex',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<Round, Round, QAfterFilterCondition> historyTurnIndexGreaterThan(
+    int? value, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'historyTurnIndex',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<Round, Round, QAfterFilterCondition> historyTurnIndexLessThan(
+    int? value, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'historyTurnIndex',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<Round, Round, QAfterFilterCondition> historyTurnIndexBetween(
+    int? lower,
+    int? upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'historyTurnIndex',
         lower: lower,
         includeLower: includeLower,
         upper: upper,

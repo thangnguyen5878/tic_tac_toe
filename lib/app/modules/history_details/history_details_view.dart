@@ -31,14 +31,14 @@ class HistoryDetailsView extends GetView<HistoryDetailsController> {
         leading: HistoryDetailsBackButton(),
         title: GetBuilder<GameController>(
           builder: (gameController) {
-            final roundIndex = GameController.to.room.currentHistoryRoundIndex;
+            final roundIndex = GameController.to.room.historyRoundIndex;
             final round = GameController.to.room.getCurrentHistoryRound();
-            final turnIndex = round.currentHistoryTurnIndex;
+            final turnIndex = round.historyTurnIndex;
             int roundCount = roundIndex + 1;
             int turnCount = turnIndex! + 1;
-            if(round.winTurnIndex != null && round.currentHistoryTurnIndex == round.winTurnIndex! + 1) {
+            if(round.winTurnIndex != null && round.historyTurnIndex == round.winTurnIndex! + 1) {
               print('history win turn!');
-              turnCount = round.currentHistoryTurnIndex!;
+              turnCount = round.historyTurnIndex!;
             }
             return Text(
               'Round: $roundCount, Turn: $turnCount',

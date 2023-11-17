@@ -23,8 +23,8 @@ class HistoryCell extends StatelessWidget {
           final historyBoard = room.historyBoard;
           final content = historyBoard.cells[row][column].content.toString();
           CellState state = historyBoard.cells[row][column].state!;
-          final historyRound = room.rounds![room.currentHistoryRoundIndex];
-          bool isWinTurn = historyRound!.currentHistoryTurnIndex == historyRound.winTurnIndex! + 1;
+          final historyRound = room.rounds![room.historyRoundIndex];
+          bool isWinTurn = historyRound!.historyTurnIndex == historyRound.winTurnIndex! + 1;
 
           Color bColor = Colors.white;
 

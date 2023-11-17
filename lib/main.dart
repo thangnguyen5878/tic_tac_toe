@@ -5,10 +5,10 @@ import 'package:flutter_tic_tac_toe/routes/app_pages.dart';
 import 'package:get/get.dart';
 
 Future<void> main() async {
-  WidgetsFlutterBinding.ensureInitialized();
+  // WidgetsFlutterBinding.ensureInitialized();
   // IsarService isarService = IsarService();
   // isarService.cleanDB();
-
+  //
   // final dir = await getApplicationDocumentsDirectory();
   // final isar = await Isar.open(
   //   [RoomSchema],

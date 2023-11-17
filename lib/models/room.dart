@@ -29,7 +29,7 @@ class Room {
 
   int currentRoundIndex;
 
-  int currentHistoryRoundIndex;
+  int historyRoundIndex;
 
   @ignore
   List<Cell>? checkingCells = List<Cell>.empty(growable: true);
@@ -40,7 +40,7 @@ class Room {
       : name = 'Untitled Room',
         board = Board(),
         historyBoard = Board(),
-        currentHistoryRoundIndex = 0,
+        historyRoundIndex = 0,
         state = GameState.playing,
         currentRoundIndex = 0 {
     rounds = [
@@ -56,7 +56,7 @@ class Room {
   }
 
   Round getCurrentHistoryRound() {
-    return rounds![currentHistoryRoundIndex]!;
+    return rounds![historyRoundIndex]!;
   }
 
   /// Check whether adjacent cells are the same or not to check the winner
@@ -218,7 +218,7 @@ class Room {
   void updateHistoryBoard() {
     historyBoard.reset();
     final turns = getCurrentHistoryRound().turns;
-    final currentHistoryTurnIndex = getCurrentHistoryRound().currentHistoryTurnIndex!;
+    final currentHistoryTurnIndex = getCurrentHistoryRound().historyTurnIndex!;
     // print('Turns: $turns');
     if (currentHistoryTurnIndex >= 0) {
       historyBoard.load(turns, currentHistoryTurnIndex);
@@ -227,6 +227,6 @@ class Room {
 
   @override
   String toString() {
-    return 'Room{name: $name, board: $board, historyBoard: $historyBoard, historyRoundIndex: $currentHistoryRoundIndex, state: $state, rounds: $rounds, currentRoundIndex: $currentRoundIndex, checkingCells: $checkingCells, winCount: $winCount}';
+    return 'Room{name: $name, board: $board, historyBoard: $historyBoard, historyRoundIndex: $historyRoundIndex, state: $state, rounds: $rounds, currentRoundIndex: $currentRoundIndex, checkingCells: $checkingCells, winCount: $winCount}';
   }
 }
