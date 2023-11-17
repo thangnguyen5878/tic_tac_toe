@@ -23,7 +23,7 @@ class HomeView extends StatelessWidget {
           //   size: kIconSize,
           // ),
           title: Container(
-            padding: const EdgeInsets.only(top: kPadding8),
+            padding: const EdgeInsets.only(top: kPadding8, right: kPadding48),
             alignment: Alignment.center,
             child: Text('Tic-tac-toe', style: kTitle1),
           ),

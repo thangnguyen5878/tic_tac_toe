@@ -35,6 +35,7 @@ class Round {
         _historyPlayerIndex = 0;
 
   // getters
+  // players
   Player getPlayer1() {
     return players![0];
   }
@@ -45,6 +46,11 @@ class Round {
 
   Player getCurrentPlayer() {
     return players![currentPlayerIndex!];
+  }
+
+  // turns
+  int getTurnCount() {
+    return currentTurnIndex! + 1;
   }
 
   // getters history

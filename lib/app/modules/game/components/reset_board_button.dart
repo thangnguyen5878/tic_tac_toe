@@ -11,11 +11,9 @@ class ResetBoardButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return GetBuilder<GameController>(
       builder: (gameController) {
-        // final isGameOver = game.room.state == GameState.stop;
         return IconButton(
           icon: const Icon(
             Icons.refresh,
-            
           ),
           onPressed: () async {
             GameController.to.resetBoard();

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_tic_tac_toe/app/modules/game/game_controller.dart';
 import 'package:flutter_tic_tac_toe/utils/constants/app_colors.dart';
-import 'package:flutter_tic_tac_toe/utils/enums/seed.dart';
 import 'package:get/get_state_manager/src/simple/get_state.dart';
 
 class PlayerBottomBar extends StatelessWidget {
@@ -17,14 +16,11 @@ class PlayerBottomBar extends StatelessWidget {
       child: GetBuilder(builder: (GameController gameController) {
         final room = GameController.to.room;
         final round = room.getCurrentRound();
-        final currentPlayer = round.players![round.currentPlayerIndex!];
-        final player1 = round.players![0];
-        final player2 = round.players![1];;
 
-        final xColor = currentPlayer.seed == Seed.cross ? kBlack : kGrey45;
-        final oColor = currentPlayer.seed == Seed.nought ? kBlack : kGrey45;
-        final xBoxColor = currentPlayer.seed == Seed.cross ? kBrown30 : kGrey30;
-        final oBoxColor = currentPlayer.seed == Seed.nought ? kBrown30 : kGrey30;
+        final xColor = round.currentPlayerIndex == 0 ? kBlack : kGrey45;
+        final oColor = round.currentPlayerIndex == 1 ? kBlack : kGrey45;
+        final xBoxColor = round.currentPlayerIndex == 0 ? kBrown30 : kGrey30;
+        final oBoxColor = round.currentPlayerIndex == 1 ? kBrown30 : kGrey30;
 
         return Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -37,11 +33,11 @@ class PlayerBottomBar extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
-                      '${player1.name}: X',
+                      '${round.getPlayer1().name}: X',
                       style:
                           TextStyle(color: xColor, fontWeight: FontWeight.bold),
                     ),
-                    Text('Score: ${player1.score}',
+                    Text('Score: ${round.getPlayer1().score}',
                         style: TextStyle(
                             color: xColor, fontWeight: FontWeight.bold)),
                   ],
@@ -56,12 +52,12 @@ class PlayerBottomBar extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
-                      '${player2.name}: O',
+                      '${round.getPlayer2().name}: O',
                       style:
                           TextStyle(color: oColor, fontWeight: FontWeight.bold),
                     ),
                     Text(
-                      'Score: ${player2.score}',
+                      'Score: ${round.getPlayer2().score}',
                       style:
                           TextStyle(color: oColor, fontWeight: FontWeight.bold),
                     ),

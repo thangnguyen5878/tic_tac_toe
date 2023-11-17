@@ -6,53 +6,50 @@ import 'package:get/get.dart';
 
 // ignore: must_be_immutable
 class CellWidget extends StatelessWidget {
-  // initialize a dump value for row and column
-  int row = -1;
-  int column = -1;
+  final int row;
+  final int column;
 
-  CellWidget({super.key, required this.row, required this.column});
+  CellWidget({Key? key, required this.row, required this.column}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    // print('build cell($row, $column)');
-    return InkWell(
-      child: GetBuilder(
-        init: GameController(),
-        builder: (GameController gameController) {
-          final content =
-              GameController.to.room.board.cells[row][column].content.toString();
-          CellState state = GameController.to.room.board.cells[row][column].state!;
-          Color bColor = Colors.white;
+    return GetBuilder(
+      init: GameController(),
+      builder: (GameController gameController) {
+        final room = GameController.to.room;
+        final round = room.getCurrentRound();
 
-          if (state == CellState.crossWin) {
-            state = CellState.crossWin;
-            bColor = kRed20;
-          }
-          if (state == CellState.noughtWin) {
-            state = CellState.noughtWin;
-            bColor = kGreen30;
-          }
-          if (state == CellState.normal) {
-            state = CellState.normal;
-            bColor = Colors.white;
-          }
-          // print('build cell($row,$column) $bColor $state');
-          return Container(
-              alignment: Alignment.center,
-              decoration: BoxDecoration(
-                  border: Border.all(color: kBlack, width: 1), color: bColor),
-              child: Text(
-                content,
-                style: const TextStyle(fontSize: 20, color: kBlack),
-              ));
-        },
-      ),
-      onTap: () {
-        final currentRoundIndex = GameController.to.room.currentRoundIndex;
-        final currentRound = GameController.to.room.rounds![currentRoundIndex];
-        final currentPlayer = currentRound!.players![currentRound.currentPlayerIndex!];
-        print('Tap cell($row, $column) : ${currentPlayer.seed}');
-        GameController.to.drawSeed(row, column, currentPlayer.seed!);
+        final content = room.board.cells[row][column].content.toString();
+        final state = room.board.cells[row][column].state!;
+
+        Color bColor = Colors.white;
+        if (state == CellState.crossWin) {
+          bColor = kRed20;
+        }
+        if (state == CellState.noughtWin) {
+          bColor = kGreen30;
+        }
+        if (state == CellState.normal) {
+          bColor = Colors.white;
+        }
+
+        return InkWell(
+          onTap: () {
+            print('Tap cell($row, $column) : ${round.getCurrentPlayer().seed}');
+            GameController.to.drawSeed(row, column, round.getCurrentPlayer().seed!);
+          },
+          child: Container(
+            alignment: Alignment.center,
+            decoration: BoxDecoration(
+              border: Border.all(color: kBlack, width: 1),
+              color: bColor,
+            ),
+            child: Text(
+              content,
+              style: const TextStyle(fontSize: 20, color: kBlack),
+            ),
+          ),
+        );
       },
     );
   }

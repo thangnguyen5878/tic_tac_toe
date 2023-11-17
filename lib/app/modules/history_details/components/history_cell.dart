@@ -6,9 +6,8 @@ import 'package:get/get.dart';
 
 // ignore: must_be_immutable
 class HistoryCell extends StatelessWidget {
-  // initialize a dump value for row and column
-  int row = -1;
-  int column = -1;
+  final row;
+  final column;
 
   HistoryCell({super.key, required this.row, required this.column});
 

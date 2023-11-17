@@ -56,6 +56,10 @@ class Room {
     return rounds![currentRoundIndex]!;
   }
 
+  int getRoundCount() {
+    return currentRoundIndex + 1;
+  }
+
   // getters history
   Round getHistoryRound() {
     return rounds![historyRoundIndex]!;
@@ -63,6 +67,11 @@ class Room {
 
   int getHistoryRoundCount() {
     return historyRoundIndex + 1;
+  }
+
+  // check methods
+  bool isGameOver() {
+    return state == GameState.stop;
   }
 
   /// Check whether adjacent cells are the same or not to check the winner
