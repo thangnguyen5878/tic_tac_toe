@@ -35,6 +35,14 @@ class Round {
         historyPlayerIndex = 0;
 
   // getters
+  Player getPLayer1() {
+    return players![0];
+  }
+
+  Player getPLayer2() {
+    return players![1];
+  }
+
   Player getCurrentPLayer() {
     return players![currentPlayerIndex!];
   }
@@ -54,6 +62,14 @@ class Round {
 
   Cell getCurrentHistoryTurn() {
     return turns[historyTurnIndex!]!;
+  }
+
+  int getHistoryTurnCount() {
+    return isHistoryWinTurn() ? historyTurnIndex! + 1 : winTurnIndex! + 1;
+  }
+
+  bool isHistoryWinTurn() {
+    return winTurnIndex != null && historyTurnIndex == winTurnIndex! + 1;
   }
 
   Round.cloneNextRound(Round round) {

@@ -51,12 +51,18 @@ class Room {
     ];
   }
 
+  // getters
   Round getCurrentRound() {
     return rounds![currentRoundIndex]!;
   }
 
+  // getters history
   Round getCurrentHistoryRound() {
     return rounds![historyRoundIndex]!;
+  }
+
+  int getHistoryRoundCount() {
+    return historyRoundIndex + 1;
   }
 
   /// Check whether adjacent cells are the same or not to check the winner

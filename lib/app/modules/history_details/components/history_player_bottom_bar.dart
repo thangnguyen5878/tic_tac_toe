@@ -20,6 +20,7 @@ class HistoryPlayerBottomBar extends StatelessWidget {
           print('history win turn!!!');
           historyCurrentPlayerIndex = round.winnerIndex!;
         }
+
         final player1 = round.players![0];
         final player2 = round.players![1];;
         final isWinTurn = round.historyTurnIndex == round.winTurnIndex;
