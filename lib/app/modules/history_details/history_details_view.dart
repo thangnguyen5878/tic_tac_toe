@@ -34,17 +34,8 @@ class HistoryDetailsView extends GetView<HistoryDetailsController> {
             final room = GameController.to.room;
             final round = GameController.to.room.getCurrentHistoryRound();
 
-            final roundIndex = GameController.to.room.historyRoundIndex;
-            int roundCount = roundIndex + 1;
-            final turnIndex = round.historyTurnIndex;
-            int turnCount = turnIndex! + 1;
-
-            if(round.winTurnIndex != null && round.historyTurnIndex == round.winTurnIndex! + 1) {
-              print('history win turn!');
-              turnCount = round.historyTurnIndex!;
-            }
             return Text(
-              'Round: ${room.getHistoryRoundCount()}, Turn: $turnCount',
+              'Round: ${room.getHistoryRoundCount()}, Turn: ${round.getHistoryTurnCount()}',
               style: const TextStyle(fontSize: 18, color: kBlack),
             );
           },

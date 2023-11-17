@@ -16,7 +16,7 @@ class HistoryPlayerBottomBar extends StatelessWidget {
         final round = room.getCurrentHistoryRound();
 
         int? historyCurrentPlayerIndex = round.historyPlayerIndex;
-        if(round.winTurnIndex != -1 && round.historyTurnIndex == round.winTurnIndex! + 1) {
+        if(round.winTurnIndex != null && round.historyTurnIndex == round.winTurnIndex! + 1) {
           print('history win turn!!!');
           historyCurrentPlayerIndex = round.winnerIndex!;
         }

@@ -65,7 +65,7 @@ class Round {
   }
 
   int getHistoryTurnCount() {
-    return isHistoryWinTurn() ? historyTurnIndex! + 1 : winTurnIndex! + 1;
+    return isHistoryWinTurn() ? winTurnIndex! + 1 : historyTurnIndex! + 1;
   }
 
   bool isHistoryWinTurn() {
@@ -82,7 +82,7 @@ class Round {
     historyTurns = [];
     currentTurnIndex = 0;
     historyTurnIndex = 0;
-    winTurnIndex = -1;
+    winTurnIndex = null;
   }
 
   reset() {
