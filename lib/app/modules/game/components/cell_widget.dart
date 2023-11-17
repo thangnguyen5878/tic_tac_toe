@@ -10,8 +10,6 @@ class CellWidget extends StatelessWidget {
   int row = -1;
   int column = -1;
 
-  final gameController = Get.find<GameController>();
-
   CellWidget({super.key, required this.row, required this.column});
 
   @override

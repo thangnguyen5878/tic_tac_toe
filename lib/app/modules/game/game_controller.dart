@@ -11,7 +11,6 @@ import 'package:get/get.dart';
 class GameController extends GetxController {
   //TODO: Implement GameController
   static GameController get to => Get.find();
-  final createRoomController = Get.find<CreateRoomController>();
   bool isHistoryAutoPlay = false;
   Room room = Room();
 
@@ -19,20 +18,20 @@ class GameController extends GetxController {
 
   createRoom() async {
     Room newRoom = Room();
-    if (createRoomController.room.text != '') newRoom.name = createRoomController.room.text;
-    if (createRoomController.player1.text != '') {
-      newRoom.getCurrentRound().players![0].name = createRoomController.player1.text;
+    if (CreateRoomController.to.room.text != '') newRoom.name = CreateRoomController.to.room.text;
+    if (CreateRoomController.to.player1.text != '') {
+      newRoom.getCurrentRound().players![0].name = CreateRoomController.to.player1.text;
     }
-    if (createRoomController.player2.text != '') {
-      newRoom.getCurrentRound().players![1].name = createRoomController.player2.text;
+    if (CreateRoomController.to.player2.text != '') {
+      newRoom.getCurrentRound().players![1].name = CreateRoomController.to.player2.text;
     }
-    if (createRoomController.rowCount.text != '') {
-      newRoom.board.rowCount = int.tryParse(createRoomController.rowCount.text) ?? 10;
-      newRoom.historyBoard.rowCount = int.tryParse(createRoomController.rowCount.text) ?? 10;
+    if (CreateRoomController.to.rowCount.text != '') {
+      newRoom.board.rowCount = int.tryParse(CreateRoomController.to.rowCount.text) ?? 10;
+      newRoom.historyBoard.rowCount = int.tryParse(CreateRoomController.to.rowCount.text) ?? 10;
     }
-    if (createRoomController.columnCount.text != '') {
-      newRoom.board.columnCount = int.tryParse(createRoomController.columnCount.text) ?? 10;
-      newRoom.historyBoard.columnCount = int.tryParse(createRoomController.columnCount.text) ?? 10;
+    if (CreateRoomController.to.columnCount.text != '') {
+      newRoom.board.columnCount = int.tryParse(CreateRoomController.to.columnCount.text) ?? 10;
+      newRoom.historyBoard.columnCount = int.tryParse(CreateRoomController.to.columnCount.text) ?? 10;
     }
     newRoom.board.rebuild();
     newRoom.historyBoard.rebuild();

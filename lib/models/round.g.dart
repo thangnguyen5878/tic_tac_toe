@@ -23,46 +23,41 @@ const RoundSchema = Schema(
       name: r'currentTurnIndex',
       type: IsarType.long,
     ),
-    r'historyPlayerIndex': PropertySchema(
-      id: 2,
-      name: r'historyPlayerIndex',
-      type: IsarType.long,
-    ),
     r'historyTurnIndex': PropertySchema(
-      id: 3,
+      id: 2,
       name: r'historyTurnIndex',
       type: IsarType.long,
     ),
     r'historyTurns': PropertySchema(
-      id: 4,
+      id: 3,
       name: r'historyTurns',
       type: IsarType.objectList,
       target: r'Cell',
     ),
     r'number': PropertySchema(
-      id: 5,
+      id: 4,
       name: r'number',
       type: IsarType.long,
     ),
     r'players': PropertySchema(
-      id: 6,
+      id: 5,
       name: r'players',
       type: IsarType.objectList,
       target: r'Player',
     ),
     r'turns': PropertySchema(
-      id: 7,
+      id: 6,
       name: r'turns',
       type: IsarType.objectList,
       target: r'Cell',
     ),
     r'winTurnIndex': PropertySchema(
-      id: 8,
+      id: 7,
       name: r'winTurnIndex',
       type: IsarType.long,
     ),
     r'winnerIndex': PropertySchema(
-      id: 9,
+      id: 8,
       name: r'winnerIndex',
       type: IsarType.long,
     )
@@ -123,29 +118,28 @@ void _roundSerialize(
 ) {
   writer.writeLong(offsets[0], object.currentPlayerIndex);
   writer.writeLong(offsets[1], object.currentTurnIndex);
-  writer.writeLong(offsets[2], object._historyPlayerIndex);
-  writer.writeLong(offsets[3], object.historyTurnIndex);
+  writer.writeLong(offsets[2], object.historyTurnIndex);
   writer.writeObjectList<Cell>(
-    offsets[4],
+    offsets[3],
     allOffsets,
     CellSchema.serialize,
     object.historyTurns,
   );
-  writer.writeLong(offsets[5], object.number);
+  writer.writeLong(offsets[4], object.number);
   writer.writeObjectList<Player>(
-    offsets[6],
+    offsets[5],
     allOffsets,
     PlayerSchema.serialize,
     object.players,
   );
   writer.writeObjectList<Cell>(
-    offsets[7],
+    offsets[6],
     allOffsets,
     CellSchema.serialize,
     object.turns,
   );
-  writer.writeLong(offsets[8], object.winTurnIndex);
-  writer.writeLong(offsets[9], object.winnerIndex);
+  writer.writeLong(offsets[7], object.winTurnIndex);
+  writer.writeLong(offsets[8], object.winnerIndex);
 }
 
 Round _roundDeserialize(
@@ -155,32 +149,31 @@ Round _roundDeserialize(
   Map<Type, List<int>> allOffsets,
 ) {
   final object = Round(
-    number: reader.readLongOrNull(offsets[5]),
+    number: reader.readLongOrNull(offsets[4]),
     players: reader.readObjectList<Player>(
-      offsets[6],
+      offsets[5],
       PlayerSchema.deserialize,
       allOffsets,
       Player(),
     ),
-    winnerIndex: reader.readLongOrNull(offsets[9]),
+    winnerIndex: reader.readLongOrNull(offsets[8]),
   );
   object.currentPlayerIndex = reader.readLongOrNull(offsets[0]);
   object.currentTurnIndex = reader.readLongOrNull(offsets[1]);
-  object._historyPlayerIndex = reader.readLongOrNull(offsets[2]);
-  object.historyTurnIndex = reader.readLongOrNull(offsets[3]);
+  object.historyTurnIndex = reader.readLongOrNull(offsets[2]);
   object.historyTurns = reader.readObjectOrNullList<Cell>(
-        offsets[4],
+        offsets[3],
         CellSchema.deserialize,
         allOffsets,
       ) ??
       [];
   object.turns = reader.readObjectOrNullList<Cell>(
-        offsets[7],
+        offsets[6],
         CellSchema.deserialize,
         allOffsets,
       ) ??
       [];
-  object.winTurnIndex = reader.readLongOrNull(offsets[8]);
+  object.winTurnIndex = reader.readLongOrNull(offsets[7]);
   return object;
 }
 
@@ -198,33 +191,31 @@ P _roundDeserializeProp<P>(
     case 2:
       return (reader.readLongOrNull(offset)) as P;
     case 3:
-      return (reader.readLongOrNull(offset)) as P;
-    case 4:
       return (reader.readObjectOrNullList<Cell>(
             offset,
             CellSchema.deserialize,
             allOffsets,
           ) ??
           []) as P;
-    case 5:
+    case 4:
       return (reader.readLongOrNull(offset)) as P;
-    case 6:
+    case 5:
       return (reader.readObjectList<Player>(
         offset,
         PlayerSchema.deserialize,
         allOffsets,
         Player(),
       )) as P;
-    case 7:
+    case 6:
       return (reader.readObjectOrNullList<Cell>(
             offset,
             CellSchema.deserialize,
             allOffsets,
           ) ??
           []) as P;
-    case 8:
+    case 7:
       return (reader.readLongOrNull(offset)) as P;
-    case 9:
+    case 8:
       return (reader.readLongOrNull(offset)) as P;
     default:
       throw IsarError('Unknown property with id $propertyId');
@@ -365,77 +356,6 @@ extension RoundQueryFilter on QueryBuilder<Round, Round, QFilterCondition> {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.between(
         property: r'currentTurnIndex',
-        lower: lower,
-        includeLower: includeLower,
-        upper: upper,
-        includeUpper: includeUpper,
-      ));
-    });
-  }
-
-  QueryBuilder<Round, Round, QAfterFilterCondition> historyPlayerIndexIsNull() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(const FilterCondition.isNull(
-        property: r'historyPlayerIndex',
-      ));
-    });
-  }
-
-  QueryBuilder<Round, Round, QAfterFilterCondition>
-      historyPlayerIndexIsNotNull() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(const FilterCondition.isNotNull(
-        property: r'historyPlayerIndex',
-      ));
-    });
-  }
-
-  QueryBuilder<Round, Round, QAfterFilterCondition> historyPlayerIndexEqualTo(
-      int? value) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'historyPlayerIndex',
-        value: value,
-      ));
-    });
-  }
-
-  QueryBuilder<Round, Round, QAfterFilterCondition>
-      historyPlayerIndexGreaterThan(
-    int? value, {
-    bool include = false,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        include: include,
-        property: r'historyPlayerIndex',
-        value: value,
-      ));
-    });
-  }
-
-  QueryBuilder<Round, Round, QAfterFilterCondition> historyPlayerIndexLessThan(
-    int? value, {
-    bool include = false,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.lessThan(
-        include: include,
-        property: r'historyPlayerIndex',
-        value: value,
-      ));
-    });
-  }
-
-  QueryBuilder<Round, Round, QAfterFilterCondition> historyPlayerIndexBetween(
-    int? lower,
-    int? upper, {
-    bool includeLower = true,
-    bool includeUpper = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.between(
-        property: r'historyPlayerIndex',
         lower: lower,
         includeLower: includeLower,
         upper: upper,
