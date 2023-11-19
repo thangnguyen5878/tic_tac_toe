@@ -86,8 +86,21 @@ class Round {
     return isHistoryWinTurn() ? winTurnIndex! + 1 : historyTurnIndex! + 1;
   }
 
+  // check
   bool isHistoryWinTurn() {
     return winTurnIndex != null && historyTurnIndex == winTurnIndex! + 1;
+  }
+
+  bool hasWinner() {
+    return winnerIndex != null;
+  }
+
+  bool isPlayer1Win() {
+    return hasWinner() && winnerIndex == 0;
+  }
+
+  bool isPlayer2Win() {
+    return hasWinner() && winnerIndex == 1;
   }
 
   Round.cloneNextRound(Round round) {

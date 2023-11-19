@@ -11,7 +11,7 @@ class WinnerView extends StatelessWidget {
     final round = room.getCurrentRound();
 
     final winnerName = round.getWinner().name;
-    final roundCount = room.currentRoundIndex + 1;
+    final roundCount = room.getRoundCount();
 
     return SafeArea(
       child: GestureDetector(

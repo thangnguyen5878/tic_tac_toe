@@ -15,9 +15,16 @@ class HistoryPlayerBottomBar extends StatelessWidget {
         final room = GameController.to.room;
         final round = room.getHistoryRound();
 
+        // player 1
+        final player1Name = round.getPlayer1().name;
+        final player1Score = round.getHistoryPlayer1Score();
         final player1TextColor = round.getHistoryPlayerIndex() == 0 ? kBlack : kGrey45;
-        final player2TextColor = round.getHistoryPlayerIndex() == 1 ? kBlack : kGrey45;
         final player1BoxColor = round.getHistoryPlayerIndex() == 0 ? kBrown30 : kGrey30;
+
+        // player 2
+        final player2Name = round.getPlayer2().name;
+        final player2Score = round.getHistoryPlayer2Score();
+        final player2TextColor = round.getHistoryPlayerIndex() == 1 ? kBlack : kGrey45;
         final player2BoxColor = round.getHistoryPlayerIndex() == 1 ? kBrown30 : kGrey30;
 
         // print('history player bottom bar: ${round.winTurnIndex}');
@@ -32,11 +39,11 @@ class HistoryPlayerBottomBar extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
-                      '${round.getPlayer1().name}: X',
+                      '${player1Name}: X',
                       style:
                       TextStyle(color: player1TextColor, fontWeight: FontWeight.bold),
                     ),
-                    Text('Score: ${round.getHistoryPlayer1Score()}',
+                    Text('Score: ${player1Score}',
                         style: TextStyle(
                             color: player1TextColor, fontWeight: FontWeight.bold)),
                   ],
@@ -51,12 +58,12 @@ class HistoryPlayerBottomBar extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
-                      '${round.getPlayer2().name}: O',
+                      '${player2Name}: O',
                       style:
                       TextStyle(color: player2TextColor, fontWeight: FontWeight.bold),
                     ),
                     Text(
-                      'Score: ${round.getHistoryPlayer2Score()}',
+                      'Score: ${player2Score}',
                       style:
                       TextStyle(color: player2TextColor, fontWeight: FontWeight.bold),
                     ),
