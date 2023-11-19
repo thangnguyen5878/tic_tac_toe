@@ -8,7 +8,7 @@ part 'round.g.dart';
 
 @embedded
 class Round {
-  int? number;
+  int? index;
 
   List<Player>? players;
 
@@ -28,13 +28,18 @@ class Round {
 
   int? historyTurnIndex;
 
-  Round({this.number, this.winnerIndex, this.players})
+  Round({this.index, this.winnerIndex, this.players})
       : currentTurnIndex = 0,
         historyTurnIndex = 0,
         currentPlayerIndex = 0,
         _historyPlayerIndex = 0;
 
   // getters
+  // round
+  int getRoundCount() {
+    return index! + 1;
+  }
+
   // players
   Player getPlayer1() {
     return players![0];
@@ -104,7 +109,7 @@ class Round {
   }
 
   Round.cloneNextRound(Round round) {
-    number = round.number! + 1;
+    index = round.index! + 1;
     players = round.players!.map((player) => Player.cloneNextRound(player)).toList();
     currentPlayerIndex = 0;
     _historyPlayerIndex = 0;
@@ -171,6 +176,6 @@ class Round {
 
   @override
   String toString() {
-    return 'Round{number: $number, players: $players, currentPlayerIndex: $currentPlayerIndex, _historyPlayerIndex: $_historyPlayerIndex, winnerIndex: $winnerIndex, turns: $turns, historyTurns: $historyTurns, currentTurnIndex: $currentTurnIndex, winTurnIndex: $winTurnIndex, historyTurnIndex: $historyTurnIndex}';
+    return 'Round{number: $index, players: $players, currentPlayerIndex: $currentPlayerIndex, _historyPlayerIndex: $_historyPlayerIndex, winnerIndex: $winnerIndex, turns: $turns, historyTurns: $historyTurns, currentTurnIndex: $currentTurnIndex, winTurnIndex: $winTurnIndex, historyTurnIndex: $historyTurnIndex}';
   }
 }

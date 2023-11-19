@@ -34,9 +34,9 @@ const RoundSchema = Schema(
       type: IsarType.objectList,
       target: r'Cell',
     ),
-    r'number': PropertySchema(
+    r'index': PropertySchema(
       id: 4,
-      name: r'number',
+      name: r'index',
       type: IsarType.long,
     ),
     r'players': PropertySchema(
@@ -125,7 +125,7 @@ void _roundSerialize(
     CellSchema.serialize,
     object.historyTurns,
   );
-  writer.writeLong(offsets[4], object.number);
+  writer.writeLong(offsets[4], object.index);
   writer.writeObjectList<Player>(
     offsets[5],
     allOffsets,
@@ -149,7 +149,7 @@ Round _roundDeserialize(
   Map<Type, List<int>> allOffsets,
 ) {
   final object = Round(
-    number: reader.readLongOrNull(offsets[4]),
+    index: reader.readLongOrNull(offsets[4]),
     players: reader.readObjectList<Player>(
       offsets[5],
       PlayerSchema.deserialize,
@@ -537,58 +537,58 @@ extension RoundQueryFilter on QueryBuilder<Round, Round, QFilterCondition> {
     });
   }
 
-  QueryBuilder<Round, Round, QAfterFilterCondition> numberIsNull() {
+  QueryBuilder<Round, Round, QAfterFilterCondition> indexIsNull() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(const FilterCondition.isNull(
-        property: r'number',
+        property: r'index',
       ));
     });
   }
 
-  QueryBuilder<Round, Round, QAfterFilterCondition> numberIsNotNull() {
+  QueryBuilder<Round, Round, QAfterFilterCondition> indexIsNotNull() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(const FilterCondition.isNotNull(
-        property: r'number',
+        property: r'index',
       ));
     });
   }
 
-  QueryBuilder<Round, Round, QAfterFilterCondition> numberEqualTo(int? value) {
+  QueryBuilder<Round, Round, QAfterFilterCondition> indexEqualTo(int? value) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'number',
+        property: r'index',
         value: value,
       ));
     });
   }
 
-  QueryBuilder<Round, Round, QAfterFilterCondition> numberGreaterThan(
+  QueryBuilder<Round, Round, QAfterFilterCondition> indexGreaterThan(
     int? value, {
     bool include = false,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.greaterThan(
         include: include,
-        property: r'number',
+        property: r'index',
         value: value,
       ));
     });
   }
 
-  QueryBuilder<Round, Round, QAfterFilterCondition> numberLessThan(
+  QueryBuilder<Round, Round, QAfterFilterCondition> indexLessThan(
     int? value, {
     bool include = false,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.lessThan(
         include: include,
-        property: r'number',
+        property: r'index',
         value: value,
       ));
     });
   }
 
-  QueryBuilder<Round, Round, QAfterFilterCondition> numberBetween(
+  QueryBuilder<Round, Round, QAfterFilterCondition> indexBetween(
     int? lower,
     int? upper, {
     bool includeLower = true,
@@ -596,7 +596,7 @@ extension RoundQueryFilter on QueryBuilder<Round, Round, QFilterCondition> {
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.between(
-        property: r'number',
+        property: r'index',
         lower: lower,
         includeLower: includeLower,
         upper: upper,

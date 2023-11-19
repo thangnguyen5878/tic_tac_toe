@@ -15,6 +15,7 @@ class RoundCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final roundCount = round.getRoundCount();
     final player1Name = round.getPlayer1().name;
     final player1Score = round.getPlayer1().score;
     final player2Name = round.getPlayer2().name;
@@ -39,8 +40,8 @@ class RoundCard extends StatelessWidget {
 
     return InkWell(
       onTap: () {
-        GameController.to.room.historyRoundIndex = round.number! - 1;
-        Get.toNamed(Routes.HISTORY_DETAILS, arguments: [roomId, GameController.to.room.historyRoundIndex]);
+        GameController.to.room.historyRoundIndex = round.index!;
+        Get.toNamed(Routes.HISTORY_DETAILS, arguments: [roomId, round.index]);
       },
       child: Container(
         padding: const EdgeInsets.all(kPadding12),
@@ -49,7 +50,7 @@ class RoundCard extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              'Round ${round.number}',
+              'Round $roundCount',
               style: kHeading1,
             ),
             const SizedBox(height: kPadding4),

@@ -44,7 +44,7 @@ class Room {
         state = GameState.playing,
         currentRoundIndex = 0 {
     rounds = [
-      Round(number: 1, players: [
+      Round(index: 0, players: [
         Player(index: 0, name: 'Player 1', seed: Seed.cross, score: 0),
         Player(index: 1, name: 'Player 2', seed: Seed.nought, score: 0)
       ])
