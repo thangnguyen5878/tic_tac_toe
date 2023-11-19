@@ -42,7 +42,7 @@ class GameView extends StatelessWidget {
           actions: [
             // buildResetBoardButton(),
             NextRoundButton(),
-            GamePopupMenuButton(roomId: roomId),
+            GamePopupMenuButton(),
           ],
         ),
         body: Stack(children: [

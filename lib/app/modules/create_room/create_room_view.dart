@@ -70,7 +70,7 @@ class CreateRoomView extends StatelessWidget {
           print('press create room button');
           GameController.to.createRoom();
           print('Room Created: ${GameController.to.room}');
-          CreateRoomController.to.clear();
+          CreateRoomController.to.clearInput();
           Get.toNamed(Routes.GAME);
         }
       },
