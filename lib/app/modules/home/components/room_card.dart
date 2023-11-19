@@ -10,13 +10,18 @@ import 'package:get/get_core/get_core.dart';
 class RoomCard extends StatelessWidget {
   final Room room;
   RoomCard(
-      this.room, {super.key}
-      );
+      this.room, {super.key});
 
   @override
   Widget build(BuildContext context) {
-    final player1 = room.currentRound.players![0];
-    final player2 = room.currentRound.players![1];
+    final round = room.getCurrentRound();
+
+    final player1Name = round.getPlayer1().name;
+    final player1Score = round.getPlayer1().score;
+    final player2Name = round.getPlayer1().name;
+    final player2Score = round.getPlayer1().score;
+    final roundCount = room.getRoundCount();
+
     return InkWell(
       onTap: () async {
         await GameController.to.loadRoomById(room.id);
@@ -36,7 +41,7 @@ class RoomCard extends StatelessWidget {
             SizedBox(height: kPadding8),
             Text(
               style: kNormal,
-              '${player1.name} (${player1.score}) - ${player2.name} (${player2.score}), round: ${room.currentRoundIndex + 1}',
+              '$player1Name ($player1Score) - $player2Name ($player2Score), round: $roundCount',
             ),
             // Add more widgets to display additional room information
           ],

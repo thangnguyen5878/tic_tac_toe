@@ -23,63 +23,41 @@ const RoomSchema = CollectionSchema(
       type: IsarType.object,
       target: r'Board',
     ),
-    r'currentRound': PropertySchema(
-      id: 1,
-      name: r'currentRound',
-      type: IsarType.object,
-      target: r'Round',
-    ),
     r'currentRoundIndex': PropertySchema(
-      id: 2,
+      id: 1,
       name: r'currentRoundIndex',
       type: IsarType.long,
     ),
     r'historyBoard': PropertySchema(
-      id: 3,
+      id: 2,
       name: r'historyBoard',
       type: IsarType.object,
       target: r'Board',
     ),
-    r'historyRound': PropertySchema(
-      id: 4,
-      name: r'historyRound',
-      type: IsarType.object,
-      target: r'Round',
-    ),
-    r'historyRoundCount': PropertySchema(
-      id: 5,
-      name: r'historyRoundCount',
-      type: IsarType.long,
-    ),
     r'historyRoundIndex': PropertySchema(
-      id: 6,
+      id: 3,
       name: r'historyRoundIndex',
       type: IsarType.long,
     ),
     r'name': PropertySchema(
-      id: 7,
+      id: 4,
       name: r'name',
       type: IsarType.string,
     ),
-    r'roundCount': PropertySchema(
-      id: 8,
-      name: r'roundCount',
-      type: IsarType.long,
-    ),
     r'rounds': PropertySchema(
-      id: 9,
+      id: 5,
       name: r'rounds',
       type: IsarType.objectList,
       target: r'Round',
     ),
     r'state': PropertySchema(
-      id: 10,
+      id: 6,
       name: r'state',
       type: IsarType.string,
       enumMap: _RoomstateEnumValueMap,
     ),
     r'winCount': PropertySchema(
-      id: 11,
+      id: 7,
       name: r'winCount',
       type: IsarType.long,
     )
@@ -112,14 +90,8 @@ int _roomEstimateSize(
   bytesCount += 3 +
       BoardSchema.estimateSize(object.board, allOffsets[Board]!, allOffsets);
   bytesCount += 3 +
-      RoundSchema.estimateSize(
-          object.currentRound, allOffsets[Round]!, allOffsets);
-  bytesCount += 3 +
       BoardSchema.estimateSize(
           object.historyBoard, allOffsets[Board]!, allOffsets);
-  bytesCount += 3 +
-      RoundSchema.estimateSize(
-          object.historyRound, allOffsets[Round]!, allOffsets);
   bytesCount += 3 + object.name.length * 3;
   {
     final list = object.rounds;
@@ -152,37 +124,23 @@ void _roomSerialize(
     BoardSchema.serialize,
     object.board,
   );
-  writer.writeObject<Round>(
-    offsets[1],
-    allOffsets,
-    RoundSchema.serialize,
-    object.currentRound,
-  );
-  writer.writeLong(offsets[2], object.currentRoundIndex);
+  writer.writeLong(offsets[1], object.currentRoundIndex);
   writer.writeObject<Board>(
-    offsets[3],
+    offsets[2],
     allOffsets,
     BoardSchema.serialize,
     object.historyBoard,
   );
-  writer.writeObject<Round>(
-    offsets[4],
-    allOffsets,
-    RoundSchema.serialize,
-    object.historyRound,
-  );
-  writer.writeLong(offsets[5], object.historyRoundCount);
-  writer.writeLong(offsets[6], object.historyRoundIndex);
-  writer.writeString(offsets[7], object.name);
-  writer.writeLong(offsets[8], object.roundCount);
+  writer.writeLong(offsets[3], object.historyRoundIndex);
+  writer.writeString(offsets[4], object.name);
   writer.writeObjectList<Round>(
-    offsets[9],
+    offsets[5],
     allOffsets,
     RoundSchema.serialize,
     object.rounds,
   );
-  writer.writeString(offsets[10], object.state.name);
-  writer.writeLong(offsets[11], object.winCount);
+  writer.writeString(offsets[6], object.state.name);
+  writer.writeLong(offsets[7], object.winCount);
 }
 
 Room _roomDeserialize(
@@ -198,22 +156,22 @@ Room _roomDeserialize(
         allOffsets,
       ) ??
       Board();
-  object.currentRoundIndex = reader.readLong(offsets[2]);
+  object.currentRoundIndex = reader.readLong(offsets[1]);
   object.historyBoard = reader.readObjectOrNull<Board>(
-        offsets[3],
+        offsets[2],
         BoardSchema.deserialize,
         allOffsets,
       ) ??
       Board();
-  object.historyRoundIndex = reader.readLong(offsets[6]);
+  object.historyRoundIndex = reader.readLong(offsets[3]);
   object.id = id;
-  object.name = reader.readString(offsets[7]);
+  object.name = reader.readString(offsets[4]);
   object.rounds = reader.readObjectOrNullList<Round>(
-    offsets[9],
+    offsets[5],
     RoundSchema.deserialize,
     allOffsets,
   );
-  object.state = _RoomstateValueEnumMap[reader.readStringOrNull(offsets[10])] ??
+  object.state = _RoomstateValueEnumMap[reader.readStringOrNull(offsets[6])] ??
       GameState.playing;
   return object;
 }
@@ -233,46 +191,28 @@ P _roomDeserializeProp<P>(
           ) ??
           Board()) as P;
     case 1:
-      return (reader.readObjectOrNull<Round>(
-            offset,
-            RoundSchema.deserialize,
-            allOffsets,
-          ) ??
-          Round()) as P;
-    case 2:
       return (reader.readLong(offset)) as P;
-    case 3:
+    case 2:
       return (reader.readObjectOrNull<Board>(
             offset,
             BoardSchema.deserialize,
             allOffsets,
           ) ??
           Board()) as P;
+    case 3:
+      return (reader.readLong(offset)) as P;
     case 4:
-      return (reader.readObjectOrNull<Round>(
-            offset,
-            RoundSchema.deserialize,
-            allOffsets,
-          ) ??
-          Round()) as P;
-    case 5:
-      return (reader.readLong(offset)) as P;
-    case 6:
-      return (reader.readLong(offset)) as P;
-    case 7:
       return (reader.readString(offset)) as P;
-    case 8:
-      return (reader.readLong(offset)) as P;
-    case 9:
+    case 5:
       return (reader.readObjectOrNullList<Round>(
         offset,
         RoundSchema.deserialize,
         allOffsets,
       )) as P;
-    case 10:
+    case 6:
       return (_RoomstateValueEnumMap[reader.readStringOrNull(offset)] ??
           GameState.playing) as P;
-    case 11:
+    case 7:
       return (reader.readLong(offset)) as P;
     default:
       throw IsarError('Unknown property with id $propertyId');
@@ -289,7 +229,7 @@ const _RoomstateValueEnumMap = {
 };
 
 Id _roomGetId(Room object) {
-  return object.id ?? Isar.autoIncrement;
+  return object.id;
 }
 
 List<IsarLinkBase<dynamic>> _roomGetLinks(Room object) {
@@ -429,59 +369,6 @@ extension RoomQueryFilter on QueryBuilder<Room, Room, QFilterCondition> {
     });
   }
 
-  QueryBuilder<Room, Room, QAfterFilterCondition> historyRoundCountEqualTo(
-      int value) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'historyRoundCount',
-        value: value,
-      ));
-    });
-  }
-
-  QueryBuilder<Room, Room, QAfterFilterCondition> historyRoundCountGreaterThan(
-    int value, {
-    bool include = false,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        include: include,
-        property: r'historyRoundCount',
-        value: value,
-      ));
-    });
-  }
-
-  QueryBuilder<Room, Room, QAfterFilterCondition> historyRoundCountLessThan(
-    int value, {
-    bool include = false,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.lessThan(
-        include: include,
-        property: r'historyRoundCount',
-        value: value,
-      ));
-    });
-  }
-
-  QueryBuilder<Room, Room, QAfterFilterCondition> historyRoundCountBetween(
-    int lower,
-    int upper, {
-    bool includeLower = true,
-    bool includeUpper = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.between(
-        property: r'historyRoundCount',
-        lower: lower,
-        includeLower: includeLower,
-        upper: upper,
-        includeUpper: includeUpper,
-      ));
-    });
-  }
-
   QueryBuilder<Room, Room, QAfterFilterCondition> historyRoundIndexEqualTo(
       int value) {
     return QueryBuilder.apply(this, (query) {
@@ -535,23 +422,7 @@ extension RoomQueryFilter on QueryBuilder<Room, Room, QFilterCondition> {
     });
   }
 
-  QueryBuilder<Room, Room, QAfterFilterCondition> idIsNull() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(const FilterCondition.isNull(
-        property: r'id',
-      ));
-    });
-  }
-
-  QueryBuilder<Room, Room, QAfterFilterCondition> idIsNotNull() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(const FilterCondition.isNotNull(
-        property: r'id',
-      ));
-    });
-  }
-
-  QueryBuilder<Room, Room, QAfterFilterCondition> idEqualTo(Id? value) {
+  QueryBuilder<Room, Room, QAfterFilterCondition> idEqualTo(Id value) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
         property: r'id',
@@ -561,7 +432,7 @@ extension RoomQueryFilter on QueryBuilder<Room, Room, QFilterCondition> {
   }
 
   QueryBuilder<Room, Room, QAfterFilterCondition> idGreaterThan(
-    Id? value, {
+    Id value, {
     bool include = false,
   }) {
     return QueryBuilder.apply(this, (query) {
@@ -574,7 +445,7 @@ extension RoomQueryFilter on QueryBuilder<Room, Room, QFilterCondition> {
   }
 
   QueryBuilder<Room, Room, QAfterFilterCondition> idLessThan(
-    Id? value, {
+    Id value, {
     bool include = false,
   }) {
     return QueryBuilder.apply(this, (query) {
@@ -587,8 +458,8 @@ extension RoomQueryFilter on QueryBuilder<Room, Room, QFilterCondition> {
   }
 
   QueryBuilder<Room, Room, QAfterFilterCondition> idBetween(
-    Id? lower,
-    Id? upper, {
+    Id lower,
+    Id upper, {
     bool includeLower = true,
     bool includeUpper = true,
   }) {
@@ -727,58 +598,6 @@ extension RoomQueryFilter on QueryBuilder<Room, Room, QFilterCondition> {
       return query.addFilterCondition(FilterCondition.greaterThan(
         property: r'name',
         value: '',
-      ));
-    });
-  }
-
-  QueryBuilder<Room, Room, QAfterFilterCondition> roundCountEqualTo(int value) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'roundCount',
-        value: value,
-      ));
-    });
-  }
-
-  QueryBuilder<Room, Room, QAfterFilterCondition> roundCountGreaterThan(
-    int value, {
-    bool include = false,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        include: include,
-        property: r'roundCount',
-        value: value,
-      ));
-    });
-  }
-
-  QueryBuilder<Room, Room, QAfterFilterCondition> roundCountLessThan(
-    int value, {
-    bool include = false,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.lessThan(
-        include: include,
-        property: r'roundCount',
-        value: value,
-      ));
-    });
-  }
-
-  QueryBuilder<Room, Room, QAfterFilterCondition> roundCountBetween(
-    int lower,
-    int upper, {
-    bool includeLower = true,
-    bool includeUpper = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.between(
-        property: r'roundCount',
-        lower: lower,
-        includeLower: includeLower,
-        upper: upper,
-        includeUpper: includeUpper,
       ));
     });
   }
@@ -1087,24 +906,10 @@ extension RoomQueryObject on QueryBuilder<Room, Room, QFilterCondition> {
     });
   }
 
-  QueryBuilder<Room, Room, QAfterFilterCondition> currentRound(
-      FilterQuery<Round> q) {
-    return QueryBuilder.apply(this, (query) {
-      return query.object(q, r'currentRound');
-    });
-  }
-
   QueryBuilder<Room, Room, QAfterFilterCondition> historyBoard(
       FilterQuery<Board> q) {
     return QueryBuilder.apply(this, (query) {
       return query.object(q, r'historyBoard');
-    });
-  }
-
-  QueryBuilder<Room, Room, QAfterFilterCondition> historyRound(
-      FilterQuery<Round> q) {
-    return QueryBuilder.apply(this, (query) {
-      return query.object(q, r'historyRound');
     });
   }
 
@@ -1131,18 +936,6 @@ extension RoomQuerySortBy on QueryBuilder<Room, Room, QSortBy> {
     });
   }
 
-  QueryBuilder<Room, Room, QAfterSortBy> sortByHistoryRoundCount() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'historyRoundCount', Sort.asc);
-    });
-  }
-
-  QueryBuilder<Room, Room, QAfterSortBy> sortByHistoryRoundCountDesc() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'historyRoundCount', Sort.desc);
-    });
-  }
-
   QueryBuilder<Room, Room, QAfterSortBy> sortByHistoryRoundIndex() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'historyRoundIndex', Sort.asc);
@@ -1164,18 +957,6 @@ extension RoomQuerySortBy on QueryBuilder<Room, Room, QSortBy> {
   QueryBuilder<Room, Room, QAfterSortBy> sortByNameDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'name', Sort.desc);
-    });
-  }
-
-  QueryBuilder<Room, Room, QAfterSortBy> sortByRoundCount() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'roundCount', Sort.asc);
-    });
-  }
-
-  QueryBuilder<Room, Room, QAfterSortBy> sortByRoundCountDesc() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'roundCount', Sort.desc);
     });
   }
 
@@ -1217,18 +998,6 @@ extension RoomQuerySortThenBy on QueryBuilder<Room, Room, QSortThenBy> {
     });
   }
 
-  QueryBuilder<Room, Room, QAfterSortBy> thenByHistoryRoundCount() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'historyRoundCount', Sort.asc);
-    });
-  }
-
-  QueryBuilder<Room, Room, QAfterSortBy> thenByHistoryRoundCountDesc() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'historyRoundCount', Sort.desc);
-    });
-  }
-
   QueryBuilder<Room, Room, QAfterSortBy> thenByHistoryRoundIndex() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'historyRoundIndex', Sort.asc);
@@ -1265,18 +1034,6 @@ extension RoomQuerySortThenBy on QueryBuilder<Room, Room, QSortThenBy> {
     });
   }
 
-  QueryBuilder<Room, Room, QAfterSortBy> thenByRoundCount() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'roundCount', Sort.asc);
-    });
-  }
-
-  QueryBuilder<Room, Room, QAfterSortBy> thenByRoundCountDesc() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'roundCount', Sort.desc);
-    });
-  }
-
   QueryBuilder<Room, Room, QAfterSortBy> thenByState() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'state', Sort.asc);
@@ -1309,12 +1066,6 @@ extension RoomQueryWhereDistinct on QueryBuilder<Room, Room, QDistinct> {
     });
   }
 
-  QueryBuilder<Room, Room, QDistinct> distinctByHistoryRoundCount() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addDistinctBy(r'historyRoundCount');
-    });
-  }
-
   QueryBuilder<Room, Room, QDistinct> distinctByHistoryRoundIndex() {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'historyRoundIndex');
@@ -1325,12 +1076,6 @@ extension RoomQueryWhereDistinct on QueryBuilder<Room, Room, QDistinct> {
       {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'name', caseSensitive: caseSensitive);
-    });
-  }
-
-  QueryBuilder<Room, Room, QDistinct> distinctByRoundCount() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addDistinctBy(r'roundCount');
     });
   }
 
@@ -1361,12 +1106,6 @@ extension RoomQueryProperty on QueryBuilder<Room, Room, QQueryProperty> {
     });
   }
 
-  QueryBuilder<Room, Round, QQueryOperations> currentRoundProperty() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addPropertyName(r'currentRound');
-    });
-  }
-
   QueryBuilder<Room, int, QQueryOperations> currentRoundIndexProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'currentRoundIndex');
@@ -1379,18 +1118,6 @@ extension RoomQueryProperty on QueryBuilder<Room, Room, QQueryProperty> {
     });
   }
 
-  QueryBuilder<Room, Round, QQueryOperations> historyRoundProperty() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addPropertyName(r'historyRound');
-    });
-  }
-
-  QueryBuilder<Room, int, QQueryOperations> historyRoundCountProperty() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addPropertyName(r'historyRoundCount');
-    });
-  }
-
   QueryBuilder<Room, int, QQueryOperations> historyRoundIndexProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'historyRoundIndex');
@@ -1400,12 +1127,6 @@ extension RoomQueryProperty on QueryBuilder<Room, Room, QQueryProperty> {
   QueryBuilder<Room, String, QQueryOperations> nameProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'name');
-    });
-  }
-
-  QueryBuilder<Room, int, QQueryOperations> roundCountProperty() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addPropertyName(r'roundCount');
     });
   }
 

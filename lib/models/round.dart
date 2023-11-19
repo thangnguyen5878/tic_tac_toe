@@ -1,5 +1,4 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
-import 'package:flutter_tic_tac_toe/utils/enums/seed.dart';
 import 'package:isar/isar.dart';
 
 import 'package:flutter_tic_tac_toe/models/cell.dart';
@@ -9,7 +8,7 @@ part 'round.g.dart';
 
 @embedded
 class Round {
-  int? number;
+  int? index;
 
   List<Player>? players;
 
@@ -27,20 +26,90 @@ class Round {
 
   int? winTurnIndex;
 
-  int? _historyTurnIndex;
+  int? historyTurnIndex;
 
-  Round({this.number, this.winnerIndex})
-      : players = [
-          Player(index: 0, name: 'Player 1', seed: Seed.cross, score: 0),
-          Player(index: 1, name: 'Player 2', seed: Seed.nought, score: 0)
-        ],
-        currentTurnIndex = 0,
-        _historyTurnIndex = 0,
+  Round({this.index, this.winnerIndex, this.players})
+      : currentTurnIndex = 0,
+        historyTurnIndex = 0,
         currentPlayerIndex = 0,
         _historyPlayerIndex = 0;
 
+  // getters
+  // round
+  int getRoundCount() {
+    return index! + 1;
+  }
+
+  // players
+  Player getPlayer1() {
+    return players![0];
+  }
+
+  Player getPlayer2() {
+    return players![1];
+  }
+
+  Player getCurrentPlayer() {
+    return players![currentPlayerIndex!];
+  }
+
+  // turns
+  int getTurnCount() {
+    return currentTurnIndex! + 1;
+  }
+
+  // getters history
+  Player getWinner() {
+    return players![winnerIndex!];
+  }
+
+  Player getCurrentHistoryPlayer() {
+    return players![_historyPlayerIndex!];
+  }
+
+  int getHistoryPlayerIndex() {
+    return isHistoryWinTurn() ? winnerIndex! : _historyPlayerIndex!;
+  }
+
+  int getHistoryPlayer1Score() {
+    return isHistoryWinTurn() ? getPlayer1().finalScore! : getPlayer1().initialScore!;
+  }
+
+  int getHistoryPlayer2Score() {
+    return isHistoryWinTurn() ? getPlayer2().finalScore! : getPlayer2().initialScore!;
+  }
+
+  Cell getCurrentTurn() {
+    return turns[currentTurnIndex!]!;
+  }
+
+  Cell getHistoryTurn() {
+    return turns[historyTurnIndex!]!;
+  }
+
+  int getHistoryTurnCount() {
+    return isHistoryWinTurn() ? winTurnIndex! + 1 : historyTurnIndex! + 1;
+  }
+
+  // check
+  bool isHistoryWinTurn() {
+    return winTurnIndex != null && historyTurnIndex == winTurnIndex! + 1;
+  }
+
+  bool hasWinner() {
+    return winnerIndex != null;
+  }
+
+  bool isPlayer1Win() {
+    return hasWinner() && winnerIndex == 0;
+  }
+
+  bool isPlayer2Win() {
+    return hasWinner() && winnerIndex == 1;
+  }
+
   Round.cloneNextRound(Round round) {
-    number = round.number! + 1;
+    index = round.index! + 1;
     players = round.players!.map((player) => Player.cloneNextRound(player)).toList();
     currentPlayerIndex = 0;
     _historyPlayerIndex = 0;
@@ -48,79 +117,15 @@ class Round {
     turns = [];
     historyTurns = [];
     currentTurnIndex = 0;
-    _historyTurnIndex = 0;
+    historyTurnIndex = 0;
     winTurnIndex = null;
-  }
-
-  // getter
-  // players
-  Player get currentPLayer {
-    return players![currentPlayerIndex!];
-  }
-
-  Player get player1 {
-    return players![0];
-  }
-
-  Player get player2 {
-    return players![1];
-  }
-
-  Player get winner {
-    return players![winnerIndex!];
-  }
-
-  // turns
-  Cell get currentTurn {
-    return turns[currentTurnIndex!]!;
-  }
-
-  Cell get winTurn {
-    return turns[winTurnIndex!]!;
-  }
-
-  int get turnCount {
-    return currentTurnIndex! + 1;
-  }
-
-  // getter history
-  // history players
-  int get historyPlayerIndex {
-    return isHistoryWinTurn ? winnerIndex! : _historyPlayerIndex!;
-  }
-
-  Player get historyPlayer {
-    return players![historyPlayerIndex];
-  }
-
-  int get historyPlayer1Score {
-    return isHistoryWinTurn ? player1.finalScore! : player1.initialScore!;
-  }
-
-  int get historyPlayer2Score {
-    return isHistoryWinTurn ? player2.finalScore! : player2.initialScore!;
-  }
-  // history turns
-  int get historyTurnIndex {
-    return _historyTurnIndex!;
-  }
-
-  int get historyTurnCount {
-    return isHistoryWinTurn ? winTurnIndex! + 1 : historyTurnIndex + 1;
-  }
-
-  bool get isHistoryWinTurn {
-    return winTurnIndex != null && historyTurnIndex == winTurnIndex! + 1;
-  }
-
-  Cell get historyTurn {
-    return turns[historyTurnIndex]!;
+    print('clone next round');
   }
 
   reset() {
     // if there's a winner
     if (winnerIndex != null) {
-      winner.score = winner.score! - 1;
+      getWinner().score = getWinner().score! - 1;
     }
     winnerIndex = null;
     turns = [];
@@ -128,8 +133,6 @@ class Round {
   }
 
   /// When draw Seed at a cell, automatically change to next turn.
-  /// - Change the player when the board move to next turn (player 1 -> player 2, player 2 -> player 1)
-  /// - Increment turnCount
   nextTurn() {
     if (currentPlayerIndex == 0) {
       currentPlayerIndex = 1;
@@ -141,12 +144,12 @@ class Round {
   }
 
   historyNextTurn() {
-    if (historyPlayerIndex == 0) {
+    if (_historyPlayerIndex == 0) {
       _historyPlayerIndex = 1;
     } else {
       _historyPlayerIndex = 0;
     }
-    _historyTurnIndex = _historyTurnIndex! + 1;
+    historyTurnIndex = historyTurnIndex! + 1;
     // if (historyCurrentTurnIndex! >= winTurnIndex! - 1) {
     //   historyCurrentPlayerIndex = winnerIndex;
     //   historyCurrentTurnIndex = winTurnIndex;
@@ -163,7 +166,7 @@ class Round {
     } else {
       _historyPlayerIndex = 0;
     }
-    _historyTurnIndex = _historyTurnIndex! - 1;
+    historyTurnIndex = historyTurnIndex! - 1;
     print('next turn, current player: ${_historyPlayerIndex! + 1}');
   }
 
@@ -173,6 +176,6 @@ class Round {
 
   @override
   String toString() {
-    return 'Round{number: $number, players: $players, currentPlayerIndex: $currentPlayerIndex, _historyPlayerIndex: $_historyPlayerIndex, winnerIndex: $winnerIndex, turns: $turns, historyTurns: $historyTurns, currentTurnIndex: $currentTurnIndex, winTurnIndex: $winTurnIndex, _historyTurnIndex: $_historyTurnIndex}';
+    return 'Round{number: $index, players: $players, currentPlayerIndex: $currentPlayerIndex, _historyPlayerIndex: $_historyPlayerIndex, winnerIndex: $winnerIndex, turns: $turns, historyTurns: $historyTurns, currentTurnIndex: $currentTurnIndex, winTurnIndex: $winTurnIndex, historyTurnIndex: $historyTurnIndex}';
   }
 }

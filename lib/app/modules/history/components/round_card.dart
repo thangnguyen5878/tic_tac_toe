@@ -15,26 +15,33 @@ class RoundCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final winnerIndex = round.winnerIndex;
-    final player1Name = round.players![0].name;
-    final player1Score = round.players![0].score;
-    final player2Name = round.players![1].name;
-    final player2Score = round.players![1].score;
+    final roundCount = round.getRoundCount();
+    final player1Name = round.getPlayer1().name;
+    final player1Score = round.getPlayer1().score;
+    final player2Name = round.getPlayer2().name;
+    final player2Score = round.getPlayer2().score;
+    final winnerName = round.hasWinner() ? round.getWinner().name : '';
+
 
     Color winnerColor;
-    if (winnerIndex == 0) {
+    if (round.isPlayer1Win()) {
       winnerColor = kRed70;
-    } else if (winnerIndex == 1) {
+    } else if (round.isPlayer2Win()) {
       winnerColor = kGreen60;
     }
     else {
       winnerColor = kBlack; // You can choose another color
     }
 
+    // print('round card $round');
+    // print('player 1: $player1Name $player1Score');
+    // print('player 2: $player2Name $player2Score');
+    // print('winner: $winnerName $winnerColor');
+
     return InkWell(
       onTap: () {
-        GameController.to.room.historyRoundIndex = round.number! - 1;
-        Get.toNamed(Routes.HISTORY_DETAILS, arguments: [roomId, GameController.to.room.historyRoundIndex]);
+        GameController.to.room.historyRoundIndex = round.index!;
+        Get.toNamed(Routes.HISTORY_DETAILS, arguments: [roomId, round.index]);
       },
       child: Container(
         padding: const EdgeInsets.all(kPadding12),
@@ -43,11 +50,11 @@ class RoundCard extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              'Round ${round.number}',
+              'Round $roundCount',
               style: kHeading1,
             ),
             const SizedBox(height: kPadding4),
-            if (winnerIndex != null)
+            if (round.hasWinner())
               Column(
                 children: [
                   RichText(
@@ -55,7 +62,7 @@ class RoundCard extends StatelessWidget {
                       style: kNormalLarge,
                       children: <TextSpan>[
                         const TextSpan(text: 'Winner: '),
-                        TextSpan(text: '${round.players![winnerIndex].name}', style: TextStyle(color: winnerColor )),
+                        TextSpan(text: '$winnerName', style: TextStyle(color: winnerColor)),
                       ],
                     ),
                   ),

@@ -7,11 +7,11 @@ class BoardWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print('build board...');
+
     final columnCount = GameController.to.room.board.columnCount;
     final rowCount = GameController.to.room.board.rowCount;
-    print('columnCount: $columnCount');
-    print('rowCount: $rowCount');
+    print('build board ($columnCount, $rowCount)... ');
+
     return Container(
       decoration: BoxDecoration(border: Border.all(width: 1)),
       child: GridView.builder(

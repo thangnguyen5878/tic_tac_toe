@@ -9,8 +9,8 @@ class HistoryAutoPlayButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GetBuilder<GameController>(builder: (gameController) {
-
       IconData icon = GameController.to.isHistoryAutoPlay == false ? Icons.play_arrow : Icons.pause;
+
       return ElevatedButton(
         onPressed: () {
           GameController.to.toggleHistoryAutoPlay();

@@ -8,10 +8,10 @@ class WinnerView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final room = GameController.to.room;
-    final round = room.currentRound;
+    final round = room.getCurrentRound();
 
-    final winnerName = round.winner.name;
-    final roundCount = room.currentRoundIndex + 1;
+    final winnerName = round.getWinner().name;
+    final roundCount = room.getRoundCount();
 
     return SafeArea(
       child: GestureDetector(

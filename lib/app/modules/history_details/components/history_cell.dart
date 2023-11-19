@@ -6,9 +6,8 @@ import 'package:get/get.dart';
 
 // ignore: must_be_immutable
 class HistoryCell extends StatelessWidget {
-  // initialize a dump value for row and column
-  int row = -1;
-  int column = -1;
+  final row;
+  final column;
 
   HistoryCell({super.key, required this.row, required this.column});
 
@@ -20,19 +19,18 @@ class HistoryCell extends StatelessWidget {
         init: GameController(),
         builder: (GameController gameController) {
           final room = GameController.to.room;
-          final round = room.historyRound;
+          final round = room.getHistoryRound();
           final board = room.historyBoard;
 
           final content = board.cells[row][column].content.toString();
           CellState state = board.cells[row][column].state!;
 
-
-
           Color bColor = Colors.white;
-          if (state == CellState.crossWin && round.isHistoryWinTurn == true) {
+
+          if (state == CellState.crossWin && round.isHistoryWinTurn() == true) {
               bColor = kRed20;
           }
-          if (state == CellState.noughtWin && round.isHistoryWinTurn == true) {
+          if (state == CellState.noughtWin && round.isHistoryWinTurn() == true) {
               bColor = kGreen30;
           }
           // print('build cell($row, $column), $state, $bColor, $isWinTurn, ${historyRound!.historyCurrentTurnIndex}, ${historyRound.winTurnIndex}');

@@ -13,9 +13,6 @@ import 'package:get/get.dart';
 import 'create_room_controller.dart';
 
 class CreateRoomView extends StatelessWidget {
-  final createRoomController = Get.find<CreateRoomController>();
-  final gameController = Get.find<GameController>();
-
   final _formKey = GlobalKey<FormState>();
 
   CreateRoomView({Key? key}) : super(key: key);
@@ -68,17 +65,13 @@ class CreateRoomView extends StatelessWidget {
             EdgeInsets.symmetric(horizontal: kPadding48, vertical: kPadding8),
       ),
       child: const Text('Create Room'),
-      onPressed: () async {
+      onPressed: () {
         if (_formKey.currentState!.validate()) {
           print('press create room button');
           GameController.to.createRoom();
-          print('room before save: ${GameController.to.room}');
-          final id = await GameController.to.saveRoom();
-          final newRoom = await GameController.to.isarService.getRoom(id);
-          print('room after save (load from database): $newRoom');
           print('Room Created: ${GameController.to.room}');
-          createRoomController.clearInput();
-          Get.offNamed(Routes.GAME);
+          CreateRoomController.to.clear();
+          Get.toNamed(Routes.GAME);
         }
       },
     );
@@ -86,7 +79,7 @@ class CreateRoomView extends StatelessWidget {
 
   TextFormField buildRoomField() {
     return TextFormField(
-      controller: createRoomController.room,
+      controller: CreateRoomController.to.room,
       decoration: kTextField(labelText: 'Room'),
       validator: (value) {
         if (value!.isEmpty) {
@@ -102,7 +95,7 @@ class CreateRoomView extends StatelessWidget {
 
   TextFormField buildPlayer1Field() {
     return TextFormField(
-      controller: createRoomController.player1,
+      controller: CreateRoomController.to.player1,
       decoration: kTextField(labelText: 'Player 1'),
       validator: (value) {
         if (value!.isEmpty) {
@@ -118,7 +111,7 @@ class CreateRoomView extends StatelessWidget {
 
   TextFormField buildPlayer2Field() {
     return TextFormField(
-      controller: createRoomController.player2,
+      controller: CreateRoomController.to.player2,
       decoration: kTextField(labelText: 'Player 2'),
       validator: (value) {
         if (value!.isEmpty) {
@@ -134,7 +127,7 @@ class CreateRoomView extends StatelessWidget {
 
   TextFormField buildRowCountField() {
     return TextFormField(
-      controller: createRoomController.rowCount,
+      controller: CreateRoomController.to.rowCount,
       decoration: kTextField(
           labelText: 'Number of rows ($rowCountFieldMinLength-$rowCountFieldMaxLength)'),
       keyboardType: TextInputType.number,
@@ -153,7 +146,7 @@ class CreateRoomView extends StatelessWidget {
 
   TextFormField buildColumnCountField() {
     return TextFormField(
-      controller: createRoomController.columnCount,
+      controller: CreateRoomController.to.columnCount,
       decoration: kTextField(
         labelText: 'Number of columns ($columnCountFieldMinLength-$columnCountFieldMaxLength)',
       ),

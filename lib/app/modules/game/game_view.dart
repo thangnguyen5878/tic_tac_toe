@@ -30,10 +30,10 @@ class GameView extends StatelessWidget {
           title: GetBuilder<GameController>(
             builder: (gameController) {
               final room = GameController.to.room;
-              final round = room.currentRound;
-              // print('after draw seed: $round');
+              final round = room.getCurrentRound();
+
               return Text(
-                'Round: ${room.roundCount}, Turn: ${round.turnCount}',
+                'Round: ${room.getRoundCount()}, Turn: ${round.getTurnCount()}',
                 style: const TextStyle(fontSize: 18, color: kBlack),
               );
             },
@@ -42,7 +42,7 @@ class GameView extends StatelessWidget {
           actions: [
             // buildResetBoardButton(),
             NextRoundButton(),
-            GamePopupMenuButton(),
+            GamePopupMenuButton(roomId: roomId),
           ],
         ),
         body: Stack(children: [
