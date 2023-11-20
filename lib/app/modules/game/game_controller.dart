@@ -14,7 +14,9 @@ class GameController extends GetxController {
   bool isHistoryAutoPlay = false;
   Room room = Room();
 
+
   IsarService isarService = IsarService();
+  late List<Room> rooms;
 
   createRoom() async {
     Room newRoom = Room();
@@ -65,6 +67,7 @@ class GameController extends GetxController {
       room.getCurrentRound().turns = [...room.getCurrentRound().turns, cell];
       room.checkWinner();
       print('Draw seed, turns: ${room.getCurrentRound().turns}');
+      GameController.to.saveRoom();
       update();
     }
   }

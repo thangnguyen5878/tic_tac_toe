@@ -18,8 +18,8 @@ class RoomCard extends StatelessWidget {
 
     final player1Name = round.getPlayer1().name;
     final player1Score = round.getPlayer1().score;
-    final player2Name = round.getPlayer1().name;
-    final player2Score = round.getPlayer1().score;
+    final player2Name = round.getPlayer2().name;
+    final player2Score = round.getPlayer2().score;
     final roundCount = room.getRoundCount();
 
     return InkWell(

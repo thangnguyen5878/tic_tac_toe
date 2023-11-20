@@ -20,7 +20,7 @@ class GameView extends StatelessWidget {
     return WillPopScope(
       onWillPop: () async {
         Get.back();
-        await GameController.to.saveRoom();
+        GameController.to.saveRoom();
         Get.toNamed(Routes.HOME);
         return true;
       },
