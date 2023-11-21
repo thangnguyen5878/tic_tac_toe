@@ -6,14 +6,33 @@ const kTitle1 = TextStyle(
   fontFamily: 'Jomhuria',
   fontSize: 48,
   color: Colors.black,
-
 );
+
+const kTitle2 = TextStyle(
+  fontFamily: 'Jomhuria',
+  fontSize: 40,
+  color: Colors.black,
+);
+
 
 const kHeading1 = TextStyle(
   fontSize: 20,
   color: Colors.black,
   fontWeight: FontWeight.bold,
 );
+
+const kHeading2 = TextStyle(
+  fontSize: 16,
+  color: Colors.black,
+  fontWeight: FontWeight.bold,
+);
+
+const kHeading3 = TextStyle(
+  fontSize: 13,
+  color: Colors.black,
+  fontWeight: FontWeight.bold,
+);
+
 
 const kNormal = TextStyle(
   fontSize: 15,
@@ -38,6 +57,14 @@ const kCardStyle = BoxDecoration(
     Radius.circular(4),
   ),
   boxShadow: [kDefaultShadow],
+);
+
+const kRoomIconStyle = BoxDecoration(
+  color: kBrown40,
+  borderRadius: BorderRadius.all(
+    Radius.circular(4),
+  ),
+  // boxShadow: [kDefaultShadow],
 );
 
 // TEXT FIELD STYLES

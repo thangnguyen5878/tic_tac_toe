@@ -17,13 +17,17 @@ class HomeView extends StatelessWidget {
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
-          // leading: Icon(
-          //   Icons.menu,
-          //   color: kBlack,
-          //   size: kIconSize,
-          // ),
+          leading: IconButton(
+            padding: EdgeInsets.only(left: kPadding16),
+            icon: Icon(
+              Icons.menu,
+              color: kBlack,
+              size: kIconSize,
+            ),
+            onPressed: () {  },
+          ),
           title: Container(
-            padding: const EdgeInsets.only(top: kPadding8),
+            padding: const EdgeInsets.only(top: kPadding8, right: kPadding32),
             alignment: Alignment.center,
             child: Text('Tic-tac-toe', style: kTitle1),
           ),

@@ -7,6 +7,7 @@ import 'package:flutter_tic_tac_toe/app/modules/game/components/player_bottom_ba
 import 'package:flutter_tic_tac_toe/app/modules/game/game_controller.dart';
 import 'package:flutter_tic_tac_toe/utils/constants/app_colors.dart';
 import 'package:flutter_tic_tac_toe/routes/app_pages.dart';
+import 'package:flutter_tic_tac_toe/utils/constants/app_styles.dart';
 import 'package:get/get.dart';
 
 class GameView extends StatelessWidget {
@@ -25,26 +26,7 @@ class GameView extends StatelessWidget {
         return true;
       },
       child: Scaffold(
-        appBar: AppBar(
-          backgroundColor: kBrown40,
-          title: GetBuilder<GameController>(
-            builder: (gameController) {
-              final room = GameController.to.room;
-              final round = room.getCurrentRound();
-
-              return Text(
-                'Round: ${room.getRoundCount()}, Turn: ${round.getTurnCount()}',
-                style: const TextStyle(fontSize: 18, color: kBlack),
-              );
-            },
-          ),
-          leading: GameBackButton(),
-          actions: [
-            // buildResetBoardButton(),
-            NextRoundButton(),
-            GamePopupMenuButton(),
-          ],
-        ),
+        appBar: buildAppBar(),
         body: Stack(children: [
           Center(
             child: Padding(
@@ -63,6 +45,37 @@ class GameView extends StatelessWidget {
         ]),
       ),
     );
+  }
+
+  AppBar buildAppBar() {
+    return AppBar(
+        backgroundColor: kBrown40,
+        leading: GameBackButton(),
+        title: GetBuilder<GameController>(
+          builder: (gameController) {
+            final room = GameController.to.room;
+            final round = room.getCurrentRound();
+            return Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                'Room: ${room.name}',
+                style: kHeading2
+              ),Text(
+                'Round: ${room.getRoundCount()}, Turn: ${round.getTurnCount()}',
+                style: kHeading3
+              ),
+              ]
+            );
+          },
+        ),
+
+        actions: [
+          // buildResetBoardButton(),
+          NextRoundButton(),
+          GamePopupMenuButton(),
+        ],
+      );
   }
 }
 

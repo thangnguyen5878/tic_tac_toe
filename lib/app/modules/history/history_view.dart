@@ -24,11 +24,16 @@ class HistoryView extends StatelessWidget {
   }
 
   Container buildBody(roomId) {
+    final room = GameController.to.room;
     final rounds = GameController.to.room.rounds;
     return Container(
       alignment: Alignment.topCenter,
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          // Container(
+          //     padding: EdgeInsets.only(top: kPadding8, left: kPadding16),
+          //     child: Text('Room: ${room.name}', style: kHeading2)),
           Expanded(
             child: ListView.separated(
               padding: EdgeInsets.symmetric(
@@ -36,10 +41,22 @@ class HistoryView extends StatelessWidget {
               separatorBuilder: (BuildContext context, int index) {
                 return SizedBox(height: kPadding12);
               },
-              itemCount: rounds!.length,
+              itemCount: rounds!.length + 1, // plus 1 since the title is included
               itemBuilder: (context, index) {
-                final round = rounds[index];
-                return RoundCard(round: round!, roomId: roomId);
+                if (index == 0) {
+                  // This is the first item, which is the title
+                  return Container(
+                    alignment: Alignment.center,
+                    color: kWhite,
+                    child: Text(
+                        'Room: ${room.name}',
+                        style: kHeading2),
+                  );
+                } else {
+                  // List items
+                  final round = rounds[index - 1]; // minus 1 to convert to round index
+                  return RoundCard(round: round!, roomId: roomId);
+                }
               },
             ),
           ),
@@ -52,6 +69,7 @@ class HistoryView extends StatelessWidget {
     return AppBar(
       backgroundColor: kWhite,
       leading: IconButton(
+        padding: EdgeInsets.only(left: kPadding16),
         icon: const Icon(Icons.arrow_back),
         iconSize: kIconSize,
         color: kBlack,
@@ -62,7 +80,13 @@ class HistoryView extends StatelessWidget {
       title: Container(
         alignment: Alignment.center,
         padding: EdgeInsets.only(top: kPadding8, right: kPadding48),
-        child: Text('History', style: kTitle1),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: [
+            Text('History', style: kTitle1),
+            // Text('Room: ${room.name}', style: kHeading3),
+          ],
+        ),
       ),
     );
   }

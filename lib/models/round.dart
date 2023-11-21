@@ -14,17 +14,17 @@ class Round {
 
   int? currentPlayerIndex;
 
-  int? _historyPlayerIndex;
+  int? currentTurnIndex;
 
   int? winnerIndex;
+
+  int? winTurnIndex;
 
   List<Cell?> turns = [];
 
   List<Cell?> historyTurns = [];
 
-  int? currentTurnIndex;
-
-  int? winTurnIndex;
+  int? _historyPlayerIndex;
 
   int? historyTurnIndex;
 
@@ -130,6 +130,12 @@ class Round {
     winnerIndex = null;
     turns = [];
     currentTurnIndex = 0;
+  }
+
+  resetHistory() {
+    _historyPlayerIndex = 0;
+    historyTurnIndex = 0;
+    historyTurns = [];
   }
 
   /// When draw Seed at a cell, automatically change to next turn.

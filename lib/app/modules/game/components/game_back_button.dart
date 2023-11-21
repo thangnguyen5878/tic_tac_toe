@@ -13,6 +13,7 @@ class GameBackButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return IconButton(
+      padding: EdgeInsets.only(left: kPadding16),
       icon: const Icon(
         Icons.arrow_back,
         color: kBlack,
