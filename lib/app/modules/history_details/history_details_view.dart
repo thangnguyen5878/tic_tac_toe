@@ -31,8 +31,8 @@ class HistoryDetailsView extends GetView<HistoryDetailsController> {
       },
       child: Scaffold(
         appBar: AppBar(
-        backgroundColor: kBrown40,
-        leading: IconButton(
+        backgroundColor: kBrown40_history,
+          leading: IconButton(
           padding: EdgeInsets.only(left: kPadding16),
           icon: const Icon(
             Icons.arrow_back,
@@ -55,7 +55,8 @@ class HistoryDetailsView extends GetView<HistoryDetailsController> {
                   Text(
                       'Room: ${room.name}',
                       style: kHeading2
-                  ),Text(
+                  ),
+                  Text(
                       'Round: ${room.getHistoryRoundCount()}, Turn: ${round.getHistoryTurnCount()}',
                       style: kHeading3
                   ),

@@ -19,13 +19,13 @@ class HistoryPlayerBottomBar extends StatelessWidget {
         final player1Name = round.getPlayer1().name;
         final player1Score = round.getHistoryPlayer1Score();
         final player1TextColor = round.getHistoryPlayerIndex() == 0 ? kBlack : kGrey45;
-        final player1BoxColor = round.getHistoryPlayerIndex() == 0 ? kBrown30 : kGrey30;
+        final player1BoxColor = round.getHistoryPlayerIndex() == 0 ? kBrown30_history : kGrey30;
 
         // player 2
         final player2Name = round.getPlayer2().name;
         final player2Score = round.getHistoryPlayer2Score();
         final player2TextColor = round.getHistoryPlayerIndex() == 1 ? kBlack : kGrey45;
-        final player2BoxColor = round.getHistoryPlayerIndex() == 1 ? kBrown30 : kGrey30;
+        final player2BoxColor = round.getHistoryPlayerIndex() == 1 ? kBrown30_history : kGrey30;
 
         // print('history player bottom bar: ${round.winTurnIndex}');
         return Row(

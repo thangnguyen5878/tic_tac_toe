@@ -28,10 +28,10 @@ class HistoryCell extends StatelessWidget {
           Color bColor = Colors.white;
 
           if (state == CellState.crossWin && round.isHistoryWinTurn() == true) {
-              bColor = kRed20;
+              bColor = kRed20_history;
           }
           if (state == CellState.noughtWin && round.isHistoryWinTurn() == true) {
-              bColor = kGreen30;
+              bColor = kGreen30_history;
           }
           // print('build cell($row, $column), $state, $bColor, $isWinTurn, ${historyRound!.historyCurrentTurnIndex}, ${historyRound.winTurnIndex}');
           // print('build cell($row,$column) $bColor $state');

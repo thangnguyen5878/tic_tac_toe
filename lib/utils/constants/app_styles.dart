@@ -44,6 +44,11 @@ const kNormalLarge = TextStyle(
   color: Colors.black,
 );
 
+const kRoundNumberBoxTextStyle = TextStyle(
+  fontSize: 14,
+  color: kBrown55,
+);
+
 // BOX DECORATION STYLES
 const kDefaultShadow = BoxShadow(
   offset: Offset(0, 4),
@@ -60,12 +65,21 @@ const kCardStyle = BoxDecoration(
 );
 
 const kRoomIconStyle = BoxDecoration(
-  color: kBrown40,
+  color: kBrown40_history,
   borderRadius: BorderRadius.all(
     Radius.circular(4),
   ),
   // boxShadow: [kDefaultShadow],
 );
+
+const kRoundNumberBoxStyle = BoxDecoration(
+  color: kBrown30_o80,
+  borderRadius: BorderRadius.all(
+    Radius.circular(4),
+  ),
+
+);
+
 
 // TEXT FIELD STYLES
 InputDecoration kTextField({String labelText = "", String hintText = ""}) {

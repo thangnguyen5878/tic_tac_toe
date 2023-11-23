@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter_tic_tac_toe/app/modules/game/game_controller.dart';
 import 'package:flutter_tic_tac_toe/models/room.dart';
 import 'package:flutter_tic_tac_toe/routes/app_pages.dart';
+import 'package:flutter_tic_tac_toe/utils/constants/app_colors.dart';
 import 'package:flutter_tic_tac_toe/utils/constants/app_size.dart';
 import 'package:flutter_tic_tac_toe/utils/constants/app_styles.dart';
 import 'package:get/get.dart';
@@ -28,6 +30,7 @@ class RoomCard extends StatelessWidget {
         Get.toNamed(Routes.GAME, arguments: room.id);
       },
       child: Container(
+        width: double.infinity,
         padding: EdgeInsets.all(kPadding12),
         decoration: kCardStyle,
         child: Column(
@@ -38,10 +41,20 @@ class RoomCard extends StatelessWidget {
               room.name,
               style: kHeading1,
             ),
-            SizedBox(height: kPadding8),
+            SizedBox(height: kPadding4),
+            RichText(
+              text: TextSpan(
+                style: kNormalLarge,
+                children: <TextSpan>[
+                  const TextSpan(text: 'Current round: '),
+                  TextSpan(text: '$roundCount', style: TextStyle(color: kBrown55)),
+                ],
+              ),
+            ),
+            SizedBox(height: kPadding4),
             Text(
               style: kNormal,
-              '$player1Name ($player1Score) - $player2Name ($player2Score), round: $roundCount',
+              '$player1Name ($player1Score) - $player2Name ($player2Score)',
             ),
             // Add more widgets to display additional room information
           ],
