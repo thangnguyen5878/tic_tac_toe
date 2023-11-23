@@ -16,29 +16,26 @@ class HomeView extends StatelessWidget {
     print('build home screen...');
     return SafeArea(
       child: Scaffold(
+        drawer: buildDrawer(),
         appBar: AppBar(
-          leading: IconButton(
-            padding: EdgeInsets.only(left: kPadding16),
-            icon: Icon(
-              Icons.menu,
-              color: kBlack,
-              size: kIconSize,
+          leading: Builder(
+            builder: (context) => IconButton(
+              padding: EdgeInsets.only(left: kPadding16),
+              icon: Icon(
+                Icons.menu,
+                color: kBlack,
+                size: kIconSize,
+              ),
+              onPressed: () {
+                Scaffold.of(context).openDrawer();
+              },
             ),
-            onPressed: () {  },
           ),
           title: Container(
             padding: const EdgeInsets.only(top: kPadding8, right: kPadding32),
             alignment: Alignment.center,
             child: Text('Tic-tac-toe', style: kTitle1),
           ),
-          // actions: [
-          //   Icon(
-          //     Icons.more_vert,
-          //     color: kBlack,
-          //     size: kIconSize,
-          //   ),
-          //   SizedBox(width: kPadding8,)
-          // ],
           backgroundColor: kWhite,
         ),
         body: Container(
@@ -96,5 +93,42 @@ class HomeView extends StatelessWidget {
       ),
     );
   }
-}
 
+  // Hàm để tạo Drawer
+  Widget buildDrawer() {
+    return Drawer(
+      backgroundColor: kWhite,
+      child: Column(
+        children: [
+          UserAccountsDrawerHeader(
+            decoration: BoxDecoration(color: kWhite),
+            accountName: Text(
+              'Not logged in',
+              style: kBold,
+            ),
+            accountEmail: Text('Tap to open settings', style: kNormal,),
+            currentAccountPicture: GestureDetector(
+              child: CircleAvatar(
+                radius: 16,
+                backgroundColor: kGrey45,
+                child: Icon(
+                  Icons.person,
+                  color: kWhite,
+                ),
+              ),
+              onTap: () {
+
+              },
+            ),
+          ),
+          // ListTile(
+          //   title: Text(
+          //     'Header 1',
+          //     style: TextStyle(fontWeight: FontWeight.bold),
+          //   ),
+          // ),
+        ]
+      ),
+    );
+  }
+}

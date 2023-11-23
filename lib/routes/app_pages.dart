@@ -1,17 +1,19 @@
-import 'package:flutter_tic_tac_toe/app/modules/create_room/create_room_binding.dart';
-import 'package:flutter_tic_tac_toe/app/modules/create_room/create_room_view.dart';
-import 'package:flutter_tic_tac_toe/app/modules/history_details/history_details_binding.dart';
-import 'package:flutter_tic_tac_toe/app/modules/history_details/history_details_view.dart';
-import 'package:flutter_tic_tac_toe/app/modules/winner/winner_binding.dart';
-import 'package:flutter_tic_tac_toe/app/modules/winner/winner_view.dart';
 import 'package:get/get.dart';
 
+import '../app/modules/auth/bindings/auth_binding.dart';
+import '../app/modules/auth/views/auth_view.dart';
+import '../app/modules/create_room/create_room_binding.dart';
+import '../app/modules/create_room/create_room_view.dart';
 import '../app/modules/game/game_binding.dart';
 import '../app/modules/game/game_view.dart';
 import '../app/modules/history/history_binding.dart';
 import '../app/modules/history/history_view.dart';
+import '../app/modules/history_details/history_details_binding.dart';
+import '../app/modules/history_details/history_details_view.dart';
 import '../app/modules/home/home_binding.dart';
 import '../app/modules/home/home_view.dart';
+import '../app/modules/winner/winner_binding.dart';
+import '../app/modules/winner/winner_view.dart';
 
 part 'app_routes.dart';
 
@@ -52,6 +54,11 @@ class AppPages {
       name: _Paths.HISTORY_DETAILS,
       page: () => HistoryDetailsView(),
       binding: HistoryDetailsBinding(),
+    ),
+    GetPage(
+      name: _Paths.AUTH,
+      page: () => const AuthView(),
+      binding: AuthBinding(),
     ),
   ];
 }

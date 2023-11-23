@@ -9,6 +9,7 @@ abstract class Routes {
   static const WINNER = _Paths.WINNER;
   static const HISTORY = _Paths.HISTORY;
   static const HISTORY_DETAILS = _Paths.HISTORY_DETAILS;
+  static const AUTH = _Paths.AUTH;
 }
 
 abstract class _Paths {
@@ -19,4 +20,5 @@ abstract class _Paths {
   static const WINNER = '/winner';
   static const HISTORY = '/history';
   static const HISTORY_DETAILS = '/history-details';
+  static const AUTH = '/auth';
 }

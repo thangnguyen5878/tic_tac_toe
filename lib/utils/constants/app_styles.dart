@@ -39,6 +39,12 @@ const kNormal = TextStyle(
   color: Colors.black,
 );
 
+const kBold = TextStyle(
+  fontSize: 15,
+  color: Colors.black,
+  fontWeight: FontWeight.w500
+);
+
 const kNormalLarge = TextStyle(
   fontSize: 17,
   color: Colors.black,
