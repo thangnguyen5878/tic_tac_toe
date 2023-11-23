@@ -34,23 +34,34 @@ const kHeading3 = TextStyle(
 );
 
 
-const kNormal = TextStyle(
+const kNormalText = TextStyle(
   fontSize: 15,
   color: Colors.black,
 );
 
-const kBold = TextStyle(
-  fontSize: 15,
-  color: Colors.black,
-  fontWeight: FontWeight.w500
+const kBoldText = TextStyle(
+    fontSize: 15,
+    color: Colors.black,
+    fontWeight: FontWeight.w500
 );
 
-const kNormalLarge = TextStyle(
+const kSmallText = TextStyle(
+  fontSize: 14,
+  color: Colors.black,
+);
+
+const kSmallBoldText = TextStyle(
+    fontSize: 14,
+    color: Colors.black,
+    fontWeight: FontWeight.w500
+);
+
+const kNormalLargeText = TextStyle(
   fontSize: 17,
   color: Colors.black,
 );
 
-const kRoundNumberBoxTextStyle = TextStyle(
+const kRoundNumberBoxText = TextStyle(
   fontSize: 14,
   color: kBrown55,
 );

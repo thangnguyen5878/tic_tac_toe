@@ -1,7 +1,7 @@
 import 'package:get/get.dart';
 
-import '../app/modules/auth/bindings/auth_binding.dart';
-import '../app/modules/auth/views/auth_view.dart';
+import '../app/modules/auth/auth_binding.dart';
+import '../app/modules/auth/auth_view.dart';
 import '../app/modules/create_room/create_room_binding.dart';
 import '../app/modules/create_room/create_room_view.dart';
 import '../app/modules/game/game_binding.dart';

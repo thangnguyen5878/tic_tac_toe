@@ -59,7 +59,7 @@ class RoundCard extends StatelessWidget {
                 children: [
                   RichText(
                     text: TextSpan(
-                      style: kNormalLarge,
+                      style: kNormalLargeText,
                       children: <TextSpan>[
                         const TextSpan(text: 'Winner: '),
                         TextSpan(text: '$winnerName', style: TextStyle(color: winnerColor)),
@@ -69,7 +69,7 @@ class RoundCard extends StatelessWidget {
                   const SizedBox(height: kPadding4),
                 ],
               ),
-            Text('$player1Name ($player1Score) - $player2Name ($player2Score)', style: kNormal,),
+            Text('$player1Name ($player1Score) - $player2Name ($player2Score)', style: kNormalText,),
             // Add more widgets to display additional room information
           ],
         ),

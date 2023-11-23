@@ -104,12 +104,12 @@ class HomeView extends StatelessWidget {
             decoration: BoxDecoration(color: kWhite),
             accountName: Text(
               'Not logged in',
-              style: kBold,
+              style: kSmallBoldText,
             ),
-            accountEmail: Text('Tap to open settings', style: kNormal,),
+            accountEmail: Text('Tap to open settings', style: kSmallText,),
             currentAccountPicture: GestureDetector(
               child: CircleAvatar(
-                radius: 16,
+                radius: 12,
                 backgroundColor: kGrey45,
                 child: Icon(
                   Icons.person,
@@ -117,7 +117,7 @@ class HomeView extends StatelessWidget {
                 ),
               ),
               onTap: () {
-
+                Get.toNamed(Routes.AUTH);
               },
             ),
           ),

@@ -44,7 +44,7 @@ class RoomCard extends StatelessWidget {
             SizedBox(height: kPadding4),
             RichText(
               text: TextSpan(
-                style: kNormalLarge,
+                style: kNormalLargeText,
                 children: <TextSpan>[
                   const TextSpan(text: 'Current round: '),
                   TextSpan(text: '$roundCount', style: TextStyle(color: kBrown55)),
@@ -53,7 +53,7 @@ class RoomCard extends StatelessWidget {
             ),
             SizedBox(height: kPadding4),
             Text(
-              style: kNormal,
+              style: kNormalText,
               '$player1Name ($player1Score) - $player2Name ($player2Score)',
             ),
             // Add more widgets to display additional room information
