@@ -25,6 +25,7 @@ Future<void> main() async {
     GetMaterialApp(
       debugShowCheckedModeBanner: false,
       title: "Application",
+      // home: UserInfoAuthView(),
       initialRoute: AppPages.INITIAL,
       getPages: AppPages.routes,
       initialBinding: HomeBinding(),
