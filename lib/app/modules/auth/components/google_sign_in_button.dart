@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_tic_tac_toe/services/auth_service.dart';
+import 'package:flutter_tic_tac_toe/app/modules/auth/auth_controller.dart';
 import 'package:flutter_tic_tac_toe/utils/constants/app_colors.dart';
 import 'package:flutter_tic_tac_toe/utils/constants/app_size.dart';
 import 'package:get/get.dart';
@@ -25,7 +25,7 @@ class GoogleSignInButton extends StatelessWidget {
               shadowColor: Colors.transparent
           ),
           onPressed: () {
-            // AuthService.signInWithGoogle();
+            AuthController.instance.signInWithGoogle();
           },
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
