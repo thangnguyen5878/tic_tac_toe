@@ -1,12 +1,16 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_tic_tac_toe/app/modules/game/game_controller.dart';
 import 'package:flutter_tic_tac_toe/app/modules/home/components/room_card.dart';
 import 'package:flutter_tic_tac_toe/models/room.dart';
 import 'package:flutter_tic_tac_toe/routes/app_pages.dart';
+import 'package:flutter_tic_tac_toe/utils/constants/app_cache.dart';
 import 'package:flutter_tic_tac_toe/utils/constants/app_colors.dart';
 import 'package:flutter_tic_tac_toe/utils/constants/app_size.dart';
 import 'package:flutter_tic_tac_toe/utils/constants/app_styles.dart';
 import 'package:get/get.dart';
+
+import '../auth/auth_controller.dart';
 
 class HomeView extends StatelessWidget {
   HomeView({super.key});
@@ -16,7 +20,7 @@ class HomeView extends StatelessWidget {
     print('build home screen...');
     return SafeArea(
       child: Scaffold(
-        drawer: buildDrawer(),
+        drawer: AppDrawer(),
         appBar: AppBar(
           leading: Builder(
             builder: (context) => IconButton(
@@ -60,8 +64,10 @@ class HomeView extends StatelessWidget {
                         final rooms = snapshot.data!;
                         return Expanded(
                           child: ListView.separated(
-                            padding: EdgeInsets.symmetric(horizontal: kPadding16, vertical: kPadding12),
-                            separatorBuilder: (BuildContext context, int index) {
+                            padding: EdgeInsets.symmetric(
+                                horizontal: kPadding16, vertical: kPadding12),
+                            separatorBuilder:
+                                (BuildContext context, int index) {
                               return SizedBox(height: kPadding12);
                             },
                             itemCount: rooms.length,
@@ -87,48 +93,70 @@ class HomeView extends StatelessWidget {
           onPressed: () {
             Get.toNamed(Routes.CREATE_ROOM);
           },
-          child: Icon(Icons.add, size: kIconSize,),
+          child: Icon(
+            Icons.add,
+            size: kIconSize,
+          ),
           backgroundColor: kBrown40,
         ),
       ),
     );
   }
 
-  // Hàm để tạo Drawer
-  Widget buildDrawer() {
-    return Drawer(
-      backgroundColor: kWhite,
-      child: Column(
-        children: [
-          UserAccountsDrawerHeader(
-            decoration: BoxDecoration(color: kWhite),
-            accountName: Text(
-              'Not logged in',
-              style: kSmallBoldText,
-            ),
-            accountEmail: Text('Tap to open settings', style: kSmallText,),
-            currentAccountPicture: GestureDetector(
-              child: CircleAvatar(
-                radius: 12,
-                backgroundColor: kGrey45,
-                child: Icon(
-                  Icons.person,
-                  color: kWhite,
-                ),
+  Obx AppDrawer() {
+    return Obx(() {
+      return Drawer(
+        backgroundColor: kWhite, // Đặt màu nền của Drawer là kWhite
+        child: Column(
+          children: [
+            UserAccountsDrawerHeader(
+              decoration: BoxDecoration(
+                color: kWhite,
               ),
-              onTap: () {
-                Get.toNamed(Routes.AUTH);
-              },
+              currentAccountPictureSize: Size.square(56),
+              // avatar
+              currentAccountPicture: GestureDetector(
+                child: ClipOval(
+                  child: CircleAvatar(
+                    backgroundColor: kGrey45,
+                    child: AuthController.to.user.value == null
+                        ? Icon(
+                            Icons.person,
+                            color: kWhite,
+                          )
+                        : CachedNetworkImage(
+                            imageUrl: AuthController.to.user.value!.photoURL!,
+                            fit: BoxFit.fitHeight,
+                            placeholder: (context, url) =>
+                                CircularProgressIndicator(),
+                            errorWidget: (context, url, error) =>
+                                Icon(Icons.error),
+                            cacheManager: appCacheManager,
+                          ),
+                  ),
+                ),
+                onTap: () {
+                  Get.toNamed(Routes.AUTH);
+                },
+              ),
+              // user name
+              accountName: Text(
+                AuthController.to.user.value == null
+                    ? 'Not logged in'
+                    : AuthController.to.user.value!.displayName!,
+                style: kSmallBoldText,
+              ),
+              // user email
+              accountEmail: Text(
+                AuthController.to.user.value == null
+                    ? 'Tap to open settings'
+                    : AuthController.to.user.value!.email!,
+                style: kSmallText,
+              ),
             ),
-          ),
-          // ListTile(
-          //   title: Text(
-          //     'Header 1',
-          //     style: TextStyle(fontWeight: FontWeight.bold),
-          //   ),
-          // ),
-        ]
-      ),
-    );
+          ],
+        ),
+      );
+    });
   }
 }
