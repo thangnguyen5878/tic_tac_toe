@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_tic_tac_toe/app/modules/auth/auth_controller.dart';
+import 'package:flutter_tic_tac_toe/controllers/auth_controller.dart';
 import 'package:flutter_tic_tac_toe/utils/constants/app_colors.dart';
 import 'package:flutter_tic_tac_toe/utils/constants/app_size.dart';
 import 'package:get/get.dart';
@@ -12,18 +12,14 @@ class GoogleSignInButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ConstrainedBox(
-      constraints: BoxConstraints(
-          minWidth: Get.width * 0.8,
-          minHeight: 48
-      ),
+      constraints: BoxConstraints(minWidth: Get.width * 0.8, minHeight: 48),
       child: ElevatedButton(
           style: ElevatedButton.styleFrom(
               backgroundColor: kWhite,
               foregroundColor: kBlack,
               shape: StadiumBorder(side: BorderSide(color: kBlack, width: 1.5)),
               elevation: 0,
-              shadowColor: Colors.transparent
-          ),
+              shadowColor: Colors.transparent),
           onPressed: () {
             AuthController.to.signInWithGoogle();
           },
@@ -36,7 +32,9 @@ class GoogleSignInButton extends StatelessWidget {
                 width: 20,
                 height: 20,
               ),
-              SizedBox(width: kPadding16,),
+              SizedBox(
+                width: kPadding16,
+              ),
               Text('Sign in with Google'),
             ],
           )),

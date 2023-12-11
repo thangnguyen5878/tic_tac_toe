@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_tic_tac_toe/app/modules/game/game_controller.dart';
+import 'package:flutter_tic_tac_toe/controllers/game_controller.dart';
 import 'package:flutter_tic_tac_toe/utils/constants/app_colors.dart';
 import 'package:get/get.dart';
 
@@ -9,7 +9,9 @@ class HistoryAutoPlayButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GetBuilder<GameController>(builder: (gameController) {
-      IconData icon = GameController.to.isHistoryAutoPlay == false ? Icons.play_arrow : Icons.pause;
+      IconData icon = GameController.to.isHistoryAutoPlay == false
+          ? Icons.play_arrow
+          : Icons.pause;
 
       return ElevatedButton(
         onPressed: () {

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_tic_tac_toe/app/modules/game/game_controller.dart';
+import 'package:flutter_tic_tac_toe/controllers/game_controller.dart';
 import 'package:flutter_tic_tac_toe/models/round.dart';
 import 'package:flutter_tic_tac_toe/routes/app_pages.dart';
 import 'package:flutter_tic_tac_toe/utils/constants/app_colors.dart';
@@ -11,7 +11,7 @@ class RoundCard extends StatelessWidget {
   final Round round;
   final int roomId;
 
-  RoundCard({super.key,required this.round, required this.roomId});
+  RoundCard({super.key, required this.round, required this.roomId});
 
   @override
   Widget build(BuildContext context) {
@@ -22,14 +22,12 @@ class RoundCard extends StatelessWidget {
     final player2Score = round.getPlayer2().score;
     final winnerName = round.hasWinner() ? round.getWinner().name : '';
 
-
     Color winnerColor;
     if (round.isPlayer1Win()) {
       winnerColor = kRed70;
     } else if (round.isPlayer2Win()) {
       winnerColor = kGreen60;
-    }
-    else {
+    } else {
       winnerColor = kBlack; // You can choose another color
     }
 
@@ -62,14 +60,19 @@ class RoundCard extends StatelessWidget {
                       style: kNormalLargeText,
                       children: <TextSpan>[
                         const TextSpan(text: 'Winner: '),
-                        TextSpan(text: '$winnerName', style: TextStyle(color: winnerColor)),
+                        TextSpan(
+                            text: '$winnerName',
+                            style: TextStyle(color: winnerColor)),
                       ],
                     ),
                   ),
                   const SizedBox(height: kPadding4),
                 ],
               ),
-            Text('$player1Name ($player1Score) - $player2Name ($player2Score)', style: kNormalText,),
+            Text(
+              '$player1Name ($player1Score) - $player2Name ($player2Score)',
+              style: kNormalText,
+            ),
             // Add more widgets to display additional room information
           ],
         ),

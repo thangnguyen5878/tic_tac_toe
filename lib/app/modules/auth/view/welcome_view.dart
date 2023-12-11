@@ -1,8 +1,8 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_tic_tac_toe/app/modules/auth/auth_controller.dart';
 import 'package:flutter_tic_tac_toe/app/modules/auth/components/sign_out_button.dart';
+import 'package:flutter_tic_tac_toe/controllers/auth_controller.dart';
 import 'package:flutter_tic_tac_toe/utils/constants/app_cache.dart';
 import 'package:flutter_tic_tac_toe/utils/constants/app_size.dart';
 

@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_tic_tac_toe/app/modules/game/game_controller.dart';
 import 'package:flutter_tic_tac_toe/app/modules/history/components/round_card.dart';
+import 'package:flutter_tic_tac_toe/controllers/game_controller.dart';
 import 'package:flutter_tic_tac_toe/utils/constants/app_colors.dart';
 import 'package:flutter_tic_tac_toe/utils/constants/app_size.dart';
 import 'package:flutter_tic_tac_toe/utils/constants/app_styles.dart';
-
 import 'package:get/get.dart';
 
 class HistoryView extends StatelessWidget {
@@ -41,20 +40,20 @@ class HistoryView extends StatelessWidget {
               separatorBuilder: (BuildContext context, int index) {
                 return SizedBox(height: kPadding12);
               },
-              itemCount: rounds!.length + 1, // plus 1 since the title is included
+              itemCount:
+                  rounds!.length + 1, // plus 1 since the title is included
               itemBuilder: (context, index) {
                 if (index == 0) {
                   // This is the first item, which is the title
                   return Container(
                     alignment: Alignment.center,
                     color: kWhite,
-                    child: Text(
-                        'Room: ${room.name}',
-                        style: kHeading2),
+                    child: Text('Room: ${room.name}', style: kHeading2),
                   );
                 } else {
                   // List items
-                  final round = rounds[index - 1]; // minus 1 to convert to round index
+                  final round =
+                      rounds[index - 1]; // minus 1 to convert to round index
                   return RoundCard(round: round!, roomId: roomId);
                 }
               },

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_tic_tac_toe/app/modules/game/game_controller.dart';
+import 'package:flutter_tic_tac_toe/controllers/game_controller.dart';
 import 'package:flutter_tic_tac_toe/utils/constants/app_colors.dart';
 import 'package:flutter_tic_tac_toe/utils/enums/cell_state.dart';
 import 'package:get/get.dart';
@@ -13,7 +13,6 @@ class HistoryCell extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     return InkWell(
       child: GetBuilder(
         init: GameController(),
@@ -28,10 +27,11 @@ class HistoryCell extends StatelessWidget {
           Color bColor = Colors.white;
 
           if (state == CellState.crossWin && round.isHistoryWinTurn() == true) {
-              bColor = kRed20_history;
+            bColor = kRed20_history;
           }
-          if (state == CellState.noughtWin && round.isHistoryWinTurn() == true) {
-              bColor = kGreen30_history;
+          if (state == CellState.noughtWin &&
+              round.isHistoryWinTurn() == true) {
+            bColor = kGreen30_history;
           }
           // print('build cell($row, $column), $state, $bColor, $isWinTurn, ${historyRound!.historyCurrentTurnIndex}, ${historyRound.winTurnIndex}');
           // print('build cell($row,$column) $bColor $state');

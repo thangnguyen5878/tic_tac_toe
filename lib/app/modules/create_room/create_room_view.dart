@@ -1,16 +1,15 @@
 // ignore_for_file: must_be_immutable
 
 import 'package:flutter/material.dart';
-import 'package:flutter_tic_tac_toe/app/modules/game/game_controller.dart';
+import 'package:flutter_tic_tac_toe/controllers/game_controller.dart';
+import 'package:flutter_tic_tac_toe/routes/app_pages.dart';
 import 'package:flutter_tic_tac_toe/utils/constants/app_colors.dart';
 import 'package:flutter_tic_tac_toe/utils/constants/app_input.dart';
 import 'package:flutter_tic_tac_toe/utils/constants/app_size.dart';
 import 'package:flutter_tic_tac_toe/utils/constants/app_styles.dart';
-import 'package:flutter_tic_tac_toe/routes/app_pages.dart';
-
 import 'package:get/get.dart';
 
-import 'create_room_controller.dart';
+import '../../../controllers/create_room_controller.dart';
 
 class CreateRoomView extends StatelessWidget {
   final _formKey = GlobalKey<FormState>();
@@ -129,14 +128,17 @@ class CreateRoomView extends StatelessWidget {
     return TextFormField(
       controller: CreateRoomController.to.rowCount,
       decoration: kTextField(
-          labelText: 'Number of rows ($rowCountFieldMinLength-$rowCountFieldMaxLength)'),
+          labelText:
+              'Number of rows ($rowCountFieldMinLength-$rowCountFieldMaxLength)'),
       keyboardType: TextInputType.number,
       validator: (value) {
         if (value!.isEmpty) {
           return null;
         }
         int? rowsValue = int.tryParse(value);
-        if (rowsValue == null || rowsValue < rowCountFieldMinLength || rowsValue > rowCountFieldMaxLength) {
+        if (rowsValue == null ||
+            rowsValue < rowCountFieldMinLength ||
+            rowsValue > rowCountFieldMaxLength) {
           return 'The board must has nummber of rows from $rowCountFieldMinLength to $rowCountFieldMaxLength';
         }
         return null;
@@ -148,7 +150,8 @@ class CreateRoomView extends StatelessWidget {
     return TextFormField(
       controller: CreateRoomController.to.columnCount,
       decoration: kTextField(
-        labelText: 'Number of columns ($columnCountFieldMinLength-$columnCountFieldMaxLength)',
+        labelText:
+            'Number of columns ($columnCountFieldMinLength-$columnCountFieldMaxLength)',
       ),
       keyboardType: TextInputType.number,
       validator: (value) {
@@ -156,7 +159,9 @@ class CreateRoomView extends StatelessWidget {
           return null;
         }
         int? columnsValue = int.tryParse(value);
-        if (columnsValue == null || columnsValue < columnCountFieldMinLength || columnsValue > columnCountFieldMaxLength) {
+        if (columnsValue == null ||
+            columnsValue < columnCountFieldMinLength ||
+            columnsValue > columnCountFieldMaxLength) {
           return 'The board must has number of columns from $columnCountFieldMinLength to $columnCountFieldMaxLength';
         }
         return null;

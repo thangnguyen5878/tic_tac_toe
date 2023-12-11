@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_tic_tac_toe/app/modules/game/game_controller.dart';
 import 'package:flutter_tic_tac_toe/app/modules/history_details/components/history_cell.dart';
+import 'package:flutter_tic_tac_toe/controllers/game_controller.dart';
 
 class HistoryBoard extends StatelessWidget {
   HistoryBoard({super.key});
@@ -30,10 +30,7 @@ class HistoryBoard extends StatelessWidget {
         itemCount: columnCount * rowCount!,
         itemBuilder: (context, index) {
           return HistoryCell(
-            row: index ~/ columnCount,
-            column: index % columnCount
-
-          );
+              row: index ~/ columnCount, column: index % columnCount);
         },
       ),
     );

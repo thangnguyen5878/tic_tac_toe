@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_tic_tac_toe/app/modules/game/game_controller.dart';
 import 'package:flutter_tic_tac_toe/app/modules/game/components/cell_widget.dart';
+import 'package:flutter_tic_tac_toe/controllers/game_controller.dart';
 
 class BoardWidget extends StatelessWidget {
   const BoardWidget({super.key});
 
   @override
   Widget build(BuildContext context) {
-
     final columnCount = GameController.to.room.board.columnCount;
     final rowCount = GameController.to.room.board.rowCount;
     print('build board ($columnCount, $rowCount)... ');

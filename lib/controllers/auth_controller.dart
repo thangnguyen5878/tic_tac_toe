@@ -1,5 +1,6 @@
-
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_tic_tac_toe/app/modules/auth/view/signin_view.dart';
 import 'package:flutter_tic_tac_toe/app/modules/auth/view/welcome_view.dart';
 import 'package:get/get.dart';
@@ -20,20 +21,13 @@ class AuthController extends GetxController {
   }
 
   initialScreen(User? user) {
-    if(user == null) {
-      Get.off(SignInView());
+    if (user == null) {
+      Get.off(() => SignInView());
     } else {
-      Get.off(WelcomeView());
+      Get.off(() => WelcomeView());
     }
+    debugPrint('Auth Route Navigation');
   }
-
-  // homeScreen() {
-  //   if(user == null) {
-  //     return SigninPage();
-  //   } else {
-  //     return WelcomePage();
-  //   }
-  // }
 
   signInWithGoogle() async {
     try {
@@ -41,7 +35,8 @@ class AuthController extends GetxController {
       final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
 
       // Obtain the auth details from the request
-      final GoogleSignInAuthentication? googleAuth = await googleUser?.authentication;
+      final GoogleSignInAuthentication? googleAuth =
+          await googleUser?.authentication;
 
       // Create a new credential
       final credential = GoogleAuthProvider.credential(
@@ -49,15 +44,32 @@ class AuthController extends GetxController {
         idToken: googleAuth?.idToken,
       );
 
-      // Once signed in, return the UserCredential
-      return await FirebaseAuth.instance.signInWithCredential(credential);
+      UserCredential userCredential =
+          await FirebaseAuth.instance.signInWithCredential(credential);
+      debugPrint('Signed in with Google');
+      createUserDocument(userCredential);
     } catch (error) {
       Get.snackbar(
         'ERROR',
         'loi roi',
         snackPosition: SnackPosition.BOTTOM,
       );
-      print('Sign in with Google $error');
+      debugPrint('Sign in with Google $error');
+    }
+  }
+
+  Future<void> createUserDocument(UserCredential userCredential) async {
+    if (userCredential.user != null) {
+      debugPrint('createUserDocument');
+      print(userCredential.user);
+      await FirebaseFirestore.instance
+          .collection('Users')
+          .doc(userCredential.user!.uid)
+          .set({
+        'email': userCredential.user!.email,
+        'username': userCredential.user!.displayName
+      });
+      debugPrint('User info saved to firestore');
     }
   }
 
@@ -65,5 +77,6 @@ class AuthController extends GetxController {
     GoogleSignIn _googleSignIn = GoogleSignIn();
     await _googleSignIn.disconnect();
     await FirebaseAuth.instance.signOut();
+    debugPrint('Signed out');
   }
 }

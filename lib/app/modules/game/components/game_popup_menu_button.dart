@@ -1,7 +1,7 @@
 // ignore_for_file: must_be_immutable, prefer_typing_uninitialized_variables
 
 import 'package:flutter/material.dart';
-import 'package:flutter_tic_tac_toe/app/modules/game/game_controller.dart';
+import 'package:flutter_tic_tac_toe/controllers/game_controller.dart';
 import 'package:flutter_tic_tac_toe/routes/app_pages.dart';
 import 'package:flutter_tic_tac_toe/utils/constants/app_size.dart';
 import 'package:get/get.dart';
@@ -10,7 +10,7 @@ class GamePopupMenuButton extends StatelessWidget {
   GamePopupMenuButton({
     super.key,
   });
-  
+
   var roomId;
 
   @override
@@ -42,7 +42,7 @@ class GamePopupMenuButton extends StatelessWidget {
       icon: Icon(
         Icons.more_vert,
         color: Colors.black,
-        size: kIconSize,// Set the color of the three dots icon to black
+        size: kIconSize, // Set the color of the three dots icon to black
       ),
     );
   }

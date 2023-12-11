@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_tic_tac_toe/app/modules/game/game_controller.dart';
+import 'package:flutter_tic_tac_toe/controllers/game_controller.dart';
 import 'package:get/get.dart';
 
 class WinnerView extends StatelessWidget {
-
   WinnerView({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {

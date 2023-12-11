@@ -1,18 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
-import 'package:flutter_tic_tac_toe/app/modules/game/game_controller.dart';
+import 'package:flutter_tic_tac_toe/controllers/game_controller.dart';
 import 'package:flutter_tic_tac_toe/models/room.dart';
 import 'package:flutter_tic_tac_toe/routes/app_pages.dart';
 import 'package:flutter_tic_tac_toe/utils/constants/app_colors.dart';
 import 'package:flutter_tic_tac_toe/utils/constants/app_size.dart';
 import 'package:flutter_tic_tac_toe/utils/constants/app_styles.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/get_core.dart';
 
 class RoomCard extends StatelessWidget {
   final Room room;
-  RoomCard(
-      this.room, {super.key});
+  RoomCard(this.room, {super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -34,8 +31,7 @@ class RoomCard extends StatelessWidget {
         padding: EdgeInsets.all(kPadding12),
         decoration: kCardStyle,
         child: Column(
-          crossAxisAlignment:
-          CrossAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
               room.name,
@@ -47,7 +43,8 @@ class RoomCard extends StatelessWidget {
                 style: kNormalLargeText,
                 children: <TextSpan>[
                   const TextSpan(text: 'Current round: '),
-                  TextSpan(text: '$roundCount', style: TextStyle(color: kBrown55)),
+                  TextSpan(
+                      text: '$roundCount', style: TextStyle(color: kBrown55)),
                 ],
               ),
             ),
