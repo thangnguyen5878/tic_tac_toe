@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_tic_tac_toe/app/modules/home/components/app_drawer.dart';
 import 'package:flutter_tic_tac_toe/app/modules/home/components/room_card.dart';
 import 'package:flutter_tic_tac_toe/controllers/game_controller.dart';
 import 'package:flutter_tic_tac_toe/models/room.dart';
@@ -12,8 +13,8 @@ import 'package:get/get.dart';
 
 import '../../../controllers/auth_controller.dart';
 
-class HomeView extends StatelessWidget {
-  HomeView({super.key});
+class HomePage extends StatelessWidget {
+  HomePage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -101,62 +102,5 @@ class HomeView extends StatelessWidget {
         ),
       ),
     );
-  }
-
-  Obx AppDrawer() {
-    return Obx(() {
-      return Drawer(
-        backgroundColor: kWhite, // Đặt màu nền của Drawer là kWhite
-        child: Column(
-          children: [
-            UserAccountsDrawerHeader(
-              decoration: BoxDecoration(
-                color: kWhite,
-              ),
-              currentAccountPictureSize: Size.square(56),
-              // avatar
-              currentAccountPicture: GestureDetector(
-                child: ClipOval(
-                  child: CircleAvatar(
-                    backgroundColor: kGrey45,
-                    child: AuthController.to.user.value == null
-                        ? Icon(
-                            Icons.person,
-                            color: kWhite,
-                          )
-                        : CachedNetworkImage(
-                            imageUrl: AuthController.to.user.value!.photoURL!,
-                            fit: BoxFit.fitHeight,
-                            placeholder: (context, url) =>
-                                CircularProgressIndicator(),
-                            errorWidget: (context, url, error) =>
-                                Icon(Icons.error),
-                            cacheManager: appCacheManager,
-                          ),
-                  ),
-                ),
-                onTap: () {
-                  Get.toNamed(Routes.AUTH);
-                },
-              ),
-              // user name
-              accountName: Text(
-                AuthController.to.user.value == null
-                    ? 'Not logged in'
-                    : AuthController.to.user.value!.displayName!,
-                style: kSmallBoldText,
-              ),
-              // user email
-              accountEmail: Text(
-                AuthController.to.user.value == null
-                    ? 'Tap to open settings'
-                    : AuthController.to.user.value!.email!,
-                style: kSmallText,
-              ),
-            ),
-          ],
-        ),
-      );
-    });
   }
 }

@@ -6,9 +6,9 @@ import 'package:flutter_tic_tac_toe/utils/constants/app_size.dart';
 import 'package:flutter_tic_tac_toe/utils/constants/app_styles.dart';
 import 'package:get/get.dart';
 
-class HistoryView extends StatelessWidget {
+class HistoryPage extends StatelessWidget {
   final roomId = Get.arguments;
-  HistoryView({super.key});
+  HistoryPage({super.key});
 
   @override
   Widget build(BuildContext context) {

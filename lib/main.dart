@@ -15,13 +15,11 @@ Future<void> main() async {
     GetMaterialApp(
       debugShowCheckedModeBanner: false,
       title: "Application",
-      // home: UserInfoAuthView(),
-      // home: AuthView(),
       initialRoute: AppPages.INITIAL,
       getPages: AppPages.routes,
       initialBinding: HomeBinding(),
       theme: ThemeData(
-        backgroundColor: kWhite,
+        // backgroundColor: kWhite,
         scaffoldBackgroundColor: kWhite,
       ),
     ),

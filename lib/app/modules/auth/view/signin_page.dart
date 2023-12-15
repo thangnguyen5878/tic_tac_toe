@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_tic_tac_toe/app/modules/auth/components/google_signin_button.dart';
 
-class SignInView extends StatelessWidget {
-  const SignInView({super.key});
+class SignInPage extends StatelessWidget {
+  const SignInPage({super.key});
 
   @override
   Widget build(BuildContext context) {

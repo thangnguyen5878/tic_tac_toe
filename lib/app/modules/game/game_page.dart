@@ -10,10 +10,10 @@ import 'package:flutter_tic_tac_toe/utils/constants/app_colors.dart';
 import 'package:flutter_tic_tac_toe/utils/constants/app_styles.dart';
 import 'package:get/get.dart';
 
-class GameView extends StatelessWidget {
+class GamePage extends StatelessWidget {
   final roomId = Get.arguments;
 
-  GameView({super.key});
+  GamePage({super.key});
   @override
   Widget build(BuildContext context) {
     print('build game page...');
@@ -22,7 +22,7 @@ class GameView extends StatelessWidget {
       onWillPop: () async {
         Get.back();
         GameController.to.saveRoom();
-        Get.toNamed(Routes.HOME);
+        Get.to(Routes.HOME);
         return true;
       },
       child: Scaffold(

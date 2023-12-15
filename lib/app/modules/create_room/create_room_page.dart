@@ -1,6 +1,7 @@
 // ignore_for_file: must_be_immutable
 
 import 'package:flutter/material.dart';
+import 'package:flutter_tic_tac_toe/app/modules/game/game_page.dart';
 import 'package:flutter_tic_tac_toe/controllers/game_controller.dart';
 import 'package:flutter_tic_tac_toe/routes/app_pages.dart';
 import 'package:flutter_tic_tac_toe/utils/constants/app_colors.dart';
@@ -11,10 +12,10 @@ import 'package:get/get.dart';
 
 import '../../../controllers/create_room_controller.dart';
 
-class CreateRoomView extends StatelessWidget {
+class CreateRoomPage extends StatelessWidget {
   final _formKey = GlobalKey<FormState>();
 
-  CreateRoomView({Key? key}) : super(key: key);
+  CreateRoomPage({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return Scaffold(

@@ -25,6 +25,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "5.13.0"
+  app_state:
+    dependency: "direct main"
+    description:
+      name: app_state
+      sha256: a0db005a03cb28bfc00e788b9389d22540ac259a860675f02fe9c43ab7c76553
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.9.4"
   args:
     dependency: transitive
     description:
@@ -339,6 +347,14 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
+  flutter_issue_108697_workaround:
+    dependency: transitive
+    description:
+      name: flutter_issue_108697_workaround
+      sha256: "4f0ec26fd21b15954fda4acc94922abd2b2c067b5af4629438e270f8b2a2da08"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.1.3"
   flutter_lints:
     dependency: "direct dev"
     description:

@@ -1,4 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter_tic_tac_toe/utils/constants/service_constant.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
 class AuthService {
@@ -19,6 +20,7 @@ class AuthService {
         );
 
         await FirebaseAuth.instance.signInWithCredential(credential);
+        updateUserPresence(true);
       }
     } catch (e) {
       print('ERROR: Sign in with Google: $e');
@@ -26,6 +28,14 @@ class AuthService {
   }
 
   signOut() {
+    googleSignIn.disconnect();
     FirebaseAuth.instance.signOut();
+  }
+
+  Future<void> updateUserPresence(bool isOnline) async {
+    final user = FirebaseAuth.instance.currentUser!;
+    await firestore.collection('players').doc(user.uid).update({
+      'isOnline': isOnline,
+    });
   }
 }

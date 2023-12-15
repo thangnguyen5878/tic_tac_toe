@@ -8,8 +8,8 @@ import 'package:flutter_tic_tac_toe/utils/constants/app_size.dart';
 import 'package:flutter_tic_tac_toe/utils/constants/app_styles.dart';
 import 'package:get/get.dart';
 
-class HistoryDetailsView extends StatelessWidget {
-  HistoryDetailsView({Key? key}) : super(key: key);
+class HistoryDetailsPage extends StatelessWidget {
+  HistoryDetailsPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

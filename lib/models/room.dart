@@ -1,7 +1,4 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
-import 'package:get/get.dart';
-import 'package:isar/isar.dart';
-
 import 'package:flutter_tic_tac_toe/models/board.dart';
 import 'package:flutter_tic_tac_toe/models/cell.dart';
 import 'package:flutter_tic_tac_toe/models/player.dart';
@@ -9,6 +6,8 @@ import 'package:flutter_tic_tac_toe/models/round.dart';
 import 'package:flutter_tic_tac_toe/utils/enums/cell_state.dart';
 import 'package:flutter_tic_tac_toe/utils/enums/game_state.dart';
 import 'package:flutter_tic_tac_toe/utils/enums/seed.dart';
+import 'package:get/get.dart';
+import 'package:isar/isar.dart';
 
 part 'room.g.dart';
 
@@ -35,6 +34,18 @@ class Room {
   List<Cell>? checkingCells = List<Cell>.empty(growable: true);
 
   final winCount = 5;
+
+  Room.all({
+    required this.id,
+    required this.name,
+    required this.state,
+    required this.board,
+    required this.historyBoard,
+    this.rounds,
+    required this.currentRoundIndex,
+    required this.historyRoundIndex,
+    this.checkingCells,
+  });
 
   Room({Player? player1, Player? player2})
       : name = 'Untitled Room',
@@ -242,5 +253,33 @@ class Room {
   @override
   String toString() {
     return 'Room{name: $name, board: $board, historyBoard: $historyBoard, historyRoundIndex: $historyRoundIndex, state: $state, rounds: $rounds, currentRoundIndex: $currentRoundIndex, checkingCells: $checkingCells, winCount: $winCount}';
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'id': this.id,
+      'name': this.name,
+      'state': this.state,
+      'board': this.board,
+      'historyBoard': this.historyBoard,
+      'rounds': this.rounds,
+      'currentRoundIndex': this.currentRoundIndex,
+      'historyRoundIndex': this.historyRoundIndex,
+      'checkingCells': this.checkingCells,
+    };
+  }
+
+  factory Room.fromJson(Map<String, dynamic> map) {
+    return Room.all(
+      id: map['id'] as Id,
+      name: map['name'] as String,
+      state: map['state'] as GameState,
+      board: map['board'] as Board,
+      historyBoard: map['historyBoard'] as Board,
+      rounds: map['rounds'] as List<Round?>,
+      currentRoundIndex: map['currentRoundIndex'] as int,
+      historyRoundIndex: map['historyRoundIndex'] as int,
+      checkingCells: map['checkingCells'] as List<Cell>,
+    );
   }
 }
