@@ -7,6 +7,7 @@ class OnlinePlayerList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    debugPrint('build online player list');
     return StreamBuilder(
         stream: firestoreService.getOtherOnlineUsers(),
         builder: (context, snapshot) {

@@ -1,8 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_tic_tac_toe/app/modules/home_online/components/challenge_dialog.dart';
-import 'package:flutter_tic_tac_toe/utils/constants/app_styles.dart';
+import 'package:flutter_tic_tac_toe/app/modules/home_online/components/show_challenge_dialog.dart';
+import 'package:flutter_tic_tac_toe/app/modules/home_online/components/show_invited_dialog.dart';
 
 class OnlinePlayerTile extends StatelessWidget {
   final DocumentSnapshot doc;
@@ -10,17 +10,14 @@ class OnlinePlayerTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final player = doc!.data() as Map<String, dynamic>;
-    if (FirebaseAuth.instance.currentUser!.email != player['email']) {
+    final opponent = doc.data() as Map<String, dynamic>;
+    if (FirebaseAuth.instance.currentUser!.email != opponent['email']) {
       return ListTile(
-        title: Text(player['email']),
+        title: Text(opponent['email']),
         onTap: () {
           print('show alert dialog');
-          showDialog<void>(
-            barrierDismissible: false,
-            context: context,
-            builder: (BuildContext context) => ChallengleDialog(player: player),
-          );
+          showInvitedDialog(context, opponent);
+          // showChallengleDialog(context, player);
         },
       );
     } else {
