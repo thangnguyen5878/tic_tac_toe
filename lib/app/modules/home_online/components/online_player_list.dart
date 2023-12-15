@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_tic_tac_toe/app/modules/home_online/components/onlinePlayerTile.dart';
+import 'package:flutter_tic_tac_toe/app/modules/home_online/components/online_player_tile.dart';
 import 'package:flutter_tic_tac_toe/utils/constants/service_constant.dart';
 
 class OnlinePlayerList extends StatelessWidget {
