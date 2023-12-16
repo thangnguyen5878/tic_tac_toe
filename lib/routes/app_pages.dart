@@ -1,23 +1,23 @@
+import 'package:flutter_tic_tac_toe/modules/offline/create_room/create_room_binding.dart';
+import 'package:flutter_tic_tac_toe/modules/offline/history/history_binding.dart';
+import 'package:flutter_tic_tac_toe/modules/offline/history_details/history_details_binding.dart';
+import 'package:flutter_tic_tac_toe/modules/offline/home/home_binding.dart';
+import 'package:flutter_tic_tac_toe/modules/offline/winner/winner_binding.dart';
+import 'package:flutter_tic_tac_toe/modules/online/online_game/online_game_page.dart';
 import 'package:get/get.dart';
 
-import '../app/modules/auth/auth_binding.dart';
-import '../app/modules/auth/view/auth_page.dart';
-import '../app/modules/create_room/create_room_binding.dart';
-import '../app/modules/create_room/create_room_page.dart';
-import '../app/modules/game/game_binding.dart';
-import '../app/modules/game/game_page.dart';
-import '../app/modules/history/history_binding.dart';
-import '../app/modules/history/history_page.dart';
-import '../app/modules/history_details/history_details_binding.dart';
-import '../app/modules/history_details/history_details_page.dart';
-import '../app/modules/home/home_binding.dart';
-import '../app/modules/home/home_page.dart';
-import '../app/modules/home_online/home_online_binding.dart';
-import '../app/modules/home_online/home_online_page.dart';
-import '../app/modules/online_game/online_game_binding.dart';
-import '../app/modules/online_game/online_game_page.dart';
-import '../app/modules/winner/winner_binding.dart';
-import '../app/modules/winner/winner_view.dart';
+import '../modules/offline/game/game_binding.dart';
+import '../modules/online/auth/auth_binding.dart';
+import '../modules/online/auth/view/auth_page.dart';
+import '../modules/offline/create_room/create_room_page.dart';
+import '../modules/offline/game/game_page.dart';
+import '../modules/offline/history/history_page.dart';
+import '../modules/offline/history_details/history_details_page.dart';
+import '../modules/offline/home/home_page.dart';
+import '../modules/online/home_online/home_online_binding.dart';
+import '../modules/online/home_online/home_online_page.dart';
+import '../modules/online/online_game/online_game_binding.dart';
+import '../modules/offline/winner/winner_view.dart';
 
 part 'app_routes.dart';
 

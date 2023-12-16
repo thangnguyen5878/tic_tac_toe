@@ -1,5 +1,5 @@
-import 'package:flutter_tic_tac_toe/models/room.dart';
-import 'package:flutter_tic_tac_toe/models/round.dart';
+import 'package:flutter_tic_tac_toe/models/offline/room.dart';
+import 'package:flutter_tic_tac_toe/models/offline/round.dart';
 import 'package:isar/isar.dart';
 import 'package:path_provider/path_provider.dart';
 

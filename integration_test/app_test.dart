@@ -13,12 +13,12 @@ void main() {
     tester.tap(addRoomButton);
 
     // TODO2: enter text in the form and press the button to create room
-    final roomFormField = find.byKey(Key('room_input'));
-    final player1FormField = find.byKey(Key('player1_input'));
-    final player2FormField = find.byKey(Key('player2_input'));
-    final rowFormField = find.byKey(Key('row_input'));
-    final columnFormField = find.byKey(Key('column_input'));
-    final createRoomButton = find.byKey(Key('create_room_button'));
+    final roomFormField = find.byKey(const Key('room_input'));
+    final player1FormField = find.byKey(const Key('player1_input'));
+    final player2FormField = find.byKey(const Key('player2_input'));
+    final rowFormField = find.byKey(const Key('row_input'));
+    final columnFormField = find.byKey(const Key('column_input'));
+    final createRoomButton = find.byKey(const Key('create_room_button'));
 
     tester.enterText(roomFormField, 'room 1');
     tester.enterText(player1FormField, 'John');

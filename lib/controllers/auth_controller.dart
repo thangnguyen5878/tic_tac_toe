@@ -1,9 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_tic_tac_toe/app/modules/auth/view/signin_page.dart';
-import 'package:flutter_tic_tac_toe/app/modules/auth/view/welcome_page.dart';
-import 'package:flutter_tic_tac_toe/models/online_player.dart';
+import 'package:flutter_tic_tac_toe/modules/online/auth/view/signin_page.dart';
+import 'package:flutter_tic_tac_toe/modules/online/auth/view/welcome_page.dart';
+import 'package:flutter_tic_tac_toe/models/online/online_player.dart';
 import 'package:flutter_tic_tac_toe/utils/constants/service_constant.dart';
 import 'package:get/get.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -38,7 +38,7 @@ class AuthController extends GetxController {
 
   initialScreen(User? user) {
     if (user == null) {
-      Get.off(() => SignInPage());
+      Get.off(() => const SignInPage());
     } else {
       updateUserOnlineStatus(true);
       Get.off(() => WelcomePage());
@@ -57,10 +57,7 @@ class AuthController extends GetxController {
     await FirebaseFirestore.instance.collection('players').doc(firebaseAuth.currentUser!.uid).update({
       'isOnline': isOnline,
     });
-    print(1);
     print('updateUserOnlineStatus $isOnline');
-    print(2);
-
   }
 
   Stream<List<OnlinePlayer>> getOnlineUsers() {
@@ -88,7 +85,7 @@ class AuthController extends GetxController {
       UserCredential userCredential =
           await FirebaseAuth.instance.signInWithCredential(credential);
       debugPrint('Signed in with Google');
-      createUserDocument(userCredential);
+      firestoreService.createUserDocument(userCredential);
     } catch (error) {
       Get.snackbar(
         'ERROR',
@@ -96,23 +93,6 @@ class AuthController extends GetxController {
         snackPosition: SnackPosition.BOTTOM,
       );
       debugPrint('Sign in with Google $error');
-    }
-  }
-
-  Future<void> createUserDocument(UserCredential userCredential) async {
-    if (userCredential.user != null) {
-      debugPrint('createUserDocument');
-      print(userCredential.user);
-      await FirebaseFirestore.instance
-          .collection('players')
-          .doc(userCredential.user!.uid)
-          .set({
-        'uid': userCredential.user!.uid,
-        'email': userCredential.user!.email,
-        'username': userCredential.user!.displayName,
-        'isOnline': true
-      });
-      debugPrint('User info saved to firestore');
     }
   }
 
