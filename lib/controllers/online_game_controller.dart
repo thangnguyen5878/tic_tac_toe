@@ -1,9 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter_tic_tac_toe/models/online/online_player.dart';
 import 'package:flutter_tic_tac_toe/routes/app_pages.dart';
 import 'package:get/get.dart';
 
 class OnlineGameController extends GetxController {
   static OnlineGameController to = Get.find();
+  // OnlinePlayer currentPlayer = OnlinePlayer(name: name, email: email);
+  OnlinePlayer opponent = OnlinePlayer(name: '', email: '');
 
   String receiverPlayerId = '';
   String challengeStatus = '';
@@ -30,6 +33,4 @@ class OnlineGameController extends GetxController {
       this.challengeStatus = 'đã hủy';
     }
   }
-
-
 }

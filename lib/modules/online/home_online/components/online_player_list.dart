@@ -9,7 +9,7 @@ class OnlinePlayerList extends StatelessWidget {
   Widget build(BuildContext context) {
     debugPrint('build online player list');
     return StreamBuilder(
-        stream: firestoreService.getOnlineUsers(),
+        stream: firestoreService.getOnlinePlayers(),
         builder: (context, snapshot) {
 
           // error

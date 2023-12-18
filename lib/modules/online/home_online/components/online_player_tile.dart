@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_tic_tac_toe/modules/online/home_online/components/show_invited_dialog.dart';
+import 'package:flutter_tic_tac_toe/controllers/online_player_controller.dart';
 
 class OnlinePlayerTile extends StatelessWidget {
   final DocumentSnapshot doc;
@@ -14,9 +14,7 @@ class OnlinePlayerTile extends StatelessWidget {
       return ListTile(
         title: Text(opponent['email']),
         onTap: () {
-          print('show alert dialog');
-          showInvitedDialog(context, opponent);
-          // showChallengleDialog(context, player);
+          OnlinePlayerController.to.selectOpponent(opponent['uid']);
         },
       );
     } else {

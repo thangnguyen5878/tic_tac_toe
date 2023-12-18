@@ -46,13 +46,6 @@ class AuthController extends GetxController {
     debugPrint('Auth Route Navigation');
   }
 
-  // void _listenToOnlineUsers() {
-  //   getOnlineUsers().listen((onlineUsers) {
-  //     this.onlineUsers.assignAll(onlineUsers as Iterable<User>);
-  //   });
-  // }
-
-
   Future<void> updateUserOnlineStatus(bool isOnline) async {
     await FirebaseFirestore.instance.collection('players').doc(firebaseAuth.currentUser!.uid).update({
       'isOnline': isOnline,
@@ -85,7 +78,7 @@ class AuthController extends GetxController {
       UserCredential userCredential =
           await FirebaseAuth.instance.signInWithCredential(credential);
       debugPrint('Signed in with Google');
-      firestoreService.createUserDocument(userCredential);
+      firestoreService.createPlayerDocument(userCredential);
     } catch (error) {
       Get.snackbar(
         'ERROR',

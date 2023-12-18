@@ -12,9 +12,9 @@ class FirestoreService {
   //       toFirestore: (user, _) => user.toJson());
   // }
 
-  Future<void> createUserDocument(UserCredential userCredential) async {
+  Future<void> createPlayerDocument(UserCredential userCredential) async {
     if (userCredential.user != null) {
-      debugPrint('createUserDocument');
+      debugPrint('createPlayerDocument');
       print(userCredential.user);
       await FirebaseFirestore.instance
           .collection('players')
@@ -24,20 +24,40 @@ class FirestoreService {
         'email': userCredential.user!.email,
         'username': userCredential.user!.displayName,
         'isOnline': true,
-        'status': 'idle'
+        'status': 'idle',
+        'opponentId': ''
       });
-      debugPrint('User info saved to firestore');
+      debugPrint('Player info saved to firestore');
     }
   }
 
-  Stream<QuerySnapshot> getOnlineUsers() {
+  Stream<QuerySnapshot> getOnlinePlayers() {
     return firestore.collection('players')
         // .where('uid', isNotEqualTo: FirebaseAuth.instance.currentUser!.uid)
         .where('isOnline', isEqualTo: true)
         .snapshots();
   }
 
-  Future<void> updateUser(String uid, Map<String, dynamic> data) async {
+  Future<void> updatePlayer(String uid, Map<String, dynamic> data) async {
     await firestore.collection('players').doc(uid).update(data);
+  }
+
+  /// Update a player's opponentId in Firestore
+  Future<Map<String, dynamic>> updateOpponent(String uid, String opponentId) async {
+    final data = {
+      'opponentId': opponentId,
+    };
+    await firestore.collection('players').doc(uid).update(data);
+    return data;
+  }
+
+  /// Update a player's status in Firestore
+  Future<Map<String, dynamic>> updatePlayerStatus(String uid, String status) async {
+    final data = {
+      'status': status,
+    };
+    await firestore.collection('players').doc(uid).update(data);
+    debugPrint('change player status $uid to "$status"');
+    return data;
   }
 }
