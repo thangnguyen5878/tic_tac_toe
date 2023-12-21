@@ -3,7 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_tic_tac_toe/modules/online/auth/view/signin_page.dart';
 import 'package:flutter_tic_tac_toe/modules/online/auth/view/welcome_page.dart';
-import 'package:flutter_tic_tac_toe/models/online/online_player.dart';
+import 'package:flutter_tic_tac_toe/models/online/online_user.dart';
 import 'package:flutter_tic_tac_toe/utils/constants/service_constant.dart';
 import 'package:get/get.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -53,11 +53,11 @@ class AuthController extends GetxController {
     print('updateUserOnlineStatus $isOnline');
   }
 
-  Stream<List<OnlinePlayer>> getOnlineUsers() {
+  Stream<List<OnlineUser>> getOnlineUsers() {
     return FirebaseFirestore.instance.collection('players')
         .where('isOnline', isEqualTo: true)
         .snapshots()
-        .map((snapshot) => snapshot.docs.map((doc) => OnlinePlayer.fromJson(doc.data())).toList());
+        .map((snapshot) => snapshot.docs.map((doc) => OnlineUser.fromJson(doc.data())).toList());
   }
 
   signInWithGoogle() async {
@@ -78,7 +78,7 @@ class AuthController extends GetxController {
       UserCredential userCredential =
           await FirebaseAuth.instance.signInWithCredential(credential);
       debugPrint('Signed in with Google');
-      firestoreService.createPlayerDocument(userCredential);
+      firestoreService.createUserDocument(userCredential);
     } catch (error) {
       Get.snackbar(
         'ERROR',

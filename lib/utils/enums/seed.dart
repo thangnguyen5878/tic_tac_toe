@@ -1,7 +1,9 @@
+import 'package:json_annotation/json_annotation.dart';
+
 enum Seed {
-  cross,
-  nought,
-  noSeed;
+  @JsonValue("cross") cross,
+  @JsonValue("nought") nought,
+  @JsonValue("noSeed") noSeed;
 
   @override
   String toString() {

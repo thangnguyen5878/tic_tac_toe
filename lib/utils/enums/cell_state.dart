@@ -1,7 +1,9 @@
+import 'package:json_annotation/json_annotation.dart';
+
 enum CellState {
-  normal,
-  crossWin,
-  noughtWin;
+  @JsonValue("normal") normal,
+  @JsonValue("crossWin") crossWin,
+  @JsonValue("noughtWin") noughtWin;
 
   @override
   String toString() {

@@ -1,11 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_tic_tac_toe/controllers/online_player_controller.dart';
+import 'package:flutter_tic_tac_toe/controllers/online_user_controller.dart';
 
-class OnlinePlayerTile extends StatelessWidget {
+class OnlineUserTile extends StatelessWidget {
   final DocumentSnapshot doc;
-  OnlinePlayerTile({super.key, required this.doc});
+  OnlineUserTile({super.key, required this.doc});
 
   @override
   Widget build(BuildContext context) {
@@ -14,7 +14,7 @@ class OnlinePlayerTile extends StatelessWidget {
       return ListTile(
         title: Text(opponent['email']),
         onTap: () {
-          OnlinePlayerController.to.selectOpponent(opponent['uid']);
+          OnlineUserController.to.selectOpponent(opponent['uid']);
         },
       );
     } else {

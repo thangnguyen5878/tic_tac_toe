@@ -14,9 +14,7 @@ import '../modules/offline/game/game_page.dart';
 import '../modules/offline/history/history_page.dart';
 import '../modules/offline/history_details/history_details_page.dart';
 import '../modules/offline/home/home_page.dart';
-import '../modules/online/home_online/home_online_binding.dart';
 import '../modules/online/home_online/home_online_page.dart';
-import '../modules/online/online_game/online_game_binding.dart';
 import '../modules/offline/winner/winner_view.dart';
 
 part 'app_routes.dart';
@@ -63,16 +61,28 @@ class AppPages {
       name: _Paths.AUTH,
       page: () => const AuthPage(),
       binding: AuthBinding(),
+      children: [
+        GetPage(
+          name: _Paths.HOME_ONLINE,
+          page: () => const HomeOnlinePage(),
+          // binding: HomeOnlineBinding(),
+        ),
+        GetPage(
+          name: _Paths.ONLINE_GAME,
+          page: () => const OnlineGamePage(),
+          // binding: OnlineGameBinding(),
+        ),
+      ]
     ),
     GetPage(
       name: _Paths.HOME_ONLINE,
       page: () => const HomeOnlinePage(),
-      binding: HomeOnlineBinding(),
+      // binding: HomeOnlineBinding(),
     ),
     GetPage(
       name: _Paths.ONLINE_GAME,
       page: () => const OnlineGamePage(),
-      binding: OnlineGameBinding(),
+      // binding: OnlineGameBinding(),
     ),
   ];
 }

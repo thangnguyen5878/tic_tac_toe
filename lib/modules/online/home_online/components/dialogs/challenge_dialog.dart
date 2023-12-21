@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_tic_tac_toe/controllers/online_player_controller.dart';
+import 'package:flutter_tic_tac_toe/controllers/online_user_controller.dart';
 import 'package:flutter_tic_tac_toe/utils/widget/custom_dialog.dart';
 import 'package:get/get.dart';
 
@@ -25,7 +25,7 @@ TextButton _buildStartButton() {
   return TextButton(
         onPressed: ()
         {
-          OnlinePlayerController.to.startChallengeAnotherPlayer();
+          OnlineUserController.to.startChallengeAnotherUser();
         },
         child: Text('START'),
       );

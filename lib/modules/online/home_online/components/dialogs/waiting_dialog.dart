@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_tic_tac_toe/controllers/online_player_controller.dart';
+import 'package:flutter_tic_tac_toe/controllers/online_user_controller.dart';
 import 'package:flutter_tic_tac_toe/utils/widget/custom_dialog.dart';
 
 class WaitingDialog extends StatelessWidget {
@@ -14,7 +14,7 @@ class WaitingDialog extends StatelessWidget {
           // Cancel Button
           TextButton(
             onPressed: () {
-              OnlinePlayerController.to.cancelWaiting();
+              OnlineUserController.to.cancelWaiting();
             },
             child: Text('CANCEL'),
           ),

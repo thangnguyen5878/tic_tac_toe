@@ -1,6 +1,8 @@
+import 'package:json_annotation/json_annotation.dart';
+
 enum GameState {
-  playing,
-  stop;
+  @JsonValue("playing") playing,
+  @JsonValue("stop") stop;
 
   @override
   String toString() {

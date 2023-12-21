@@ -17,8 +17,8 @@ class Board {
 
   /// Board constructor with the default 5x5 board
   Board({int? rowCount, int? columnCount})
-      : rowCount = rowCount ?? 10,
-        columnCount = columnCount ?? 10 {
+      : rowCount = rowCount ?? 9,
+        columnCount = columnCount ?? 9 {
     cells = List.generate(
       this.rowCount!,
       (row) => List.generate(

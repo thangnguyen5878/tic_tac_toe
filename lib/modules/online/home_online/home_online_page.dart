@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_tic_tac_toe/modules/offline/home/components/app_drawer.dart';
-import 'package:flutter_tic_tac_toe/modules/online/home_online/components/online_player_list.dart';
+import 'package:flutter_tic_tac_toe/modules/online/home_online/components/online_user_list.dart';
 import 'package:flutter_tic_tac_toe/controllers/auth_controller.dart';
 
 class HomeOnlinePage extends StatefulWidget {
@@ -42,7 +42,7 @@ class _HomeOnlinePageState extends State<HomeOnlinePage> with WidgetsBindingObse
         title: const Text('Home Online'),
         centerTitle: true,
       ),
-      body: OnlinePlayerList()
+      body: OnlineUserList()
     );
   }
 }

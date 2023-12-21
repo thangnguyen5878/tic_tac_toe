@@ -1,32 +1,65 @@
-import 'package:flutter_tic_tac_toe/utils/enums/online_player_status.dart';
+import 'package:flutter_tic_tac_toe/utils/enums/seed.dart';
+import 'package:json_annotation/json_annotation.dart';
 
+part 'online_player.g.dart';
+
+@JsonSerializable(explicitToJson: true)
 class OnlinePlayer {
-  String name;
-  String email;
-  bool? isOnline;
-  OnlinePlayerStatus status;
-  String? opponentId;
+  int? index;
+  String? name;
+  Seed? seed;
+  int? score;
+  int? initialScore;
+  int? finalScore;
 
-  OnlinePlayer({required this.name, required this.email, this.isOnline, OnlinePlayerStatus? status, this.opponentId})
-    : this.status = status ?? OnlinePlayerStatus.idle;
+  // @DocumentReferenceConverter()
+  // DocumentReference<Map<String, dynamic>>? playerRef;
 
-  Map<String, dynamic> toJson() {
-    return {
-      'name': this.name,
-      'email': this.email,
-      'isOnline': this.isOnline,
-      'status': this.status,
-      'opponentId': this.opponentId
-    };
+  OnlinePlayer({this.index, this.name, this.seed, int? score}) : score = score ?? 0
+  {
+    initialScore = score;
   }
 
-  factory OnlinePlayer.fromJson(Map<String, dynamic> map) {
-    return OnlinePlayer(
-      name: map['name'] as String,
-      email: map['email'] as String,
-      isOnline: map['isOnline'] as bool,
-      status: map['status'] as OnlinePlayerStatus,
-      opponentId: map['opponentId'] as String
-    );
+
+  OnlinePlayer.all({this.index, this.name, this.seed, this.score, this.initialScore,
+      this.finalScore});
+
+  OnlinePlayer.cloneNextRound(OnlinePlayer player) {
+    index = player.index;
+    name = player.name;
+    seed = player.seed;
+    score = player.score;
+    initialScore = player.score;
+    finalScore = null;
   }
+
+  factory OnlinePlayer.fromJson(Map<String, dynamic> json) => _$OnlinePlayerFromJson(json);
+  Map<String, dynamic> toJson() => _$OnlinePlayerToJson(this);
+
+  @override
+  String toString() {
+    return 'OnlinePlayer{index: $index, name: $name, seed: $seed, score: $score, initialScore: $initialScore, finalScore: $finalScore}';
+  }
+
+  // Map<String, dynamic> toJson() {
+  //   return {
+  //     'index': this.index,
+  //     'name': this.name,
+  //     'seed': this.seed.toString(),
+  //     'score': this.score,
+  //     'initialScore': this.initialScore,
+  //     'finalScore': this.finalScore,
+  //   };
+  // }
+  //
+  // factory OnlinePlayer.fromJson(Map<String, dynamic> map) {
+  //   return OnlinePlayer.all(
+  //     index: map['index'] as int,
+  //     name: map['name'] as String,
+  //     seed: map['seed'] as Seed,
+  //     score: map['score'] as int,
+  //     initialScore: map['initialScore'] as int,
+  //     finalScore: map['finalScore'] as int,
+  //   );
+  // }
 }
