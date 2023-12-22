@@ -13,15 +13,11 @@ OnlineRoom _$OnlineRoomFromJson(Map<String, dynamic> json) => OnlineRoom()
   ..board = OnlineBoard.fromJson(json['board'] as Map<String, dynamic>)
   ..historyBoard =
       OnlineBoard.fromJson(json['historyBoard'] as Map<String, dynamic>)
-  ..rounds = (json['rounds'] as List<dynamic>?)
-      ?.map((e) =>
-          e == null ? null : OnlineRound.fromJson(e as Map<String, dynamic>))
-      .toList()
+  ..rounds =
+      _$JsonConverterFromJson<List<Map<String, dynamic>>, List<OnlineRound?>>(
+          json['rounds'], const OnlineRoundListConverter().fromJson)
   ..currentRoundIndex = json['currentRoundIndex'] as int
-  ..historyRoundIndex = json['historyRoundIndex'] as int
-  ..checkingCells = (json['checkingCells'] as List<dynamic>?)
-      ?.map((e) => OnlineCell.fromJson(e as Map<String, dynamic>))
-      .toList();
+  ..historyRoundIndex = json['historyRoundIndex'] as int;
 
 Map<String, dynamic> _$OnlineRoomToJson(OnlineRoom instance) =>
     <String, dynamic>{
@@ -30,13 +26,26 @@ Map<String, dynamic> _$OnlineRoomToJson(OnlineRoom instance) =>
       'state': _$GameStateEnumMap[instance.state]!,
       'board': instance.board.toJson(),
       'historyBoard': instance.historyBoard.toJson(),
-      'rounds': instance.rounds?.map((e) => e?.toJson()).toList(),
+      'rounds':
+          _$JsonConverterToJson<List<Map<String, dynamic>>, List<OnlineRound?>>(
+              instance.rounds, const OnlineRoundListConverter().toJson),
       'currentRoundIndex': instance.currentRoundIndex,
       'historyRoundIndex': instance.historyRoundIndex,
-      'checkingCells': instance.checkingCells?.map((e) => e.toJson()).toList(),
     };
 
 const _$GameStateEnumMap = {
   GameState.playing: 'playing',
   GameState.stop: 'stop',
 };
+
+Value? _$JsonConverterFromJson<Json, Value>(
+  Object? json,
+  Value? Function(Json json) fromJson,
+) =>
+    json == null ? null : fromJson(json as Json);
+
+Json? _$JsonConverterToJson<Json, Value>(
+  Value? value,
+  Json? Function(Value value) toJson,
+) =>
+    value == null ? null : toJson(value);

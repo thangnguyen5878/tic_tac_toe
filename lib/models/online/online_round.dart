@@ -1,21 +1,28 @@
 import 'package:flutter_tic_tac_toe/models/online/online_cell.dart';
 import 'package:flutter_tic_tac_toe/models/online/online_player.dart';
+import 'package:flutter_tic_tac_toe/utils/json%20converters/online_cell_list_converter.dart';
 import 'package:json_annotation/json_annotation.dart';
+
+import '../../utils/json converters/online_player_list_converter.dart';
 
 part 'online_round.g.dart';
 
 @JsonSerializable(explicitToJson: true)
 class OnlineRound {
   int? index;
+
+  @OnlinePlayerListConverter()
   List<OnlinePlayer>? players;
+
   int? currentPlayerIndex;
   int? currentTurnIndex;
   int? winnerIndex;
   int? winTurnIndex;
 
-  // @NestedOnlineCellListConverter()
+  @OnlineCellListConverter()
   List<OnlineCell?> turns = [];
-  // @NestedOnlineCellListConverter()
+
+  @OnlineCellListConverter()
   List<OnlineCell?> historyTurns = [];
 
   int? _historyPlayerIndex;

@@ -5,6 +5,7 @@ import 'package:flutter_tic_tac_toe/models/online/online_round.dart';
 import 'package:flutter_tic_tac_toe/utils/enums/cell_state.dart';
 import 'package:flutter_tic_tac_toe/utils/enums/game_state.dart';
 import 'package:flutter_tic_tac_toe/utils/enums/seed.dart';
+import 'package:flutter_tic_tac_toe/utils/json%20converters/online_round_list_converter.dart';
 import 'package:get/get.dart';
 import 'package:json_annotation/json_annotation.dart';
 
@@ -18,13 +19,13 @@ class OnlineRoom {
   OnlineBoard board;
   OnlineBoard historyBoard;
 
-  // @NestedOnlineRoundListConverter()
+  @OnlineRoundListConverter()
   List<OnlineRound?>? rounds;
 
   int currentRoundIndex;
   int historyRoundIndex;
 
-  // @NestedOnlineCellListConverter()
+  @JsonKey(includeToJson: false, includeFromJson: false)
   List<OnlineCell>? checkingCells = List<OnlineCell>.empty(growable: true);
 
   final winCount = 5;

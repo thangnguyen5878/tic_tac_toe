@@ -16,14 +16,10 @@ OnlineRound _$OnlineRoundFromJson(Map<String, dynamic> json) => OnlineRound(
       ..currentPlayerIndex = json['currentPlayerIndex'] as int?
       ..currentTurnIndex = json['currentTurnIndex'] as int?
       ..winTurnIndex = json['winTurnIndex'] as int?
-      ..turns = (json['turns'] as List<dynamic>)
-          .map((e) =>
-              e == null ? null : OnlineCell.fromJson(e as Map<String, dynamic>))
-          .toList()
-      ..historyTurns = (json['historyTurns'] as List<dynamic>)
-          .map((e) =>
-              e == null ? null : OnlineCell.fromJson(e as Map<String, dynamic>))
-          .toList()
+      ..turns = const OnlineCellListConverter()
+          .fromJson(json['turns'] as List<Map<String, dynamic>>)
+      ..historyTurns = const OnlineCellListConverter()
+          .fromJson(json['historyTurns'] as List<Map<String, dynamic>>)
       ..historyTurnIndex = json['historyTurnIndex'] as int?;
 
 Map<String, dynamic> _$OnlineRoundToJson(OnlineRound instance) =>
@@ -34,7 +30,8 @@ Map<String, dynamic> _$OnlineRoundToJson(OnlineRound instance) =>
       'currentTurnIndex': instance.currentTurnIndex,
       'winnerIndex': instance.winnerIndex,
       'winTurnIndex': instance.winTurnIndex,
-      'turns': instance.turns.map((e) => e?.toJson()).toList(),
-      'historyTurns': instance.historyTurns.map((e) => e?.toJson()).toList(),
+      'turns': const OnlineCellListConverter().toJson(instance.turns),
+      'historyTurns':
+          const OnlineCellListConverter().toJson(instance.historyTurns),
       'historyTurnIndex': instance.historyTurnIndex,
     };

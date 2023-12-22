@@ -1,6 +1,7 @@
 import 'package:flutter_tic_tac_toe/models/online/online_cell.dart';
 import 'package:flutter_tic_tac_toe/utils/enums/cell_state.dart';
 import 'package:flutter_tic_tac_toe/utils/enums/seed.dart';
+import 'package:flutter_tic_tac_toe/utils/json%20converters/online_cell_list_converter2.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'online_board.g.dart';
@@ -10,7 +11,7 @@ class OnlineBoard {
   int? rowCount;
   int? columnCount;
 
-  // @NestedOnlineCellListConverter()
+  @OnlineCellListConverter2()
   List<List<OnlineCell>> cells = [];
 
   // @DocumentReferenceConverter()
@@ -18,8 +19,8 @@ class OnlineBoard {
 
   /// OnlineBoard constructor with the default 5x5 board
   OnlineBoard({int? rowCount, int? columnCount})
-      : rowCount = rowCount ?? 10,
-        columnCount = columnCount ?? 10 {
+      : rowCount = rowCount ?? 2,
+        columnCount = columnCount ?? 2 {
     cells = List.generate(
       this.rowCount!,
           (row) => List.generate(
