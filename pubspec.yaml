@@ -25,6 +25,7 @@ dependencies:
   app_state: ^0.9.4
   http: ^1.1.2
   json_annotation: ^4.8.1
+  uuid: ^4.2.2
 
 
 dev_dependencies: 

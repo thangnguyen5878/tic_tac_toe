@@ -1,20 +1,20 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_tic_tac_toe/controllers/online_user_controller.dart';
+import 'package:flutter_tic_tac_toe/models/online/online_user.dart';
 
 class OnlineUserTile extends StatelessWidget {
-  final DocumentSnapshot doc;
-  OnlineUserTile({super.key, required this.doc});
+  final OnlineUser user;
+  OnlineUserTile({super.key, required this.user});
 
   @override
   Widget build(BuildContext context) {
-    final opponent = doc.data() as Map<String, dynamic>;
-    if (FirebaseAuth.instance.currentUser!.email != opponent['email']) {
+    if (FirebaseAuth.instance.currentUser!.email != user.email) {
       return ListTile(
-        title: Text(opponent['email']),
+        // title: Text(user.toString()),
+        title: Text(user.email),
         onTap: () {
-          OnlineUserController.to.selectOpponent(opponent['uid']);
+          OnlineUserController.to.selectOpponent(user.uid);
         },
       );
     } else {

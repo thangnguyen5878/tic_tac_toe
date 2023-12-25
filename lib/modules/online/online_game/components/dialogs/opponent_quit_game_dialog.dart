@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_tic_tac_toe/controllers/online_user_controller.dart';
+import 'package:flutter_tic_tac_toe/utils/enums/online_user_status.dart';
 import 'package:flutter_tic_tac_toe/utils/widget/custom_dialog.dart';
 import 'package:get/get.dart';
 
@@ -32,7 +33,7 @@ TextButton _buildCancelButton() {
   return TextButton(
     onPressed: () {
       Get.back();
-      OnlineUserController.to.updateCurrentUserStatus('opponent quit game');
+      OnlineUserController.to.updateCurrentUserStatus(OnlineUserStatus.opponentQuitted.toShortString());
     },
     child: Text('CANCEL'),
   );

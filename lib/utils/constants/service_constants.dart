@@ -8,3 +8,11 @@ FirebaseAuth firebaseAuth = FirebaseAuth.instance;
 GoogleSignIn googleSignIn = GoogleSignIn();
 FirebaseFirestore firestore = FirebaseFirestore.instance;
 FirestoreService firestoreService = FirestoreService();
+
+// Firebase Collections
+const fUserCollection = 'users';
+const fRoomCollection = 'rooms';
+const fRoundCollection = 'rounds';
+const fBoardCollection = 'boards';
+const fCellCollection = 'cells';
+const fPlayersCollection = 'players';

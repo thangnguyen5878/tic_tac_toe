@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_tic_tac_toe/models/online/online_user.dart';
 import 'package:flutter_tic_tac_toe/modules/online/home_online/components/online_user_tile.dart';
-import 'package:flutter_tic_tac_toe/utils/constants/service_constant.dart';
+import 'package:flutter_tic_tac_toe/utils/constants/service_constants.dart';
 
 class OnlineUserList extends StatelessWidget {
   const OnlineUserList({super.key});
@@ -9,7 +10,7 @@ class OnlineUserList extends StatelessWidget {
   Widget build(BuildContext context) {
     debugPrint('build online user list');
     return StreamBuilder(
-        stream: firestoreService.getOnlineUsers(),
+        stream: firestoreService.watchOnlineUsers(),
         builder: (context, snapshot) {
 
           // error
@@ -24,7 +25,7 @@ class OnlineUserList extends StatelessWidget {
           // load info
           return ListView(
             children: snapshot.data!.docs
-                .map<Widget>((doc) => OnlineUserTile(doc: doc))
+                .map<Widget>((doc) => OnlineUserTile(user: doc.data() as OnlineUser))
                 .toList(),
           );
         });

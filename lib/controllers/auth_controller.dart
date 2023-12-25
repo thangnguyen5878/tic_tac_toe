@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_tic_tac_toe/modules/online/auth/view/signin_page.dart';
 import 'package:flutter_tic_tac_toe/modules/online/auth/view/welcome_page.dart';
 import 'package:flutter_tic_tac_toe/models/online/online_user.dart';
-import 'package:flutter_tic_tac_toe/utils/constants/service_constant.dart';
+import 'package:flutter_tic_tac_toe/utils/constants/service_constants.dart';
 import 'package:get/get.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 

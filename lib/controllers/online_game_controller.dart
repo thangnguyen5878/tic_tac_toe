@@ -3,7 +3,7 @@ import 'package:flutter_tic_tac_toe/models/online/online_cell.dart';
 import 'package:flutter_tic_tac_toe/models/online/online_player.dart';
 import 'package:flutter_tic_tac_toe/models/online/online_room.dart';
 import 'package:flutter_tic_tac_toe/models/online/online_round.dart';
-import 'package:flutter_tic_tac_toe/utils/constants/service_constant.dart';
+import 'package:flutter_tic_tac_toe/utils/constants/service_constants.dart';
 import 'package:get/get.dart';
 
 class OnlineGameController extends GetxController {

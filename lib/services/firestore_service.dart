@@ -6,7 +6,9 @@ import 'package:flutter_tic_tac_toe/models/online/online_cell.dart';
 import 'package:flutter_tic_tac_toe/models/online/online_player.dart';
 import 'package:flutter_tic_tac_toe/models/online/online_room.dart';
 import 'package:flutter_tic_tac_toe/models/online/online_round.dart';
-import 'package:flutter_tic_tac_toe/utils/constants/service_constant.dart';
+import 'package:flutter_tic_tac_toe/models/online/online_user.dart';
+import 'package:flutter_tic_tac_toe/utils/constants/service_constants.dart';
+import 'package:flutter_tic_tac_toe/utils/enums/online_user_status.dart';
 
 class FirestoreService {
   late final CollectionReference _roomRef;
@@ -14,89 +16,121 @@ class FirestoreService {
   late final CollectionReference _cellRef;
   late final CollectionReference _boardRef;
   late final CollectionReference _roundRef;
+  late final CollectionReference _userRef;
 
   FirestoreService() {
-    _roomRef = firestore.collection('rooms').withConverter<OnlineRoom>(
+    _roomRef = firestore.collection(fRoomCollection).withConverter<OnlineRoom>(
         fromFirestore: (snapshots, _) => OnlineRoom.fromJson(snapshots.data()!),
         toFirestore: (room, _) => room.toJson());
 
-    _playerRef = firestore.collection('players').withConverter<OnlinePlayer>(
-        fromFirestore: (snapshots, _) => OnlinePlayer.fromJson(snapshots.data()!),
-        toFirestore: (player, _) => player.toJson());
+    _playerRef = firestore
+        .collection(fPlayersCollection)
+        .withConverter<OnlinePlayer>(
+            fromFirestore: (snapshots, _) =>
+                OnlinePlayer.fromJson(snapshots.data()!),
+            toFirestore: (player, _) => player.toJson());
 
-    _cellRef = firestore.collection('cells').withConverter<OnlineCell>(
+    _cellRef = firestore.collection(fCellCollection).withConverter<OnlineCell>(
         fromFirestore: (snapshots, _) => OnlineCell.fromJson(snapshots.data()!),
         toFirestore: (cell, _) => cell.toJson());
 
-    _boardRef = firestore.collection('boards').withConverter<OnlineBoard>(
-        fromFirestore: (snapshots, _) => OnlineBoard.fromJson(snapshots.data()!),
-        toFirestore: (board, _) => board.toJson());
+    _boardRef = firestore
+        .collection(fBoardCollection)
+        .withConverter<OnlineBoard>(
+            fromFirestore: (snapshots, _) =>
+                OnlineBoard.fromJson(snapshots.data()!),
+            toFirestore: (board, _) => board.toJson());
 
-    _roundRef = firestore.collection('rounds').withConverter<OnlineRound>(
-        fromFirestore: (snapshots, _) => OnlineRound.fromJson(snapshots.data()!),
-        toFirestore: (round, _) => round.toJson());
+    _roundRef = firestore
+        .collection(fRoundCollection)
+        .withConverter<OnlineRound>(
+            fromFirestore: (snapshots, _) =>
+                OnlineRound.fromJson(snapshots.data()!),
+            toFirestore: (round, _) => round.toJson());
+
+    _userRef = firestore.collection(fUserCollection).withConverter<OnlineUser>(
+        fromFirestore: (snapshots, _) => OnlineUser.fromJson(snapshots.data()!),
+        toFirestore: (user, _) => user.toJson());
   }
 
-  // PLAYERS
+  // USERS
+  // ADD USER
+  Future<void> addUser(OnlineUser user) async {
+    DocumentReference docRef = _userRef.doc(user.uid);
+    docRef.set(user);
+  }
+
   Future<void> createUserDocument(UserCredential userCredential) async {
     if (userCredential.user != null) {
       debugPrint('createUserDocument');
       print(userCredential.user);
-      await FirebaseFirestore.instance
-          .collection('users')
-          .doc(userCredential.user!.uid)
-          .set({
-        'uid': userCredential.user!.uid,
-        'email': userCredential.user!.email,
-        'username': userCredential.user!.displayName,
-        'isOnline': true,
-        'status': 'idle',
-        'opponentId': ''
-      });
+      OnlineUser newUser = OnlineUser(
+          uid: userCredential.user!.uid,
+          email: userCredential.user!.email!,
+          name: userCredential.user!.displayName!,
+          isOnline: true,
+          status: OnlineUserStatus.idle,
+          opponentId: '');
+      await addUser(newUser);
       debugPrint('User info saved to firestore');
     }
   }
 
-  Stream<QuerySnapshot> getOnlineUsers() {
-    return firestore.collection('users')
-        // .where('uid', isNotEqualTo: FirebaseAuth.instance.currentUser!.uid)
-        .where('isOnline', isEqualTo: true)
-        .snapshots();
+  // GET USERS
+  Future<QuerySnapshot> getAllUsers() async {
+    return _userRef.get();
   }
 
+  Stream<QuerySnapshot> watchOnlineUsers() {
+    return _userRef.snapshots();
+  }
+
+  // UPDATE USER
   Future<void> updateUser(String uid, Map<String, dynamic> data) async {
-    await firestore.collection('users').doc(uid).update(data);
+    await _userRef.doc(uid).update(data);
   }
 
   /// Update a user's opponentId in Firestore
-  Future<Map<String, dynamic>> updateOpponent(String uid, String opponentId) async {
+  Future<Map<String, dynamic>> updateUserOpponentId(String uid, String opponentId) async {
     final data = {
       'opponentId': opponentId,
     };
-    await firestore.collection('users').doc(uid).update(data);
+    await updateUser(uid, data);
     return data;
   }
 
   /// Update a user's status in Firestore
-  Future<Map<String, dynamic>> updateUserStatus(String uid, String status) async {
+  Future<Map<String, dynamic>> updateUserStatus(
+      String uid, String status) async {
     final data = {
       'status': status,
     };
-    await firestore.collection('users').doc(uid).update(data);
+    await updateUser(uid, data);
     debugPrint('change user status $uid to "$status"');
     return data;
   }
 
+  // DELETE USER
+  Future<void> deleteUser(String uid) async {
+    await _userRef.doc(uid).delete();
+  }
+
+  Future<void> deleteAllUsers() async {
+    WriteBatch batch = firestore.batch();
+    QuerySnapshot querySnapshot = await _userRef.get();
+    for (var doc in querySnapshot.docs) {
+      batch.delete(doc.reference);
+    }
+    await batch.commit();
+  }
+
   // ONLINE ROOM
   Stream<QuerySnapshot> getAllRooms() {
-    return _roomRef
-        .snapshots();
+    return _roomRef.snapshots();
   }
 
   Stream<QuerySnapshot> getRoom(String roomId) {
-    return _roomRef
-        .where('id', isEqualTo: roomId)
-        .snapshots();
+    return _roomRef.where('id', isEqualTo: roomId).snapshots();
   }
 
   void addRoom(OnlineRoom room) {
@@ -106,10 +140,6 @@ class FirestoreService {
 
   void updateRoom(String roomId, OnlineRoom room) {
     _roomRef.doc(roomId).update(room.toJson());
-  }
-
-  void deleteTodo(String roomId) {
-    _roomRef.doc(roomId).delete();
   }
 
   // ONLINE PLAYER

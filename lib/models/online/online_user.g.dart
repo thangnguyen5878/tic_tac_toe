@@ -7,6 +7,7 @@ part of 'online_user.dart';
 // **************************************************************************
 
 OnlineUser _$OnlineUserFromJson(Map<String, dynamic> json) => OnlineUser(
+      uid: json['uid'] as String?,
       name: json['name'] as String,
       email: json['email'] as String,
       isOnline: json['isOnline'] as bool?,
@@ -16,6 +17,7 @@ OnlineUser _$OnlineUserFromJson(Map<String, dynamic> json) => OnlineUser(
 
 Map<String, dynamic> _$OnlineUserToJson(OnlineUser instance) =>
     <String, dynamic>{
+      'uid': instance.uid,
       'name': instance.name,
       'email': instance.email,
       'isOnline': instance.isOnline,
@@ -25,11 +27,12 @@ Map<String, dynamic> _$OnlineUserToJson(OnlineUser instance) =>
 
 const _$OnlineUserStatusEnumMap = {
   OnlineUserStatus.idle: 'idle',
-  OnlineUserStatus.waiting: 'waiting',
+  OnlineUserStatus.waitingForInvitation: 'waiting for invitation',
   OnlineUserStatus.invited: 'invited',
-  OnlineUserStatus.rejected: 'rejected',
-  OnlineUserStatus.inviteTimeout: 'invite timeout',
-  OnlineUserStatus.waitingCanceled: 'waiting canceled',
   OnlineUserStatus.inGame: 'in game',
-  OnlineUserStatus.opponentQuitGame: 'opponent quit game',
+  OnlineUserStatus.invitationRejected: 'invitation rejected',
+  OnlineUserStatus.invitedButNoRespond: 'invited but no respond',
+  OnlineUserStatus.invitationWaitingTimeout: 'invitation waiting timeout',
+  OnlineUserStatus.waitingCanceled: 'waiting canceled',
+  OnlineUserStatus.opponentQuitted: 'opponent quitted',
 };
