@@ -81,8 +81,16 @@ class FirestoreService {
     return _userRef.get();
   }
 
+  Stream<DocumentSnapshot> watchUser(String uid) {
+    return _userRef.doc(uid).snapshots();
+  }
+
   Stream<QuerySnapshot> watchOnlineUsers() {
     return _userRef.snapshots();
+  }
+
+  Stream<DocumentSnapshot> watchCurrentUser() {
+    return _userRef.doc(FirebaseAuth.instance.currentUser?.uid ?? '').snapshots();
   }
 
   // UPDATE USER
@@ -101,9 +109,9 @@ class FirestoreService {
 
   /// Update a user's status in Firestore
   Future<Map<String, dynamic>> updateUserStatus(
-      String uid, String status) async {
+      String uid, OnlineUserStatus status) async {
     final data = {
-      'status': status,
+      'status': status.toShortString(),
     };
     await updateUser(uid, data);
     debugPrint('change user status $uid to "$status"');

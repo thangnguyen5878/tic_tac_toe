@@ -33,7 +33,7 @@ TextButton _buildCancelButton() {
   return TextButton(
     onPressed: () {
       Get.back();
-      OnlineUserController.to.updateCurrentUserStatus(OnlineUserStatus.opponentQuitted.toShortString());
+      OnlineUserController.to.updateCurrentUserStatus(OnlineUserStatus.opponentQuitted);
     },
     child: Text('CANCEL'),
   );

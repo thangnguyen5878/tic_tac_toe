@@ -21,7 +21,7 @@ class InvitedDialog extends StatelessWidget {
 TextButton _buildRejectButton() {
   return TextButton(
     onPressed: () {
-      OnlineUserController.to.rejectChallenge();
+      OnlineUserController.to.rejectInvitation();
     },
     child: Text('REJECT'),
   );
