@@ -1,4 +1,3 @@
-// ignore_for_file: must_be_immutable, prefer_typing_uninitialized_variables
 
 import 'package:flutter/material.dart';
 import 'package:flutter_tic_tac_toe/controllers/game_controller.dart';
@@ -7,8 +6,8 @@ import 'package:flutter_tic_tac_toe/utils/constants/app_size.dart';
 import 'package:flutter_tic_tac_toe/utils/constants/service_constants.dart';
 import 'package:get/get.dart';
 
-class GamePopupMenuButton extends StatelessWidget {
-  GamePopupMenuButton({
+class OnlineGamePopupMenuButton extends StatelessWidget {
+  OnlineGamePopupMenuButton({
     super.key,
   });
 
@@ -23,7 +22,7 @@ class GamePopupMenuButton extends StatelessWidget {
           child: Text('Reset'),
           // Remove the style parameter
         ),
-        const PopupMenuItem<String>(
+        PopupMenuItem<String>(
           value: 'history',
           child: Text('History'),
           // Remove the style parameter
@@ -40,7 +39,7 @@ class GamePopupMenuButton extends StatelessWidget {
           Get.toNamed(Routes.HISTORY, arguments: roomId);
         }
       },
-      icon: const Icon(
+      icon: Icon(
         Icons.more_vert,
         color: Colors.black,
         size: kIconSize, // Set the color of the three dots icon to black

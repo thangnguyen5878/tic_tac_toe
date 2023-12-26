@@ -6,15 +6,15 @@ import 'package:flutter_tic_tac_toe/utils/constants/app_size.dart';
 import 'package:flutter_tic_tac_toe/utils/constants/service_constants.dart';
 import 'package:get/get.dart';
 
-class GameBackButton extends StatelessWidget {
-  const GameBackButton({
+class OnlineGameBackButton extends StatelessWidget {
+  OnlineGameBackButton({
     super.key,
   });
 
   @override
   Widget build(BuildContext context) {
     return IconButton(
-      padding: const EdgeInsets.only(left: 16),
+      padding: EdgeInsets.only(left: 16),
       icon: const Icon(
         Icons.arrow_back,
         color: kBlack,

@@ -1,6 +1,9 @@
+import 'package:flutter_tic_tac_toe/controllers/invitation_timer_controller.dart';
+import 'package:flutter_tic_tac_toe/controllers/online_game_controller.dart';
 import 'package:flutter_tic_tac_toe/models/online/online_user.dart';
 import 'package:flutter_tic_tac_toe/modules/online/home_online/components/dialogs/challenge_dialog.dart';
-import 'package:flutter_tic_tac_toe/modules/online/home_online/components/dialogs/invited_dialog.dart';
+import 'package:flutter_tic_tac_toe/modules/online/home_online/components/dialogs/invitation_dialog.dart';
+import 'package:flutter_tic_tac_toe/modules/online/home_online/components/dialogs/invitation_timeout_dialog.dart';
 import 'package:flutter_tic_tac_toe/modules/online/home_online/components/dialogs/rejected_dialog.dart';
 import 'package:flutter_tic_tac_toe/modules/online/home_online/components/dialogs/waiting_dialog.dart';
 import 'package:flutter_tic_tac_toe/modules/online/online_game/components/dialogs/opponent_quit_game_dialog.dart';
@@ -14,7 +17,7 @@ class OnlineUserController extends GetxController {
   static OnlineUserController to = Get.find();
 
   late OnlineUser currentUser;
-  late OnlineUser opponent;
+  OnlineUser? opponent;
   // final String currentUserId = FirebaseAuth.instance.currentUser?.uid ?? '';
   OnlineUserStatus oldCurrentUserStatus = OnlineUserStatus.idle;
   String opponentId = '';
@@ -23,88 +26,178 @@ class OnlineUserController extends GetxController {
   @override
   void onReady() {
     super.onReady();
-    _listenForUserStatus();
+    _listenForUserFromFirebase();
   }
 
-  void _listenForUserStatus() {
+  void _listenForUserFromFirebase() {
     // listen for current user
     firestoreService.watchCurrentUser().listen((snapshot) {
       if (snapshot.exists) {
         currentUser = snapshot.data() as OnlineUser;
         opponentId = currentUser.opponentId;
-        // debugPrint('status is $status');
-        switch (currentUser.status) {
-          case OnlineUserStatus.idle:
-            oldCurrentUserStatus = OnlineUserStatus.idle;
-            break;
-          case OnlineUserStatus.waitingForInvitation:
-            if (oldCurrentUserStatus != OnlineUserStatus.waitingForInvitation) {
-              Get.back();
-              Get.dialog(WaitingDialog(), barrierDismissible: false);
-            }
-            oldCurrentUserStatus = OnlineUserStatus.waitingForInvitation;
-            break;
-          case OnlineUserStatus.invited:
-            if (oldCurrentUserStatus != OnlineUserStatus.invited) {
-              Get.back();
-              Get.dialog(InvitedDialog(), barrierDismissible: false);
-            }
-            oldCurrentUserStatus = OnlineUserStatus.invited;
-            break;
-          case OnlineUserStatus.waitingCanceled:
-            if (oldCurrentUserStatus != OnlineUserStatus.waitingCanceled) {
-              Get.back();
-              firestoreService.updateUserStatus(
-                  opponentId, OnlineUserStatus.idle);
-            }
-            oldCurrentUserStatus = OnlineUserStatus.waitingCanceled;
-            break;
-          case OnlineUserStatus.invitationRejected:
-            if (oldCurrentUserStatus != OnlineUserStatus.invitationRejected) {
-              Get.back();
-              Get.dialog(RejectedDialog(), barrierDismissible: false);
-            }
-            oldCurrentUserStatus = OnlineUserStatus.invitationRejected;
-            break;
-          case OnlineUserStatus.inGame:
-            Get.offNamed(Routes.ONLINE_GAME);
-            oldCurrentUserStatus = OnlineUserStatus.inGame;
-            break;
-          case OnlineUserStatus.opponentQuitted:
-            if (oldCurrentUserStatus != OnlineUserStatus.opponentQuitted) {
-              Get.until((route) => !Get.isDialogOpen!);
-              Get.dialog(OpponentQuitGameDialog(), barrierDismissible: false);
-            }
-            oldCurrentUserStatus = OnlineUserStatus.opponentQuitted;
-            break;
-          default:
-            break;
-        }
+        _watchOpponentUser();
+        _handleUserStatus();
       }
     });
+    update();
+  }
+
+  void _watchOpponentUser() async {
+    await firestoreService.watchUser(currentUser.opponentId).listen((snapshot) {
+      opponent = snapshot.data() as OnlineUser;
+    });
+  }
+
+  void _handleUserStatus() {
+    if (oldCurrentUserStatus != currentUser.status) {
+      switch (currentUser.status) {
+        case OnlineUserStatus.idle:
+          _handleIdleStatus();
+          break;
+        case OnlineUserStatus.waitingForInvitation:
+          _handleWaitingForInvitationStatus();
+          break;
+        case OnlineUserStatus.invited:
+          _handleInvitedStatus();
+          break;
+        case OnlineUserStatus.invitaionWaitingCanceled:
+          _handleInvitationWaitingCanceledStatus();
+          break;
+        case OnlineUserStatus.invitationRejected:
+          _handleInvitationRejectedStatus();
+          break;
+        case OnlineUserStatus.inGame:
+          _handleInGameStatus();
+          break;
+        case OnlineUserStatus.opponentQuitted:
+          _handleOpponentQuittedStatus();
+          break;
+        case OnlineUserStatus.invitationWaitingTimeout:
+          _handleInvitationWaitingTimeoutStatus();
+          break;
+        case OnlineUserStatus.invitedButNoRespond:
+          _handleInvitedButNoRespondStatus();
+          break;
+        default:
+          break;
+      }
+      oldCurrentUserStatus = currentUser.status;
+    }
+  }
+
+  void _handleIdleStatus() {
+    // handle idle status
+  }
+
+  void _handleWaitingForInvitationStatus() {
+    Get.back();
+    Get.dialog(WaitingDialog(), barrierDismissible: false);
+  }
+
+  void _handleInvitedStatus() {
+    Get.back();
+    Get.dialog(InvitationDialog(), barrierDismissible: false);
+  }
+
+  void _handleInvitationWaitingCanceledStatus() {
+    Get.back();
+    firestoreService.updateUserStatus(opponentId, OnlineUserStatus.idle);
+  }
+
+  void _handleInvitationRejectedStatus() {
+    Get.back();
+    Get.dialog(RejectedDialog(), barrierDismissible: false);
+  }
+
+  void _handleInGameStatus() async {
+    // player 2 (index: 1) create room instance and upload to firestore,
+    // therefore, player 1 (index 0) should get the room from firestore
+
+    if (currentUser.playerIndex == 0) {
+      Future.delayed(const Duration(seconds: 1));
+      OnlineGameController.to.currentRoomId = opponent!.currentRoomId;
+      final userData = {
+        'currentRoomId': opponent!.currentRoomId
+      };
+      firestoreService.updateUser(firebaseAuth.currentUser!.uid, userData);
+      OnlineGameController.to.pullRoomFromFirebase();
+    }
+
+    Get.offNamed(Routes.ONLINE_GAME);
+  }
+
+  void _handleOpponentQuittedStatus() {
+    Get.until((route) => !Get.isDialogOpen!);
+    Get.dialog(OpponentQuitGameDialog(), barrierDismissible: false);
+  }
+
+  void _handleInvitationWaitingTimeoutStatus() {
+    Get.back();
+    Get.dialog(InvitationTimeoutDialog(), barrierDismissible: false);
+    updateCurrentUserStatus(OnlineUserStatus.idle);
+  }
+
+  void _handleInvitedButNoRespondStatus() {
+    Get.until((route) => !Get.isDialogOpen!);
+    updateCurrentUserStatus(OnlineUserStatus.idle);
+  }
+
+  void saveCurrentUserToFirestore() {
+    firestoreService.addUser(currentUser);
+    logger.t('save current user to firebase');
+    logger.t('Room{id: ${currentUser.uid}, currentRoomId: ${currentUser.currentRoomId}}');
     update();
   }
 
   void quitGame() {
     if (oldCurrentUserStatus == OnlineUserStatus.opponentQuitted) {
       quitGameWhenOpponentQuited();
-    }
-    else {
+    } else {
       Get.dialog(QuitGameDialog(), barrierDismissible: false);
     }
   }
 
-  void startChallengeAnotherUser() {
-    firestoreService.updateUserOpponentId(currentUser.uid, opponentId);
-    firestoreService.updateUserOpponentId(opponentId, currentUser.uid);
-    firestoreService.updateUserStatus(currentUser.uid, OnlineUserStatus.waitingForInvitation);
-    firestoreService.updateUserStatus(opponentId, OnlineUserStatus.invited);
+  void handleInvitationWaitingCancel() {
+    firestoreService.updateUserStatus(
+        currentUser.uid, OnlineUserStatus.invitaionWaitingCanceled);
+    firestoreService.updateUserStatus(
+        opponentId, OnlineUserStatus.invitaionWaitingCanceled);
+    removeOpponentForBothUsers();
     update();
   }
 
-  void acceptChallenge() {
-    firestoreService.updateUserStatus(currentUser.uid, OnlineUserStatus.inGame);
-    firestoreService.updateUserStatus(opponentId, OnlineUserStatus.inGame);
+  void handleInvitationTimeout() {
+    firestoreService.updateUserStatus(
+        currentUser.uid, OnlineUserStatus.invitationWaitingTimeout);
+    firestoreService.updateUserStatus(
+        opponentId, OnlineUserStatus.invitedButNoRespond);
+    removeOpponentForBothUsers();
+    update();
+  }
+
+  void startChallengeAnotherUser() {
+    final currentUserData = {
+      'opponentId': opponentId,
+      'playerIndex': 0,
+      'status': OnlineUserStatus.waitingForInvitation.toShortString()
+    };
+    final opponentData = {
+      'opponentId': currentUser.uid,
+      'playerIndex': 1,
+      'status': OnlineUserStatus.invited.toShortString()
+    };
+    firestoreService.updateUser(currentUser.uid, currentUserData);
+    firestoreService.updateUser(opponentId, opponentData);
+    update();
+  }
+
+  void acceptChallengeFromOpponent() {
+    OnlineGameController.to.createRoom();
+    OnlineGameController.to.pushRoomToFirebase();
+    final currentUserData = {'status': OnlineUserStatus.inGame.toShortString()};
+    final opponentData = {'status': OnlineUserStatus.inGame.toShortString()};
+    firestoreService.updateUser(currentUser.uid, currentUserData);
+    firestoreService.updateUser(opponentId, opponentData);
     update();
   }
 
@@ -112,30 +205,42 @@ class OnlineUserController extends GetxController {
     Get.back();
     firestoreService.updateUserStatus(currentUser.uid, OnlineUserStatus.idle);
     firestoreService.updateUserStatus(opponentId, OnlineUserStatus.invitationRejected);
-    removeOpponent();
+    removeOpponentForBothUsers();
     update();
   }
 
-  void selectOpponent(String uid)  {
+  void selectOpponent(OnlineUser user)  {
     Get.dialog(ChallengeDialog(), barrierDismissible: false);
-    opponentId = uid;
+    opponent = user;
+    opponentId = user.uid;
     update();
   }
 
-  void cancelWaiting() {
+  void cancelInvitationWaiting() {
     Get.back();
-    removeOpponent();
+    InvitationTimerController.to.stopTimer();
     firestoreService.updateUserStatus(currentUser.uid, OnlineUserStatus.idle);
-    firestoreService.updateUserStatus(opponentId, OnlineUserStatus.waitingCanceled);
+    firestoreService.updateUserStatus(
+        opponentId, OnlineUserStatus.invitaionWaitingCanceled);
+    removeOpponentForBothUsers();
     update();
   }
 
   /// This method is called when a player quit the game (press "Quit Button" on Quit Game Dialog).
   void quitGameSuddenly() {
+    final currentUserData = {
+      'status': OnlineUserStatus.idle.toShortString(),
+      'opponentId': '',
+      'currentRoomId': ''
+    };
+    final opponentData = {
+      'status': OnlineUserStatus.opponentQuitted.toShortString(),
+      'opponentId': '',
+      'currentRoomId': ''
+    };
     Get.offNamed(Routes.HOME_ONLINE);
-    firestoreService.updateUserStatus(currentUser.uid, OnlineUserStatus.idle);
-    firestoreService.updateUserOpponentId(currentUser.uid, '');
-    firestoreService.updateUserStatus(opponentId, OnlineUserStatus.opponentQuitted);
+    firestoreService.updateUser(currentUser.uid, currentUserData);
+    firestoreService.updateUser(opponentId, opponentData);
     update();
   }
 
@@ -146,9 +251,41 @@ class OnlineUserController extends GetxController {
     Get.back();
     Get.offAllNamed(Routes.HOME_ONLINE);
     Get.back();
-    firestoreService.updateUserOpponentId(currentUser.uid, '');
     firestoreService.updateUserStatus(currentUser.uid, OnlineUserStatus.idle);
     update();
+  }
+
+  void handleSignOut() {
+    final data = {
+      'isOnline': false,
+      'currentRoomId': '',
+      'opponentId': '',
+      'playerIndex': null,
+      'status': OnlineUserStatus.offline.toShortString(),
+    };
+    firestoreService.updateUser(firebaseAuth.currentUser!.uid, data);
+  }
+
+  void handleSignIn() {
+    final data = {
+      'isOnline': true,
+      'status': OnlineUserStatus.inWelcomePage.toShortString(),
+    };
+    firestoreService.updateUser(firebaseAuth.currentUser!.uid, data);
+  }
+
+  void handleFromWelcomePageToOnlineHomePage() {
+    final data = {
+      'status': OnlineUserStatus.idle.toShortString(),
+    };
+    firestoreService.updateUser(firebaseAuth.currentUser!.uid, data);
+  }
+
+  void handleToWelcomePage() {
+    final data = {
+      'status': OnlineUserStatus.inWelcomePage.toShortString(),
+    };
+    firestoreService.updateUser(firebaseAuth.currentUser!.uid, data);
   }
 
   /// Update two users's opponent in Firebase.
@@ -159,14 +296,28 @@ class OnlineUserController extends GetxController {
   }
 
   /// Remove two users's opponent and update user's status to idle in Firebase.
-  removeOpponent()  {
-    firestoreService.updateUserOpponentId(currentUser.uid, '');
-    firestoreService.updateUserOpponentId(opponentId, '');
-    firestoreService.updateUserStatus(currentUser.uid, OnlineUserStatus.idle);
-    firestoreService.updateUserStatus(opponentId, OnlineUserStatus.idle);
+  removeOpponentForBothUsers() {
+    final currentUserData = {
+      'opponentId': '',
+      'playerIndex': null,
+      'status': OnlineUserStatus.idle.toShortString()
+    };
+    final opponentData = {
+      'opponentId': '',
+      'playerIndex': null,
+      'status': OnlineUserStatus.idle.toShortString()
+    };
+    firestoreService.updateUser(currentUser.uid, currentUserData);
+    firestoreService.updateUser(opponentId, opponentData);
     opponentId = '';
+    opponent = null;
     update();
   }
+
+  updateTwoUserOnFirebase(Map<String, dynamic> data) {
+    firestoreService.updateUser(currentUser.uid, data);
+    firestoreService.updateUser(opponentId, data);
+}
 
   updateCurrentUserStatus(OnlineUserStatus status) {
     firestoreService.updateUserStatus(currentUser.uid, status);

@@ -31,6 +31,7 @@ Map<String, dynamic> _$OnlineRoomToJson(OnlineRoom instance) =>
               instance.rounds, const OnlineRoundListConverter().toJson),
       'currentRoundIndex': instance.currentRoundIndex,
       'historyRoundIndex': instance.historyRoundIndex,
+      'winCount': instance.winCount,
     };
 
 const _$GameStateEnumMap = {

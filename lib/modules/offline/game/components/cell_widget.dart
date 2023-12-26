@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_tic_tac_toe/controllers/game_controller.dart';
 import 'package:flutter_tic_tac_toe/utils/constants/app_colors.dart';
+import 'package:flutter_tic_tac_toe/utils/constants/service_constants.dart';
 import 'package:flutter_tic_tac_toe/utils/enums/cell_state.dart';
 import 'package:get/get.dart';
 
@@ -9,7 +10,7 @@ class CellWidget extends StatelessWidget {
   final int row;
   final int column;
 
-  CellWidget({Key? key, required this.row, required this.column})
+  const CellWidget({Key? key, required this.row, required this.column})
       : super(key: key);
 
   @override
@@ -36,7 +37,7 @@ class CellWidget extends StatelessWidget {
 
         return InkWell(
           onTap: () {
-            print('Tap cell($row, $column) : ${round.getCurrentPlayer().seed}');
+            logger.t('Tap cell($row, $column) : ${round.getCurrentPlayer().seed}');
             GameController.to
                 .drawSeed(row, column, round.getCurrentPlayer().seed!);
           },

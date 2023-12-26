@@ -8,18 +8,19 @@ class OnlineUserList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    debugPrint('build online user list');
+    logger.t('build online user list');
     return StreamBuilder(
-        stream: firestoreService.watchOnlineUsers(),
+        stream: firestoreService.watchIdleUsers(),
         builder: (context, snapshot) {
 
           // error
           if (snapshot.hasError) {
-            debugPrint('ERROR: ${snapshot.error}');
+            logger.e('ERROR: ${snapshot.error}');
             return Text('ERROR: ${snapshot.error}');
           }
           // loading
           if (snapshot.connectionState == ConnectionState.waiting) {
+            logger.w('loading online user list');
             return Text('loading');
           }
           // load info

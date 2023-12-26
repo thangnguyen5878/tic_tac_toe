@@ -31,7 +31,7 @@ class HistoryPlayerBottomBar extends StatelessWidget {
         final player2BoxColor =
             round.getHistoryPlayerIndex() == 1 ? kBrown30_history : kGrey30;
 
-        // print('history player bottom bar: ${round.winTurnIndex}');
+        // logger.t('history player bottom bar: ${round.winTurnIndex}');
         return Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [

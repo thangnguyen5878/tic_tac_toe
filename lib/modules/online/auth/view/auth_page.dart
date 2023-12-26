@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_tic_tac_toe/controllers/online_user_controller.dart';
 import 'package:flutter_tic_tac_toe/modules/online/auth/view/signin_page.dart';
 import 'package:flutter_tic_tac_toe/modules/online/auth/view/welcome_page.dart';
 import 'package:flutter_tic_tac_toe/controllers/auth_controller.dart';
@@ -10,9 +11,13 @@ class AuthPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Obx(() {
-      return AuthController.to.user.value == null
-          ? SignInPage()
-          : WelcomePage();
+      if(AuthController.to.user.value == null) {
+        return SignInPage();
+      } else {
+        OnlineUserController.to.handleToWelcomePage();
+        return WelcomePage();
+      }
+
     });
   }
 }

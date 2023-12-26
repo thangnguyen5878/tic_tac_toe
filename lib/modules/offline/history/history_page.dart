@@ -4,6 +4,7 @@ import 'package:flutter_tic_tac_toe/controllers/game_controller.dart';
 import 'package:flutter_tic_tac_toe/utils/constants/app_colors.dart';
 import 'package:flutter_tic_tac_toe/utils/constants/app_size.dart';
 import 'package:flutter_tic_tac_toe/utils/constants/app_styles.dart';
+import 'package:flutter_tic_tac_toe/utils/constants/service_constants.dart';
 import 'package:get/get.dart';
 
 class HistoryPage extends StatelessWidget {
@@ -13,7 +14,7 @@ class HistoryPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final roomId = Get.arguments;
-    print('build home screen...');
+    logger.t('build home screen...');
     return SafeArea(
       child: Scaffold(
         appBar: buildAppBar(),
@@ -35,10 +36,10 @@ class HistoryPage extends StatelessWidget {
           //     child: Text('Room: ${room.name}', style: kHeading2)),
           Expanded(
             child: ListView.separated(
-              padding: EdgeInsets.symmetric(
+              padding: const EdgeInsets.symmetric(
                   horizontal: 16, vertical: 12),
               separatorBuilder: (BuildContext context, int index) {
-                return SizedBox(height: 12);
+                return const SizedBox(height: 12);
               },
               itemCount:
                   rounds!.length + 1, // plus 1 since the title is included
@@ -68,7 +69,7 @@ class HistoryPage extends StatelessWidget {
     return AppBar(
       backgroundColor: kWhite,
       leading: IconButton(
-        padding: EdgeInsets.only(left: 16),
+        padding: const EdgeInsets.only(left: 16),
         icon: const Icon(Icons.arrow_back),
         iconSize: kIconSize,
         color: kBlack,
@@ -78,8 +79,8 @@ class HistoryPage extends StatelessWidget {
       ),
       title: Container(
         alignment: Alignment.center,
-        padding: EdgeInsets.only(top: 8, right: 48),
-        child: Column(
+        padding: const EdgeInsets.only(top: 8, right: 48),
+        child: const Column(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
             Text('History', style: kTitle1),

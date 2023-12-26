@@ -6,6 +6,7 @@ import 'package:flutter_tic_tac_toe/controllers/game_controller.dart';
 import 'package:flutter_tic_tac_toe/utils/constants/app_colors.dart';
 import 'package:flutter_tic_tac_toe/utils/constants/app_size.dart';
 import 'package:flutter_tic_tac_toe/utils/constants/app_styles.dart';
+import 'package:flutter_tic_tac_toe/utils/constants/service_constants.dart';
 import 'package:get/get.dart';
 
 class HistoryDetailsPage extends StatelessWidget {
@@ -13,7 +14,7 @@ class HistoryDetailsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print('build history details page...');
+    logger.t('build history details page...');
     final round = GameController.to.room.getHistoryRound();
 
     round.resetHistory();

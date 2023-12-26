@@ -10,7 +10,7 @@ class RoundCard extends StatelessWidget {
   final Round round;
   final int roomId;
 
-  RoundCard({super.key, required this.round, required this.roomId});
+  const RoundCard({super.key, required this.round, required this.roomId});
 
   @override
   Widget build(BuildContext context) {
@@ -30,10 +30,10 @@ class RoundCard extends StatelessWidget {
       winnerColor = kBlack; // You can choose another color
     }
 
-    // print('round card $round');
-    // print('player 1: $player1Name $player1Score');
-    // print('player 2: $player2Name $player2Score');
-    // print('winner: $winnerName $winnerColor');
+    // logger.t('round card $round');
+    // logger.t('player 1: $player1Name $player1Score');
+    // logger.t('player 2: $player2Name $player2Score');
+    // logger.t('winner: $winnerName $winnerColor');
 
     return InkWell(
       onTap: () {

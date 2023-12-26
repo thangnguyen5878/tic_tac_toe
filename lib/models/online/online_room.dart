@@ -1,21 +1,24 @@
+import 'package:flutter/material.dart';
 import 'package:flutter_tic_tac_toe/models/online/online_board.dart';
 import 'package:flutter_tic_tac_toe/models/online/online_cell.dart';
 import 'package:flutter_tic_tac_toe/models/online/online_player.dart';
 import 'package:flutter_tic_tac_toe/models/online/online_round.dart';
+import 'package:flutter_tic_tac_toe/utils/constants/service_constants.dart';
 import 'package:flutter_tic_tac_toe/utils/enums/cell_state.dart';
 import 'package:flutter_tic_tac_toe/utils/enums/game_state.dart';
 import 'package:flutter_tic_tac_toe/utils/enums/seed.dart';
 import 'package:flutter_tic_tac_toe/utils/json%20converters/online_round_list_converter.dart';
 import 'package:get/get.dart';
 import 'package:json_annotation/json_annotation.dart';
+import 'package:uuid/uuid.dart';
 
 part 'online_room.g.dart';
 
 @JsonSerializable(explicitToJson: true)
 class OnlineRoom {
-  String id = '';
+  String id;
   String name;
-  late GameState state;
+  GameState state;
   OnlineBoard board;
   OnlineBoard historyBoard;
 
@@ -28,10 +31,9 @@ class OnlineRoom {
   @JsonKey(includeToJson: false, includeFromJson: false)
   List<OnlineCell>? checkingCells = List<OnlineCell>.empty(growable: true);
 
+  @JsonKey(includeToJson: true, includeFromJson: true)
   final winCount = 5;
 
-  // @DocumentReferenceConverter()
-  // DocumentReference<Map<String, dynamic>>? roomRef;
 
   OnlineRoom.all({
     required this.id,
@@ -46,7 +48,8 @@ class OnlineRoom {
   });
 
   OnlineRoom({OnlinePlayer? player1, OnlinePlayer? player2})
-      : name = 'Untitled Room',
+      : id = const Uuid().v4(),
+        name = 'Untitled Room',
         board = OnlineBoard(),
         historyBoard = OnlineBoard(),
         historyRoundIndex = 0,
@@ -127,8 +130,8 @@ class OnlineRoom {
 
   /// This method will log the winner and navigate to the winner screen.
   void logWinnerAndNotify() {
-    print('Winner is ${getCurrentRound().getWinner()}');
-    // print('rounds: $rounds');
+    logger.t('Winner is ${getCurrentRound().getWinner()}');
+    // logger.t('rounds: $rounds');
     Get.toNamed('winner');
   }
 
@@ -224,13 +227,14 @@ class OnlineRoom {
     var nextRound = OnlineRound.cloneNextRound(getCurrentRound());
     rounds = [...?rounds, nextRound];
     currentRoundIndex++;
-    // print('nextRound()\n');
-    // print('current round: ${rounds![currentRoundIndex - 1]}\n');
-    // print('next round: ${rounds![currentRoundIndex]}\n');
+    // logger.t('nextRound()\n');
+    // logger.t('current round: ${rounds![currentRoundIndex - 1]}\n');
+    // logger.t('next round: ${rounds![currentRoundIndex]}\n');
   }
 
   /// Reset game to the original state
   void reset() {
+    logger.t('reset game');
     state = GameState.playing;
     board.reset();
     getCurrentRound().reset();
@@ -241,7 +245,7 @@ class OnlineRoom {
     historyBoard.reset();
     final turns = getHistoryRound().turns;
     final currentHistoryTurnIndex = getHistoryRound().historyTurnIndex!;
-    // print('Turns: $turns');
+    // logger.t('Turns: $turns');
     if (currentHistoryTurnIndex >= 0) {
       historyBoard.load(turns, currentHistoryTurnIndex);
     }
@@ -252,7 +256,10 @@ class OnlineRoom {
 
   @override
   String toString() {
-    return 'OnlineRoom{name: $name, board: $board, historyBoard: $historyBoard, historyRoundIndex: $historyRoundIndex, state: $state, rounds: $rounds, currentRoundIndex: $currentRoundIndex, checkingCells: $checkingCells, winCount: $winCount}';
+    return 'OnlineRoom{id: $id, name: $name, state: $state, board: $board, historyBoard: $historyBoard, \nrounds: $rounds, currentRoundIndex: $currentRoundIndex, historyRoundIndex: $historyRoundIndex, checkingCells: $checkingCells, winCount: $winCount}';
   }
 
+  String toShortString() {
+    return 'OnlineRoom{id: $id, name: $name}';
+  }
 }

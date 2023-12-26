@@ -4,7 +4,7 @@ import 'package:flutter_tic_tac_toe/utils/constants/app_colors.dart';
 import 'package:get/get.dart';
 
 class HistoryAutoPlayButton extends StatelessWidget {
-  HistoryAutoPlayButton({super.key});
+  const HistoryAutoPlayButton({super.key});
 
   @override
   Widget build(BuildContext context) {

@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_tic_tac_toe/modules/offline/history_details/components/history_cell.dart';
 import 'package:flutter_tic_tac_toe/controllers/game_controller.dart';
+import 'package:flutter_tic_tac_toe/utils/constants/service_constants.dart';
 
 class HistoryBoard extends StatelessWidget {
   HistoryBoard({super.key});
 
   @override
   Widget build(BuildContext context) {
-    print('build history board...');
+    logger.t('build history board...');
     final room = GameController.to.room;
 
     final columnCount = room.historyBoard.columnCount;

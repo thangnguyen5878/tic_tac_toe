@@ -12,6 +12,8 @@ class OnlineUser {
   bool isOnline;
   OnlineUserStatus status;
   String opponentId;
+  String currentRoomId;
+  int? playerIndex;
 
   OnlineUser({
     String? uid,
@@ -20,16 +22,19 @@ class OnlineUser {
     bool? isOnline,
     OnlineUserStatus? status,
     String? opponentId,
-  })  : this.isOnline = isOnline ?? true,
-        this.status = status ?? OnlineUserStatus.idle,
-        this.opponentId = opponentId ?? '',
-        this.uid = uid ?? Uuid().v4();
+    String? currentRoomId,
+    this.playerIndex
+  })  : isOnline = isOnline ?? true,
+        status = status ?? OnlineUserStatus.idle,
+        opponentId = opponentId ?? '',
+        uid = uid ?? const Uuid().v4(),
+        currentRoomId = currentRoomId ?? '';
 
   factory OnlineUser.fromJson(Map<String, dynamic> json) => _$OnlineUserFromJson(json);
   Map<String, dynamic> toJson() => _$OnlineUserToJson(this);
 
   @override
   String toString() {
-    return 'OnlineUser{uid: $uid, name: $name, email: $email, isOnline: $isOnline, status: $status, opponentId: $opponentId}';
+    return 'OnlineUser{uid: $uid, name: $name, email: $email, isOnline: $isOnline, status: $status, opponentId: $opponentId, currentRoomId: $currentRoomId, playerIndex: $playerIndex}';
   }
 }

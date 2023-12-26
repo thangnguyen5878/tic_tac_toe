@@ -1,5 +1,6 @@
 import 'package:flutter_tic_tac_toe/models/online/online_cell.dart';
 import 'package:flutter_tic_tac_toe/models/online/online_player.dart';
+import 'package:flutter_tic_tac_toe/utils/constants/service_constants.dart';
 import 'package:flutter_tic_tac_toe/utils/json%20converters/online_cell_list_converter.dart';
 import 'package:json_annotation/json_annotation.dart';
 
@@ -25,11 +26,9 @@ class OnlineRound {
   @OnlineCellListConverter()
   List<OnlineCell?> historyTurns = [];
 
+  @JsonKey(includeFromJson: true, includeToJson: true)
   int? _historyPlayerIndex;
   int? historyTurnIndex;
-
-  // @DocumentReferenceConverter()
-  // DocumentReference<Map<String, dynamic>>? roundRef;
 
   OnlineRound({this.index, this.winnerIndex, this.players})
       : currentTurnIndex = 0,
@@ -137,7 +136,7 @@ class OnlineRound {
     currentTurnIndex = 0;
     historyTurnIndex = 0;
     winTurnIndex = null;
-    print('clone next round');
+    logger.t('clone next round');
   }
 
   reset() {
@@ -164,7 +163,7 @@ class OnlineRound {
       currentPlayerIndex = 0;
     }
     currentTurnIndex = currentTurnIndex! + 1;
-    print('next turn, current player: ${currentPlayerIndex! + 1}');
+    logger.t('next turn, current player: ${currentPlayerIndex! + 1}');
   }
 
   historyNextTurn() {
@@ -183,48 +182,35 @@ class OnlineRound {
       _historyPlayerIndex = 0;
     }
     historyTurnIndex = historyTurnIndex! - 1;
-    print('next turn, current player: ${_historyPlayerIndex! + 1}');
+    logger.t('next turn, current player: ${_historyPlayerIndex! + 1}');
   }
 
   updateFinalScore() {
     players!.map((player) => player.finalScore = player.score);
   }
 
-  factory OnlineRound.fromJson(Map<String, dynamic> json) => _$OnlineRoundFromJson(json);
+  factory OnlineRound.fromJson(Map<String, dynamic> json) => OnlineRound(
+    index: json['index'] as int?,
+    winnerIndex: json['winnerIndex'] as int?,
+    players: (json['players'] as List<dynamic>?)
+        ?.map((e) => OnlinePlayer.fromJson(e))
+        .toList(),
+  )
+    ..currentPlayerIndex = json['currentPlayerIndex'] as int?
+    ..currentTurnIndex = json['currentTurnIndex'] as int?
+    ..winTurnIndex = json['winTurnIndex'] as int?
+    ..turns = const OnlineCellListConverter()
+        .fromJson(json['turns'])
+    ..historyTurns = const OnlineCellListConverter()
+        .fromJson(json['historyTurns'])
+    .._historyPlayerIndex = json['_historyPlayerIndex'] as int?
+    ..historyTurnIndex = json['historyTurnIndex'] as int?;
+  // factory OnlineRound.fromJson(Map<String, dynamic> json) => _$OnlineRoundFromJson(json);
   Map<String, dynamic> toJson() => _$OnlineRoundToJson(this);
 
   @override
   String toString() {
-    return 'OnlineRound{number: $index, players: $players, currentPlayerIndex: $currentPlayerIndex, _historyPlayerIndex: $_historyPlayerIndex, winnerIndex: $winnerIndex, turns: $turns, historyTurns: $historyTurns, currentTurnIndex: $currentTurnIndex, winTurnIndex: $winTurnIndex, historyTurnIndex: $historyTurnIndex}';
+    return 'OnlineRound{index: $index, players: $players, currentPlayerIndex: $currentPlayerIndex, currentTurnIndex: $currentTurnIndex, winnerIndex: $winnerIndex, winTurnIndex: $winTurnIndex, turns: $turns, historyTurns: $historyTurns, _historyPlayerIndex: $_historyPlayerIndex, historyTurnIndex: $historyTurnIndex}';
   }
 
-  // Map<String, dynamic> toJson() {
-  //   return {
-  //     'index': this.index,
-  //     'players': this.players,
-  //     'currentPlayerIndex': this.currentPlayerIndex,
-  //     'currentTurnIndex': this.currentTurnIndex,
-  //     'winnerIndex': this.winnerIndex,
-  //     'winTurnIndex': this.winTurnIndex,
-  //     'turns': this.turns,
-  //     'historyTurns': this.historyTurns,
-  //     'historyPlayerIndex': this._historyPlayerIndex,
-  //     'historyTurnIndex': this.historyTurnIndex,
-  //   };
-  // }
-  //
-  // factory OnlineRound.fromJson(Map<String, dynamic> map) {
-  //   return OnlineRound.all(
-  //     index: map['index'] as int,
-  //     players: map['players'] as List<OnlinePlayer>,
-  //     currentPlayerIndex: map['currentPlayerIndex'] as int,
-  //     currentTurnIndex: map['currentTurnIndex'] as int,
-  //     winnerIndex: map['winnerIndex'] as int,
-  //     winTurnIndex: map['winTurnIndex'] as int,
-  //     turns: map['turns'] as List<OnlineCell>,
-  //     historyTurns: map['historyTurns'] as List<OnlineCell>,
-  //     historyPlayerIndex: map['_historyPlayerIndex'] as int,
-  //     historyTurnIndex: map['historyTurnIndex'] as int,
-  //   );
-  // }
 }

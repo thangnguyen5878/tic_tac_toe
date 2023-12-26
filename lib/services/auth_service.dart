@@ -23,7 +23,7 @@ class AuthService {
         updateUserPresence(true);
       }
     } catch (e) {
-      print('ERROR: Sign in with Google: $e');
+      logger.t('ERROR: Sign in with Google: $e');
     }
   }
 

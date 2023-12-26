@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_tic_tac_toe/controllers/auth_controller.dart';
+import 'package:flutter_tic_tac_toe/controllers/online_user_controller.dart';
 import 'package:flutter_tic_tac_toe/modules/online/auth/components/sign_out_button.dart';
 import 'package:flutter_tic_tac_toe/routes/app_pages.dart';
 import 'package:flutter_tic_tac_toe/utils/constants/app_cache.dart';
@@ -47,6 +48,7 @@ class _WelcomePageState extends State<WelcomePage> with WidgetsBindingObserver {
       canPop: false,
       onPopInvoked: (didPop) async {
         if(didPop) return;
+        OnlineUserController.to.handleFromWelcomePageToOnlineHomePage();
         await Get.offAllNamed(Routes.HOME_ONLINE);
       },
       child: Scaffold(

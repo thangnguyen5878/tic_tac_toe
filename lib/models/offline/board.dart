@@ -1,5 +1,8 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'package:flutter/material.dart';
 import 'package:flutter_tic_tac_toe/models/offline/cell.dart';
+import 'package:flutter_tic_tac_toe/utils/constants/game_constants.dart';
+import 'package:flutter_tic_tac_toe/utils/constants/service_constants.dart';
 import 'package:flutter_tic_tac_toe/utils/enums/cell_state.dart';
 import 'package:flutter_tic_tac_toe/utils/enums/seed.dart';
 import 'package:isar/isar.dart';
@@ -9,16 +12,14 @@ part 'board.g.dart';
 @embedded
 class Board {
   int? rowCount;
-
   int? columnCount;
-
   @ignore
   late List<List<Cell>> cells;
 
   /// Board constructor with the default 5x5 board
   Board({int? rowCount, int? columnCount})
-      : rowCount = rowCount ?? 9,
-        columnCount = columnCount ?? 9 {
+      : rowCount = rowCount ?? defaultRowCount,
+        columnCount = columnCount ?? defaultColumnCount {
     cells = List.generate(
       this.rowCount!,
       (row) => List.generate(
@@ -32,9 +33,9 @@ class Board {
   /// Rebuild the board with the lastest number of rows and columns
   rebuild() {
     cells = List.generate(
-      this.rowCount!,
+      rowCount!,
       (row) => List.generate(
-        this.columnCount!,
+        columnCount!,
         (column) => Cell(row: row, column: column, content: Seed.noSeed, state: CellState.normal),
       ),
       growable: true,
@@ -65,7 +66,7 @@ class Board {
         cells[i][j] = Cell.cloneReset(cells[i][j]);
       }
     }
-    print('Reset board');
+    logger.t('Reset board');
   }
 
   @override

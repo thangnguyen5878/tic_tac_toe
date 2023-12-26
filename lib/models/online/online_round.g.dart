@@ -20,6 +20,7 @@ OnlineRound _$OnlineRoundFromJson(Map<String, dynamic> json) => OnlineRound(
           .fromJson(json['turns'] as List<Map<String, dynamic>>)
       ..historyTurns = const OnlineCellListConverter()
           .fromJson(json['historyTurns'] as List<Map<String, dynamic>>)
+      .._historyPlayerIndex = json['_historyPlayerIndex'] as int?
       ..historyTurnIndex = json['historyTurnIndex'] as int?;
 
 Map<String, dynamic> _$OnlineRoundToJson(OnlineRound instance) =>
@@ -33,5 +34,6 @@ Map<String, dynamic> _$OnlineRoundToJson(OnlineRound instance) =>
       'turns': const OnlineCellListConverter().toJson(instance.turns),
       'historyTurns':
           const OnlineCellListConverter().toJson(instance.historyTurns),
+      '_historyPlayerIndex': instance._historyPlayerIndex,
       'historyTurnIndex': instance.historyTurnIndex,
     };

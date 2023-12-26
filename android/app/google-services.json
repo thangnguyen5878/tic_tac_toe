@@ -37,6 +37,13 @@
             {
               "client_id": "405399125660-hplnt0h24mpir9lacu60sdeif1cat5em.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "405399125660-9uka3i4k8ffne6aovabvp6pniguo0cva.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.thang5878.flutterTicTacToe.RunnerTests"
+              }
             }
           ]
         }

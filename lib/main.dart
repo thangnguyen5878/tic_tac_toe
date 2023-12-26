@@ -1,28 +1,40 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_tic_tac_toe/controllers/auth_controller.dart';
 import 'package:flutter_tic_tac_toe/firebase_options.dart';
+import 'package:flutter_tic_tac_toe/models/online/online_board.dart';
+import 'package:flutter_tic_tac_toe/models/online/online_room.dart';
+import 'package:flutter_tic_tac_toe/models/online/online_round.dart';
 import 'package:flutter_tic_tac_toe/routes/app_pages.dart';
 import 'package:flutter_tic_tac_toe/utils/constants/app_colors.dart';
+import 'package:flutter_tic_tac_toe/utils/constants/game_constants.dart';
 import 'package:flutter_tic_tac_toe/utils/initial_binding.dart';
 import 'package:get/get.dart';
 
+import 'utils/constants/service_constants.dart';
+
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  // FirebaseFirestore.instance.settings = Settings(persistenceEnabled: true);
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
 
-  Get.put(AuthController());
-  runApp(
-    GetMaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: "Application",
-      initialRoute: AppPages.INITIAL,
-      getPages: AppPages.routes,
-      initialBinding: InitialBinding(),
-      theme: ThemeData(
-        // backgroundColor: kWhite,
-        scaffoldBackgroundColor: kWhite,
-      ),
-    ),
-  );
+  // Get.put(OnlineGameController());
+  // OnlineRoom room1 = OnlineRoom();
+  // OnlineGameController.to.pushRoomToFirebaseWithArgument(room1);
+
+  final object = OnlineRoom.fromJson(roomJsonSnippet);
+  logger.i(object);
+
+
+  // runApp(
+  //   GetMaterialApp(
+  //     debugShowCheckedModeBanner: false,
+  //     title: "Application",
+  //     initialRoute: AppPages.INITIAL,
+  //     getPages: AppPages.routes,
+  //     initialBinding: InitialBinding(),
+  //     theme: ThemeData(
+  //       scaffoldBackgroundColor: kWhite,
+  //     ),
+  //   ),
+  // );
 }

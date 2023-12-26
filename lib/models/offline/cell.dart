@@ -17,8 +17,8 @@ class Cell {
   late CellState? state;
 
   Cell({this.row, this.column, Seed? content, CellState? state})
-      : this.content = content ?? Seed.noSeed,
-        this.state = state ?? CellState.normal;
+      : content = content ?? Seed.noSeed,
+        state = state ?? CellState.normal;
 
   Cell.clone(Cell cell) {
     row = cell.row;

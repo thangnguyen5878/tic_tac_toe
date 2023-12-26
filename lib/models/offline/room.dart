@@ -1,8 +1,10 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'package:flutter/material.dart';
 import 'package:flutter_tic_tac_toe/models/offline/board.dart';
 import 'package:flutter_tic_tac_toe/models/offline/cell.dart';
 import 'package:flutter_tic_tac_toe/models/offline/player.dart';
 import 'package:flutter_tic_tac_toe/models/offline/round.dart';
+import 'package:flutter_tic_tac_toe/utils/constants/service_constants.dart';
 import 'package:flutter_tic_tac_toe/utils/enums/cell_state.dart';
 import 'package:flutter_tic_tac_toe/utils/enums/game_state.dart';
 import 'package:flutter_tic_tac_toe/utils/enums/seed.dart';
@@ -130,8 +132,8 @@ class Room {
   /// This method will log the winner and navigate to the winner screen.
   void logWinnerAndNotify() {
     Player? winner = getCurrentRound().getWinner();
-    print('Winner is ${winner.name}');
-    // print('rounds: $rounds');
+    logger.t('Winner is ${winner.name}');
+    // logger.t('rounds: $rounds');
     Get.toNamed('winner');
   }
 
@@ -227,9 +229,9 @@ class Room {
     Round nextRound = Round.cloneNextRound(getCurrentRound());
     rounds = [...?rounds, nextRound];
     currentRoundIndex++;
-    // print('nextRound()\n');
-    // print('current round: ${rounds![currentRoundIndex - 1]}\n');
-    // print('next round: ${rounds![currentRoundIndex]}\n');
+    // logger.t('nextRound()\n');
+    // logger.t('current round: ${rounds![currentRoundIndex - 1]}\n');
+    // logger.t('next round: ${rounds![currentRoundIndex]}\n');
   }
 
   /// Reset game to the original state
@@ -244,7 +246,7 @@ class Room {
     historyBoard.reset();
     final turns = getHistoryRound().turns;
     final currentHistoryTurnIndex = getHistoryRound().historyTurnIndex!;
-    // print('Turns: $turns');
+    // logger.t('Turns: $turns');
     if (currentHistoryTurnIndex >= 0) {
       historyBoard.load(turns, currentHistoryTurnIndex);
     }
@@ -257,15 +259,15 @@ class Room {
 
   Map<String, dynamic> toJson() {
     return {
-      'id': this.id,
-      'name': this.name,
-      'state': this.state,
-      'board': this.board,
-      'historyBoard': this.historyBoard,
-      'rounds': this.rounds,
-      'currentRoundIndex': this.currentRoundIndex,
-      'historyRoundIndex': this.historyRoundIndex,
-      'checkingCells': this.checkingCells,
+      'id': id,
+      'name': name,
+      'state': state,
+      'board': board,
+      'historyBoard': historyBoard,
+      'rounds': rounds,
+      'currentRoundIndex': currentRoundIndex,
+      'historyRoundIndex': historyRoundIndex,
+      'checkingCells': checkingCells,
     };
   }
 

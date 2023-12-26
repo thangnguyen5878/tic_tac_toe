@@ -15,8 +15,8 @@ class OnlineCell {
   // DocumentReference<Map<String, dynamic>>? cellRef;
 
   OnlineCell({this.row, this.column, Seed? content, CellState? state})
-      : this.content = content ?? Seed.noSeed,
-        this.state = state ?? CellState.normal;
+      : content = content ?? Seed.noSeed,
+        state = state ?? CellState.normal;
 
   OnlineCell.all({this.row, this.column, this.content, this.state});
 
@@ -55,8 +55,12 @@ class OnlineCell {
   factory OnlineCell.fromJson(Map<String, dynamic> json) => _$OnlineCellFromJson(json);
   Map<String, dynamic> toJson() => _$OnlineCellToJson(this);
 
+  String toShortString() {
+    return '''cell($row, $column): $content, $state\n''';
+  }
+
   @override
   String toString() {
-    return '''cell($row, $column): $content, $state\n''';
+    return 'OnlineCell{row: $row, column: $column, content: $content, state: $state}';
   }
 }

@@ -1,4 +1,7 @@
+import 'package:flutter/material.dart';
 import 'package:flutter_tic_tac_toe/models/online/online_cell.dart';
+import 'package:flutter_tic_tac_toe/utils/constants/game_constants.dart';
+import 'package:flutter_tic_tac_toe/utils/constants/service_constants.dart';
 import 'package:flutter_tic_tac_toe/utils/enums/cell_state.dart';
 import 'package:flutter_tic_tac_toe/utils/enums/seed.dart';
 import 'package:flutter_tic_tac_toe/utils/json%20converters/online_cell_list_converter2.dart';
@@ -14,13 +17,10 @@ class OnlineBoard {
   @OnlineCellListConverter2()
   List<List<OnlineCell>> cells = [];
 
-  // @DocumentReferenceConverter()
-  // DocumentReference<Map<String, dynamic>>? boardRef;
-
-  /// OnlineBoard constructor with the default 5x5 board
+  /// OnlineBoard constructor with the default value
   OnlineBoard({int? rowCount, int? columnCount})
-      : rowCount = rowCount ?? 2,
-        columnCount = columnCount ?? 2 {
+      : rowCount = rowCount ?? defaultOnlineRowCount,
+        columnCount = columnCount ?? defaultOnlineColumnCount {
     cells = List.generate(
       this.rowCount!,
           (row) => List.generate(
@@ -36,9 +36,9 @@ class OnlineBoard {
   /// Rebuild the board with the lastest number of rows and columns
   rebuild() {
     cells = List.generate(
-      this.rowCount!,
+      rowCount!,
           (row) => List.generate(
-        this.columnCount!,
+        columnCount!,
             (column) => OnlineCell(row: row, column: column, content: Seed.noSeed, state: CellState.normal),
       ),
       growable: true,
@@ -69,31 +69,19 @@ class OnlineBoard {
         cells[i][j] = OnlineCell.cloneReset(cells[i][j]);
       }
     }
-    print('Reset board');
+    logger.t('reset online board');
   }
 
   factory OnlineBoard.fromJson(Map<String, dynamic> json) => _$OnlineBoardFromJson(json);
   Map<String, dynamic> toJson() => _$OnlineBoardToJson(this);
 
-  @override
-  String toString() =>
+  String toShortString() =>
       'OnlineBoard(rowCount: $rowCount, columnCount: $columnCount, cells: $cells)';
 
-  // Map<String, dynamic> toJson() {
-  //   return {
-  //     'rowCount': this.rowCount,
-  //     'columnCount': this.columnCount,
-  //     'cells': this.cells,
-  //   };
-  // }
-  //
-  // factory OnlineBoard.fromJson(Map<String, dynamic> map) {
-  //   return OnlineBoard.all(
-  //     rowCount: map['rowCount'] as int,
-  //     columnCount: map['columnCount'] as int,
-  //     cells: map['cells'] as List<List<OnlineCell>>,
-  //   );
-  // }
+  @override
+  String toString() {
+    return 'OnlineBoard{rowCount: $rowCount, columnCount: $columnCount, cells: $cells}';
+  }
 }
 
 

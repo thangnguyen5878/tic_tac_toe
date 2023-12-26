@@ -9,7 +9,7 @@ class HistoryCell extends StatelessWidget {
   final row;
   final column;
 
-  HistoryCell({super.key, required this.row, required this.column});
+  const HistoryCell({super.key, required this.row, required this.column});
 
   @override
   Widget build(BuildContext context) {
@@ -33,8 +33,8 @@ class HistoryCell extends StatelessWidget {
               round.isHistoryWinTurn() == true) {
             bColor = kGreen30_history;
           }
-          // print('build cell($row, $column), $state, $bColor, $isWinTurn, ${historyRound!.historyCurrentTurnIndex}, ${historyRound.winTurnIndex}');
-          // print('build cell($row,$column) $bColor $state');
+          // logger.t('build cell($row, $column), $state, $bColor, $isWinTurn, ${historyRound!.historyCurrentTurnIndex}, ${historyRound.winTurnIndex}');
+          // logger.t('build cell($row,$column) $bColor $state');
           return Container(
               alignment: Alignment.center,
               decoration: BoxDecoration(

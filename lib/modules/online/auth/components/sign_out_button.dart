@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_tic_tac_toe/controllers/auth_controller.dart';
 import 'package:flutter_tic_tac_toe/utils/constants/app_colors.dart';
+import 'package:flutter_tic_tac_toe/utils/constants/service_constants.dart';
 import 'package:get/get.dart';
 
 class SignOutButton extends StatelessWidget {
@@ -12,6 +13,7 @@ class SignOutButton extends StatelessWidget {
       constraints: BoxConstraints(minWidth: Get.width * 0.8, minHeight: 48),
       child: TextButton(
         onPressed: () {
+          logger.t('press sign out button');
           AuthController.to.signOut();
         },
         child: Text('Sign out'),

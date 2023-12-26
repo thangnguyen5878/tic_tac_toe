@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_tic_tac_toe/utils/constants/service_constants.dart';
 import 'package:get/get.dart';
 
 class CreateRoomController extends GetxController {
@@ -17,7 +18,7 @@ class CreateRoomController extends GetxController {
     player2.clear();
     rowCount.clear();
     columnCount.clear();
-    print('input cleared');
+    logger.t('input cleared');
     update();
   }
 }

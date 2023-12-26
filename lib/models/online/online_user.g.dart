@@ -13,6 +13,8 @@ OnlineUser _$OnlineUserFromJson(Map<String, dynamic> json) => OnlineUser(
       isOnline: json['isOnline'] as bool?,
       status: $enumDecodeNullable(_$OnlineUserStatusEnumMap, json['status']),
       opponentId: json['opponentId'] as String?,
+      currentRoomId: json['currentRoomId'] as String?,
+      playerIndex: json['playerIndex'] as int?,
     );
 
 Map<String, dynamic> _$OnlineUserToJson(OnlineUser instance) =>
@@ -23,6 +25,8 @@ Map<String, dynamic> _$OnlineUserToJson(OnlineUser instance) =>
       'isOnline': instance.isOnline,
       'status': _$OnlineUserStatusEnumMap[instance.status]!,
       'opponentId': instance.opponentId,
+      'currentRoomId': instance.currentRoomId,
+      'playerIndex': instance.playerIndex,
     };
 
 const _$OnlineUserStatusEnumMap = {
@@ -33,6 +37,8 @@ const _$OnlineUserStatusEnumMap = {
   OnlineUserStatus.invitationRejected: 'invitation rejected',
   OnlineUserStatus.invitedButNoRespond: 'invited but no respond',
   OnlineUserStatus.invitationWaitingTimeout: 'invitation waiting timeout',
-  OnlineUserStatus.waitingCanceled: 'waiting canceled',
+  OnlineUserStatus.invitaionWaitingCanceled: 'invitation waiting canceled',
   OnlineUserStatus.opponentQuitted: 'opponent quitted',
+  OnlineUserStatus.inWelcomePage: 'in welcome page',
+  OnlineUserStatus.offline: 'offline',
 };

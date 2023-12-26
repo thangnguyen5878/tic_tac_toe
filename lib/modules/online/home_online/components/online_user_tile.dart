@@ -14,7 +14,7 @@ class OnlineUserTile extends StatelessWidget {
         // title: Text(user.toString()),
         title: Text(user.email),
         onTap: () {
-          OnlineUserController.to.selectOpponent(user.uid);
+          OnlineUserController.to.selectOpponent(user);
         },
       );
     } else {

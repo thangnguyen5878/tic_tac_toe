@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/material.dart';
+import 'package:flutter_tic_tac_toe/controllers/online_user_controller.dart';
 import 'package:flutter_tic_tac_toe/modules/online/auth/view/signin_page.dart';
 import 'package:flutter_tic_tac_toe/modules/online/auth/view/welcome_page.dart';
 import 'package:flutter_tic_tac_toe/models/online/online_user.dart';
@@ -43,14 +43,13 @@ class AuthController extends GetxController {
       updateUserOnlineStatus(true);
       Get.off(() => WelcomePage());
     }
-    debugPrint('Auth Route Navigation');
+    logger.t('Auth Route Navigation');
   }
 
   Future<void> updateUserOnlineStatus(bool isOnline) async {
-    await FirebaseFirestore.instance.collection('players').doc(firebaseAuth.currentUser!.uid).update({
+    await FirebaseFirestore.instance.collection('users').doc(firebaseAuth.currentUser!.uid).update({
       'isOnline': isOnline,
     });
-    print('updateUserOnlineStatus $isOnline');
   }
 
   Stream<List<OnlineUser>> getOnlineUsers() {
@@ -77,22 +76,24 @@ class AuthController extends GetxController {
 
       UserCredential userCredential =
           await FirebaseAuth.instance.signInWithCredential(credential);
-      debugPrint('Signed in with Google');
+      logger.t('Signed in with Google');
+      logger.i(userCredential);
       firestoreService.createUserDocument(userCredential);
+      OnlineUserController.to.handleSignIn();
     } catch (error) {
       Get.snackbar(
         'ERROR',
         'loi roi',
         snackPosition: SnackPosition.BOTTOM,
       );
-      debugPrint('Sign in with Google $error');
+      logger.e('Sign in with Google $error');
     }
   }
 
   Future<void> signOut() async {
-    updateUserOnlineStatus(false);
+    logger.t('sign out');
+    OnlineUserController.to.handleSignOut();
     await googleSignIn.disconnect();
     await FirebaseAuth.instance.signOut();
-    debugPrint('Signed out');
   }
 }

@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_tic_tac_toe/controllers/game_controller.dart';
 import 'package:flutter_tic_tac_toe/utils/constants/app_colors.dart';
+import 'package:flutter_tic_tac_toe/utils/constants/service_constants.dart';
 
 class PreviousTurnButton extends StatelessWidget {
   PreviousTurnButton({super.key});
@@ -16,7 +17,7 @@ class PreviousTurnButton extends StatelessWidget {
         size: 35,
       ),
       onPressed: () {
-        print('Press Previous Next Turn Button...');
+        logger.t('Press Previous Next Turn Button...');
         GameController.to.pauseHistoryAutoPlay();
         GameController.to.historyPreviousTurn();
       },

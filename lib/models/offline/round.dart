@@ -1,6 +1,8 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'package:flutter/material.dart';
 import 'package:flutter_tic_tac_toe/models/offline/cell.dart';
 import 'package:flutter_tic_tac_toe/models/offline/player.dart';
+import 'package:flutter_tic_tac_toe/utils/constants/service_constants.dart';
 import 'package:isar/isar.dart';
 
 
@@ -119,7 +121,7 @@ class Round {
     currentTurnIndex = 0;
     historyTurnIndex = 0;
     winTurnIndex = null;
-    print('clone next round');
+    logger.t('clone next round');
   }
 
   reset() {
@@ -146,7 +148,7 @@ class Round {
       currentPlayerIndex = 0;
     }
     currentTurnIndex = currentTurnIndex! + 1;
-    print('next turn, current player: ${currentPlayerIndex! + 1}');
+    logger.t('next turn, current player: ${currentPlayerIndex! + 1}');
   }
 
   historyNextTurn() {
@@ -160,7 +162,7 @@ class Round {
     //   historyCurrentPlayerIndex = winnerIndex;
     //   historyCurrentTurnIndex = winTurnIndex;
     // }
-    // print('next turn, current player: ${historyCurrentPlayerIndex! + 1}');
+    // logger.t('next turn, current player: ${historyCurrentPlayerIndex! + 1}');
   }
 
   historyPreviousTurn() {
@@ -173,7 +175,7 @@ class Round {
       _historyPlayerIndex = 0;
     }
     historyTurnIndex = historyTurnIndex! - 1;
-    print('next turn, current player: ${_historyPlayerIndex! + 1}');
+    logger.t('next turn, current player: ${_historyPlayerIndex! + 1}');
   }
 
   updateFinalScore() {

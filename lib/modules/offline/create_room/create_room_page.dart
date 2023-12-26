@@ -6,6 +6,7 @@ import 'package:flutter_tic_tac_toe/routes/app_pages.dart';
 import 'package:flutter_tic_tac_toe/utils/constants/app_colors.dart';
 import 'package:flutter_tic_tac_toe/utils/constants/app_input.dart';
 import 'package:flutter_tic_tac_toe/utils/constants/app_styles.dart';
+import 'package:flutter_tic_tac_toe/utils/constants/service_constants.dart';
 import 'package:get/get.dart';
 
 import '../../../controllers/create_room_controller.dart';
@@ -18,7 +19,7 @@ class CreateRoomPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-        margin: EdgeInsets.symmetric(horizontal: 16),
+        margin: const EdgeInsets.symmetric(horizontal: 16),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -33,17 +34,17 @@ class CreateRoomPage extends StatelessWidget {
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: <Widget>[
-                  SizedBox(height: 8),
+                  const SizedBox(height: 8),
                   buildRoomField(),
-                  SizedBox(height: 8),
+                  const SizedBox(height: 8),
                   buildPlayer1Field(),
-                  SizedBox(height: 8),
+                  const SizedBox(height: 8),
                   buildPlayer2Field(),
-                  SizedBox(height: 8),
+                  const SizedBox(height: 8),
                   buildRowCountField(),
-                  SizedBox(height: 8),
+                  const SizedBox(height: 8),
                   buildColumnCountField(),
-                  SizedBox(height: 8),
+                  const SizedBox(height: 8),
                   buildCreateRoomButton(),
                 ],
               ),
@@ -60,14 +61,14 @@ class CreateRoomPage extends StatelessWidget {
         backgroundColor: kBrown30,
         foregroundColor: kBlack,
         padding:
-            EdgeInsets.symmetric(horizontal: 48, vertical: 8),
+            const EdgeInsets.symmetric(horizontal: 48, vertical: 8),
       ),
       child: const Text('Create Room'),
       onPressed: () {
         if (_formKey.currentState!.validate()) {
-          print('press create room button');
+          logger.t('press create room button');
           GameController.to.createRoom();
-          print('Room Created: ${GameController.to.room}');
+          logger.t('Room Created: ${GameController.to.room}');
           CreateRoomController.to.clearInput();
           Get.toNamed(Routes.GAME);
         }

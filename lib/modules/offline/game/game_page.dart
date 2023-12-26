@@ -8,6 +8,7 @@ import 'package:flutter_tic_tac_toe/controllers/game_controller.dart';
 import 'package:flutter_tic_tac_toe/routes/app_pages.dart';
 import 'package:flutter_tic_tac_toe/utils/constants/app_colors.dart';
 import 'package:flutter_tic_tac_toe/utils/constants/app_styles.dart';
+import 'package:flutter_tic_tac_toe/utils/constants/service_constants.dart';
 import 'package:get/get.dart';
 
 class GamePage extends StatelessWidget {
@@ -16,14 +17,15 @@ class GamePage extends StatelessWidget {
   GamePage({super.key});
   @override
   Widget build(BuildContext context) {
-    print('build game page...');
+    logger.t('build game page');
 
-    return WillPopScope(
-      onWillPop: () async {
+    return PopScope(
+      canPop: false,
+      onPopInvoked: (didPop) {
+        if(didPop) return;
         Get.back();
-        GameController.to.saveRoom();
+        GameController.to.saveRoomToIsarDatabase();
         Get.to(Routes.HOME);
-        return true;
       },
       child: Scaffold(
         appBar: buildAppBar(),
@@ -33,15 +35,15 @@ class GamePage extends StatelessWidget {
               padding: const EdgeInsets.symmetric(horizontal: 10),
               child: ListView(
                 scrollDirection: Axis.vertical,
-                children: [
-                  const SizedBox(height: 10),
+                children: const [
+                  SizedBox(height: 10),
                   BoardWidget(),
-                  const SizedBox(height: 60),
+                  SizedBox(height: 60),
                 ],
               ),
             ),
           ),
-          Positioned(bottom: 0, left: 0, right: 0, child: PlayerBottomBar()),
+          const Positioned(bottom: 0, left: 0, right: 0, child: PlayerBottomBar()),
         ]),
       ),
     );
@@ -50,7 +52,7 @@ class GamePage extends StatelessWidget {
   AppBar buildAppBar() {
     return AppBar(
       backgroundColor: kBrown40,
-      leading: GameBackButton(),
+      leading: const GameBackButton(),
       title: GetBuilder<GameController>(
         builder: (gameController) {
           final room = GameController.to.room;
@@ -67,7 +69,7 @@ class GamePage extends StatelessWidget {
       ),
       actions: [
         // buildResetBoardButton(),
-        NextRoundButton(),
+        const NextRoundButton(),
         GamePopupMenuButton(),
       ],
     );

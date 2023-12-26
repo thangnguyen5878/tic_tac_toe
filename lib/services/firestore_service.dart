@@ -1,6 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_tic_tac_toe/models/online/online_board.dart';
 import 'package:flutter_tic_tac_toe/models/online/online_cell.dart';
 import 'package:flutter_tic_tac_toe/models/online/online_player.dart';
@@ -62,17 +61,16 @@ class FirestoreService {
 
   Future<void> createUserDocument(UserCredential userCredential) async {
     if (userCredential.user != null) {
-      debugPrint('createUserDocument');
-      print(userCredential.user);
+      logger.t('createUserDocument');
+      logger.t(userCredential.user);
       OnlineUser newUser = OnlineUser(
           uid: userCredential.user!.uid,
           email: userCredential.user!.email!,
           name: userCredential.user!.displayName!,
           isOnline: true,
-          status: OnlineUserStatus.idle,
-          opponentId: '');
+          status: OnlineUserStatus.idle);
       await addUser(newUser);
-      debugPrint('User info saved to firestore');
+      logger.t('User info saved to firestore');
     }
   }
 
@@ -81,12 +79,19 @@ class FirestoreService {
     return _userRef.get();
   }
 
+  Future<DocumentSnapshot> getUser(String uid) async {
+    return _userRef.doc(uid).get();
+  }
+
   Stream<DocumentSnapshot> watchUser(String uid) {
     return _userRef.doc(uid).snapshots();
   }
 
-  Stream<QuerySnapshot> watchOnlineUsers() {
-    return _userRef.snapshots();
+  Stream<QuerySnapshot> watchIdleUsers() {
+    return _userRef
+        .where('status', isEqualTo: OnlineUserStatus.idle.toShortString())
+        .orderBy('email')
+        .snapshots();
   }
 
   Stream<DocumentSnapshot> watchCurrentUser() {
@@ -114,7 +119,7 @@ class FirestoreService {
       'status': status.toShortString(),
     };
     await updateUser(uid, data);
-    debugPrint('change user status $uid to "$status"');
+    logger.t('change user status $uid to "$status"');
     return data;
   }
 
@@ -133,44 +138,69 @@ class FirestoreService {
   }
 
   // ONLINE ROOM
-  Stream<QuerySnapshot> getAllRooms() {
+  // ADD ROOM
+  Future<void> addRoom(OnlineRoom room) async {
+    DocumentReference docRef = _roomRef.doc(room.id);
+    docRef.set(room);
+  }
+
+  // GET ROOM
+  Future<QuerySnapshot> getAllRooms() async {
+    return _roomRef.get();
+  }
+
+  Future<DocumentSnapshot> getRoom(String roomId) async {
+    return _roomRef.doc(roomId).get();
+  }
+
+  Stream<DocumentSnapshot<Map<String, dynamic>>> watchRoom(String roomId) {
+    return FirebaseFirestore.instance.collection(fRoomCollection).doc(roomId).snapshots();
+  }
+
+  Stream<QuerySnapshot> watchOnlineRooms() {
     return _roomRef.snapshots();
   }
 
-  Stream<QuerySnapshot> getRoom(String roomId) {
-    return _roomRef.where('id', isEqualTo: roomId).snapshots();
+  // UPDATE ROOM
+  Future<void> updateRoom(String roomId, Map<String, dynamic> data) async {
+    await _userRef.doc(roomId).update(data);
   }
 
-  void addRoom(OnlineRoom room) {
-    _roomRef.add(room);
-    debugPrint('add a room to Firestore');
+  // DELETE ROOM
+  Future<void> deleteRoom(String roomId) async {
+    await _roomRef.doc(roomId).delete();
   }
 
-  void updateRoom(String roomId, OnlineRoom room) {
-    _roomRef.doc(roomId).update(room.toJson());
+  Future<void> deleteAllRooms() async {
+    WriteBatch batch = firestore.batch();
+    QuerySnapshot querySnapshot = await _roomRef.get();
+    for (var doc in querySnapshot.docs) {
+      batch.delete(doc.reference);
+    }
+    await batch.commit();
   }
 
   // ONLINE PLAYER
   void addPlayer(OnlinePlayer player) {
     _playerRef.add(player);
-    debugPrint('add a player to Firestore');
+    logger.t('add a player to Firestore');
   }
 
   // ONLINE CELL
   void addCell(OnlineCell cell) {
     _cellRef.add(cell);
-    debugPrint('add a cell to Firestore');
+    logger.t('add a cell to Firestore');
   }
 
   // ONLINE BOARD
   void addBoard(OnlineBoard board) {
     _boardRef.add(board);
-    debugPrint('add a board to Firestore');
+    logger.t('add a board to Firestore');
   }
 
   // ONLINE ROUND
   void addRound(OnlineRound round) {
     _roundRef.add(round);
-    debugPrint('add a round to Firestore');
+    logger.t('add a round to Firestore');
   }
 }
