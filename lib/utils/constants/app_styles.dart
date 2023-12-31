@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_tic_tac_toe/controllers/home_controller.dart';
 import 'package:flutter_tic_tac_toe/utils/constants/app_colors.dart';
 
 // TEXT STYLES
@@ -74,7 +75,15 @@ const kDefaultShadow = BoxShadow(
 );
 
 const kCardStyle = BoxDecoration(
-  color: kBrown15,
+  color: kRoomCardColor,
+  borderRadius: BorderRadius.all(
+    Radius.circular(4),
+  ),
+  boxShadow: [kDefaultShadow],
+);
+
+const kSelectedCardStyle = BoxDecoration(
+  color: kSelectedRoomCardColor,
   borderRadius: BorderRadius.all(
     Radius.circular(4),
   ),

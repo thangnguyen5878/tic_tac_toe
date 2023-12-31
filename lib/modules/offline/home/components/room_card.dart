@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_tic_tac_toe/controllers/game_controller.dart';
+import 'package:flutter_tic_tac_toe/controllers/home_controller.dart';
 import 'package:flutter_tic_tac_toe/models/offline/room.dart';
 import 'package:flutter_tic_tac_toe/routes/app_pages.dart';
 import 'package:flutter_tic_tac_toe/utils/constants/app_colors.dart';
@@ -8,7 +9,9 @@ import 'package:get/get.dart';
 
 class RoomCard extends StatelessWidget {
   final Room room;
-  RoomCard(this.room, {super.key});
+  final int index;
+
+  RoomCard(this.room, this.index ,{super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -25,10 +28,14 @@ class RoomCard extends StatelessWidget {
         await GameController.to.loadRoomById(room.id);
         Get.toNamed(Routes.GAME, arguments: room.id);
       },
+      onLongPress: () {
+        HomeController.to.lastSelectedRoomIndex = index;
+        HomeController.to.activateRoomSelectionMode();
+      },
       child: Container(
         width: double.infinity,
         padding: EdgeInsets.all(12),
-        decoration: kCardStyle,
+        decoration: HomeController.to.isRoomCardSelected(index) ? kSelectedCardStyle : kCardStyle,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [

@@ -88,10 +88,6 @@ class OnlineGameController extends GetxController {
 
   void pushRoomToFirebaseWithArgument(OnlineRoom onlineRoom)  {
     firestoreService.addRoom(onlineRoom);
-    // final userData = {
-    //   'currentRoomId': onlineRoom.id
-    // };
-    // firestoreService.updateUser(firebaseAuth.currentUser!.uid, userData);
     logger.t('push onlineRoom to firebase');
     logger.t('Room{id: ${onlineRoom.id}, name: ${onlineRoom.name}}');
     update();

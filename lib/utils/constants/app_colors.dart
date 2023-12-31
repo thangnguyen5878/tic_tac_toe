@@ -2,10 +2,13 @@ import 'package:flutter/material.dart';
 
 // COLORS
 const Color kPrimaryColor = Color(0xFFF0E5E5);
+const Color kRoomCardColor = kBrown15;
+const Color kSelectedRoomCardColor = kBrown20;
 
 // primamry color: brown
 const kBrown10 = Color(0xFFEEE7E7);
 const kBrown15 = Color(0xFFF0E5E5);
+const kBrown20 = Color(0xFFCBB1B1);
 const kBrown30 = Color(0xFFCD9797);
 const kBrown30_o80 = Color(0xCBCD9797);
 const kBrown30_history = Color(0xFFB29696);  // history player bottom bar

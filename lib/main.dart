@@ -21,20 +21,19 @@ Future<void> main() async {
   // OnlineRoom room1 = OnlineRoom();
   // OnlineGameController.to.pushRoomToFirebaseWithArgument(room1);
 
-  final object = OnlineRoom.fromJson(roomJsonSnippet);
-  logger.i(object);
+  // final object = OnlineRoom.fromJson(roomJsonSnippet);
+  // logger.i(object);
 
-
-  // runApp(
-  //   GetMaterialApp(
-  //     debugShowCheckedModeBanner: false,
-  //     title: "Application",
-  //     initialRoute: AppPages.INITIAL,
-  //     getPages: AppPages.routes,
-  //     initialBinding: InitialBinding(),
-  //     theme: ThemeData(
-  //       scaffoldBackgroundColor: kWhite,
-  //     ),
-  //   ),
-  // );
+  runApp(
+    GetMaterialApp(
+      debugShowCheckedModeBanner: false,
+      title: "Application",
+      initialRoute: AppPages.INITIAL,
+      getPages: AppPages.routes,
+      initialBinding: InitialBinding(),
+      theme: ThemeData(
+        scaffoldBackgroundColor: kWhite,
+      ),
+    ),
+  );
 }
