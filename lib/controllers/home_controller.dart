@@ -10,8 +10,8 @@ class HomeController extends GetxController {
 
   void set lastSelectedRoomIndex(int index) => _lastSeletedRoomIndex = index;
 
-  void activateRoomSelectionMode() {
-    selectedRoomIndexes.add(_lastSeletedRoomIndex!);
+  void activateRoomSelectionMode(int roomIndex) {
+    addSelectedRoom(roomIndex);
     isRoomSelectionMode = true;
     update();
   }
@@ -22,12 +22,21 @@ class HomeController extends GetxController {
     update();
   }
 
-  bool isRoomCardSelected(int index) {
-    return selectedRoomIndexes.contains(index);
-  }
-
-  void addToSeletedRooms(int index) {
+  void addSelectedRoom(int index) {
+    _lastSeletedRoomIndex = index;
     selectedRoomIndexes.add(index);
     update();
+  }
+
+  void removeSelectedRoom(int index) {
+    selectedRoomIndexes.remove(index);
+    if(selectedRoomIndexes.isEmpty) {
+      isRoomSelectionMode = false;
+    }
+    update();
+  }
+
+  bool isRoomCardSelected(int index) {
+    return selectedRoomIndexes.contains(index);
   }
 }
