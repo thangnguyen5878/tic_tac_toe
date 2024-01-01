@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_tic_tac_toe/controllers/game_controller.dart';
 import 'package:flutter_tic_tac_toe/models/offline/room.dart';
 import 'package:flutter_tic_tac_toe/modules/offline/home/components/room_card.dart';
+import 'package:flutter_tic_tac_toe/utils/constants/service_constants.dart';
 import 'package:get/get.dart';
 
 class RoomList extends StatelessWidget {
@@ -18,8 +19,8 @@ class RoomList extends StatelessWidget {
           SizedBox(height: 4),
           GetBuilder<GameController>(
             builder: (gameController) {
-              return FutureBuilder<List<Room>>(
-                future: GameController.to.isarService.getAllRooms(),
+              return StreamBuilder<List<Room>>(
+                stream: isarService.watchAllRooms(),
                 builder: (context, snapshot) {
                   // error
                   if (snapshot.hasError) {

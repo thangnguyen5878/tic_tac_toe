@@ -36,7 +36,7 @@ class IsarService {
 
   Stream<List<Room>> watchAllRooms() async* {
     final isar = await db;
-    yield* isar.rooms.where().watch();
+    yield* isar.rooms.where().watch(fireImmediately: true);
   }
 
   // ROOM: INSERT AND UPDATE
@@ -48,9 +48,14 @@ class IsarService {
 
   // ROOM: DELETE
   /// Delete a Room  from database
-  Future<void> deleteRoom(int id) async {
+  Future<void> removeRoom(int id) async {
     final isar = await db;
     isar.rooms.delete(id);
+  }
+
+  Future<void> removeRooms(List<int> ids) async {
+    final isar = await db;
+    isar.writeTxn(() => isar.rooms.deleteAll(ids));
   }
 
   Future<void> cleanDB() async {

@@ -57,6 +57,7 @@ class HomePage extends StatelessWidget {
                   size: kIconSize,
                 ),
                 onPressed: () {
+                  logger.t('open drawer');
                   Scaffold.of(context).openDrawer();
                 },
               ),
@@ -81,6 +82,7 @@ class HomePage extends StatelessWidget {
                   size: kIconSize,
                 ),
                 onPressed: () {
+                  logger.t('press close button');
                   HomeController.to.deactivateRoomSelectionMode();
                 },
               ),
@@ -88,11 +90,13 @@ class HomePage extends StatelessWidget {
         title: Container(
           padding: const EdgeInsets.only(top: 8, right: 32),
           alignment: Alignment.center,
-          child: Text('Selection Mode', style: kTitle1),
         ),
         actions: [
           IconButton(
-            onPressed: () {},
+            onPressed: () {
+              logger.t('press delete rooms button');
+              HomeController.to.removeSelectedRoomsFromDatabase();
+            },
             icon: Icon(
               Icons.delete,
               color: kBlack,

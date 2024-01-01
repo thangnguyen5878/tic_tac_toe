@@ -31,7 +31,7 @@ class RoomCard extends StatelessWidget {
           Get.toNamed(Routes.GAME, arguments: room.id);
         },
         onLongPress: () {
-          HomeController.to.activateRoomSelectionMode(index);
+          HomeController.to.activateRoomSelectionMode(index, room.id);
         },
         child: Container(
           width: double.infinity,
@@ -70,9 +70,9 @@ class RoomCard extends StatelessWidget {
       return InkWell(
         onTap: () {
           if(HomeController.to.isRoomCardSelected(index)) {
-            HomeController.to.removeSelectedRoom(index);
+            HomeController.to.removeSelectedRoom(index, room.id);
           } else {
-            HomeController.to.addSelectedRoom(index);
+            HomeController.to.addSelectedRoom(index, room.id);
           }
         },
         child: Container(
