@@ -68,7 +68,7 @@ class CreateRoomPage extends StatelessWidget {
         if (_formKey.currentState!.validate()) {
           logger.t('press create room button');
           GameController.to.createRoom();
-          logger.t('Room Created: ${GameController.to.room}');
+          // logger.t('Room Created: ${GameController.to.room.toShortString()}');
           CreateRoomController.to.clearInput();
           Get.toNamed(Routes.GAME);
         }

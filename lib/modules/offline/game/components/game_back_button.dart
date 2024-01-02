@@ -22,10 +22,10 @@ class GameBackButton extends StatelessWidget {
       ),
       onPressed: () async {
         Get.back();
-        logger.t('Object before save: ${GameController.to.room}');
+        // logger.t('Object before save: ${GameController.to.room}');
         final newId = await GameController.to.saveRoomToIsarDatabase();
         final room = await GameController.to.isarService.getRoom(newId);
-        logger.t('Object after save (from database): $room');
+        // logger.t('Object after save (from database): $room');
         Get.toNamed(Routes.HOME);
       },
     );

@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_tic_tac_toe/controllers/home_controller.dart';
 import 'package:flutter_tic_tac_toe/models/offline/room.dart';
 import 'package:flutter_tic_tac_toe/modules/offline/home/components/app_drawer.dart';
+import 'package:flutter_tic_tac_toe/modules/offline/home/components/delete_rooms_button.dart';
 import 'package:flutter_tic_tac_toe/modules/offline/home/components/room_card.dart';
 import 'package:flutter_tic_tac_toe/controllers/game_controller.dart';
 import 'package:flutter_tic_tac_toe/modules/offline/home/components/room_list.dart';
+import 'package:flutter_tic_tac_toe/modules/offline/home/components/select_all_rooms_button.dart';
 import 'package:flutter_tic_tac_toe/routes/app_pages.dart';
 import 'package:flutter_tic_tac_toe/utils/constants/app_colors.dart';
 import 'package:flutter_tic_tac_toe/utils/constants/app_size.dart';
@@ -24,7 +26,7 @@ class HomePage extends StatelessWidget {
         drawer: AppDrawer(),
         appBar: _buildAppBar(),
         body: RoomList(),
-        floatingActionButton: _buildFloatingActionButton(),
+        floatingActionButton: HomeController.to.isRoomSelectionMode ? null :  _buildFloatingActionButton(),
       );
     });
   }
@@ -46,66 +48,67 @@ class HomePage extends StatelessWidget {
   AppBar _buildAppBar() {
     if (!HomeController.to.isRoomSelectionMode) {
       // appbar in normal mode
-      return AppBar(
-        leading: Builder(
-          builder: (context) =>
-              IconButton(
-                padding: EdgeInsets.only(left: 16),
-                icon: Icon(
-                  Icons.menu,
-                  color: kBlack,
-                  size: kIconSize,
-                ),
-                onPressed: () {
-                  logger.t('open drawer');
-                  Scaffold.of(context).openDrawer();
-                },
-              ),
-        ),
-        title: Container(
-          padding: const EdgeInsets.only(top: 8, right: 32),
-          alignment: Alignment.center,
-          child: Text('Tic-tac-toe', style: kTitle1),
-        ),
-        backgroundColor: kWhite,
-      );
+      return _appBarNormalMode();
     } else {
       // appbar in selection mode
-      return AppBar(
-        leading: Builder(
-          builder: (context) =>
-              IconButton(
-                padding: EdgeInsets.only(left: 16),
-                icon: Icon(
-                  Icons.close,
-                  color: kBlack,
-                  size: kIconSize,
-                ),
-                onPressed: () {
-                  logger.t('press close button');
-                  HomeController.to.deactivateRoomSelectionMode();
-                },
-              ),
-        ),
-        title: Container(
-          padding: const EdgeInsets.only(top: 8, right: 32),
-          alignment: Alignment.center,
-        ),
-        actions: [
-          IconButton(
-            onPressed: () {
-              logger.t('press delete rooms button');
-              HomeController.to.removeSelectedRoomsFromDatabase();
-            },
-            icon: Icon(
-              Icons.delete,
-              color: kBlack,
-              size: kIconSize,
-            ),
-          ),
-        ],
-        backgroundColor: kWhite,
-      );
+      return _appBarSelectionMode();
     }
   }
+
+  AppBar _appBarSelectionMode() {
+    return AppBar(
+      leading: Builder(
+        builder: (context) =>
+            IconButton(
+              padding: EdgeInsets.only(left: 16),
+              icon: Icon(
+                Icons.close,
+                color: kBlack,
+                size: kIconSize,
+              ),
+              onPressed: () {
+                logger.t('press close button');
+                HomeController.to.deactivateRoomSelectionMode();
+              },
+            ),
+      ),
+      title: Container(
+        padding: const EdgeInsets.only(top: 8, right: 32),
+        alignment: Alignment.center,
+      ),
+      actions: [
+        DeleteRoomsButton(),
+        SelectAllRoomsButton(),
+      ],
+      backgroundColor: kWhite,
+    );
+  }
+
+  AppBar _appBarNormalMode() {
+    return AppBar(
+      leading: Builder(
+        builder: (context) =>
+            IconButton(
+              padding: EdgeInsets.only(left: 16),
+              icon: Icon(
+                Icons.menu,
+                color: kBlack,
+                size: kIconSize,
+              ),
+              onPressed: () {
+                logger.t('open drawer');
+                Scaffold.of(context).openDrawer();
+              },
+            ),
+      ),
+      title: Container(
+        padding: const EdgeInsets.only(top: 8, right: 32),
+        alignment: Alignment.center,
+        child: Text('Tic-tac-toe', style: kTitle1),
+      ),
+      backgroundColor: kWhite,
+    );
+  }
 }
+
+

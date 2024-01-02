@@ -257,6 +257,10 @@ class Room {
     return 'Room{name: $name, board: $board, historyBoard: $historyBoard, historyRoundIndex: $historyRoundIndex, state: $state, rounds: $rounds, currentRoundIndex: $currentRoundIndex, checkingCells: $checkingCells, winCount: $winCount}';
   }
 
+  String toShortString() {
+    return 'Room{name: $name, board: ${board}, historyBoard: $historyBoard, historyRoundIndex: $historyRoundIndex, state: $state, currentRoundIndex: $currentRoundIndex, winCount: $winCount}';
+  }
+
   Map<String, dynamic> toJson() {
     return {
       'id': id,

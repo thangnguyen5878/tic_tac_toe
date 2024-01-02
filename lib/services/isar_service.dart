@@ -50,12 +50,16 @@ class IsarService {
   /// Delete a Room  from database
   Future<void> removeRoom(int id) async {
     final isar = await db;
-    isar.rooms.delete(id);
+    await isar.writeTxn(() async {
+      await isar.rooms.delete(id);
+    });
   }
 
   Future<void> removeRooms(List<int> ids) async {
     final isar = await db;
-    isar.writeTxn(() => isar.rooms.deleteAll(ids));
+    await isar.writeTxn(() async {
+      await isar.rooms.deleteAll(ids);
+    });
   }
 
   Future<void> cleanDB() async {
