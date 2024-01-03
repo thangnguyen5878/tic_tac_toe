@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_tic_tac_toe/models/online/online_user.dart';
 import 'package:flutter_tic_tac_toe/modules/online/home_online/components/online_user_tile.dart';
 import 'package:flutter_tic_tac_toe/utils/constants/service_constants.dart';
+import 'package:get/get.dart';
 
 class OnlineUserList extends StatelessWidget {
   const OnlineUserList({super.key});
@@ -12,23 +13,18 @@ class OnlineUserList extends StatelessWidget {
     return StreamBuilder(
         stream: firestoreService.watchIdleUsers(),
         builder: (context, snapshot) {
-
-          // error
-          if (snapshot.hasError) {
-            logger.e('ERROR: ${snapshot.error}');
-            return Text('ERROR: ${snapshot.error}');
+          if(snapshot.hasData) {
+            return ListView(
+              children: snapshot.data!.docs
+                  .map<Widget>((doc) => OnlineUserTile(user: doc.data() as OnlineUser))
+                  .toList(),
+            );
           }
-          // loading
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            logger.w('loading online user list');
-            return Text('loading');
+          else {
+            logger.w('There are currently no players online');
+            return Container();
+            // return Center(child: Text('There are currently no players online'));
           }
-          // load info
-          return ListView(
-            children: snapshot.data!.docs
-                .map<Widget>((doc) => OnlineUserTile(user: doc.data() as OnlineUser))
-                .toList(),
-          );
         });
   }
 }

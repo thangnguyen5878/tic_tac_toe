@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_tic_tac_toe/controllers/online_game_controller.dart';
+import 'package:flutter_tic_tac_toe/controllers/online_user_controller.dart';
 import 'package:flutter_tic_tac_toe/models/online/online_cell.dart';
 import 'package:flutter_tic_tac_toe/models/online/online_room.dart';
 import 'package:flutter_tic_tac_toe/utils/constants/app_colors.dart';
@@ -9,17 +10,16 @@ import 'package:get/get.dart';
 
 // ignore: must_be_immutable
 class OnlineCellWidget extends StatelessWidget {
-  final Map<String, dynamic> jsonRoom;
+  final OnlineRoom room;
   final int row;
   final int column;
 
-  const OnlineCellWidget({Key? key, required this.row, required this.column, required this.jsonRoom}) : super(key: key);
+  const OnlineCellWidget({Key? key, required this.row, required this.column, required this.room}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return GetBuilder<OnlineGameController>(builder: (controller) {
-      debugPrint('build cell');
-      final room = OnlineRoom.fromJson(jsonRoom);
+      // debugPrint('build cell');
       final round = room.getCurrentRound();
       final content = room.board.cells[row][column].content.toString();
       final state = room.board.cells[row][column].state!;

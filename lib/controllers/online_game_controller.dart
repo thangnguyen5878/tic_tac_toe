@@ -81,10 +81,11 @@ class OnlineGameController extends GetxController {
       'currentRoomId': room.id
     };
     firestoreService.updateUser(firebaseAuth.currentUser!.uid, userData);
-    logger.t('push room to firebase');
+    logger.t('add room to firebase');
     logger.t('Room{id: ${room.id}, name: ${room.name}}');
     update();
   }
+
 
   void pushRoomToFirebaseWithArgument(OnlineRoom onlineRoom)  {
     firestoreService.addRoom(onlineRoom);
@@ -124,9 +125,10 @@ class OnlineGameController extends GetxController {
   /// The player draw a Seed in a cell(row, column) on the board.
   drawSeedOnCell(int row, int column, Seed seed) {
     logger.t('draw $seed on cell($row, $column)');
+    // OnlineGameController.to.pullRoomFromFirebase();
     OnlineCell? cell = room.board.cells[row][column];
     if (room.state == GameState.playing && (cell.content != Seed.cross && cell.content != Seed.nought)) {
-      // Update the cell
+      OnlineGameController.to.pullRoomFromFirebase();
       cell.content = seed;
       room.getCurrentRound().turns = [...room.getCurrentRound().turns, cell];
       room.checkWinner();

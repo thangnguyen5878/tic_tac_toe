@@ -266,12 +266,13 @@ class OnlineUserController extends GetxController {
     firestoreService.updateUser(firebaseAuth.currentUser!.uid, data);
   }
 
-  void handleSignIn() {
+  void handleSignIn(OnlineUser newUser) {
     final data = {
       'isOnline': true,
       'status': OnlineUserStatus.inWelcomePage.toShortString(),
     };
     firestoreService.updateUser(firebaseAuth.currentUser!.uid, data);
+    currentUser = newUser;
   }
 
   void handleFromWelcomePageToOnlineHomePage() {

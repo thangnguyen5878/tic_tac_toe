@@ -11,9 +11,9 @@ class InitialBinding extends Bindings {
   void dependencies() {
     Get.lazyPut(() => GameController());
     // Get.lazyPut(() => CreateRoomController());
-    // Get.lazyPut(() => AuthController());
-    // Get.put(OnlineUserController());
-    // Get.put(OnlineGameController());
+    Get.put(AuthController());
+    Get.put(OnlineUserController());
+    Get.put(OnlineGameController());
     Get.put(HomeController());
   }
 }

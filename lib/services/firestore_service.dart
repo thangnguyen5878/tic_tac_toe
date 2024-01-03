@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter_tic_tac_toe/controllers/online_user_controller.dart';
 import 'package:flutter_tic_tac_toe/models/online/online_board.dart';
 import 'package:flutter_tic_tac_toe/models/online/online_cell.dart';
 import 'package:flutter_tic_tac_toe/models/online/online_player.dart';
@@ -69,6 +70,7 @@ class FirestoreService {
           name: userCredential.user!.displayName!,
           isOnline: true,
           status: OnlineUserStatus.idle);
+      OnlineUserController.to.handleSignIn(newUser);
       await addUser(newUser);
       logger.t('User info saved to firestore');
     }
@@ -168,6 +170,10 @@ class FirestoreService {
   // UPDATE ROOM
   Future<void> updateRoom(String roomId, Map<String, dynamic> data) async {
     await _userRef.doc(roomId).update(data);
+  }
+
+  Future<void> updateRoomWithObject(String roomId, OnlineRoom room) async {
+    await _userRef.doc(roomId).update(room.toJson());
   }
 
   // DELETE ROOM

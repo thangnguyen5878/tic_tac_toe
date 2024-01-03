@@ -251,8 +251,23 @@ class OnlineRoom {
     }
   }
 
-  factory OnlineRoom.fromJson(Map<String, dynamic> json) => _$OnlineRoomFromJson(json);
+  // toJson() and fromJson()
   Map<String, dynamic> toJson() => _$OnlineRoomToJson(this);
+
+  factory OnlineRoom.fromJson(Map<String, dynamic> json) => OnlineRoom()
+    ..id = json['id'] as String
+    ..name = json['name'] as String
+    ..state = $enumDecode(_$GameStateEnumMap, json['state'])
+    ..board = OnlineBoard.fromJson(json['board'] as Map<String, dynamic>)
+    ..historyBoard =
+    OnlineBoard.fromJson(json['historyBoard'] as Map<String, dynamic>)
+    ..rounds =
+    _$JsonConverterFromJson<List<Map<String, dynamic>>, List<OnlineRound?>>(
+        List<Map<String, dynamic>>.from(json['rounds']), const OnlineRoundListConverter().fromJson)
+    ..currentRoundIndex = json['currentRoundIndex'] as int
+    ..historyRoundIndex = json['historyRoundIndex'] as int;
+
+
 
   @override
   String toString() {

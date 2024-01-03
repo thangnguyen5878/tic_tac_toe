@@ -79,7 +79,6 @@ class AuthController extends GetxController {
       logger.t('Signed in with Google');
       logger.i(userCredential);
       firestoreService.createUserDocument(userCredential);
-      OnlineUserController.to.handleSignIn();
     } catch (error) {
       Get.snackbar(
         'ERROR',
