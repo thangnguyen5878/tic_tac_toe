@@ -112,9 +112,7 @@ class OnlineUserController extends GetxController {
   void _handleInGameStatus() async {
     // player 2 (index: 1) create room instance and upload to firestore,
     // therefore, player 1 (index 0) should get the room from firestore
-
     if (currentUser.playerIndex == 0) {
-      // Future.delayed(const Duration(seconds: 1));
       OnlineGameController.to.currentRoomId = opponent!.currentRoomId;
       final userData = {
         'currentRoomId': opponent!.currentRoomId
@@ -122,7 +120,6 @@ class OnlineUserController extends GetxController {
       firestoreService.updateUser(firebaseAuth.currentUser!.uid, userData);
       OnlineGameController.to.pullRoomFromFirebase();
     }
-
     Get.offNamed(Routes.ONLINE_GAME);
   }
 

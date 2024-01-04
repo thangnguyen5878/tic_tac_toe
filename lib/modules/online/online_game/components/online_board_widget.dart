@@ -27,9 +27,8 @@ class OnlineBoardWidget extends StatelessWidget {
           } else if (snapshot.hasError) {
             return Text('Error: ${snapshot.error}');
           } else {
-            Map<String, dynamic> json = snapshot.data!.data()!;
             // logger.i(json);
-            OnlineRoom room = OnlineRoom.fromJson(json);
+            OnlineRoom room = snapshot.data!.data()! as OnlineRoom;
             // logger.i(room);
             OnlineGameController.to.room = room;
 

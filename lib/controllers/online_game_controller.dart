@@ -27,7 +27,7 @@ class OnlineGameController extends GetxController {
   @override
   void onReady() {
     super.onReady();
-    syncRoomFromFirebase();
+    _watchRoomFromFirebase();
   }
 
   void updateRoom(Map<String, dynamic> json) {
@@ -44,10 +44,10 @@ class OnlineGameController extends GetxController {
     update();
   }
 
-  void syncRoomFromFirebase() {
+  void _watchRoomFromFirebase() {
     // listen for current user
     if(currentRoomId != null) {
-      firestoreService.watchRoom(currentRoomId).listen((snapshot) {
+      firestoreService.watchRoom(currentRoomId ?? '').listen((snapshot) {
         if (snapshot.exists) {
           room = snapshot.data() as OnlineRoom;
           logger.t('update room instance from firebase');
@@ -57,14 +57,6 @@ class OnlineGameController extends GetxController {
       });
     }
   }
-
-  // void _listenForRoomOnLocal() {
-  //   Stream<OnlineRoom> _roomStream = _roomController.stream;
-  //   _roomStream.listen((OnlineRoom room) {
-  //     firestoreService.addRoom(room);
-  //     logger.t(room.toJson() as String);
-  //   });
-  // }
 
   void pullRoomFromFirebase() {
     firestoreService.getRoom(currentRoomId).then((snapshot) {

@@ -155,12 +155,12 @@ class FirestoreService {
     return _roomRef.doc(roomId).get();
   }
 
-  Stream<DocumentSnapshot<Map<String, dynamic>>> watchRoom(String roomId) {
-    return FirebaseFirestore.instance.collection(fRoomCollection).doc(roomId).snapshots();
+  Stream<DocumentSnapshot<Object?>> watchRoom(String roomId) {
+    return _roomRef.doc(roomId).snapshots();
   }
 
-  Stream<QuerySnapshot<Map<String, dynamic>>> watchAllRooms(String roomId) {
-    return FirebaseFirestore.instance.collection(fRoomCollection).snapshots();
+  Stream<QuerySnapshot<Object?>> watchAllRooms(String roomId) {
+    return _roomRef.snapshots();
   }
 
   Stream<QuerySnapshot> watchOnlineRooms() {
