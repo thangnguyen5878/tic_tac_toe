@@ -114,7 +114,7 @@ class OnlineUserController extends GetxController {
     // therefore, player 1 (index 0) should get the room from firestore
 
     if (currentUser.playerIndex == 0) {
-      Future.delayed(const Duration(seconds: 1));
+      // Future.delayed(const Duration(seconds: 1));
       OnlineGameController.to.currentRoomId = opponent!.currentRoomId;
       final userData = {
         'currentRoomId': opponent!.currentRoomId

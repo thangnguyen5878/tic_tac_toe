@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_tic_tac_toe/controllers/game_controller.dart';
 import 'package:flutter_tic_tac_toe/controllers/online_game_controller.dart';
 import 'package:flutter_tic_tac_toe/controllers/online_user_controller.dart';
 import 'package:flutter_tic_tac_toe/models/online/online_cell.dart';
@@ -37,7 +38,10 @@ class OnlineCellWidget extends StatelessWidget {
 
       return InkWell(
         onTap: () {
-          OnlineGameController.to.drawSeedOnCell(row, column, round.getCurrentPlayer().seed!);
+          if(OnlineUserController.to.currentUser.playerIndex == round.currentPlayerIndex) {
+            OnlineGameController.to.drawSeedOnCell(row, column, round.getCurrentPlayer().seed!);
+            logger.t('tap cell, player index: ${OnlineUserController.to.currentUser.playerIndex}');
+          }
         },
         child: Container(
           alignment: Alignment.center,
