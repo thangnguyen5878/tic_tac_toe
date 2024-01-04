@@ -7,6 +7,7 @@ import 'package:flutter_tic_tac_toe/modules/offline/game/components/game_popup_m
 import 'package:flutter_tic_tac_toe/modules/offline/game/components/next_round_button.dart';
 import 'package:flutter_tic_tac_toe/modules/online/online_game/components/online_board_widget.dart';
 import 'package:flutter_tic_tac_toe/modules/online/online_game/components/online_game_back_button.dart';
+import 'package:flutter_tic_tac_toe/modules/online/online_game/components/online_player_bottom_bar.dart';
 import 'package:flutter_tic_tac_toe/utils/constants/app_colors.dart';
 import 'package:flutter_tic_tac_toe/utils/constants/app_styles.dart';
 import 'package:flutter_tic_tac_toe/utils/constants/service_constants.dart';
@@ -46,7 +47,7 @@ class OnlineGamePage extends StatelessWidget {
                       ),
                     ),
                   ),
-                  // Positioned(bottom: 0, left: 0, right: 0, child: OnlinePlayerBottomBar()),
+                  OnlinePlayerBottomBar(room: room),
                 ]),
               ),
             );
