@@ -1,6 +1,5 @@
 import 'package:flutter_tic_tac_toe/utils/constants/service_constants.dart';
 import 'package:get/get.dart';
-import 'package:meta/meta.dart';
 
 class HomeController extends GetxController {
   static HomeController get to => Get.find();

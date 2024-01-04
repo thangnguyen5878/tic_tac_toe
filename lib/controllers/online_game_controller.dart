@@ -1,6 +1,4 @@
-import 'dart:async';
 
-import 'package:flutter/material.dart';
 import 'package:flutter_tic_tac_toe/models/online/online_board.dart';
 import 'package:flutter_tic_tac_toe/models/online/online_cell.dart';
 import 'package:flutter_tic_tac_toe/models/online/online_player.dart';
@@ -46,8 +44,8 @@ class OnlineGameController extends GetxController {
 
   void _watchRoomFromFirebase() {
     // listen for current user
-    if(currentRoomId != null) {
-      firestoreService.watchRoom(currentRoomId ?? '').listen((snapshot) {
+    if(currentRoomId != '') {
+      firestoreService.watchRoom(currentRoomId).listen((snapshot) {
         if (snapshot.exists) {
           room = snapshot.data() as OnlineRoom;
           logger.t('update room instance from firebase');
@@ -66,6 +64,7 @@ class OnlineGameController extends GetxController {
     });
     update();
   }
+
 
   void pushRoomToFirebase()  {
     firestoreService.addRoom(room);

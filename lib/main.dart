@@ -1,12 +1,8 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_tic_tac_toe/firebase_options.dart';
-import 'package:flutter_tic_tac_toe/models/online/online_board.dart';
-import 'package:flutter_tic_tac_toe/models/online/online_room.dart';
-import 'package:flutter_tic_tac_toe/models/online/online_round.dart';
 import 'package:flutter_tic_tac_toe/routes/app_pages.dart';
 import 'package:flutter_tic_tac_toe/utils/constants/app_colors.dart';
-import 'package:flutter_tic_tac_toe/utils/constants/game_constants.dart';
 import 'package:flutter_tic_tac_toe/utils/initial_binding.dart';
 import 'package:get/get.dart';
 

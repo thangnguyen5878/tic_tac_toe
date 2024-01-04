@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_tic_tac_toe/controllers/game_controller.dart';
 import 'package:flutter_tic_tac_toe/controllers/online_game_controller.dart';
 import 'package:flutter_tic_tac_toe/controllers/online_user_controller.dart';
-import 'package:flutter_tic_tac_toe/models/online/online_cell.dart';
 import 'package:flutter_tic_tac_toe/models/online/online_room.dart';
 import 'package:flutter_tic_tac_toe/utils/constants/app_colors.dart';
 import 'package:flutter_tic_tac_toe/utils/constants/service_constants.dart';

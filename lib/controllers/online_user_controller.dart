@@ -1,4 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter_tic_tac_toe/controllers/game_controller.dart';
 import 'package:flutter_tic_tac_toe/controllers/invitation_timer_controller.dart';
 import 'package:flutter_tic_tac_toe/controllers/online_game_controller.dart';
 import 'package:flutter_tic_tac_toe/models/online/online_user.dart';
@@ -111,16 +112,8 @@ class OnlineUserController extends GetxController {
   }
 
   void _handleInGameStatus() async {
-    // player 2 (index: 1) create room instance and upload to firestore,
-    // therefore, player 1 (index 0) should get the room from firestore
-    if (currentUser.playerIndex == 0) {
-      OnlineGameController.to.currentRoomId = opponent!.currentRoomId;
-      final userData = {
-        'currentRoomId': opponent!.currentRoomId
-      };
-      firestoreService.updateUser(firebaseAuth.currentUser!.uid, userData);
-      OnlineGameController.to.pullRoomFromFirebase();
-    }
+    OnlineGameController.to.currentRoomId = currentUser.currentRoomId;
+    OnlineGameController.to.pullRoomFromFirebase();
     Get.offNamed(Routes.ONLINE_GAME);
   }
 
@@ -192,8 +185,14 @@ class OnlineUserController extends GetxController {
   void acceptChallengeFromOpponent() {
     OnlineGameController.to.createRoom();
     OnlineGameController.to.pushRoomToFirebase();
-    final currentUserData = {'status': OnlineUserStatus.inGame.toShortString()};
-    final opponentData = {'status': OnlineUserStatus.inGame.toShortString()};
+    final currentUserData = {
+      'status': OnlineUserStatus.inGame.toShortString(),
+      'currentRoomId': OnlineGameController.to.room.id
+    };
+    final opponentData = {
+      'status': OnlineUserStatus.inGame.toShortString(),
+      'currentRoomId': OnlineGameController.to.room.id
+    };
     firestoreService.updateUser(currentUser.uid, currentUserData);
     firestoreService.updateUser(opponentId, opponentData);
     update();
