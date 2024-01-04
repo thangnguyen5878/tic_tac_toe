@@ -12,6 +12,7 @@ abstract class Routes {
   static const AUTH = _Paths.AUTH;
   static const HOME_ONLINE = _Paths.HOME_ONLINE;
   static const ONLINE_GAME = _Paths.ONLINE_GAME;
+  static const ONLINE_WINNER = _Paths.ONLINE_WINNER;
 }
 
 abstract class _Paths {
@@ -25,4 +26,5 @@ abstract class _Paths {
   static const AUTH = '/auth';
   static const HOME_ONLINE = '/home-online';
   static const ONLINE_GAME = '/online-game';
+  static const ONLINE_WINNER = '/online-winner';
 }

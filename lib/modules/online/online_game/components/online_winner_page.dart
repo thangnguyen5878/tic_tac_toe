@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_tic_tac_toe/controllers/game_controller.dart';
+import 'package:flutter_tic_tac_toe/controllers/online_game_controller.dart';
 import 'package:get/get.dart';
 
-class WinnerView extends StatelessWidget {
-  WinnerView({Key? key}) : super(key: key);
+class OnlineWinnerPage extends StatelessWidget {
+
+  const OnlineWinnerPage({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    final room = GameController.to.room;
+    final room = OnlineGameController.to.room;
     final round = room.getCurrentRound();
 
     final winnerName = round.getWinner().name;
@@ -24,12 +25,12 @@ class WinnerView extends StatelessWidget {
               children: [
                 Text(
                   'Round $roundCount',
-                  style: TextStyle(
+                  style: const TextStyle(
                       color: Color.fromARGB(255, 162, 180, 227),
                       fontSize: 25,
                       fontWeight: FontWeight.bold),
                 ),
-                SizedBox(height: 10),
+                const SizedBox(height: 10),
                 const Text(
                   'Winner',
                   style: TextStyle(color: Colors.white, fontSize: 23),

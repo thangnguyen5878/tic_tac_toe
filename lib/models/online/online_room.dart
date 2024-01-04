@@ -1,8 +1,8 @@
-import 'package:flutter/material.dart';
 import 'package:flutter_tic_tac_toe/models/online/online_board.dart';
 import 'package:flutter_tic_tac_toe/models/online/online_cell.dart';
 import 'package:flutter_tic_tac_toe/models/online/online_player.dart';
 import 'package:flutter_tic_tac_toe/models/online/online_round.dart';
+import 'package:flutter_tic_tac_toe/routes/app_pages.dart';
 import 'package:flutter_tic_tac_toe/utils/constants/service_constants.dart';
 import 'package:flutter_tic_tac_toe/utils/enums/cell_state.dart';
 import 'package:flutter_tic_tac_toe/utils/enums/game_state.dart';
@@ -132,7 +132,7 @@ class OnlineRoom {
   void logWinnerAndNotify() {
     logger.t('Winner is ${getCurrentRound().getWinner()}');
     // logger.t('rounds: $rounds');
-    Get.toNamed('winner');
+    Get.toNamed(Routes.ONLINE_WINNER);
   }
 
   /// This method checks if there's a winner and handles the case.
@@ -227,9 +227,6 @@ class OnlineRoom {
     var nextRound = OnlineRound.cloneNextRound(getCurrentRound());
     rounds = [...?rounds, nextRound];
     currentRoundIndex++;
-    // logger.t('nextRound()\n');
-    // logger.t('current round: ${rounds![currentRoundIndex - 1]}\n');
-    // logger.t('next round: ${rounds![currentRoundIndex]}\n');
   }
 
   /// Reset game to the original state
