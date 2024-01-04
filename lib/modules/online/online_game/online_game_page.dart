@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_tic_tac_toe/controllers/game_controller.dart';
+import 'package:flutter_tic_tac_toe/controllers/online_game_controller.dart';
 import 'package:flutter_tic_tac_toe/controllers/online_user_controller.dart';
+import 'package:flutter_tic_tac_toe/models/online/online_room.dart';
 import 'package:flutter_tic_tac_toe/modules/offline/game/components/game_popup_menu_button.dart';
 import 'package:flutter_tic_tac_toe/modules/offline/game/components/next_round_button.dart';
 import 'package:flutter_tic_tac_toe/modules/online/online_game/components/online_board_widget.dart';
 import 'package:flutter_tic_tac_toe/modules/online/online_game/components/online_game_back_button.dart';
 import 'package:flutter_tic_tac_toe/utils/constants/app_colors.dart';
 import 'package:flutter_tic_tac_toe/utils/constants/app_styles.dart';
+import 'package:flutter_tic_tac_toe/utils/constants/service_constants.dart';
 import 'package:get/get.dart';
 
 class OnlineGamePage extends StatelessWidget {
@@ -14,31 +17,44 @@ class OnlineGamePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
-    return PopScope(
-      canPop: false,
-      onPopInvoked: (didPop) {
-        if(didPop) return;
-        OnlineUserController.to.quitGame();
-      },
-      child: Scaffold(
-        // appBar: buildAppBar(),
-        body: Stack(children: [
-          Center(
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 10),
-              child: ListView(
-                scrollDirection: Axis.vertical,
-                children: [
-                  const SizedBox(height: 10),
-                  OnlineBoardWidget(),
-                  const SizedBox(height: 60),
-                ],
+    return StreamBuilder(
+        stream: firestoreService.watchRoom(OnlineGameController.to.currentRoomId),
+      builder: (context, snapshot) {
+          if(snapshot.hasData) {
+            OnlineRoom room = snapshot.data!.data()! as OnlineRoom;
+            OnlineGameController.to.room = room;
+
+            return PopScope(
+              canPop: false,
+              onPopInvoked: (didPop) {
+                if(didPop) return;
+                OnlineUserController.to.quitGame();
+              },
+              child: Scaffold(
+                // appBar: buildAppBar(),
+                body: Stack(children: [
+                  Center(
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 10),
+                      child: ListView(
+                        scrollDirection: Axis.vertical,
+                        children: [
+                          const SizedBox(height: 10),
+                          OnlineBoardWidget(room: room),
+                          SizedBox(height: 60),
+                        ],
+                      ),
+                    ),
+                  ),
+                  // Positioned(bottom: 0, left: 0, right: 0, child: OnlinePlayerBottomBar()),
+                ]),
               ),
-            ),
-          ),
-          // Positioned(bottom: 0, left: 0, right: 0, child: OnlinePlayerBottomBar()),
-        ]),
-      ),
+            );
+          } else {
+            logger.t('no datda');
+            return Text('no data', style: kNormalText,);
+          }
+      }
     );
   }
 

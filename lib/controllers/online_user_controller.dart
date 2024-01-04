@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_tic_tac_toe/controllers/invitation_timer_controller.dart';
 import 'package:flutter_tic_tac_toe/controllers/online_game_controller.dart';
 import 'package:flutter_tic_tac_toe/models/online/online_user.dart';
@@ -26,12 +27,12 @@ class OnlineUserController extends GetxController {
   @override
   void onReady() {
     super.onReady();
-    _listenForUserFromFirebase();
+    _watchUserFromFirebase();
   }
 
-  void _listenForUserFromFirebase() {
+  void _watchUserFromFirebase() {
     // listen for current user
-    firestoreService.watchCurrentUser().listen((snapshot) {
+    firestoreService.watchUser(FirebaseAuth.instance.currentUser?.uid ?? '').listen((snapshot) {
       if (snapshot.exists) {
         currentUser = snapshot.data() as OnlineUser;
         opponentId = currentUser.opponentId;
