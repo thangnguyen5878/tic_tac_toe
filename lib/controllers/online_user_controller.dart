@@ -8,6 +8,8 @@ import 'package:flutter_tic_tac_toe/modules/online/home_online/components/dialog
 import 'package:flutter_tic_tac_toe/modules/online/home_online/components/dialogs/invitation_timeout_dialog.dart';
 import 'package:flutter_tic_tac_toe/modules/online/home_online/components/dialogs/rejected_dialog.dart';
 import 'package:flutter_tic_tac_toe/modules/online/home_online/components/dialogs/waiting_dialog.dart';
+import 'package:flutter_tic_tac_toe/modules/online/online_game/components/dialogs/online_loser_dialog.dart';
+import 'package:flutter_tic_tac_toe/modules/online/online_game/components/dialogs/online_winner_dialog.dart';
 import 'package:flutter_tic_tac_toe/modules/online/online_game/components/dialogs/opponent_quit_game_dialog.dart';
 import 'package:flutter_tic_tac_toe/modules/online/online_game/components/dialogs/quit_game_dialog.dart';
 import 'package:flutter_tic_tac_toe/routes/app_pages.dart';
@@ -80,11 +82,31 @@ class OnlineUserController extends GetxController {
         case OnlineUserStatus.invitedButNoRespond:
           _handleInvitedButNoRespondStatus();
           break;
+        case OnlineUserStatus.win:
+          _handleWinStatus();
+          break;
+        case OnlineUserStatus.lose:
+          _handleLoseStatus();
+          break;
         default:
           break;
       }
       oldCurrentUserStatus = currentUser.status;
     }
+  }
+
+   _handleWinStatus()  {
+    // await Future.delayed(Duration(seconds: 2));
+    Get.dialog(
+      OnlineWinnerDialog(), barrierDismissible: false
+    );
+  }
+
+   _handleLoseStatus()  {
+    Future.delayed(Duration(seconds: 2));
+    Get.dialog(
+        OnlineLoserDialog(), barrierDismissible: false
+    );
   }
 
   void _handleIdleStatus() {
@@ -264,12 +286,10 @@ class OnlineUserController extends GetxController {
   }
 
   void handleSignIn(OnlineUser newUser) {
-    final data = {
-      'isOnline': true,
-      'status': OnlineUserStatus.inWelcomePage.toShortString(),
-    };
-    firestoreService.updateUser(firebaseAuth.currentUser!.uid, data);
+    final json = newUser.toJson();
+    firestoreService.updateUser(firebaseAuth.currentUser!.uid, json);
     currentUser = newUser;
+    update();
   }
 
   void handleFromWelcomePageToOnlineHomePage() {
@@ -312,13 +332,30 @@ class OnlineUserController extends GetxController {
     update();
   }
 
-  updateTwoUserOnFirebase(Map<String, dynamic> data) {
-    firestoreService.updateUser(currentUser.uid, data);
+  Future<void> updateTwoUserOnFirebase(Map<String, dynamic> data) async {
+    await firestoreService.updateUser(currentUser.uid, data);
     firestoreService.updateUser(opponentId, data);
 }
 
-  updateCurrentUserStatus(OnlineUserStatus status) {
-    firestoreService.updateUserStatus(currentUser.uid, status);
+  Future<void> updateCurrentUserStatus(OnlineUserStatus status) async {
+    await firestoreService.updateUserStatus(currentUser.uid, status);
     update();
+  }
+
+  Future<void> updateWinnerAndLoserStatus() async {
+    logger.t('update winner and loser status');
+    final winnerIndex = OnlineGameController.to.room.getCurrentRound().winnerIndex;
+    // the player draw last seed win the game
+    if (currentUser.playerIndex == winnerIndex) {
+      final currentUserData = {
+        'status': OnlineUserStatus.win.toShortString()
+      };
+      // the opponent is the loser
+      final opponentData = {
+        'status': OnlineUserStatus.lose.toShortString()
+      };
+      firestoreService.updateUser(currentUser.uid, currentUserData);
+      firestoreService.updateUser(opponentId, opponentData);
+    }
   }
 }

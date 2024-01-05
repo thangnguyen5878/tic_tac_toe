@@ -1,11 +1,16 @@
+import 'package:flutter_tic_tac_toe/controllers/online_game_controller.dart';
+import 'package:flutter_tic_tac_toe/controllers/online_user_controller.dart';
 import 'package:flutter_tic_tac_toe/models/online/online_board.dart';
 import 'package:flutter_tic_tac_toe/models/online/online_cell.dart';
 import 'package:flutter_tic_tac_toe/models/online/online_player.dart';
 import 'package:flutter_tic_tac_toe/models/online/online_round.dart';
-import 'package:flutter_tic_tac_toe/routes/app_pages.dart';
+import 'package:flutter_tic_tac_toe/models/online/online_user.dart';
+import 'package:flutter_tic_tac_toe/modules/online/online_game/components/dialogs/online_loser_dialog.dart';
+import 'package:flutter_tic_tac_toe/modules/online/online_game/components/dialogs/online_winner_dialog.dart';
 import 'package:flutter_tic_tac_toe/utils/constants/service_constants.dart';
 import 'package:flutter_tic_tac_toe/utils/enums/cell_state.dart';
 import 'package:flutter_tic_tac_toe/utils/enums/game_state.dart';
+import 'package:flutter_tic_tac_toe/utils/enums/online_user_status.dart';
 import 'package:flutter_tic_tac_toe/utils/enums/seed.dart';
 import 'package:flutter_tic_tac_toe/utils/json%20converters/online_round_list_converter.dart';
 import 'package:get/get.dart';
@@ -100,7 +105,8 @@ class OnlineRoom {
     return true;
   }
 
-  void handleWin(int winnerIndex) {
+  Future<void> handleWin(int winnerIndex) async {
+    logger.t('handle win');
     var player1 = getCurrentRound().players![0];
     var player2 = getCurrentRound().players![1];
 
@@ -118,7 +124,8 @@ class OnlineRoom {
     getCurrentRound().winTurnIndex = getCurrentRound().turns.length - 1;
     state = GameState.stop;
 
-    logWinnerAndNotify();
+    await OnlineUserController.to.updateWinnerAndLoserStatus();
+    await OnlineGameController.to.pushRoomToFirebase();
   }
 
   /// This method will be used to color the winning cells.
@@ -129,11 +136,12 @@ class OnlineRoom {
   }
 
   /// This method will log the winner and navigate to the winner screen.
-  void logWinnerAndNotify() {
-    logger.t('Winner is ${getCurrentRound().getWinner()}');
-    // logger.t('rounds: $rounds');
-    Get.toNamed(Routes.ONLINE_WINNER);
-  }
+  // Future<void> logWinnerAndNotify() async {
+  //   logger.t('Winner is ${getCurrentRound().getWinner()}');
+  //   // logger.t('rounds: $rounds');
+  //   await Future.delayed(Duration(seconds: 2));
+  //   Get.toNamed(Routes.ONLINE_WINNER);
+  // }
 
   /// This method checks if there's a winner and handles the case.
   bool checkForWinner(List<OnlineCell> cellsToCheck, Seed seed) {
@@ -263,7 +271,6 @@ class OnlineRoom {
         List<Map<String, dynamic>>.from(json['rounds']), const OnlineRoundListConverter().fromJson)
     ..currentRoundIndex = json['currentRoundIndex'] as int
     ..historyRoundIndex = json['historyRoundIndex'] as int;
-
 
 
   @override

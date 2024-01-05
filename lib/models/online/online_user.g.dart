@@ -41,4 +41,6 @@ const _$OnlineUserStatusEnumMap = {
   OnlineUserStatus.opponentQuitted: 'opponent quitted',
   OnlineUserStatus.inWelcomePage: 'in welcome page',
   OnlineUserStatus.offline: 'offline',
+  OnlineUserStatus.win: 'win',
+  OnlineUserStatus.lose: 'lose',
 };

@@ -11,7 +11,9 @@ enum OnlineUserStatus {
   @JsonValue("invitation waiting canceled") invitaionWaitingCanceled,
   @JsonValue("opponent quitted") opponentQuitted,
   @JsonValue("in welcome page") inWelcomePage,
-  @JsonValue("offline") offline;
+  @JsonValue("offline") offline,
+  @JsonValue("win") win,
+  @JsonValue("lose") lose;
 
   String toShortString() {
     switch (this) {
@@ -33,10 +35,14 @@ enum OnlineUserStatus {
         return "invitation waiting canceled";
       case OnlineUserStatus.opponentQuitted:
         return "opponent quitted";
-      case OnlineUserStatus.inWelcomePage: // Trạng thái mới
+      case OnlineUserStatus.inWelcomePage:
         return "in welcome page";
-      case OnlineUserStatus.offline: // Trạng thái mới
+      case OnlineUserStatus.offline:
         return "offline";
+      case OnlineUserStatus.win:
+        return "win";
+      case OnlineUserStatus.lose:
+        return "lose";
       default:
         return "unknown status";
     }

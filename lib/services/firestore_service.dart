@@ -69,9 +69,8 @@ class FirestoreService {
           email: userCredential.user!.email!,
           name: userCredential.user!.displayName!,
           isOnline: true,
-          status: OnlineUserStatus.idle);
+          status: OnlineUserStatus.inWelcomePage);
       OnlineUserController.to.handleSignIn(newUser);
-      await addUser(newUser);
       logger.t('User info saved to firestore');
     }
   }
