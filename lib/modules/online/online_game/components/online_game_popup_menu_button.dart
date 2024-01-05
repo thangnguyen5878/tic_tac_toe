@@ -1,6 +1,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_tic_tac_toe/controllers/game_controller.dart';
+import 'package:flutter_tic_tac_toe/controllers/online_game_controller.dart';
 import 'package:flutter_tic_tac_toe/routes/app_pages.dart';
 import 'package:flutter_tic_tac_toe/utils/constants/app_size.dart';
 import 'package:flutter_tic_tac_toe/utils/constants/service_constants.dart';
@@ -30,13 +31,12 @@ class OnlineGamePopupMenuButton extends StatelessWidget {
       ],
       onSelected: (String value) async {
         if (value == 'reset') {
-          GameController.to.resetBoard();
-          await GameController.to.saveRoomToIsarDatabase();
+          OnlineGameController.to.resetBoard();
         } else if (value == 'history') {
-          logger.t('Going to History Page, roomId = $roomId');
-          GameController.to.saveRoomToIsarDatabase();
-          roomId = await GameController.to.saveRoomToIsarDatabase();
-          Get.toNamed(Routes.HISTORY, arguments: roomId);
+          // logger.t('Going to History Page, roomId = $roomId');
+          // GameController.to.saveRoomToIsarDatabase();
+          // roomId = await GameController.to.saveRoomToIsarDatabase();
+          // Get.toNamed(Routes.HISTORY, arguments: roomId);
         }
       },
       icon: Icon(

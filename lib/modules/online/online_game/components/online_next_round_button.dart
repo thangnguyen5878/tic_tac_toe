@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_tic_tac_toe/controllers/game_controller.dart';
+import 'package:flutter_tic_tac_toe/controllers/online_game_controller.dart';
 import 'package:flutter_tic_tac_toe/utils/constants/app_colors.dart';
 import 'package:flutter_tic_tac_toe/utils/constants/app_size.dart';
 import 'package:get/get_state_manager/src/simple/get_state.dart';
@@ -11,10 +12,10 @@ class OnlineNextRoundButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final room = GameController.to.room;
+    final room = OnlineGameController.to.room;
 
-    return GetBuilder<GameController>(
-      builder: (gameController) {
+    return GetBuilder<OnlineGameController>(
+      builder: (controller) {
         if (room.isGameOver()) {
           return IconButton(
             icon: const Icon(
@@ -23,8 +24,7 @@ class OnlineNextRoundButton extends StatelessWidget {
               size: kIconSize,
             ),
             onPressed: () async {
-              GameController.to.nextRound();
-              await GameController.to.saveRoomToIsarDatabase();
+              OnlineGameController.to.nextRound();
             },
           );
         }

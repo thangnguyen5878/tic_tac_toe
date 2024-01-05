@@ -66,13 +66,13 @@ class OnlineGameController extends GetxController {
   }
 
 
-  void pushRoomToFirebase()  {
-    firestoreService.addRoom(room);
-    final userData = {
-      'currentRoomId': room.id
-    };
-    firestoreService.updateUser(firebaseAuth.currentUser!.uid, userData);
-    logger.t('add room to firebase');
+  Future<void> pushRoomToFirebase()  async {
+    await firestoreService.addRoom(room);
+    // final userData = {
+    //   'currentRoomId': room.id
+    // };
+    // firestoreService.updateUser(firebaseAuth.currentUser!.uid, userData);
+    // logger.t('add room to firebase');
     logger.t('Room{id: ${room.id}, name: ${room.name}}');
     update();
   }
@@ -184,13 +184,15 @@ class OnlineGameController extends GetxController {
   // }
 
   /// Move to the next round when a player wins and the player press the `Next round button`, then update the board.
-  nextRound() {
+  Future<void> nextRound() async {
     room.nextRound();
+    await pushRoomToFirebase();
     update();
   }
 
-  resetBoard() {
+  resetBoard() async {
     room.reset();
+    await pushRoomToFirebase();
     update();
   }
 }

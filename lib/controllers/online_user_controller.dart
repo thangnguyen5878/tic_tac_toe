@@ -140,7 +140,7 @@ class OnlineUserController extends GetxController {
     update();
   }
 
-  void quitGame() {
+  void quitGameByBackButton() {
     if (oldCurrentUserStatus == OnlineUserStatus.opponentQuitted) {
       quitGameWhenOpponentQuited();
     } else {
