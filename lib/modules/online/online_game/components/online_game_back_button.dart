@@ -22,7 +22,7 @@ class OnlineGameBackButton extends StatelessWidget {
         size: kIconSize,
       ),
       onPressed: () async {
-        OnlineUserController.to.quitGameByBackButton();
+        OnlineUserController.to.handleBackButtonOnGamePage();
       },
     );
   }

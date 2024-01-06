@@ -14,7 +14,7 @@ class AuthPage extends StatelessWidget {
       if(AuthController.to.user.value == null) {
         return SignInPage();
       } else {
-        OnlineUserController.to.handleToWelcomePage();
+        OnlineUserController.to.updateUserStatusToInWelcomePage();
         return WelcomePage();
       }
 

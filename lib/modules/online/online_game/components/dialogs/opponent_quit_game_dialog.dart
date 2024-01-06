@@ -25,7 +25,7 @@ TextButton _buildQuitButton() {
     onPressed: ()
     {
       logger.t('press quit button');
-      OnlineUserController.to.quitGameWhenOpponentQuited();
+      OnlineUserController.to.quitGameWhenOpponentQuitted();
     },
     child: Text('QUIT'),
   );

@@ -24,7 +24,7 @@ TextButton _buildStartButton() {
         onPressed: ()
         {
           logger.t('press start button');
-          OnlineUserController.to.startChallengeAnotherUser();
+          OnlineUserController.to.challengeAnotherUser();
         },
         child: Text('START'),
       );

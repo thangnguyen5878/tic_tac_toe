@@ -31,7 +31,7 @@ class OnlineGamePage extends StatelessWidget {
               canPop: false,
               onPopInvoked: (didPop) {
                 if(didPop) return;
-                OnlineUserController.to.quitGameByBackButton();
+                OnlineUserController.to.handleBackButtonOnGamePage();
               },
               child: Scaffold(
                 appBar: buildAppBar(),

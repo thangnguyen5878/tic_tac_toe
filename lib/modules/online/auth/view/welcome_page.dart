@@ -48,7 +48,7 @@ class _WelcomePageState extends State<WelcomePage> with WidgetsBindingObserver {
       canPop: false,
       onPopInvoked: (didPop) async {
         if(didPop) return;
-        OnlineUserController.to.handleFromWelcomePageToOnlineHomePage();
+        OnlineUserController.to.updateUserStatusToIdle();
         await Get.offAllNamed(Routes.HOME_ONLINE);
       },
       child: Scaffold(
