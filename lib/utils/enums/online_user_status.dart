@@ -13,7 +13,8 @@ enum OnlineUserStatus {
   @JsonValue("in welcome page") inWelcomePage,
   @JsonValue("offline") offline,
   @JsonValue("win") win,
-  @JsonValue("lose") lose;
+  @JsonValue("lose") lose,
+  @JsonValue("rematch waiting") rematchWaiting;
 
   String toShortString() {
     switch (this) {
@@ -43,6 +44,8 @@ enum OnlineUserStatus {
         return "win";
       case OnlineUserStatus.lose:
         return "lose";
+      case OnlineUserStatus.rematchWaiting:
+        return "rematch waiting";
       default:
         return "unknown status";
     }

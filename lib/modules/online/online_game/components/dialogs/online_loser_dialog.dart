@@ -13,7 +13,7 @@ class OnlineLoserDialog extends StatelessWidget {
         content: "You lose this round.",
         children: [
           _buildQuitButton(),
-          _buildNextRoundButton()
+          _buildRematchButton()
         ]);
   }
 }
@@ -27,14 +27,14 @@ TextButton _buildQuitButton() {
   );
 }
 
-TextButton _buildNextRoundButton() {
+TextButton _buildRematchButton() {
   return TextButton(
     onPressed: ()
     {
-      // logger.t('press accept button');
+      logger.t('press rematch button');
       // OnlineUserController.to.acceptChallengeFromOpponent();
     },
-    child: Text('NEXT ROUND'),
+    child: Text('REMATCH'),
   );
 }
 

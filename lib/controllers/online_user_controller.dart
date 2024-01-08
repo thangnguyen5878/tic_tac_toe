@@ -9,6 +9,7 @@ import 'package:flutter_tic_tac_toe/modules/online/home_online/components/dialog
 import 'package:flutter_tic_tac_toe/modules/online/online_game/components/dialogs/online_loser_dialog.dart';
 import 'package:flutter_tic_tac_toe/modules/online/online_game/components/dialogs/online_winner_dialog.dart';
 import 'package:flutter_tic_tac_toe/modules/online/online_game/components/dialogs/opponent_quit_game_dialog.dart';
+import 'package:flutter_tic_tac_toe/modules/online/online_game/components/dialogs/rematch_waiting_dialog.dart';
 import 'package:flutter_tic_tac_toe/modules/online/online_game/components/dialogs/quit_game_dialog.dart';
 import 'package:flutter_tic_tac_toe/routes/app_pages.dart';
 import 'package:flutter_tic_tac_toe/utils/constants/service_constants.dart';
@@ -88,6 +89,9 @@ class OnlineUserController extends GetxController {
         case OnlineUserStatus.lose:
           _handleLoseStatus();
           break;
+        case OnlineUserStatus.replayWaiting:
+          _handleRematchWaitingStatus();
+          break;
         default:
           break;
       }
@@ -95,6 +99,11 @@ class OnlineUserController extends GetxController {
       // Update the tracked status for future comparisons
       oldCurrentUserStatus = currentUser.status;
     }
+  }
+
+  void _handleRematchWaitingStatus() {
+    Get.back();
+    Get.dialog(RematchWaitingDialog(), barrierDismissible: false);
   }
 
    _handleWinStatus()  {
@@ -396,5 +405,17 @@ class OnlineUserController extends GetxController {
       firestoreService.updateUser(currentUser.uid, currentUserData);
       firestoreService.updateUser(opponentId, opponentData);
     }
+  }
+
+  void requestOpponentForReplay() {
+    // Get.back();
+    final currentUserData = {
+      'status': OnlineUserStatus.replayWaiting.toShortString(),
+    };
+    // final opponentData = {
+    //   'status': OnlineUserStatus.idle.toShortString(),
+    // };
+    firestoreService.updateUser(currentUser.uid, currentUserData);
+    // firestoreService.updateUser(opponentId, opponentData);
   }
 }
