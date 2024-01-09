@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_tic_tac_toe/controllers/online_user_controller.dart';
 import 'package:flutter_tic_tac_toe/utils/constants/service_constants.dart';
+import 'package:flutter_tic_tac_toe/utils/enums/online_user_status.dart';
 import 'package:flutter_tic_tac_toe/utils/widget/custom_dialog.dart';
+import 'package:get/get.dart';
 
 class OnlineLoserDialog extends StatelessWidget {
 
@@ -13,7 +15,8 @@ class OnlineLoserDialog extends StatelessWidget {
         content: "You lose this round.",
         hasCloseIconButton: true,
         onClose: () {
-
+          Get.back();
+          OnlineUserController.to.updateCurrentUserStatus(OnlineUserStatus.roundCompleted);
         },
         children: [
           _buildQuitButton(),

@@ -20,39 +20,55 @@ class CustomDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Dialog(
-      child: Padding(
-        padding: const EdgeInsets.all(12),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            _buildCloseIconButton(),
-            Text(
-              title,
-              style: kHeading2,
-            ),
-            const SizedBox(height: 16.0),
-            Text(
-              content,
-              textAlign: TextAlign.center,
-            ),
-            const SizedBox(height: 16.0),
-            Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: children),
-          ],
-        ),
+    return PopScope(
+      canPop: false,
+      onPopInvoked: (didPop) {
+        if (didPop) return;
+        onClose;
+      },
+      child: Dialog(
+        child: Stack(children: [
+          _buildCloseIconButton(),
+          _buildDialogBody(),
+        ]),
       ),
     );
   }
 
-  StatelessWidget _buildCloseIconButton() {
+  Container _buildDialogBody() {
+    return Container(
+          padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 8),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const SizedBox(height: 20),
+              Text(
+                title,
+                style: kHeading2,
+              ),
+              const SizedBox(height: 16.0),
+              Text(
+                content,
+                textAlign: TextAlign.center,
+              ),
+              const SizedBox(height: 16.0),
+              Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: children),
+            ],
+          ),
+        );
+  }
+
+  Widget _buildCloseIconButton() {
     if (hasCloseIconButton == true) {
-      return Container(
-        height: 24,
-        alignment: Alignment.topLeft,
-        child: IconButton(icon: FaIcon(FontAwesomeIcons.circleXmark), onPressed: onClose),
-      );
+      return Positioned(
+        top: 4,
+          left: 4,
+          child: IconButton(icon: const FaIcon(FontAwesomeIcons.circleXmark), onPressed: onClose));
     } else {
-      return Placeholder();
+      return const SizedBox(
+        height: 16,
+        width: 0,
+      );
     }
   }
 }

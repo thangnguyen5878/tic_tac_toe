@@ -407,7 +407,6 @@ class OnlineUserController extends GetxController {
   }
 
   void requestOpponentForReplay() {
-    // Get.back();
     final currentUserData = {
       'status': OnlineUserStatus.rematchPending.toShortString(),
     };
@@ -417,4 +416,5 @@ class OnlineUserController extends GetxController {
     firestoreService.updateUser(currentUser.uid, currentUserData);
     // firestoreService.updateUser(opponentId, opponentData);
   }
+
 }
