@@ -11,6 +11,10 @@ class OnlineLoserDialog extends StatelessWidget {
     return CustomDialog(
         title: "YOU LOSE!",
         content: "You lose this round.",
+        hasCloseIconButton: true,
+        onClose: () {
+
+        },
         children: [
           _buildQuitButton(),
           _buildRematchButton()

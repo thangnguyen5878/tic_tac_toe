@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_tic_tac_toe/modules/offline/home/components/app_drawer.dart';
 import 'package:flutter_tic_tac_toe/modules/online/home_online/components/online_user_list.dart';
 import 'package:flutter_tic_tac_toe/controllers/auth_controller.dart';
+import 'package:flutter_tic_tac_toe/modules/online/online_game/components/dialogs/online_loser_dialog.dart';
+import 'package:flutter_tic_tac_toe/modules/online/online_game/components/dialogs/online_winner_dialog.dart';
+import 'package:get/get.dart';
 
 class HomeOnlinePage extends StatefulWidget {
   const HomeOnlinePage({Key? key}) : super(key: key);
@@ -42,7 +45,7 @@ class _HomeOnlinePageState extends State<HomeOnlinePage> with WidgetsBindingObse
         title: const Text('Home Online'),
         centerTitle: true,
       ),
-      body: OnlineUserList()
+      body: OnlineUserList(),
     );
   }
 }

@@ -89,7 +89,7 @@ class OnlineUserController extends GetxController {
         case OnlineUserStatus.lose:
           _handleLoseStatus();
           break;
-        case OnlineUserStatus.replayWaiting:
+        case OnlineUserStatus.rematchPending:
           _handleRematchWaitingStatus();
           break;
         default:
@@ -326,8 +326,7 @@ class OnlineUserController extends GetxController {
   /// Updates user data when signing in.
   void handleSignIn(OnlineUser newUser) {
     logger.t('online user controller: handle sign in');
-    final json = newUser.toJson();
-    firestoreService.updateUser(firebaseAuth.currentUser!.uid, json);
+    firestoreService.addUser(newUser);
     currentUser = newUser;
     update();
   }
@@ -410,7 +409,7 @@ class OnlineUserController extends GetxController {
   void requestOpponentForReplay() {
     // Get.back();
     final currentUserData = {
-      'status': OnlineUserStatus.replayWaiting.toShortString(),
+      'status': OnlineUserStatus.rematchPending.toShortString(),
     };
     // final opponentData = {
     //   'status': OnlineUserStatus.idle.toShortString(),

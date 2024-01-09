@@ -12,14 +12,17 @@ class RejectedDialog extends StatelessWidget {
         title: 'CHALLENGE REJECTED!',
         content: 'The opponent rejected the challenge.',
         children: [
-          // Close Button
-          TextButton(
-            onPressed: () {
-              logger.t('press close button');
-              Get.back();
-            },
-            child: Text('CLOSE'),
-          ),
+          _buildCloseButton(),
         ]);
+  }
+
+  TextButton _buildCloseButton() {
+    return TextButton(
+      onPressed: () {
+        logger.t('press close button');
+        Get.back();
+      },
+      child: Text('CLOSE'),
+    );
   }
 }

@@ -62,7 +62,7 @@ class FirestoreService {
 
   Future<void> createUserDocument(UserCredential userCredential) async {
     if (userCredential.user != null) {
-      logger.t('createUserDocument');
+      logger.t('create user document on Firestore');
       logger.t(userCredential.user);
       OnlineUser newUser = OnlineUser(
           uid: userCredential.user!.uid,

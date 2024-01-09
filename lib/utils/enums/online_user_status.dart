@@ -1,5 +1,23 @@
 import 'package:json_annotation/json_annotation.dart';
 
+const onlineUserStatusEnumMap = {
+  OnlineUserStatus.idle: 'idle',
+  OnlineUserStatus.waitingForInvitation: 'waiting for invitation',
+  OnlineUserStatus.invited: 'invited',
+  OnlineUserStatus.inGame: 'in game',
+  OnlineUserStatus.invitationRejected: 'invitation rejected',
+  OnlineUserStatus.invitedButNoRespond: 'invited but no respond',
+  OnlineUserStatus.invitationWaitingTimeout: 'invitation waiting timeout',
+  OnlineUserStatus.invitaionWaitingCanceled: 'invitation waiting canceled',
+  OnlineUserStatus.opponentQuitted: 'opponent quitted',
+  OnlineUserStatus.inWelcomePage: 'in welcome page',
+  OnlineUserStatus.offline: 'offline',
+  OnlineUserStatus.win: 'win',
+  OnlineUserStatus.lose: 'lose',
+  OnlineUserStatus.rematchPending: 'rematch pending',
+  OnlineUserStatus.roundCompleted: 'round completed',
+};
+
 enum OnlineUserStatus {
   @JsonValue("idle") idle,
   @JsonValue("waiting for invitation") waitingForInvitation,
@@ -14,40 +32,14 @@ enum OnlineUserStatus {
   @JsonValue("offline") offline,
   @JsonValue("win") win,
   @JsonValue("lose") lose,
-  @JsonValue("rematch waiting") rematchWaiting;
+  @JsonValue("rematch pending") rematchPending,
+  @JsonValue("round completed") roundCompleted;
 
   String toShortString() {
-    switch (this) {
-      case OnlineUserStatus.idle:
-        return "idle";
-      case OnlineUserStatus.waitingForInvitation:
-        return "waiting for invitation";
-      case OnlineUserStatus.invited:
-        return "invited";
-      case OnlineUserStatus.inGame:
-        return "in game";
-      case OnlineUserStatus.invitationRejected:
-        return "invitation rejected";
-      case OnlineUserStatus.invitedButNoRespond:
-        return "invited but no respond";
-      case OnlineUserStatus.invitationWaitingTimeout:
-        return "invitation waiting timeout";
-      case OnlineUserStatus.invitaionWaitingCanceled:
-        return "invitation waiting canceled";
-      case OnlineUserStatus.opponentQuitted:
-        return "opponent quitted";
-      case OnlineUserStatus.inWelcomePage:
-        return "in welcome page";
-      case OnlineUserStatus.offline:
-        return "offline";
-      case OnlineUserStatus.win:
-        return "win";
-      case OnlineUserStatus.lose:
-        return "lose";
-      case OnlineUserStatus.rematchWaiting:
-        return "rematch waiting";
-      default:
-        return "unknown status";
+    if(this != null) {
+      return onlineUserStatusEnumMap[this]!;
+    } else {
+      return 'unknown status';
     }
   }
 }

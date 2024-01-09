@@ -43,5 +43,6 @@ const _$OnlineUserStatusEnumMap = {
   OnlineUserStatus.offline: 'offline',
   OnlineUserStatus.win: 'win',
   OnlineUserStatus.lose: 'lose',
-  OnlineUserStatus.rematchWaiting: 'rematch waiting',
+  OnlineUserStatus.rematchPending: 'rematch pending',
+  OnlineUserStatus.roundCompleted: 'round completed',
 };

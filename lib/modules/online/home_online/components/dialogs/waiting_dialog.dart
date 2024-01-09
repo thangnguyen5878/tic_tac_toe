@@ -18,16 +18,19 @@ class WaitingDialog extends StatelessWidget {
             title: 'CHALLENGE IS THROWN!',
             content: 'Waiting for the opponent\'s respond.\n${controller.time}s',
             children: [
-              // Cancel Button
-              TextButton(
-                onPressed: () {
-                  logger.t('press cancel button');
-                  OnlineUserController.to.cancelInvitationWaiting();
-                },
-                child: Text('CANCEL'),
-              ),
+              _buildCancelButton(),
             ]);
       },
+    );
+  }
+
+  TextButton _buildCancelButton() {
+    return TextButton(
+      onPressed: () {
+        logger.t('press cancel button');
+        OnlineUserController.to.cancelInvitationWaiting();
+      },
+      child: Text('CANCEL'),
     );
   }
 }
