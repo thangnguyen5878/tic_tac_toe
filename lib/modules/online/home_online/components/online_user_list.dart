@@ -11,7 +11,7 @@ class OnlineUserList extends StatelessWidget {
   Widget build(BuildContext context) {
     logger.t('build online user list');
     return StreamBuilder(
-        stream: firestoreService.watchIdleUsers(),
+        stream: firestoreService.watchOtherIdleAndOnlineUsers(),
         builder: (context, snapshot) {
           if(snapshot.hasData) {
             return ListView(

@@ -80,15 +80,25 @@ class FirestoreService {
     return _userRef.get();
   }
 
+  Future<QuerySnapshot> getUsersInARoomWithRematchPendingStatus(String roomId) async {
+    QuerySnapshot result = await _userRef
+        .where('currentRoomId', isEqualTo: roomId)
+        .where('status', isEqualTo: OnlineUserStatus.rematchPending.toShortString())
+        .get();
+    return result;
+  }
+
   Future<DocumentSnapshot> getUser(String uid) async {
     return _userRef.doc(uid).get();
   }
+
+
 
   Stream<DocumentSnapshot> watchUser(String uid) {
     return _userRef.doc(uid).snapshots();
   }
 
-  Stream<QuerySnapshot> watchIdleUsers() {
+  Stream<QuerySnapshot> watchOtherIdleAndOnlineUsers() {
     return _userRef
         .where('status', isEqualTo: OnlineUserStatus.idle.toShortString())
         .orderBy('email')

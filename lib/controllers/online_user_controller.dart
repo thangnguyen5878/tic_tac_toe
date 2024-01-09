@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_tic_tac_toe/controllers/online_game_controller.dart';
 import 'package:flutter_tic_tac_toe/models/online/online_user.dart';
@@ -9,6 +10,7 @@ import 'package:flutter_tic_tac_toe/modules/online/home_online/components/dialog
 import 'package:flutter_tic_tac_toe/modules/online/online_game/components/dialogs/online_loser_dialog.dart';
 import 'package:flutter_tic_tac_toe/modules/online/online_game/components/dialogs/online_winner_dialog.dart';
 import 'package:flutter_tic_tac_toe/modules/online/online_game/components/dialogs/opponent_quit_game_dialog.dart';
+import 'package:flutter_tic_tac_toe/modules/online/online_game/components/dialogs/rematch_dialog.dart';
 import 'package:flutter_tic_tac_toe/modules/online/online_game/components/dialogs/rematch_waiting_dialog.dart';
 import 'package:flutter_tic_tac_toe/modules/online/online_game/components/dialogs/quit_game_dialog.dart';
 import 'package:flutter_tic_tac_toe/routes/app_pages.dart';
@@ -410,11 +412,20 @@ class OnlineUserController extends GetxController {
     final currentUserData = {
       'status': OnlineUserStatus.rematchPending.toShortString(),
     };
-    // final opponentData = {
-    //   'status': OnlineUserStatus.idle.toShortString(),
-    // };
     firestoreService.updateUser(currentUser.uid, currentUserData);
-    // firestoreService.updateUser(opponentId, opponentData);
   }
 
+  /// If there are no player in the current room has rematch pending status
+  /// then, show [RematchWaitingDialog].
+  /// Else, show [RematchDialog].
+  Future<void> handlePressRematchButton() async {
+    QuerySnapshot result = await firestoreService.getUsersInARoomWithRematchPendingStatus(currentUser.currentRoomId);
+    bool isNoRematchPendingUser = result.docs.isEmpty;
+    if(isNoRematchPendingUser) {
+      Get.dialog(RematchWaitingDialog(), barrierDismissible: false);
+      updateCurrentUserStatus(OnlineUserStatus.rematchPending);
+    } else {
+      Get.dialog(RematchDialog(), barrierDismissible: false);
+    }
+  }
 }

@@ -38,7 +38,7 @@ TextButton _buildRematchButton() {
     onPressed: ()
     {
       logger.t('press rematch button');
-      // OnlineUserController.to.acceptChallengeFromOpponent();
+      OnlineUserController.to.updateCurrentUserStatus(OnlineUserStatus.rematchPending);
     },
     child: Text('REMATCH'),
   );

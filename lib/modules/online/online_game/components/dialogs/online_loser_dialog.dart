@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_tic_tac_toe/controllers/online_user_controller.dart';
+import 'package:flutter_tic_tac_toe/models/online/online_user.dart';
 import 'package:flutter_tic_tac_toe/utils/constants/service_constants.dart';
 import 'package:flutter_tic_tac_toe/utils/enums/online_user_status.dart';
 import 'package:flutter_tic_tac_toe/utils/widget/custom_dialog.dart';
@@ -41,7 +42,7 @@ TextButton _buildRematchButton() {
     onPressed: ()
     {
       logger.t('press rematch button');
-      // OnlineUserController.to.acceptChallengeFromOpponent();
+      OnlineUserController.to.updateCurrentUserStatus(OnlineUserStatus.rematchPending);
     },
     child: Text('REMATCH'),
   );

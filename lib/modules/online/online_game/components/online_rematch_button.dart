@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_tic_tac_toe/controllers/game_controller.dart';
 import 'package:flutter_tic_tac_toe/controllers/online_game_controller.dart';
+import 'package:flutter_tic_tac_toe/controllers/online_user_controller.dart';
 import 'package:flutter_tic_tac_toe/modules/online/online_game/components/dialogs/online_winner_dialog.dart';
 import 'package:flutter_tic_tac_toe/utils/constants/app_colors.dart';
 import 'package:flutter_tic_tac_toe/utils/constants/app_size.dart';
@@ -26,7 +27,7 @@ class OnlineRematchButton extends StatelessWidget {
               size: kIconSize,
             ),
             onPressed: () async {
-              Get.dialog(OnlineWinnerDialog(), barrierDismissible: false);
+              OnlineUserController.to.handlePressRematchButton();
             },
           );
         }

@@ -5,6 +5,7 @@ import 'package:flutter_tic_tac_toe/utils/enums/online_user_status.dart';
 import 'package:flutter_tic_tac_toe/utils/widget/custom_dialog.dart';
 import 'package:get/get.dart';
 
+
 class RematchDialog extends StatelessWidget {
   const RematchDialog({super.key});
 
@@ -22,6 +23,7 @@ class RematchDialog extends StatelessWidget {
         },
         children: [
           _buildNoButton(),
+          _buildYesButton()
         ]);
   }
 
