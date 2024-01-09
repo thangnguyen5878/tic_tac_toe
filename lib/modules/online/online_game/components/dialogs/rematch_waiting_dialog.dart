@@ -12,6 +12,10 @@ class RematchWaitingDialog extends StatelessWidget {
     return CustomDialog(
         title: 'REMATCH',
         content: 'Waiting for the opponent\'s respond.',
+        onBackPress: () {
+          logger.t('press quit button');
+          OnlineUserController.to.quitGameSuddenly();
+        },
         children: [
           _buildCancelButton(),
         ]);

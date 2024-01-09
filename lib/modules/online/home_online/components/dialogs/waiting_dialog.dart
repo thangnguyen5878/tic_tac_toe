@@ -17,6 +17,10 @@ class WaitingDialog extends StatelessWidget {
         return CustomDialog(
             title: 'CHALLENGE IS THROWN!',
             content: 'Waiting for the opponent\'s respond.\n${controller.time}s',
+            onBackPress: () {
+              logger.t('press back button');
+              OnlineUserController.to.cancelInvitationWaiting();
+            },
             children: [
               _buildCancelButton(),
             ]);

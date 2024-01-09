@@ -11,6 +11,10 @@ class RejectedDialog extends StatelessWidget {
     return CustomDialog(
         title: 'CHALLENGE REJECTED!',
         content: 'The opponent rejected the challenge.',
+        onBackPress: () {
+          logger.t('press back button');
+          Get.back();
+        },
         children: [
           _buildCloseButton(),
         ]);

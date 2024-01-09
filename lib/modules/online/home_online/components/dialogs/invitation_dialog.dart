@@ -12,6 +12,10 @@ class InvitationDialog extends StatelessWidget {
     return CustomDialog(
         title: "YOU'VE BEEN CHALLENGED!",
         content: "Do you want to accept the challenge from ${OnlineUserController.to.opponent?.email ?? ''}?",
+        onBackPress: () {
+          logger.t('press back button');
+          OnlineUserController.to.rejectInvitation();
+        },
         children: [
           _buildRejectButton(),
           _buildAcceptButton()

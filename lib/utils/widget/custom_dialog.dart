@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_tic_tac_toe/utils/constants/app_styles.dart';
+import 'package:flutter_tic_tac_toe/utils/constants/service_constants.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:get/get.dart';
 
 class CustomDialog extends StatelessWidget {
   final String title;
   final String content;
   final List<Widget> children;
   bool? hasCloseIconButton = false;
-  VoidCallback? onClose = () {};
+  VoidCallback? onBackPress = () {};
 
   CustomDialog({
     super.key,
@@ -15,7 +17,7 @@ class CustomDialog extends StatelessWidget {
     required this.content,
     required this.children,
     this.hasCloseIconButton,
-    this.onClose,
+    this.onBackPress,
   });
 
   @override
@@ -23,19 +25,19 @@ class CustomDialog extends StatelessWidget {
     return PopScope(
       canPop: false,
       onPopInvoked: (didPop) {
-        if (didPop) return;
-        onClose;
+        if(didPop) return;
+        onBackPress!();
       },
       child: Dialog(
-        child: Stack(children: [
-          _buildCloseIconButton(),
-          _buildDialogBody(),
-        ]),
-      ),
+          child: Stack(children: [
+            _buildCloseIconButton(),
+            _buildDialogBody(),
+          ]),
+        ),
     );
   }
 
-  Container _buildDialogBody() {
+  Widget _buildDialogBody() {
     return Container(
           padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 8),
           child: Column(
@@ -63,7 +65,7 @@ class CustomDialog extends StatelessWidget {
       return Positioned(
         top: 4,
           left: 4,
-          child: IconButton(icon: const FaIcon(FontAwesomeIcons.circleXmark), onPressed: onClose));
+          child: IconButton(icon: const FaIcon(FontAwesomeIcons.circleXmark), onPressed: onBackPress));
     } else {
       return const SizedBox(
         height: 16,

@@ -12,6 +12,10 @@ class ChallengeDialog extends StatelessWidget {
     return CustomDialog(
         title: "CHALLENGE ANOTHER PLAYER",
         content: "Do you want to challenge ${OnlineUserController.to.opponent?.email ?? ''}",
+        onBackPress: () {
+          logger.t('press back button');
+          Get.back();
+        },
         children: [
           _buildCancelButton(),
           _buildStartButton()

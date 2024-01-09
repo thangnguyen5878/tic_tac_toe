@@ -11,6 +11,10 @@ class InvitationTimeoutDialog extends StatelessWidget {
     return CustomDialog(
         title: 'INVITATION TIME OUT',
         content: 'Timeout expired.',
+        onBackPress: () {
+          logger.t('press back button');
+          Get.back();
+        },
         children: [
           _buildCloseButton(),
         ]);

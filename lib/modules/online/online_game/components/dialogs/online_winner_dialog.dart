@@ -14,7 +14,7 @@ class OnlineWinnerDialog extends StatelessWidget {
         title: "YOU WIN!",
         content: "Congratulation! You win this round.",
         hasCloseIconButton: true,
-        onClose: () {
+        onBackPress: () {
           Get.back();
           OnlineUserController.to.updateCurrentUserStatus(OnlineUserStatus.roundCompleted);
         },

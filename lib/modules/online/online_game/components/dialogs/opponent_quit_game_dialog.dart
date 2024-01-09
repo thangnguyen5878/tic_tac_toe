@@ -13,6 +13,11 @@ class OpponentQuitGameDialog extends StatelessWidget {
     return CustomDialog(
         title: "VICTORY!",
         content: "The opponent left the match.",
+        onBackPress: ( ) {
+          logger.t('press back button');
+          Get.back();
+          OnlineUserController.to.updateCurrentUserStatus(OnlineUserStatus.opponentQuitted);
+        },
         children: [
           _buildQuitButton(),
           _buildCancelButton()

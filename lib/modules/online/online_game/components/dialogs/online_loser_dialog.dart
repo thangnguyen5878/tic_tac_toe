@@ -14,7 +14,7 @@ class OnlineLoserDialog extends StatelessWidget {
         title: "YOU LOSE!",
         content: "You lose this round.",
         hasCloseIconButton: true,
-        onClose: () {
+        onBackPress: () {
           Get.back();
           OnlineUserController.to.updateCurrentUserStatus(OnlineUserStatus.roundCompleted);
         },

@@ -12,6 +12,10 @@ class QuitGameDialog extends StatelessWidget {
     return CustomDialog(
         title: "ATTENTION!",
         content: "The match is not over yet\n\nAre you sure to quit the match?",
+        onBackPress: () {
+          logger.t('press back button');
+          Get.back();
+        },
         children: [
           _buildQuitButton(),
           _buildCancelButton()
