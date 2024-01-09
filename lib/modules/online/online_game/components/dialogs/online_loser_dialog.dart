@@ -42,7 +42,7 @@ TextButton _buildRematchButton() {
     onPressed: ()
     {
       logger.t('press rematch button');
-      OnlineUserController.to.updateCurrentUserStatus(OnlineUserStatus.rematchPending);
+      OnlineUserController.to.handlePressRematchButtonOnDialog();
     },
     child: Text('REMATCH'),
   );

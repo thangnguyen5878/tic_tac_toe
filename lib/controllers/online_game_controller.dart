@@ -1,4 +1,5 @@
 
+import 'package:flutter_tic_tac_toe/controllers/online_user_controller.dart';
 import 'package:flutter_tic_tac_toe/models/online/online_board.dart';
 import 'package:flutter_tic_tac_toe/models/online/online_cell.dart';
 import 'package:flutter_tic_tac_toe/models/online/online_player.dart';
@@ -6,6 +7,7 @@ import 'package:flutter_tic_tac_toe/models/online/online_room.dart';
 import 'package:flutter_tic_tac_toe/models/online/online_round.dart';
 import 'package:flutter_tic_tac_toe/utils/constants/service_constants.dart';
 import 'package:flutter_tic_tac_toe/utils/enums/game_state.dart';
+import 'package:flutter_tic_tac_toe/utils/enums/online_user_status.dart';
 import 'package:flutter_tic_tac_toe/utils/enums/seed.dart';
 import 'package:get/get.dart';
 
@@ -66,13 +68,8 @@ class OnlineGameController extends GetxController {
   }
 
 
-  Future<void> pushRoomToFirebase()  async {
+  Future<void> pushRoomToFirebase() async {
     await firestoreService.addRoom(room);
-    // final userData = {
-    //   'currentRoomId': room.id
-    // };
-    // firestoreService.updateUser(firebaseAuth.currentUser!.uid, userData);
-    // logger.t('add room to firebase');
     logger.t('Room{id: ${room.id}, name: ${room.name}}');
     update();
   }
@@ -187,6 +184,10 @@ class OnlineGameController extends GetxController {
   Future<void> nextRound() async {
     room.nextRound();
     await pushRoomToFirebase();
+    final data = {
+      'status': OnlineUserStatus.inGame.toShortString()
+    };
+    OnlineUserController.to.updateTwoUserOnFirebase(data);
     update();
   }
 

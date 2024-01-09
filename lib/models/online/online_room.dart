@@ -232,7 +232,7 @@ class OnlineRoom {
     board.reset();
 
     // move to the next round
-    var nextRound = OnlineRound.cloneNextRound(getCurrentRound());
+    OnlineRound nextRound = OnlineRound.cloneNextRound(getCurrentRound());
     rounds = [...?rounds, nextRound];
     currentRoundIndex++;
   }

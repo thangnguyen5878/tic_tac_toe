@@ -154,6 +154,7 @@ class OnlineUserController extends GetxController {
 
   void _handleInGameStatus() async {
     logger.t('handle user status: in game');
+    Get.until((route) => !Get.isDialogOpen!);
     OnlineGameController.to.currentRoomId = currentUser.currentRoomId;
     OnlineGameController.to.pullRoomFromFirebase();
     Get.offNamed(Routes.ONLINE_GAME);
@@ -418,14 +419,29 @@ class OnlineUserController extends GetxController {
   /// If there are no player in the current room has rematch pending status
   /// then, show [RematchWaitingDialog].
   /// Else, show [RematchDialog].
-  Future<void> handlePressRematchButton() async {
-    QuerySnapshot result = await firestoreService.getUsersInARoomWithRematchPendingStatus(currentUser.currentRoomId);
-    bool isNoRematchPendingUser = result.docs.isEmpty;
-    if(isNoRematchPendingUser) {
-      Get.dialog(RematchWaitingDialog(), barrierDismissible: false);
-      updateCurrentUserStatus(OnlineUserStatus.rematchPending);
-    } else {
+  Future<void> handlePressRematchButtonOnAppbar() async {
+    if(await hasRematchPendingUser(1)) {
       Get.dialog(RematchDialog(), barrierDismissible: false);
     }
+    if (await hasRematchPendingUser(0)) {
+      Get.dialog(RematchWaitingDialog(), barrierDismissible: false);
+      updateCurrentUserStatus(OnlineUserStatus.rematchPending);
+    }
+  }
+
+  Future<void> handlePressRematchButtonOnDialog() async {
+    OnlineUserController.to.updateCurrentUserStatus(OnlineUserStatus.rematchPending);
+    if (await hasRematchPendingUser(1)) {
+      Get.dialog(RematchWaitingDialog(), barrierDismissible: false);
+    }
+    if (await hasRematchPendingUser(2)) {
+      OnlineGameController.to.nextRound();
+    }
+
+  }
+
+  Future<bool> hasRematchPendingUser(int num) async {
+    QuerySnapshot result = await firestoreService.getUsersInARoomWithRematchPendingStatus(currentUser.currentRoomId);
+    return result.docs.length == num;
   }
 }

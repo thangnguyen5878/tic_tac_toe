@@ -82,9 +82,7 @@ class OnlineGamePage extends StatelessWidget {
         },
       ),
       actions: [
-        // buildResetBoardButton(),
         OnlineRematchButton(),
-        OnlineGamePopupMenuButton(),
       ],
     );
   }
