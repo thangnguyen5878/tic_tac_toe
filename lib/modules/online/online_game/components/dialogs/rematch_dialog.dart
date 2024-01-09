@@ -5,35 +5,43 @@ import 'package:flutter_tic_tac_toe/utils/enums/online_user_status.dart';
 import 'package:flutter_tic_tac_toe/utils/widget/custom_dialog.dart';
 import 'package:get/get.dart';
 
-class RematchWaitingDialog extends StatelessWidget {
-  const RematchWaitingDialog({super.key});
+class RematchDialog extends StatelessWidget {
+  const RematchDialog({super.key});
 
   @override
   Widget build(BuildContext context) {
-    logger.t('show rematch waiting dialog');
+    logger.t('show rematch dialog');
 
     return CustomDialog(
-        title: 'REMATCH',
-        content: 'Waiting for the opponent\'s respond.',
-        // The BACK button should behave similarly to pressing the CANCEL button.
+        title: 'REMATCH?',
+        content: 'Do you want to rematch your opponent?',
+        // The BACK button should behave similarly to pressing the NO button.
         onBackPress: () {
           logger.t('press back button');
           Get.back();
-          OnlineUserController.to.updateCurrentUserStatus(OnlineUserStatus.roundCompleted);
         },
         children: [
-          _buildCancelButton(),
+          _buildNoButton(),
         ]);
   }
 
-  TextButton _buildCancelButton() {
+  TextButton _buildNoButton() {
     return TextButton(
       onPressed: () {
-        logger.t('press cancel button');
+        logger.t('press no button');
         Get.back();
-        OnlineUserController.to.updateCurrentUserStatus(OnlineUserStatus.roundCompleted);
       },
-      child: Text('QUIT'),
+      child: Text('NO'),
+    );
+  }
+
+  TextButton _buildYesButton() {
+    return TextButton(
+      onPressed: () {
+        logger.t('press yes button');
+        OnlineUserController.to.updateCurrentUserStatus(OnlineUserStatus.rematchPending);
+      },
+      child: Text('YES'),
     );
   }
 }

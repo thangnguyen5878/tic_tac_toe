@@ -6,6 +6,7 @@ import 'package:flutter_tic_tac_toe/utils/widget/custom_dialog.dart';
 import 'package:get/get.dart';
 
 class OnlineLoserDialog extends StatelessWidget {
+  const OnlineLoserDialog({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -14,6 +15,7 @@ class OnlineLoserDialog extends StatelessWidget {
         title: "YOU LOSE!",
         content: "You lose this round.",
         hasCloseIconButton: true,
+        // The BACK button should behave similarly to pressing the CLOSE button.
         onBackPress: () {
           Get.back();
           OnlineUserController.to.updateCurrentUserStatus(OnlineUserStatus.roundCompleted);

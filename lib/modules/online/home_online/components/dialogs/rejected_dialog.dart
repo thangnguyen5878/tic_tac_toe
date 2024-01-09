@@ -4,6 +4,7 @@ import 'package:flutter_tic_tac_toe/utils/widget/custom_dialog.dart';
 import 'package:get/get.dart';
 
 class RejectedDialog extends StatelessWidget {
+  const RejectedDialog({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -11,6 +12,7 @@ class RejectedDialog extends StatelessWidget {
     return CustomDialog(
         title: 'CHALLENGE REJECTED!',
         content: 'The opponent rejected the challenge.',
+        // The BACK button should behave similarly to pressing the CLOSE button.
         onBackPress: () {
           logger.t('press back button');
           Get.back();

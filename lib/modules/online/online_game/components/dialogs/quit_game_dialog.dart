@@ -5,6 +5,7 @@ import 'package:flutter_tic_tac_toe/utils/widget/custom_dialog.dart';
 import 'package:get/get.dart';
 
 class QuitGameDialog extends StatelessWidget {
+  const QuitGameDialog({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -12,6 +13,7 @@ class QuitGameDialog extends StatelessWidget {
     return CustomDialog(
         title: "ATTENTION!",
         content: "The match is not over yet\n\nAre you sure to quit the match?",
+        // The BACK button should behave similarly to pressing the CANCEL button.
         onBackPress: () {
           logger.t('press back button');
           Get.back();

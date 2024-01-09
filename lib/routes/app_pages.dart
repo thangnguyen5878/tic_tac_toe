@@ -1,7 +1,5 @@
-import 'package:flutter_tic_tac_toe/modules/online/online_winner/online_winner_binding.dart';
 import 'package:get/get.dart';
 
-import '../modules/online/online_winner/online_winner_view.dart';
 import '../modules/offline/create_room/create_room_binding.dart';
 import '../modules/offline/create_room/create_room_page.dart';
 import '../modules/offline/game/game_binding.dart';
@@ -84,13 +82,6 @@ class AppPages {
       name: _Paths.ONLINE_GAME,
       page: () => const OnlineGamePage(),
       // binding: OnlineGameBinding(),
-    ),
-    GetPage(
-      name: _Paths.ONLINE_WINNER,
-      page: () => OnlineWinnerPage(),
-      binding: OnlineWinnerBinding(),
-      opaque: false,
-      transitionDuration: const Duration(seconds: 0),
     ),
   ];
 }

@@ -5,6 +5,7 @@ import 'package:flutter_tic_tac_toe/utils/constants/service_constants.dart';
 import 'package:flutter_tic_tac_toe/utils/widget/custom_dialog.dart';
 
 class InvitationDialog extends StatelessWidget {
+  const InvitationDialog({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -12,6 +13,7 @@ class InvitationDialog extends StatelessWidget {
     return CustomDialog(
         title: "YOU'VE BEEN CHALLENGED!",
         content: "Do you want to accept the challenge from ${OnlineUserController.to.opponent?.email ?? ''}?",
+        // The BACK button should behave similarly to pressing the REJECT button.
         onBackPress: () {
           logger.t('press back button');
           OnlineUserController.to.rejectInvitation();

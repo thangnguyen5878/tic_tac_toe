@@ -6,6 +6,7 @@ import 'package:flutter_tic_tac_toe/utils/widget/custom_dialog.dart';
 import 'package:get/get.dart';
 
 class WaitingDialog extends StatelessWidget {
+  const WaitingDialog({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -17,6 +18,7 @@ class WaitingDialog extends StatelessWidget {
         return CustomDialog(
             title: 'CHALLENGE IS THROWN!',
             content: 'Waiting for the opponent\'s respond.\n${controller.time}s',
+            // The BACK button should behave similarly to pressing the CANCEL button.
             onBackPress: () {
               logger.t('press back button');
               OnlineUserController.to.cancelInvitationWaiting();
