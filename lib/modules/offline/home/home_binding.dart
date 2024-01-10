@@ -7,8 +7,7 @@ class HomeBinding extends Bindings {
   @override
   void dependencies() {
     Get.lazyPut<CreateRoomController>(() => CreateRoomController());
-    // Get.lazyPut<AuthController>(() => AuthController());
-    Get.lazyPut(() => GameController());
+    Get.put(GameController());
     Get.put(HomeController());
   }
 }

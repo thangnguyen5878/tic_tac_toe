@@ -50,7 +50,7 @@ class HomePage extends StatelessWidget {
     return AppBar(
       leading: Builder(
         builder: (context) => IconButton(
-          padding: const EdgeInsets.only(left: 16),
+          // padding: const EdgeInsets.only(left: 16),
           icon: const Icon(
             Icons.close,
             color: kBlack,
@@ -77,7 +77,6 @@ class HomePage extends StatelessWidget {
     return AppBar(
       leading: Builder(
         builder: (context) => IconButton(
-          padding: const EdgeInsets.only(left: 16),
           icon: const Icon(
             Icons.menu,
             color: kBlack,

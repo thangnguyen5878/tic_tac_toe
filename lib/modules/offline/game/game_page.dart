@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_tic_tac_toe/controllers/game_controller.dart';
 import 'package:flutter_tic_tac_toe/modules/offline/game/components/board_widget.dart';
-import 'package:flutter_tic_tac_toe/modules/offline/game/components/game_back_button.dart';
 import 'package:flutter_tic_tac_toe/modules/offline/game/components/game_popup_menu_button.dart';
 import 'package:flutter_tic_tac_toe/modules/offline/game/components/next_round_button.dart';
 import 'package:flutter_tic_tac_toe/modules/offline/game/components/player_bottom_bar.dart';
-import 'package:flutter_tic_tac_toe/controllers/game_controller.dart';
-import 'package:flutter_tic_tac_toe/routes/app_pages.dart';
 import 'package:flutter_tic_tac_toe/utils/constants/app_colors.dart';
+import 'package:flutter_tic_tac_toe/utils/constants/app_size.dart';
 import 'package:flutter_tic_tac_toe/utils/constants/app_styles.dart';
 import 'package:flutter_tic_tac_toe/utils/constants/service_constants.dart';
 import 'package:get/get.dart';
@@ -22,13 +21,11 @@ class GamePage extends StatelessWidget {
     return PopScope(
       canPop: false,
       onPopInvoked: (didPop) {
-        if(didPop) return;
-        Get.back();
-        GameController.to.saveRoomToIsarDatabase();
-        Get.to(Routes.HOME);
+        if (didPop) return;
+        GameController.to.handleBackFromGamePage();
       },
       child: Scaffold(
-        appBar: buildAppBar(),
+        appBar: _buildAppBar(),
         body: Stack(children: [
           Center(
             child: Padding(
@@ -49,22 +46,19 @@ class GamePage extends StatelessWidget {
     );
   }
 
-  AppBar buildAppBar() {
+  AppBar _buildAppBar() {
     return AppBar(
       backgroundColor: kBrown40,
-      leading: const GameBackButton(),
+      leading: _buildBackButton(),
+      // titleSpacing: 0,
       title: GetBuilder<GameController>(
         builder: (gameController) {
           final room = GameController.to.room;
           final round = room.getCurrentRound();
-          return Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text('Room: ${room.name}', style: kHeading2),
-                Text(
-                    'Round: ${room.getRoundCount()}, Turn: ${round.getTurnCount()}',
-                    style: kHeading3),
-              ]);
+          return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+            Text('Room: ${room.name}', style: kHeading2),
+            Text('Round: ${room.getRoundCount()}, Turn: ${round.getTurnCount()}', style: kHeading3),
+          ]);
         },
       ),
       actions: [
@@ -72,6 +66,20 @@ class GamePage extends StatelessWidget {
         const NextRoundButton(),
         GamePopupMenuButton(),
       ],
+    );
+  }
+
+  Widget _buildBackButton() {
+    return IconButton(
+      padding: EdgeInsets.only(left: 16),
+      icon: const Icon(
+        Icons.arrow_back,
+        color: kBlack,
+        size: kIconSize,
+      ),
+      onPressed: () async {
+        GameController.to.handleBackFromGamePage();
+      },
     );
   }
 }

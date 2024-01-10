@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter_tic_tac_toe/controllers/create_room_controller.dart';
 import 'package:flutter_tic_tac_toe/models/offline/cell.dart';
 import 'package:flutter_tic_tac_toe/models/offline/room.dart';
+import 'package:flutter_tic_tac_toe/routes/app_pages.dart';
 import 'package:flutter_tic_tac_toe/services/isar_service.dart';
 import 'package:flutter_tic_tac_toe/utils/constants/service_constants.dart';
 import 'package:flutter_tic_tac_toe/utils/enums/game_state.dart';
@@ -23,22 +24,17 @@ class GameController extends GetxController {
       newRoom.name = CreateRoomController.to.room.text;
     }
     if (CreateRoomController.to.player1.text != '') {
-      newRoom.getCurrentRound().players![0].name =
-          CreateRoomController.to.player1.text;
+      newRoom.getCurrentRound().players![0].name = CreateRoomController.to.player1.text;
     }
     if (CreateRoomController.to.player2.text != '') {
-      newRoom.getCurrentRound().players![1].name =
-          CreateRoomController.to.player2.text;
+      newRoom.getCurrentRound().players![1].name = CreateRoomController.to.player2.text;
     }
     if (CreateRoomController.to.rowCount.text != '') {
-      newRoom.board.rowCount =
-          int.tryParse(CreateRoomController.to.rowCount.text) ?? 10;
-      newRoom.historyBoard.rowCount =
-          int.tryParse(CreateRoomController.to.rowCount.text) ?? 10;
+      newRoom.board.rowCount = int.tryParse(CreateRoomController.to.rowCount.text) ?? 10;
+      newRoom.historyBoard.rowCount = int.tryParse(CreateRoomController.to.rowCount.text) ?? 10;
     }
     if (CreateRoomController.to.columnCount.text != '') {
-      newRoom.board.columnCount =
-          int.tryParse(CreateRoomController.to.columnCount.text) ?? 10;
+      newRoom.board.columnCount = int.tryParse(CreateRoomController.to.columnCount.text) ?? 10;
       newRoom.historyBoard.columnCount =
           int.tryParse(CreateRoomController.to.columnCount.text) ?? 10;
     }
@@ -68,8 +64,7 @@ class GameController extends GetxController {
     logger.t('draw seed...');
     // Update the cell
     Cell? cell = room.board.cells[row][column];
-    logger.t(
-        'room state: ${room.state}, cell content: ${cell.content.toString()}');
+    logger.t('room state: ${room.state}, cell content: ${cell.content.toString()}');
     if (room.state == GameState.playing &&
         (cell.content != Seed.cross && cell.content != Seed.nought)) {
       cell.content = seed;
@@ -149,5 +144,10 @@ class GameController extends GetxController {
     room.reset();
     logger.t('reset game');
     update();
+  }
+
+  void handleBackFromGamePage() {
+    GameController.to.saveRoomToIsarDatabase();
+    Get.offAllNamed(Routes.HOME);
   }
 }
