@@ -6,26 +6,29 @@ part of 'online_room.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-// ignore: unused_element
 OnlineRoom _$OnlineRoomFromJson(Map<String, dynamic> json) => OnlineRoom()
   ..id = json['id'] as String
   ..name = json['name'] as String
   ..state = $enumDecode(_$GameStateEnumMap, json['state'])
   ..board = OnlineBoard.fromJson(json['board'] as Map<String, dynamic>)
-  ..historyBoard = OnlineBoard.fromJson(json['historyBoard'] as Map<String, dynamic>)
-  ..rounds = _$JsonConverterFromJson<List<Map<String, dynamic>>, List<OnlineRound?>>(
-      json['rounds'], const OnlineRoundListConverter().fromJson)
+  ..historyBoard =
+      OnlineBoard.fromJson(json['historyBoard'] as Map<String, dynamic>)
+  ..rounds =
+      _$JsonConverterFromJson<List<Map<String, dynamic>>, List<OnlineRound?>>(
+          json['rounds'], const OnlineRoundListConverter().fromJson)
   ..currentRoundIndex = json['currentRoundIndex'] as int
   ..historyRoundIndex = json['historyRoundIndex'] as int;
 
-Map<String, dynamic> _$OnlineRoomToJson(OnlineRoom instance) => <String, dynamic>{
+Map<String, dynamic> _$OnlineRoomToJson(OnlineRoom instance) =>
+    <String, dynamic>{
       'id': instance.id,
       'name': instance.name,
       'state': _$GameStateEnumMap[instance.state]!,
       'board': instance.board.toJson(),
       'historyBoard': instance.historyBoard.toJson(),
-      'rounds': _$JsonConverterToJson<List<Map<String, dynamic>>, List<OnlineRound?>>(
-          instance.rounds, const OnlineRoundListConverter().toJson),
+      'rounds':
+          _$JsonConverterToJson<List<Map<String, dynamic>>, List<OnlineRound?>>(
+              instance.rounds, const OnlineRoundListConverter().toJson),
       'currentRoundIndex': instance.currentRoundIndex,
       'historyRoundIndex': instance.historyRoundIndex,
       'winCount': instance.winCount,

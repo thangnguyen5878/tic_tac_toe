@@ -20,54 +20,74 @@ class AppDrawer extends StatelessWidget {
         backgroundColor: kWhite, // Đặt màu nền của Drawer là kWhite
         child: Column(
           children: [
-            UserAccountsDrawerHeader(
-              decoration: const BoxDecoration(
-                color: kWhite,
-              ),
-              currentAccountPictureSize: const Size.square(56),
-              // avatar
-              currentAccountPicture: GestureDetector(
-                child: ClipOval(
-                  child: CircleAvatar(
-                    backgroundColor: kGrey45,
-                    child: AuthController.to.user.value == null
-                        ? const Icon(
-                      Icons.person,
-                      color: kWhite,
-                    )
-                        : CachedNetworkImage(
-                      imageUrl: AuthController.to.user.value!.photoURL!,
-                      fit: BoxFit.fitHeight,
-                      placeholder: (context, url) =>
-                          const CircularProgressIndicator(),
-                      errorWidget: (context, url, error) =>
-                          const Icon(Icons.error),
-                      cacheManager: appCacheManager,
-                    ),
-                  ),
-                ),
-                onTap: () {
-                  Get.toNamed(Routes.AUTH);
-                },
-              ),
-              // user name
-              accountName: Text(
-                AuthController.to.user.value == null
-                    ? 'Not logged in'
-                    : AuthController.to.user.value!.displayName!,
-                style: kSmallBoldText,
-              ),
-              // user email
-              accountEmail: Text(
-                AuthController.to.user.value == null
-                    ? 'Tap to open settings'
-                    : AuthController.to.user.value!.email!,
-                style: kSmallText,
-              ),
-            ),
+            _buildDrawerHeader(),
+            _buildWaitingRoomTile(),
+            _buildHistoryTile(),
           ],
         ),
       );
     });
+  }
+
+  ListTile _buildHistoryTile() {
+    return ListTile(
+      leading: const Icon(Icons.history),
+      title: const Text('History'),
+      onTap: () {},
+    );
+  }
+
+  ListTile _buildWaitingRoomTile() {
+    return ListTile(
+      leading: const Icon(Icons.house_rounded),
+      title: const Text('Waiting Room'),
+      onTap: () {},
+    );
+  }
+
+  UserAccountsDrawerHeader _buildDrawerHeader() {
+    return UserAccountsDrawerHeader(
+      decoration: const BoxDecoration(
+        color: kWhite,
+      ),
+      currentAccountPictureSize: const Size.square(56),
+      // avatar
+      currentAccountPicture: GestureDetector(
+        child: ClipOval(
+          child: CircleAvatar(
+            backgroundColor: kGrey45,
+            child: AuthController.to.user.value == null
+                ? const Icon(
+                    Icons.person,
+                    color: kWhite,
+                  )
+                : CachedNetworkImage(
+                    imageUrl: AuthController.to.user.value!.photoURL!,
+                    fit: BoxFit.fitHeight,
+                    placeholder: (context, url) => const CircularProgressIndicator(),
+                    errorWidget: (context, url, error) => const Icon(Icons.error),
+                    cacheManager: appCacheManager,
+                  ),
+          ),
+        ),
+        onTap: () {
+          Get.toNamed(Routes.AUTH);
+        },
+      ),
+      // user name
+      accountName: Text(
+        AuthController.to.user.value == null
+            ? 'Not logged in'
+            : AuthController.to.user.value!.displayName!,
+        style: kSmallBoldText,
+      ),
+      // user email
+      accountEmail: Text(
+        AuthController.to.user.value == null
+            ? 'Tap to open settings'
+            : AuthController.to.user.value!.email!,
+        style: kSmallText,
+      ),
+    );
   }
 }

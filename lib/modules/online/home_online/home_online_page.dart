@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_tic_tac_toe/controllers/auth_controller.dart';
 import 'package:flutter_tic_tac_toe/modules/offline/home/components/app_drawer.dart';
 import 'package:flutter_tic_tac_toe/modules/online/home_online/components/online_user_list.dart';
-import 'package:flutter_tic_tac_toe/controllers/auth_controller.dart';
+import 'package:flutter_tic_tac_toe/utils/constants/app_styles.dart';
 
 class HomeOnlinePage extends StatefulWidget {
   const HomeOnlinePage({Key? key}) : super(key: key);
@@ -39,7 +40,10 @@ class _HomeOnlinePageState extends State<HomeOnlinePage> with WidgetsBindingObse
     return Scaffold(
       drawer: const AppDrawer(),
       appBar: AppBar(
-        title: const Text('Home Online'),
+        title: const Text(
+          'Tic-tac-toe Online',
+          style: kTitle1,
+        ),
         centerTitle: true,
       ),
       body: const OnlineUserList(),

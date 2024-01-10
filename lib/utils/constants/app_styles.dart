@@ -4,7 +4,7 @@ import 'package:flutter_tic_tac_toe/utils/constants/app_colors.dart';
 // TEXT STYLES
 const kTitle1 = TextStyle(
   fontFamily: 'Jomhuria',
-  fontSize: 48,
+  fontSize: 44,
   color: Colors.black,
 );
 
@@ -13,7 +13,6 @@ const kTitle2 = TextStyle(
   fontSize: 40,
   color: Colors.black,
 );
-
 
 const kHeading1 = TextStyle(
   fontSize: 20,
@@ -33,28 +32,19 @@ const kHeading3 = TextStyle(
   fontWeight: FontWeight.bold,
 );
 
-
 const kNormalText = TextStyle(
   fontSize: 15,
   color: Colors.black,
 );
 
-const kBoldText = TextStyle(
-    fontSize: 15,
-    color: Colors.black,
-    fontWeight: FontWeight.w500
-);
+const kBoldText = TextStyle(fontSize: 15, color: Colors.black, fontWeight: FontWeight.w500);
 
 const kSmallText = TextStyle(
   fontSize: 14,
   color: Colors.black,
 );
 
-const kSmallBoldText = TextStyle(
-    fontSize: 14,
-    color: Colors.black,
-    fontWeight: FontWeight.w500
-);
+const kSmallBoldText = TextStyle(fontSize: 14, color: Colors.black, fontWeight: FontWeight.w500);
 
 const kNormalLargeText = TextStyle(
   fontSize: 17,
@@ -102,9 +92,7 @@ const kRoundNumberBoxStyle = BoxDecoration(
   borderRadius: BorderRadius.all(
     Radius.circular(4),
   ),
-
 );
-
 
 // TEXT FIELD STYLES
 InputDecoration kTextField({String labelText = "", String hintText = ""}) {
