@@ -17,7 +17,7 @@ class SignInPage extends StatelessWidget {
       child: Scaffold(
         body: Container(
           alignment: Alignment.center,
-          child: Column(
+          child: const Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               GoogleSignInButton(),

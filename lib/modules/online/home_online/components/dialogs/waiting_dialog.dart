@@ -36,7 +36,7 @@ class WaitingDialog extends StatelessWidget {
         logger.t('press cancel button');
         OnlineUserController.to.cancelInvitationWaiting();
       },
-      child: Text('CANCEL'),
+      child: const Text('CANCEL'),
     );
   }
 }

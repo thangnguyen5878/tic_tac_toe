@@ -7,6 +7,8 @@ import 'package:get/get.dart';
 class HistoryDetailsBackButton extends StatelessWidget {
   final int roomId = Get.arguments[0];
 
+  HistoryDetailsBackButton({super.key});
+
   @override
   Widget build(BuildContext context) {
     return IconButton(

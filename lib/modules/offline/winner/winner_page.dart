@@ -4,7 +4,7 @@ import 'package:get/get.dart';
 
 class WinnerPage extends StatelessWidget {
 
-  WinnerPage({Key? key}) : super(key: key);
+  const WinnerPage({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     final room = GameController.to.room;
@@ -25,12 +25,12 @@ class WinnerPage extends StatelessWidget {
               children: [
                 Text(
                   'Round $roundCount',
-                  style: TextStyle(
+                  style: const TextStyle(
                       color: Color.fromARGB(255, 162, 180, 227),
                       fontSize: 25,
                       fontWeight: FontWeight.bold),
                 ),
-                SizedBox(height: 10),
+                const SizedBox(height: 10),
                 const Text(
                   'Winner',
                   style: TextStyle(color: Colors.white, fontSize: 23),

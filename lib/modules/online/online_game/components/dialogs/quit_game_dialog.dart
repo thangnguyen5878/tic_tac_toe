@@ -32,7 +32,7 @@ TextButton _buildQuitButton() {
       logger.t('press quit button');
       OnlineUserController.to.quitGameSuddenly();
     },
-    child: Text('QUIT'),
+    child: const Text('QUIT'),
   );
 }
 
@@ -42,6 +42,6 @@ TextButton _buildCancelButton() {
       logger.t('press cancel button');
       Get.back();
     },
-    child: Text('CANCEL'),
+    child: const Text('CANCEL'),
   );
 }

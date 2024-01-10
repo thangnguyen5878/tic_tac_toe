@@ -16,7 +16,7 @@ class SelectAllRoomsButton extends StatelessWidget {
         logger.t('press select all rooms button');
         HomeController.to.selectAllRooms();
       },
-      icon: Icon(
+      icon: const Icon(
         Icons.select_all,
         color: kBlack,
         size: kIconSize,

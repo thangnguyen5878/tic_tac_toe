@@ -1,18 +1,13 @@
-
 import 'package:flutter/material.dart';
-import 'package:flutter_tic_tac_toe/controllers/game_controller.dart';
 import 'package:flutter_tic_tac_toe/controllers/online_game_controller.dart';
-import 'package:flutter_tic_tac_toe/routes/app_pages.dart';
 import 'package:flutter_tic_tac_toe/utils/constants/app_size.dart';
-import 'package:flutter_tic_tac_toe/utils/constants/service_constants.dart';
-import 'package:get/get.dart';
 
 class OnlineGamePopupMenuButton extends StatelessWidget {
-  OnlineGamePopupMenuButton({
+  const OnlineGamePopupMenuButton({
     super.key,
   });
 
-  var roomId;
+  // String? roomId;
 
   @override
   Widget build(BuildContext context) {
@@ -23,7 +18,7 @@ class OnlineGamePopupMenuButton extends StatelessWidget {
           child: Text('Reset'),
           // Remove the style parameter
         ),
-        PopupMenuItem<String>(
+        const PopupMenuItem<String>(
           value: 'history',
           child: Text('History'),
           // Remove the style parameter
@@ -39,7 +34,7 @@ class OnlineGamePopupMenuButton extends StatelessWidget {
           // Get.toNamed(Routes.HISTORY, arguments: roomId);
         }
       },
-      icon: Icon(
+      icon: const Icon(
         Icons.more_vert,
         color: Colors.black,
         size: kIconSize, // Set the color of the three dots icon to black

@@ -29,7 +29,7 @@ TextButton _buildQuitButton() {
     onPressed: () {
       OnlineUserController.to.quitGameSuddenly();
     },
-    child: Text('QUIT'),
+    child: const Text('QUIT'),
   );
 }
 
@@ -40,7 +40,7 @@ TextButton _buildRematchButton() {
       logger.t('press rematch button');
       OnlineUserController.to.handlePressRematchButtonOnDialog();
     },
-    child: Text('REMATCH'),
+    child: const Text('REMATCH'),
   );
 }
 

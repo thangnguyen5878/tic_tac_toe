@@ -6,7 +6,7 @@ import 'package:flutter_tic_tac_toe/utils/constants/app_colors.dart';
 import 'package:flutter_tic_tac_toe/utils/constants/service_constants.dart';
 
 class NextTurnButton extends StatelessWidget {
-  NextTurnButton({super.key});
+  const NextTurnButton({super.key});
   @override
   Widget build(BuildContext context) {
     return ElevatedButton(

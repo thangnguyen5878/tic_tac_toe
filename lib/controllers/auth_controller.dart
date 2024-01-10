@@ -41,7 +41,7 @@ class AuthController extends GetxController {
       Get.off(() => const SignInPage());
     } else {
       updateUserOnlineStatus(true);
-      Get.off(() => WelcomePage());
+      Get.off(() => const WelcomePage());
     }
     logger.t('Auth Route Navigation');
   }

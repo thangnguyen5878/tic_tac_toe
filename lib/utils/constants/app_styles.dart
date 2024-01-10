@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_tic_tac_toe/controllers/home_controller.dart';
 import 'package:flutter_tic_tac_toe/utils/constants/app_colors.dart';
 
 // TEXT STYLES
@@ -110,7 +109,7 @@ const kRoundNumberBoxStyle = BoxDecoration(
 // TEXT FIELD STYLES
 InputDecoration kTextField({String labelText = "", String hintText = ""}) {
   return InputDecoration(
-    contentPadding: EdgeInsets.symmetric(horizontal: 10),
+    contentPadding: const EdgeInsets.symmetric(horizontal: 10),
     labelText: labelText,
     hintText: hintText,
     border: OutlineInputBorder(

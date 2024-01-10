@@ -9,14 +9,13 @@ class HomeController extends GetxController {
   List<int> selectedRoomIds = [];
   int? _lastSeletedRoomId;
 
-  void set lastSelectedRoomId(int id) => _lastSeletedRoomId = id;
-  void set isRoomSelectionMode(bool value) {
+  set lastSelectedRoomId(int id) => _lastSeletedRoomId = id;
+  set isRoomSelectionMode(bool value) {
     _isRoomSelectionMode = value;
     if(_isRoomSelectionMode) {
       logger.t('change to room selection mode');
     } else {
       logger.t('change to normal mode');
-
     }
   }
   bool get isRoomSelectionMode => _isRoomSelectionMode;

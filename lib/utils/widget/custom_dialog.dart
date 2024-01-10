@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_tic_tac_toe/utils/constants/app_styles.dart';
-import 'package:flutter_tic_tac_toe/utils/constants/service_constants.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:get/get.dart';
 
 class CustomDialog extends StatelessWidget {
   final String title;

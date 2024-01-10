@@ -5,7 +5,7 @@ import 'package:flutter_tic_tac_toe/models/online/online_user.dart';
 
 class OnlineUserTile extends StatelessWidget {
   final OnlineUser user;
-  OnlineUserTile({super.key, required this.user});
+  const OnlineUserTile({super.key, required this.user});
 
   @override
   Widget build(BuildContext context) {

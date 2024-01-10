@@ -4,7 +4,6 @@ import 'package:flutter_tic_tac_toe/controllers/online_user_controller.dart';
 import 'package:flutter_tic_tac_toe/models/online/online_room.dart';
 import 'package:flutter_tic_tac_toe/modules/online/online_game/components/online_board_widget.dart';
 import 'package:flutter_tic_tac_toe/modules/online/online_game/components/online_game_back_button.dart';
-import 'package:flutter_tic_tac_toe/modules/online/online_game/components/online_game_popup_menu_button.dart';
 import 'package:flutter_tic_tac_toe/modules/online/online_game/components/online_rematch_button.dart';
 import 'package:flutter_tic_tac_toe/modules/online/online_game/components/online_player_bottom_bar.dart';
 import 'package:flutter_tic_tac_toe/utils/constants/app_colors.dart';
@@ -37,7 +36,7 @@ class OnlineGamePage extends StatelessWidget {
             );
           } else {
             logger.t('no datda');
-            return Text(
+            return const Text(
               'no data',
               style: kNormalText,
             );
@@ -55,7 +54,7 @@ class OnlineGamePage extends StatelessWidget {
             children: [
               const SizedBox(height: 10),
               OnlineBoardWidget(room: room),
-              SizedBox(height: 60),
+              const SizedBox(height: 60),
             ],
           ),
         ),
@@ -67,7 +66,7 @@ class OnlineGamePage extends StatelessWidget {
   AppBar _buildAppBar() {
     return AppBar(
       backgroundColor: kBrown40,
-      leading: OnlineGameBackButton(),
+      leading: const OnlineGameBackButton(),
       title: GetBuilder<OnlineGameController>(
         builder: (controller) {
           final room = OnlineGameController.to.room;
@@ -81,7 +80,7 @@ class OnlineGamePage extends StatelessWidget {
               ]);
         },
       ),
-      actions: [
+      actions: const [
         OnlineRematchButton(),
       ],
     );

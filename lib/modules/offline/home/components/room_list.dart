@@ -16,7 +16,7 @@ class RoomList extends StatelessWidget {
       alignment: Alignment.topCenter,
       child: Column(
         children: [
-          SizedBox(height: 4),
+          const SizedBox(height: 4),
           GetBuilder<GameController>(
             builder: (gameController) {
               return StreamBuilder<List<Room>>(
@@ -24,12 +24,12 @@ class RoomList extends StatelessWidget {
                 builder: (context, snapshot) {
                   // error
                   if (snapshot.hasError) {
-                    return Center(
+                    return const Center(
                       child: Text('Đã xảy ra lỗi'),
                     );
                     // no data
                   } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                    return Center(
+                    return const Center(
                       child: Text('Không có phòng nào'),
                     );
                     // has data
@@ -37,11 +37,11 @@ class RoomList extends StatelessWidget {
                     final rooms = snapshot.data!;
                     return Expanded(
                       child: ListView.separated(
-                        padding: EdgeInsets.symmetric(
+                        padding: const EdgeInsets.symmetric(
                             horizontal: 16, vertical: 12),
                         separatorBuilder:
                             (BuildContext context, int index) {
-                          return SizedBox(height: 12);
+                          return const SizedBox(height: 12);
                         },
                         itemCount: rooms.length,
                         itemBuilder: (context, index) {
@@ -51,7 +51,7 @@ class RoomList extends StatelessWidget {
                       ),
                     );
                   } else {
-                    return Center(
+                    return const Center(
                       child: CircularProgressIndicator(),
                     );
                   }

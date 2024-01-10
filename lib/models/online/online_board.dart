@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:flutter_tic_tac_toe/models/online/online_cell.dart';
 import 'package:flutter_tic_tac_toe/utils/constants/game_constants.dart';
 import 'package:flutter_tic_tac_toe/utils/constants/service_constants.dart';

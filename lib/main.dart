@@ -6,7 +6,6 @@ import 'package:flutter_tic_tac_toe/utils/constants/app_colors.dart';
 import 'package:flutter_tic_tac_toe/utils/initial_binding.dart';
 import 'package:get/get.dart';
 
-import 'utils/constants/service_constants.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();

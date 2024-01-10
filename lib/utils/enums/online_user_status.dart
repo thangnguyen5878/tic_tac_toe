@@ -36,10 +36,6 @@ enum OnlineUserStatus {
   @JsonValue("round completed") roundCompleted;
 
   String toShortString() {
-    if(this != null) {
-      return onlineUserStatusEnumMap[this]!;
-    } else {
-      return 'unknown status';
+    return onlineUserStatusEnumMap[this]!;
     }
-  }
 }

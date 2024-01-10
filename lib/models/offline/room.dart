@@ -1,5 +1,4 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
-import 'package:flutter/material.dart';
 import 'package:flutter_tic_tac_toe/models/offline/board.dart';
 import 'package:flutter_tic_tac_toe/models/offline/cell.dart';
 import 'package:flutter_tic_tac_toe/models/offline/player.dart';
@@ -258,7 +257,7 @@ class Room {
   }
 
   String toShortString() {
-    return 'Room{name: $name, board: ${board}, historyBoard: $historyBoard, historyRoundIndex: $historyRoundIndex, state: $state, currentRoundIndex: $currentRoundIndex, winCount: $winCount}';
+    return 'Room{name: $name, board: $board, historyBoard: $historyBoard, historyRoundIndex: $historyRoundIndex, state: $state, currentRoundIndex: $currentRoundIndex, winCount: $winCount}';
   }
 
   Map<String, dynamic> toJson() {

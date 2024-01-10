@@ -10,7 +10,7 @@ import 'package:get/get.dart';
 
 // ignore: must_be_immutable
 class WelcomePage extends StatefulWidget {
-  WelcomePage({super.key});
+  const WelcomePage({super.key});
 
   @override
   State<WelcomePage> createState() => _WelcomePageState();
@@ -47,7 +47,7 @@ class _WelcomePageState extends State<WelcomePage> with WidgetsBindingObserver {
     return PopScope(
       canPop: false,
       onPopInvoked: (didPop) async {
-        if(didPop) return;
+        if (didPop) return;
         OnlineUserController.to.updateUserStatusToIdle();
         await Get.offAllNamed(Routes.HOME_ONLINE);
       },
@@ -64,16 +64,16 @@ class _WelcomePageState extends State<WelcomePage> with WidgetsBindingObserver {
                 width: 100,
                 decoration: BoxDecoration(
                   image: DecorationImage(
-                    image: CachedNetworkImageProvider(user!.photoURL!,
-                        cacheManager: appCacheManager),
+                    image:
+                        CachedNetworkImageProvider(user!.photoURL!, cacheManager: appCacheManager),
                     fit: BoxFit.cover,
                   ),
                 ),
               ),
               Text(user!.email!),
               Text(user!.displayName ?? " "),
-              SizedBox(height: 32),
-              SignOutButton()
+              const SizedBox(height: 32),
+              const SignOutButton()
             ],
           ),
         ),

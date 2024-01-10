@@ -32,7 +32,7 @@ class RematchWaitingDialog extends StatelessWidget {
         logger.t('press cancel button');
         OnlineUserController.to.handleRematchWaitingCancelation();
       },
-      child: Text('CANCEL'),
+      child: const Text('CANCEL'),
     );
   }
 }

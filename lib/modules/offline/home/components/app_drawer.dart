@@ -21,17 +21,17 @@ class AppDrawer extends StatelessWidget {
         child: Column(
           children: [
             UserAccountsDrawerHeader(
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                 color: kWhite,
               ),
-              currentAccountPictureSize: Size.square(56),
+              currentAccountPictureSize: const Size.square(56),
               // avatar
               currentAccountPicture: GestureDetector(
                 child: ClipOval(
                   child: CircleAvatar(
                     backgroundColor: kGrey45,
                     child: AuthController.to.user.value == null
-                        ? Icon(
+                        ? const Icon(
                       Icons.person,
                       color: kWhite,
                     )
@@ -39,9 +39,9 @@ class AppDrawer extends StatelessWidget {
                       imageUrl: AuthController.to.user.value!.photoURL!,
                       fit: BoxFit.fitHeight,
                       placeholder: (context, url) =>
-                          CircularProgressIndicator(),
+                          const CircularProgressIndicator(),
                       errorWidget: (context, url, error) =>
-                          Icon(Icons.error),
+                          const Icon(Icons.error),
                       cacheManager: appCacheManager,
                     ),
                   ),

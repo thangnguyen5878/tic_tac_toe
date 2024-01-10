@@ -16,13 +16,13 @@ class GoogleSignInButton extends StatelessWidget {
           style: ElevatedButton.styleFrom(
               backgroundColor: kWhite,
               foregroundColor: kBlack,
-              shape: StadiumBorder(side: BorderSide(color: kBlack, width: 1.5)),
+              shape: const StadiumBorder(side: BorderSide(color: kBlack, width: 1.5)),
               elevation: 0,
               shadowColor: Colors.transparent),
           onPressed: () {
             AuthController.to.signInWithGoogle();
           },
-          child: Row(
+          child: const Row(
             mainAxisAlignment: MainAxisAlignment.center,
             mainAxisSize: MainAxisSize.min,
             children: [

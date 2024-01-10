@@ -28,7 +28,7 @@ class RejectedDialog extends StatelessWidget {
         logger.t('press close button');
         Get.back();
       },
-      child: Text('CLOSE'),
+      child: const Text('CLOSE'),
     );
   }
 }

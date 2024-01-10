@@ -2,14 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_tic_tac_toe/controllers/game_controller.dart';
 import 'package:flutter_tic_tac_toe/controllers/home_controller.dart';
 import 'package:flutter_tic_tac_toe/models/offline/room.dart';
-import 'package:flutter_tic_tac_toe/models/offline/round.dart';
 import 'package:flutter_tic_tac_toe/routes/app_pages.dart';
 import 'package:flutter_tic_tac_toe/utils/constants/app_colors.dart';
 import 'package:flutter_tic_tac_toe/utils/constants/app_styles.dart';
 import 'package:get/get.dart';
 
-class roomCardNormalMode extends StatelessWidget {
-  const roomCardNormalMode({
+class RoomCardNormalMode extends StatelessWidget {
+  const RoomCardNormalMode({
     super.key,
     required this.room,
   });
@@ -30,7 +29,7 @@ class roomCardNormalMode extends StatelessWidget {
       },
       child: Container(
         width: double.infinity,
-        padding: EdgeInsets.all(12),
+        padding: const EdgeInsets.all(12),
         decoration: kCardStyle,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -39,18 +38,18 @@ class roomCardNormalMode extends StatelessWidget {
               room.name,
               style: kHeading1,
             ),
-            SizedBox(height: 4),
+            const SizedBox(height: 4),
             RichText(
               text: TextSpan(
                 style: kNormalLargeText,
                 children: <TextSpan>[
                   const TextSpan(text: 'Current round: '),
                   TextSpan(
-                      text: '${room.getRoundCount()}', style: TextStyle(color: kBrown55)),
+                      text: '${room.getRoundCount()}', style: const TextStyle(color: kBrown55)),
                 ],
               ),
             ),
-            SizedBox(height: 4),
+            const SizedBox(height: 4),
             Text(
               style: kNormalText,
               '${round.getPlayer1().name} (${round.getPlayer1().score}) - ${round.getPlayer2().name} (${round.getPlayer2().score})',

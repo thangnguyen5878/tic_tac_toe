@@ -12,7 +12,7 @@ GoogleSignIn googleSignIn = GoogleSignIn();
 FirebaseFirestore firestore = FirebaseFirestore.instance;
 FirestoreService firestoreService = FirestoreService();
 IsarService isarService = IsarService();
-var uuid = Uuid();
+var uuid = const Uuid();
 
 // Firebase Collections
 const fUserCollection = 'users';

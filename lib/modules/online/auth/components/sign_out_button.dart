@@ -16,12 +16,12 @@ class SignOutButton extends StatelessWidget {
           logger.t('press sign out button');
           AuthController.to.signOut();
         },
-        child: Text('Sign out'),
         style: TextButton.styleFrom(
           backgroundColor: kBlack,
           foregroundColor: kWhite,
-          shape: StadiumBorder(),
+          shape: const StadiumBorder(),
         ),
+        child: const Text('Sign out'),
       ),
     );
   }

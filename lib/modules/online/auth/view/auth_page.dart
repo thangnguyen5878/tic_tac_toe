@@ -12,10 +12,10 @@ class AuthPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Obx(() {
       if(AuthController.to.user.value == null) {
-        return SignInPage();
+        return const SignInPage();
       } else {
         OnlineUserController.to.updateUserStatusToInWelcomePage();
-        return WelcomePage();
+        return const WelcomePage();
       }
 
     });

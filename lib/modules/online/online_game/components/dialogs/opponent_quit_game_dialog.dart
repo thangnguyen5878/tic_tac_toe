@@ -34,7 +34,7 @@ TextButton _buildQuitButton() {
       logger.t('press quit button');
       OnlineUserController.to.quitGameWhenOpponentQuitted();
     },
-    child: Text('QUIT'),
+    child: const Text('QUIT'),
   );
 }
 
@@ -45,6 +45,6 @@ TextButton _buildCancelButton() {
       Get.back();
       OnlineUserController.to.updateCurrentUserStatus(OnlineUserStatus.opponentQuitted);
     },
-    child: Text('CANCEL'),
+    child: const Text('CANCEL'),
   );
 }

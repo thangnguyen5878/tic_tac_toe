@@ -1,10 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_tic_tac_toe/controllers/home_controller.dart';
-import 'package:flutter_tic_tac_toe/models/offline/room.dart';
 import 'package:flutter_tic_tac_toe/modules/offline/home/components/app_drawer.dart';
 import 'package:flutter_tic_tac_toe/modules/offline/home/components/delete_rooms_button.dart';
-import 'package:flutter_tic_tac_toe/modules/offline/home/components/room_card.dart';
-import 'package:flutter_tic_tac_toe/controllers/game_controller.dart';
 import 'package:flutter_tic_tac_toe/modules/offline/home/components/room_list.dart';
 import 'package:flutter_tic_tac_toe/modules/offline/home/components/select_all_rooms_button.dart';
 import 'package:flutter_tic_tac_toe/routes/app_pages.dart';
@@ -15,7 +12,7 @@ import 'package:flutter_tic_tac_toe/utils/constants/service_constants.dart';
 import 'package:get/get.dart';
 
 class HomePage extends StatelessWidget {
-  HomePage({super.key});
+  const HomePage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -23,9 +20,9 @@ class HomePage extends StatelessWidget {
     return GetBuilder<HomeController>(
         builder: (controller) {
       return Scaffold(
-        drawer: AppDrawer(),
+        drawer: const AppDrawer(),
         appBar: _buildAppBar(),
-        body: RoomList(),
+        body: const RoomList(),
         floatingActionButton: HomeController.to.isRoomSelectionMode ? null :  _buildFloatingActionButton(),
       );
     });
@@ -36,12 +33,12 @@ class HomePage extends StatelessWidget {
       onPressed: () {
         Get.toNamed(Routes.CREATE_ROOM);
       },
-      child: Icon(
+      backgroundColor: kBrown40,
+      child: const Icon(
           Icons.add,
           size: kIconSize,
           color: kBrown15
       ),
-      backgroundColor: kBrown40,
     );
   }
 
@@ -60,8 +57,8 @@ class HomePage extends StatelessWidget {
       leading: Builder(
         builder: (context) =>
             IconButton(
-              padding: EdgeInsets.only(left: 16),
-              icon: Icon(
+              padding: const EdgeInsets.only(left: 16),
+              icon: const Icon(
                 Icons.close,
                 color: kBlack,
                 size: kIconSize,
@@ -76,7 +73,7 @@ class HomePage extends StatelessWidget {
         padding: const EdgeInsets.only(top: 8, right: 32),
         alignment: Alignment.center,
       ),
-      actions: [
+      actions: const [
         DeleteRoomsButton(),
         SelectAllRoomsButton(),
       ],
@@ -89,8 +86,8 @@ class HomePage extends StatelessWidget {
       leading: Builder(
         builder: (context) =>
             IconButton(
-              padding: EdgeInsets.only(left: 16),
-              icon: Icon(
+              padding: const EdgeInsets.only(left: 16),
+              icon: const Icon(
                 Icons.menu,
                 color: kBlack,
                 size: kIconSize,
@@ -104,7 +101,7 @@ class HomePage extends StatelessWidget {
       title: Container(
         padding: const EdgeInsets.only(top: 8, right: 32),
         alignment: Alignment.center,
-        child: Text('Tic-tac-toe', style: kTitle1),
+        child: const Text('Tic-tac-toe', style: kTitle1),
       ),
       backgroundColor: kWhite,
     );

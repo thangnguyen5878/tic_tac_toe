@@ -16,7 +16,7 @@ class DeleteRoomsButton extends StatelessWidget {
         logger.t('press delete rooms button');
         HomeController.to.removeSelectedRoomsFromDatabase();
       },
-      icon: Icon(
+      icon: const Icon(
         Icons.delete,
         color: kBlack,
         size: kIconSize,

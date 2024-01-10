@@ -49,7 +49,7 @@ class OnlineUserController extends GetxController {
 
   /// Initializes a listener to watch for changes to the opponent's data.
   void _initializeOpponentListener() async {
-    await firestoreService.watchUser(currentUser.opponentId).listen((snapshot) {
+    firestoreService.watchUser(currentUser.opponentId).listen((snapshot) {
       opponent = snapshot.data() as OnlineUser;
     });
   }
@@ -106,20 +106,20 @@ class OnlineUserController extends GetxController {
   void _handleRematchWaitingStatus() {
     logger.t('handle user status: rematch waiting');
     Get.back();
-    Get.dialog(RematchWaitingDialog(), barrierDismissible: false);
+    Get.dialog(const RematchWaitingDialog(), barrierDismissible: false);
   }
 
   Future<void> _handleWinStatus() async {
     logger.t('handle user status: win');
-    await Future.delayed(Duration(seconds: 2));
+    await Future.delayed(const Duration(seconds: 2));
     logger.t('handle user status: win');
-    Get.dialog(OnlineWinnerDialog(), barrierDismissible: false);
+    Get.dialog(const OnlineWinnerDialog(), barrierDismissible: false);
   }
 
   Future<void> _handleLoseStatus() async {
     logger.t('handle user status: lose');
-    await Future.delayed(Duration(seconds: 2));
-    Get.dialog(OnlineLoserDialog(), barrierDismissible: false);
+    await Future.delayed(const Duration(seconds: 2));
+    Get.dialog(const OnlineLoserDialog(), barrierDismissible: false);
   }
 
   void _handleIdleStatus() {
@@ -129,13 +129,13 @@ class OnlineUserController extends GetxController {
   void _handleWaitingForInvitationStatus() {
     logger.t('handle user status: waiting for invitation');
     Get.back();
-    Get.dialog(WaitingDialog(), barrierDismissible: false);
+    Get.dialog(const WaitingDialog(), barrierDismissible: false);
   }
 
   void _handleInvitedStatus() {
     logger.t('handle user status: invited');
     Get.back();
-    Get.dialog(InvitationDialog(), barrierDismissible: false);
+    Get.dialog(const InvitationDialog(), barrierDismissible: false);
   }
 
   void _handleInvitationWaitingCanceledStatus() {
@@ -147,7 +147,7 @@ class OnlineUserController extends GetxController {
   void _handleInvitationRejectedStatus() {
     logger.t('handle user status: invitation rejected');
     Get.back();
-    Get.dialog(RejectedDialog(), barrierDismissible: false);
+    Get.dialog(const RejectedDialog(), barrierDismissible: false);
   }
 
   void _handleInGameStatus() async {
@@ -161,13 +161,13 @@ class OnlineUserController extends GetxController {
   void _handleOpponentQuittedStatus() {
     logger.t('handle user status: opponent quitted');
     Get.until((route) => !Get.isDialogOpen!);
-    Get.dialog(OpponentQuitGameDialog(), barrierDismissible: false);
+    Get.dialog(const OpponentQuitGameDialog(), barrierDismissible: false);
   }
 
   void _handleInvitationWaitingTimeoutStatus() {
     logger.t('handle user status: invitation waiting timeout');
     Get.back();
-    Get.dialog(InvitationTimeoutDialog(), barrierDismissible: false);
+    Get.dialog(const InvitationTimeoutDialog(), barrierDismissible: false);
     updateCurrentUserStatus(OnlineUserStatus.idle);
   }
 
@@ -190,7 +190,7 @@ class OnlineUserController extends GetxController {
     } else {
       // Initiate the quit process by displaying a confirmation dialog.
       Get.dialog(
-        QuitGameDialog(),
+        const QuitGameDialog(),
         barrierDismissible: false,
       );
     }
@@ -274,7 +274,7 @@ class OnlineUserController extends GetxController {
   /// Displays the ChallengeDialog to confirm the challenge and sets up initial data.
   void initiateChallenge(OnlineUser user)  {
     logger.t('select opponent');
-    Get.dialog(ChallengeDialog(), barrierDismissible: false);
+    Get.dialog(const ChallengeDialog(), barrierDismissible: false);
     opponent = user;
     opponentId = user.uid;
     update();
@@ -325,40 +325,40 @@ class OnlineUserController extends GetxController {
   }
 
   /// Updates user data when signing in.
-  Future<void> handleSignIn(OnlineUser newUser) async {
+  void handleSignIn(OnlineUser newUser) {
     logger.t('online user controller: handle sign in');
-    await firestoreService.addUser(newUser);
+    firestoreService.addUser(newUser);
     currentUser = newUser;
     update();
   }
 
-  Future<void> updateUserStatusToIdle() async {
+  void updateUserStatusToIdle() {
     final data = {
       'status': OnlineUserStatus.idle.toShortString(),
     };
-    await firestoreService.updateUser(firebaseAuth.currentUser!.uid, data);
+    firestoreService.updateUser(firebaseAuth.currentUser!.uid, data);
   }
 
-  Future<void> updateUserStatusToInWelcomePage() async {
+  void updateUserStatusToInWelcomePage() {
     final data = {
       'status': OnlineUserStatus.inWelcomePage.toShortString(),
     };
-    await firestoreService.updateUser(firebaseAuth.currentUser!.uid, data);
+    firestoreService.updateUser(firebaseAuth.currentUser!.uid, data);
   }
 
   /// Establishes the opponent relationship between two users in Firestore.
   ///
   /// Updates the `opponentId` fields for both users to reflect their connection.
-  Future<void> establishOpponentRelationship() async {
-    await firestoreService.updateUserOpponentId(currentUser.uid, opponentId);
-    await firestoreService.updateUserOpponentId(opponentId, currentUser.uid);
+  void establishOpponentRelationship() {
+    firestoreService.updateUserOpponentId(currentUser.uid, opponentId);
+    firestoreService.updateUserOpponentId(opponentId, currentUser.uid);
     update();
   }
 
   /// Terminates the opponent relationship between two users in Firestore and sets their statuses to idle.
   ///
   /// Clears opponent IDs, player indices, and sets statuses to idle, indicating they're available for new games.
-  Future<void> clearOpponentRelationshipAndResetStatuses() async {
+  void clearOpponentRelationshipAndResetStatuses() {
     final currentUserData = {
       'opponentId': '',
       'playerIndex': null,
@@ -370,8 +370,8 @@ class OnlineUserController extends GetxController {
       'status': OnlineUserStatus.idle.toShortString(),
     };
 
-    await firestoreService.updateUser(currentUser.uid, currentUserData);
-    await firestoreService.updateUser(opponentId, opponentData);
+    firestoreService.updateUser(currentUser.uid, currentUserData);
+    firestoreService.updateUser(opponentId, opponentData);
 
     opponentId = '';
     opponent = null;
@@ -379,18 +379,18 @@ class OnlineUserController extends GetxController {
     update();
   }
 
-  Future<void> updateTwoUserOnFirebase(Map<String, dynamic> data) async {
-    await firestoreService.updateUser(currentUser.uid, data);
+  void updateTwoUserOnFirebase(Map<String, dynamic> data) {
+    firestoreService.updateUser(currentUser.uid, data);
     firestoreService.updateUser(opponentId, data);
 }
 
-  Future<void> updateCurrentUserStatus(OnlineUserStatus status) async {
-    await firestoreService.updateUserStatus(currentUser.uid, status);
+  void updateCurrentUserStatus(OnlineUserStatus status) {
+    firestoreService.updateUserStatus(currentUser.uid, status);
     update();
   }
 
   /// Updates the winner and loser statuses in Firestore based on the current round's outcome.
-  Future<void> updateWinnerAndLoserStatus() async {
+  void updateWinnerAndLoserStatus() {
     logger.t('update winner and loser status');
     final winnerIndex = OnlineGameController.to.room.getCurrentRound().winnerIndex;
     // The player who draws the last seed win the game.
@@ -402,30 +402,30 @@ class OnlineUserController extends GetxController {
       final opponentData = {
         'status': OnlineUserStatus.lose.toShortString()
       };
-      await firestoreService.updateUser(currentUser.uid, currentUserData);
-      await firestoreService.updateUser(opponentId, opponentData);
+      firestoreService.updateUser(currentUser.uid, currentUserData);
+      firestoreService.updateUser(opponentId, opponentData);
     }
   }
 
-  Future<void> requestOpponentForReplay() async {
+  void requestOpponentForReplay() {
     final currentUserData = {
       'status': OnlineUserStatus.rematchPending.toShortString(),
     };
-    await firestoreService.updateUser(currentUser.uid, currentUserData);
+    firestoreService.updateUser(currentUser.uid, currentUserData);
   }
 
   /// If there are no player in the current room has rematch pending status
   /// then, show [RematchWaitingDialog].
   /// Else, show [RematchDialog].
-  Future<void> handlePressRematchButtonOnAppbar() async {
-    Get.dialog(RematchDialog(), barrierDismissible: false);
+  void handlePressRematchButtonOnAppbar() {
+    Get.dialog(const RematchDialog(), barrierDismissible: false);
   }
 
   Future<void> handlePressRematchButtonOnDialog() async {
-    await OnlineUserController.to.updateCurrentUserStatus(OnlineUserStatus.rematchPending);
+    OnlineUserController.to.updateCurrentUserStatus(OnlineUserStatus.rematchPending);
     if (await hasRematchPendingUser(1)) {
       Get.until((route) => !Get.isDialogOpen!);
-      Get.dialog(RematchWaitingDialog(), barrierDismissible: false);
+      Get.dialog(const RematchWaitingDialog(), barrierDismissible: false);
     }
     if (await hasRematchPendingUser(2)) {
       OnlineGameController.to.nextRound();
@@ -433,13 +433,12 @@ class OnlineUserController extends GetxController {
   }
 
   Future<bool> hasRematchPendingUser(int num) async {
-    QuerySnapshot result =
-        await firestoreService.getUsersInARoomWithRematchPendingStatus(currentUser.currentRoomId);
+    QuerySnapshot result = await firestoreService.getUsersInARoomWithRematchPendingStatus(currentUser.currentRoomId);
     return result.docs.length == num;
   }
 
-  Future<void> handleRematchWaitingCancelation() async {
+  void handleRematchWaitingCancelation() {
     Get.until((route) => !Get.isDialogOpen!);
-    await OnlineUserController.to.updateCurrentUserStatus(OnlineUserStatus.roundCompleted);
+    OnlineUserController.to.updateCurrentUserStatus(OnlineUserStatus.roundCompleted);
   }
 }

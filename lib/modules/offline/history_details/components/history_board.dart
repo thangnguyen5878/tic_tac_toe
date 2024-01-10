@@ -4,7 +4,7 @@ import 'package:flutter_tic_tac_toe/controllers/game_controller.dart';
 import 'package:flutter_tic_tac_toe/utils/constants/service_constants.dart';
 
 class HistoryBoard extends StatelessWidget {
-  HistoryBoard({super.key});
+  const HistoryBoard({super.key});
 
   @override
   Widget build(BuildContext context) {

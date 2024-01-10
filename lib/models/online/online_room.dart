@@ -4,16 +4,11 @@ import 'package:flutter_tic_tac_toe/models/online/online_board.dart';
 import 'package:flutter_tic_tac_toe/models/online/online_cell.dart';
 import 'package:flutter_tic_tac_toe/models/online/online_player.dart';
 import 'package:flutter_tic_tac_toe/models/online/online_round.dart';
-import 'package:flutter_tic_tac_toe/models/online/online_user.dart';
-import 'package:flutter_tic_tac_toe/modules/online/online_game/components/dialogs/online_loser_dialog.dart';
-import 'package:flutter_tic_tac_toe/modules/online/online_game/components/dialogs/online_winner_dialog.dart';
 import 'package:flutter_tic_tac_toe/utils/constants/service_constants.dart';
 import 'package:flutter_tic_tac_toe/utils/enums/cell_state.dart';
 import 'package:flutter_tic_tac_toe/utils/enums/game_state.dart';
-import 'package:flutter_tic_tac_toe/utils/enums/online_user_status.dart';
 import 'package:flutter_tic_tac_toe/utils/enums/seed.dart';
 import 'package:flutter_tic_tac_toe/utils/json%20converters/online_round_list_converter.dart';
-import 'package:get/get.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:uuid/uuid.dart';
 
@@ -124,8 +119,8 @@ class OnlineRoom {
     getCurrentRound().winTurnIndex = getCurrentRound().turns.length - 1;
     state = GameState.stop;
 
-    await OnlineUserController.to.updateWinnerAndLoserStatus();
-    await OnlineGameController.to.pushRoomToFirebase();
+    OnlineUserController.to.updateWinnerAndLoserStatus();
+    OnlineGameController.to.pushRoomToFirebase();
   }
 
   /// This method will be used to color the winning cells.
@@ -134,14 +129,6 @@ class OnlineRoom {
       cell.state = winningState;
     }
   }
-
-  /// This method will log the winner and navigate to the winner screen.
-  // Future<void> logWinnerAndNotify() async {
-  //   logger.t('Winner is ${getCurrentRound().getWinner()}');
-  //   // logger.t('rounds: $rounds');
-  //   await Future.delayed(Duration(seconds: 2));
-  //   Get.toNamed(Routes.ONLINE_WINNER);
-  // }
 
   /// This method checks if there's a winner and handles the case.
   bool checkForWinner(List<OnlineCell> cellsToCheck, Seed seed) {

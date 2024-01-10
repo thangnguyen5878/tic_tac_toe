@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_tic_tac_toe/models/online/online_user.dart';
 import 'package:flutter_tic_tac_toe/modules/online/home_online/components/online_user_tile.dart';
 import 'package:flutter_tic_tac_toe/utils/constants/service_constants.dart';
-import 'package:get/get.dart';
 
 class OnlineUserList extends StatelessWidget {
   const OnlineUserList({super.key});

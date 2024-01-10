@@ -32,7 +32,7 @@ class RematchDialog extends StatelessWidget {
         logger.t('press no button');
         Get.back();
       },
-      child: Text('NO'),
+      child: const Text('NO'),
     );
   }
 
@@ -42,7 +42,7 @@ class RematchDialog extends StatelessWidget {
         logger.t('press yes button');
         OnlineUserController.to.handlePressRematchButtonOnDialog();
       },
-      child: Text('YES'),
+      child: const Text('YES'),
     );
   }
 }

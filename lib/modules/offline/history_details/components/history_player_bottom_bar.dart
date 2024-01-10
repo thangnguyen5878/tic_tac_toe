@@ -4,7 +4,7 @@ import 'package:flutter_tic_tac_toe/utils/constants/app_colors.dart';
 import 'package:get/get_state_manager/src/simple/get_state.dart';
 
 class HistoryPlayerBottomBar extends StatelessWidget {
-  HistoryPlayerBottomBar({super.key});
+  const HistoryPlayerBottomBar({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -43,11 +43,11 @@ class HistoryPlayerBottomBar extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
-                      '${player1Name}: X',
+                      '$player1Name: X',
                       style: TextStyle(
                           color: player1TextColor, fontWeight: FontWeight.bold),
                     ),
-                    Text('Score: ${player1Score}',
+                    Text('Score: $player1Score',
                         style: TextStyle(
                             color: player1TextColor,
                             fontWeight: FontWeight.bold)),
@@ -63,12 +63,12 @@ class HistoryPlayerBottomBar extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
-                      '${player2Name}: O',
+                      '$player2Name: O',
                       style: TextStyle(
                           color: player2TextColor, fontWeight: FontWeight.bold),
                     ),
                     Text(
-                      'Score: ${player2Score}',
+                      'Score: $player2Score',
                       style: TextStyle(
                           color: player2TextColor, fontWeight: FontWeight.bold),
                     ),

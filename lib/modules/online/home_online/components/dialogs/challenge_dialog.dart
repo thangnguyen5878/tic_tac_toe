@@ -32,7 +32,7 @@ TextButton _buildStartButton() {
           logger.t('press start button');
           OnlineUserController.to.challengeAnotherUser();
         },
-        child: Text('START'),
+        child: const Text('START'),
       );
 }
 
@@ -42,6 +42,6 @@ TextButton _buildCancelButton() {
           logger.t('press back button');
           Get.back();
         },
-        child: Text('CANCEL'),
+        child: const Text('CANCEL'),
       );
 }

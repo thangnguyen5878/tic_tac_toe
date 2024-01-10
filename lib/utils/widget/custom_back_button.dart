@@ -13,7 +13,7 @@ class CustomBackButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return IconButton(
-      padding: EdgeInsets.only(left: 16),
+      padding: const EdgeInsets.only(left: 16),
       icon: const Icon(
         Icons.arrow_back_ios,
         color: kBlack,

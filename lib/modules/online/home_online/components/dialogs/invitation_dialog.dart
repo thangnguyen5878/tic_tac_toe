@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_tic_tac_toe/controllers/online_game_controller.dart';
 import 'package:flutter_tic_tac_toe/controllers/online_user_controller.dart';
 import 'package:flutter_tic_tac_toe/utils/constants/service_constants.dart';
 import 'package:flutter_tic_tac_toe/utils/widget/custom_dialog.dart';
@@ -31,7 +30,7 @@ TextButton _buildRejectButton() {
       logger.t('press reject button');
       OnlineUserController.to.rejectInvitation();
     },
-    child: Text('REJECT'),
+    child: const Text('REJECT'),
   );
 }
 
@@ -42,7 +41,7 @@ TextButton _buildAcceptButton() {
       logger.t('press accept button');
       OnlineUserController.to.acceptChallengeFromOpponent();
     },
-    child: Text('ACCEPT'),
+    child: const Text('ACCEPT'),
   );
 }
 

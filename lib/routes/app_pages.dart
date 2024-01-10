@@ -1,3 +1,5 @@
+// ignore_for_file: constant_identifier_names
+
 import 'package:get/get.dart';
 
 import '../modules/offline/create_room/create_room_binding.dart';
@@ -27,7 +29,7 @@ class AppPages {
   static final routes = [
     GetPage(
       name: _Paths.HOME,
-      page: () => HomePage(),
+      page: () => const HomePage(),
       binding: HomeBinding(),
     ),
     GetPage(
@@ -42,7 +44,7 @@ class AppPages {
     ),
     GetPage(
       name: _Paths.WINNER,
-      page: () => WinnerPage(),
+      page: () => const WinnerPage(),
       binding: WinnerBinding(),
       opaque: false,
       transitionDuration: const Duration(seconds: 0),
@@ -54,25 +56,21 @@ class AppPages {
     ),
     GetPage(
       name: _Paths.HISTORY_DETAILS,
-      page: () => HistoryDetailsPage(),
+      page: () => const HistoryDetailsPage(),
       binding: HistoryDetailsBinding(),
     ),
-    GetPage(
-        name: _Paths.AUTH,
-        page: () => const AuthPage(),
-        binding: AuthBinding(),
-        children: [
-          GetPage(
-            name: _Paths.HOME_ONLINE,
-            page: () => const HomeOnlinePage(),
-            // binding: HomeOnlineBinding(),
-          ),
-          GetPage(
-            name: _Paths.ONLINE_GAME,
-            page: () => const OnlineGamePage(),
-            // binding: OnlineGameBinding(),
-          ),
-        ]),
+    GetPage(name: _Paths.AUTH, page: () => const AuthPage(), binding: AuthBinding(), children: [
+      GetPage(
+        name: _Paths.HOME_ONLINE,
+        page: () => const HomeOnlinePage(),
+        // binding: HomeOnlineBinding(),
+      ),
+      GetPage(
+        name: _Paths.ONLINE_GAME,
+        page: () => const OnlineGamePage(),
+        // binding: OnlineGameBinding(),
+      ),
+    ]),
     GetPage(
       name: _Paths.HOME_ONLINE,
       page: () => const HomeOnlinePage(),
