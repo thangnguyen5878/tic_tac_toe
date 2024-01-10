@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_tic_tac_toe/controllers/home_controller.dart';
-import 'package:flutter_tic_tac_toe/modules/offline/home/components/app_drawer.dart';
 import 'package:flutter_tic_tac_toe/modules/offline/home/components/delete_rooms_button.dart';
+import 'package:flutter_tic_tac_toe/modules/offline/home/components/offline_drawer.dart';
 import 'package:flutter_tic_tac_toe/modules/offline/home/components/room_list.dart';
 import 'package:flutter_tic_tac_toe/routes/app_pages.dart';
 import 'package:flutter_tic_tac_toe/utils/constants/app_colors.dart';
@@ -18,7 +18,7 @@ class HomePage extends StatelessWidget {
     logger.t('build home screen...');
     return GetBuilder<HomeController>(builder: (controller) {
       return Scaffold(
-        drawer: const AppDrawer(),
+        drawer: const OfflineDrawer(),
         appBar: _buildAppBar(),
         body: const RoomList(),
         floatingActionButton:

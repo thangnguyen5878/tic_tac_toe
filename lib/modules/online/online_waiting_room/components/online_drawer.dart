@@ -8,40 +8,48 @@ import 'package:get/get.dart';
 
 import '../../../../controllers/auth_controller.dart';
 
-class AppDrawer extends StatelessWidget {
-  const AppDrawer({
+class OnlineDrawer extends StatelessWidget {
+  const OnlineDrawer({
     super.key,
   });
 
   @override
   Widget build(BuildContext context) {
-    return Obx(() {
-      return Drawer(
-        backgroundColor: kWhite, // Đặt màu nền của Drawer là kWhite
-        child: Column(
-          children: [
-            _buildDrawerHeader(),
-            _buildWaitingRoomTile(),
-            _buildHistoryTile(),
-          ],
-        ),
-      );
-    });
+    return Drawer(
+      backgroundColor: kWhite,
+      child: Column(
+        children: [
+          _buildDrawerHeader(),
+          _buildWaitingRoomTile(),
+          _buildHistoryTile(),
+        ],
+      ),
+    );
   }
 
   ListTile _buildHistoryTile() {
     return ListTile(
       leading: const Icon(Icons.history),
-      title: const Text('History'),
-      onTap: () {},
+      title: Text(
+        'History',
+        // style: isOnlineHistory ? kBoldText : kNormalText, // Conditional styling
+      ),
+      onTap: () {
+        Get.toNamed(Routes.ONLINE_HISTORY);
+      },
     );
   }
 
   ListTile _buildWaitingRoomTile() {
     return ListTile(
       leading: const Icon(Icons.house_rounded),
-      title: const Text('Waiting Room'),
-      onTap: () {},
+      title: Text(
+        'Waiting Room',
+        // style: isOnlineHome ? kBoldText : kNormalText,
+      ),
+      onTap: () {
+        Get.toNamed(Routes.ONLINE_WAITING_ROOM);
+      },
     );
   }
 

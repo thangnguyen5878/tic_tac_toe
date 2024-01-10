@@ -2,17 +2,17 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_tic_tac_toe/controllers/online_game_controller.dart';
 import 'package:flutter_tic_tac_toe/models/online/online_user.dart';
-import 'package:flutter_tic_tac_toe/modules/online/home_online/components/dialogs/challenge_dialog.dart';
-import 'package:flutter_tic_tac_toe/modules/online/home_online/components/dialogs/invitation_dialog.dart';
-import 'package:flutter_tic_tac_toe/modules/online/home_online/components/dialogs/invitation_timeout_dialog.dart';
-import 'package:flutter_tic_tac_toe/modules/online/home_online/components/dialogs/rejected_dialog.dart';
-import 'package:flutter_tic_tac_toe/modules/online/home_online/components/dialogs/waiting_dialog.dart';
 import 'package:flutter_tic_tac_toe/modules/online/online_game/components/dialogs/online_loser_dialog.dart';
 import 'package:flutter_tic_tac_toe/modules/online/online_game/components/dialogs/online_winner_dialog.dart';
 import 'package:flutter_tic_tac_toe/modules/online/online_game/components/dialogs/opponent_quit_game_dialog.dart';
 import 'package:flutter_tic_tac_toe/modules/online/online_game/components/dialogs/quit_game_dialog.dart';
 import 'package:flutter_tic_tac_toe/modules/online/online_game/components/dialogs/rematch_dialog.dart';
 import 'package:flutter_tic_tac_toe/modules/online/online_game/components/dialogs/rematch_waiting_dialog.dart';
+import 'package:flutter_tic_tac_toe/modules/online/online_waiting_room/components/dialogs/challenge_dialog.dart';
+import 'package:flutter_tic_tac_toe/modules/online/online_waiting_room/components/dialogs/invitation_dialog.dart';
+import 'package:flutter_tic_tac_toe/modules/online/online_waiting_room/components/dialogs/invitation_timeout_dialog.dart';
+import 'package:flutter_tic_tac_toe/modules/online/online_waiting_room/components/dialogs/rejected_dialog.dart';
+import 'package:flutter_tic_tac_toe/modules/online/online_waiting_room/components/dialogs/waiting_dialog.dart';
 import 'package:flutter_tic_tac_toe/routes/app_pages.dart';
 import 'package:flutter_tic_tac_toe/utils/constants/service_constants.dart';
 import 'package:flutter_tic_tac_toe/utils/enums/online_user_status.dart';
@@ -196,7 +196,6 @@ class OnlineUserController extends GetxController {
     }
   }
 
-
   /// Cancels a pending invitation, resetting statuses and clearing the opponent relationship.
   ///
   /// Called when the "Cancel Button" is pressed on the Invitation Waiting Dialog.
@@ -212,10 +211,8 @@ class OnlineUserController extends GetxController {
   /// Called when the timer on [WaitingDialog] reaches 0s.
   void handleInvitationTimeout() {
     logger.t('handle invitation timeout');
-    firestoreService.updateUserStatus(
-        currentUser.uid, OnlineUserStatus.invitationWaitingTimeout);
-    firestoreService.updateUserStatus(
-        opponentId, OnlineUserStatus.invitedButNoRespond);
+    firestoreService.updateUserStatus(currentUser.uid, OnlineUserStatus.invitationWaitingTimeout);
+    firestoreService.updateUserStatus(opponentId, OnlineUserStatus.invitedButNoRespond);
     clearOpponentRelationshipAndResetStatuses();
     update();
   }
@@ -272,7 +269,7 @@ class OnlineUserController extends GetxController {
   /// Initiates the challenge process with a selected opponent.
   ///
   /// Displays the ChallengeDialog to confirm the challenge and sets up initial data.
-  void initiateChallenge(OnlineUser user)  {
+  void initiateChallenge(OnlineUser user) {
     logger.t('select opponent');
     Get.dialog(const ChallengeDialog(), barrierDismissible: false);
     opponent = user;
@@ -294,7 +291,7 @@ class OnlineUserController extends GetxController {
       'opponentId': '',
       'currentRoomId': ''
     };
-    Get.offNamed(Routes.HOME_ONLINE);
+    Get.offNamed(Routes.ONLINE_WAITING_ROOM);
     firestoreService.updateUser(currentUser.uid, currentUserData);
     firestoreService.updateUser(opponentId, opponentData);
     update();
@@ -305,7 +302,7 @@ class OnlineUserController extends GetxController {
   void quitGameWhenOpponentQuitted() {
     logger.t('quit game when opponent quited');
     Get.back();
-    Get.offAllNamed(Routes.HOME_ONLINE);
+    Get.offAllNamed(Routes.ONLINE_WAITING_ROOM);
     Get.back();
     firestoreService.updateUserStatus(currentUser.uid, OnlineUserStatus.idle);
     update();
@@ -382,7 +379,7 @@ class OnlineUserController extends GetxController {
   void updateTwoUserOnFirebase(Map<String, dynamic> data) {
     firestoreService.updateUser(currentUser.uid, data);
     firestoreService.updateUser(opponentId, data);
-}
+  }
 
   void updateCurrentUserStatus(OnlineUserStatus status) {
     firestoreService.updateUserStatus(currentUser.uid, status);
@@ -395,13 +392,9 @@ class OnlineUserController extends GetxController {
     final winnerIndex = OnlineGameController.to.room.getCurrentRound().winnerIndex;
     // The player who draws the last seed win the game.
     if (currentUser.playerIndex == winnerIndex) {
-      final currentUserData = {
-        'status': OnlineUserStatus.win.toShortString()
-      };
+      final currentUserData = {'status': OnlineUserStatus.win.toShortString()};
       // The another player is the loser.
-      final opponentData = {
-        'status': OnlineUserStatus.lose.toShortString()
-      };
+      final opponentData = {'status': OnlineUserStatus.lose.toShortString()};
       firestoreService.updateUser(currentUser.uid, currentUserData);
       firestoreService.updateUser(opponentId, opponentData);
     }
@@ -433,7 +426,8 @@ class OnlineUserController extends GetxController {
   }
 
   Future<bool> hasRematchPendingUser(int num) async {
-    QuerySnapshot result = await firestoreService.getUsersInARoomWithRematchPendingStatus(currentUser.currentRoomId);
+    QuerySnapshot result =
+        await firestoreService.getUsersInARoomWithRematchPendingStatus(currentUser.currentRoomId);
     return result.docs.length == num;
   }
 

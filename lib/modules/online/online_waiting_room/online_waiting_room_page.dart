@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_tic_tac_toe/controllers/auth_controller.dart';
-import 'package:flutter_tic_tac_toe/modules/offline/home/components/app_drawer.dart';
-import 'package:flutter_tic_tac_toe/modules/online/home_online/components/online_user_list.dart';
+import 'package:flutter_tic_tac_toe/modules/online/online_waiting_room/components/online_drawer.dart';
+import 'package:flutter_tic_tac_toe/modules/online/online_waiting_room/components/online_user_list.dart';
 import 'package:flutter_tic_tac_toe/utils/constants/app_styles.dart';
 
-class HomeOnlinePage extends StatefulWidget {
-  const HomeOnlinePage({Key? key}) : super(key: key);
+class OnlineWaitingRoomPage extends StatefulWidget {
+  const OnlineWaitingRoomPage({Key? key}) : super(key: key);
 
   @override
-  State<HomeOnlinePage> createState() => _HomeOnlinePageState();
+  State<OnlineWaitingRoomPage> createState() => _OnlineWaitingRoomPageState();
 }
 
-class _HomeOnlinePageState extends State<HomeOnlinePage> with WidgetsBindingObserver {
+class _OnlineWaitingRoomPageState extends State<OnlineWaitingRoomPage> with WidgetsBindingObserver {
   @override
   void initState() {
     super.initState();
@@ -38,7 +38,7 @@ class _HomeOnlinePageState extends State<HomeOnlinePage> with WidgetsBindingObse
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer: const AppDrawer(),
+      drawer: const OnlineDrawer(),
       appBar: AppBar(
         title: const Text(
           'Tic-tac-toe Online',

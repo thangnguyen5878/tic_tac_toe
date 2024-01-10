@@ -1,5 +1,4 @@
-// ignore_for_file: constant_identifier_names
-
+import 'package:flutter_tic_tac_toe/modules/online/online_waiting_room/online_waiting_room_page.dart';
 import 'package:get/get.dart';
 
 import '../modules/offline/create_room/create_room_binding.dart';
@@ -16,8 +15,11 @@ import '../modules/offline/winner/winner_binding.dart';
 import '../modules/offline/winner/winner_page.dart';
 import '../modules/online/auth/auth_binding.dart';
 import '../modules/online/auth/view/auth_page.dart';
-import '../modules/online/home_online/home_online_page.dart';
 import '../modules/online/online_game/online_game_page.dart';
+import '../modules/online/online_history/online_history_binding.dart';
+import '../modules/online/online_history/online_history_page.dart';
+
+// ignore_for_file: constant_identifier_names
 
 part 'app_routes.dart';
 
@@ -61,8 +63,8 @@ class AppPages {
     ),
     GetPage(name: _Paths.AUTH, page: () => const AuthPage(), binding: AuthBinding(), children: [
       GetPage(
-        name: _Paths.HOME_ONLINE,
-        page: () => const HomeOnlinePage(),
+        name: _Paths.ONLINE_WAITING_ROOM,
+        page: () => const OnlineWaitingRoomPage(),
         // binding: HomeOnlineBinding(),
       ),
       GetPage(
@@ -72,14 +74,19 @@ class AppPages {
       ),
     ]),
     GetPage(
-      name: _Paths.HOME_ONLINE,
-      page: () => const HomeOnlinePage(),
+      name: _Paths.ONLINE_WAITING_ROOM,
+      page: () => const OnlineWaitingRoomPage(),
       // binding: HomeOnlineBinding(),
     ),
     GetPage(
       name: _Paths.ONLINE_GAME,
       page: () => const OnlineGamePage(),
       // binding: OnlineGameBinding(),
+    ),
+    GetPage(
+      name: _Paths.ONLINE_HISTORY,
+      page: () => const OnlineHistoryPage(),
+      binding: OnlineHistoryBinding(),
     ),
   ];
 }

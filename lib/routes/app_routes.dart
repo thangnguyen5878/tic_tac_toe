@@ -12,8 +12,9 @@ abstract class Routes {
   static const HISTORY = _Paths.HISTORY;
   static const HISTORY_DETAILS = _Paths.HISTORY_DETAILS;
   static const AUTH = _Paths.AUTH;
-  static const HOME_ONLINE = _Paths.HOME_ONLINE;
+  static const ONLINE_WAITING_ROOM = _Paths.ONLINE_WAITING_ROOM;
   static const ONLINE_GAME = _Paths.ONLINE_GAME;
+  static const ONLINE_HISTORY = _Paths.ONLINE_HISTORY;
 }
 
 abstract class _Paths {
@@ -25,6 +26,7 @@ abstract class _Paths {
   static const HISTORY = '/history';
   static const HISTORY_DETAILS = '/history-details';
   static const AUTH = '/auth';
-  static const HOME_ONLINE = '/home-online';
+  static const ONLINE_WAITING_ROOM = '/online-waiting-room';
   static const ONLINE_GAME = '/online-game';
+  static const ONLINE_HISTORY = '/online-history';
 }
