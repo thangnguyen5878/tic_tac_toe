@@ -3,22 +3,21 @@ import 'package:flutter_tic_tac_toe/controllers/home_controller.dart';
 import 'package:flutter_tic_tac_toe/models/offline/room.dart';
 import 'package:flutter_tic_tac_toe/utils/constants/app_colors.dart';
 import 'package:flutter_tic_tac_toe/utils/constants/app_styles.dart';
+import 'package:flutter_tic_tac_toe/utils/constants/service_constants.dart';
 
 class RoomCardSelectionMode extends StatelessWidget {
-  const RoomCardSelectionMode({
-    super.key,
-    required this.room
-  });
+  const RoomCardSelectionMode({super.key, required this.room});
 
   final Room room;
 
   @override
   Widget build(BuildContext context) {
+    logger.t('build a room card in selection mode');
     final round = room.getCurrentRound();
 
     return InkWell(
       onTap: () {
-        if(HomeController.to.isRoomCardSelected(room.id)) {
+        if (HomeController.to.isRoomCardSelected(room.id)) {
           HomeController.to.removeSelectedRoom(room.id);
         } else {
           HomeController.to.addSelectedRoom(room.id);

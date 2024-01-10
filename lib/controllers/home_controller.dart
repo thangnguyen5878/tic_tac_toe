@@ -7,23 +7,19 @@ class HomeController extends GetxController {
   bool _isRoomSelectionMode = false;
   List<int> roomIds = [];
   List<int> selectedRoomIds = [];
-  int? _lastSeletedRoomId;
 
-  set lastSelectedRoomId(int id) => _lastSeletedRoomId = id;
   set isRoomSelectionMode(bool value) {
     _isRoomSelectionMode = value;
-    if(_isRoomSelectionMode) {
+    if (_isRoomSelectionMode) {
       logger.t('change to room selection mode');
     } else {
       logger.t('change to normal mode');
     }
   }
+
   bool get isRoomSelectionMode => _isRoomSelectionMode;
 
-  void selectAllRooms() {
-
-  }
-
+  /// Called when long press a room card in normal mode
   void activateRoomSelectionMode(int id) {
     logger.t('activate room selection mode');
     addSelectedRoom(id);
@@ -39,7 +35,6 @@ class HomeController extends GetxController {
   }
 
   void addSelectedRoom(int id) {
-    _lastSeletedRoomId = id;
     selectedRoomIds.add(id);
     logger.t('add a selected room(id: $id)\nselected room ids: $selectedRoomIds');
     update();
@@ -47,7 +42,7 @@ class HomeController extends GetxController {
 
   void removeSelectedRoom(int id) {
     selectedRoomIds.remove(id);
-    if(selectedRoomIds.isEmpty) {
+    if (selectedRoomIds.isEmpty) {
       isRoomSelectionMode = false;
     }
     logger.t('remove a selected room(id: $id)\nselected room ids: $selectedRoomIds');

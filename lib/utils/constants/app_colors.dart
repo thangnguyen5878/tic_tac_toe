@@ -7,7 +7,7 @@ const Color kPrimaryColor = Color(0xFFF0E5E5);
 const Color kRoomCardColor = kBrown15;
 const Color kSelectedRoomCardColor = kBrown20;
 
-// primamry color: brown
+// primary color: brown
 const kBrown10 = Color(0xFFEEE7E7);
 const kBrown15 = Color(0xFFF0E5E5);
 const kBrown20 = Color(0xFFCBB1B1);

@@ -37,16 +37,14 @@ class RoomList extends StatelessWidget {
                     final rooms = snapshot.data!;
                     return Expanded(
                       child: ListView.separated(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 16, vertical: 12),
-                        separatorBuilder:
-                            (BuildContext context, int index) {
+                        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                        separatorBuilder: (BuildContext context, int index) {
                           return const SizedBox(height: 12);
                         },
                         itemCount: rooms.length,
                         itemBuilder: (context, index) {
                           final room = rooms[index];
-                          return RoomCard(room, index);
+                          return RoomCard(room);
                         },
                       ),
                     );
