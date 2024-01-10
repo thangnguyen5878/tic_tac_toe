@@ -6,7 +6,6 @@ import 'package:flutter_tic_tac_toe/utils/constants/app_colors.dart';
 import 'package:flutter_tic_tac_toe/utils/initial_binding.dart';
 import 'package:get/get.dart';
 
-
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   // FirebaseFirestore.instance.settings = Settings(persistenceEnabled: true);
@@ -21,6 +20,7 @@ Future<void> main() async {
 
   runApp(
     GetMaterialApp(
+      defaultTransition: Transition.noTransition,
       debugShowCheckedModeBanner: false,
       title: "Application",
       initialRoute: AppPages.INITIAL,

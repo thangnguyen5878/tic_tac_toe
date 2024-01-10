@@ -15,40 +15,53 @@ class OnlineDrawer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Drawer(
-      backgroundColor: kWhite,
-      child: Column(
-        children: [
-          _buildDrawerHeader(),
-          _buildWaitingRoomTile(),
-          _buildHistoryTile(),
-        ],
-      ),
-    );
+    return Obx(() {
+      final currentRoute = Get.currentRoute;
+      final isOnlineWaitingRoom = currentRoute == Routes.ONLINE_WAITING_ROOM;
+      final isOnlineHistory = currentRoute == Routes.ONLINE_HISTORY;
+
+      return Drawer(
+        backgroundColor: kWhite,
+        child: Column(
+          children: [
+            _buildDrawerHeader(),
+            _buildWaitingRoomTile(isOnlineWaitingRoom: isOnlineWaitingRoom),
+            _buildHistoryTile(isOnlineHistory: isOnlineHistory),
+          ],
+        ),
+      );
+    });
   }
 
-  ListTile _buildHistoryTile() {
+  ListTile _buildHistoryTile({required bool isOnlineHistory}) {
     return ListTile(
       leading: const Icon(Icons.history),
       title: Text(
         'History',
-        // style: isOnlineHistory ? kBoldText : kNormalText, // Conditional styling
+        style: isOnlineHistory ? kBoldText : kNormalText,
       ),
-      onTap: () {
-        Get.toNamed(Routes.ONLINE_HISTORY);
+      tileColor:
+          isOnlineHistory ? kSelectedDrawerTileColor : null, // Set conditional background color
+      onTap: () async {
+        // Get.back();
+        // await Future.delayed(Duration(milliseconds: 150));
+        Get.offNamed(Routes.ONLINE_HISTORY);
       },
     );
   }
 
-  ListTile _buildWaitingRoomTile() {
+  ListTile _buildWaitingRoomTile({required bool isOnlineWaitingRoom}) {
     return ListTile(
       leading: const Icon(Icons.house_rounded),
       title: Text(
         'Waiting Room',
-        // style: isOnlineHome ? kBoldText : kNormalText,
+        style: isOnlineWaitingRoom ? kBoldText : kNormalText,
       ),
-      onTap: () {
-        Get.toNamed(Routes.ONLINE_WAITING_ROOM);
+      tileColor: isOnlineWaitingRoom ? kSelectedDrawerTileColor : null,
+      onTap: () async {
+        // Get.back();
+        // await Future.delayed(Duration(milliseconds: 150));
+        Get.offNamed(Routes.ONLINE_WAITING_ROOM);
       },
     );
   }

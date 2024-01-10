@@ -76,7 +76,6 @@ class AppPages {
     GetPage(
       name: _Paths.ONLINE_WAITING_ROOM,
       page: () => const OnlineWaitingRoomPage(),
-      // binding: HomeOnlineBinding(),
     ),
     GetPage(
       name: _Paths.ONLINE_GAME,

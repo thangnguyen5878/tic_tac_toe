@@ -4,8 +4,8 @@ import 'package:flutter_tic_tac_toe/controllers/online_user_controller.dart';
 import 'package:flutter_tic_tac_toe/models/online/online_room.dart';
 import 'package:flutter_tic_tac_toe/modules/online/online_game/components/online_board_widget.dart';
 import 'package:flutter_tic_tac_toe/modules/online/online_game/components/online_game_back_button.dart';
-import 'package:flutter_tic_tac_toe/modules/online/online_game/components/online_rematch_button.dart';
 import 'package:flutter_tic_tac_toe/modules/online/online_game/components/online_player_bottom_bar.dart';
+import 'package:flutter_tic_tac_toe/modules/online/online_game/components/online_rematch_button.dart';
 import 'package:flutter_tic_tac_toe/utils/constants/app_colors.dart';
 import 'package:flutter_tic_tac_toe/utils/constants/app_styles.dart';
 import 'package:flutter_tic_tac_toe/utils/constants/service_constants.dart';
@@ -15,18 +15,17 @@ class OnlineGamePage extends StatelessWidget {
   const OnlineGamePage({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
-
     return StreamBuilder(
         stream: firestoreService.watchRoom(OnlineGameController.to.currentRoomId),
-      builder: (context, snapshot) {
-          if(snapshot.hasData) {
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
             OnlineRoom room = snapshot.data!.data()! as OnlineRoom;
             OnlineGameController.to.room = room;
 
             return PopScope(
               canPop: false,
               onPopInvoked: (didPop) {
-                if(didPop) return;
+                if (didPop) return;
                 OnlineUserController.to.handleBackButtonOnGamePage();
               },
               child: Scaffold(
@@ -73,14 +72,14 @@ class OnlineGamePage extends StatelessWidget {
           final round = room.getCurrentRound();
 
           return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                Text('Room: ${room.name}', style: kHeading2),
-                Text(
-                    'Round: ${room.getRoundCount()}, Turn: ${round.getTurnCount()}',
-                    style: kHeading3),
-              ]);
+            Text('Room: ${room.name}', style: kHeading2),
+            Text('Round: ${room.getRoundCount()}, Turn: ${round.getTurnCount()}', style: kHeading3),
+          ]);
         },
       ),
-      actions: const [
+      // ignore: prefer_const_literals_to_create_immutables
+      actions: [
+        // ignore: prefer_const_constructors
         OnlineRematchButton(),
       ],
     );

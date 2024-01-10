@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 const Color kPrimaryColor = Color(0xFFF0E5E5);
 const Color kRoomCardColor = kBrown15;
 const Color kSelectedRoomCardColor = kBrown20;
+const Color kSelectedDrawerTileColor = Color(0xFFD4D4D4);
 
 // primary color: brown
 const kBrown10 = Color(0xFFEEE7E7);

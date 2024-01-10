@@ -28,8 +28,10 @@ class OnlineRematchButton extends StatelessWidget {
               OnlineUserController.to.handlePressRematchButtonOnAppbar();
             },
           );
+        } else {
+          return Container();
         }
-        return Container();
+        ;
       },
     );
   }
