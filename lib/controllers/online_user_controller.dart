@@ -10,9 +10,9 @@ import 'package:flutter_tic_tac_toe/modules/online/home_online/components/dialog
 import 'package:flutter_tic_tac_toe/modules/online/online_game/components/dialogs/online_loser_dialog.dart';
 import 'package:flutter_tic_tac_toe/modules/online/online_game/components/dialogs/online_winner_dialog.dart';
 import 'package:flutter_tic_tac_toe/modules/online/online_game/components/dialogs/opponent_quit_game_dialog.dart';
+import 'package:flutter_tic_tac_toe/modules/online/online_game/components/dialogs/quit_game_dialog.dart';
 import 'package:flutter_tic_tac_toe/modules/online/online_game/components/dialogs/rematch_dialog.dart';
 import 'package:flutter_tic_tac_toe/modules/online/online_game/components/dialogs/rematch_waiting_dialog.dart';
-import 'package:flutter_tic_tac_toe/modules/online/online_game/components/dialogs/quit_game_dialog.dart';
 import 'package:flutter_tic_tac_toe/routes/app_pages.dart';
 import 'package:flutter_tic_tac_toe/utils/constants/service_constants.dart';
 import 'package:flutter_tic_tac_toe/utils/enums/online_user_status.dart';
@@ -104,24 +104,22 @@ class OnlineUserController extends GetxController {
   }
 
   void _handleRematchWaitingStatus() {
+    logger.t('handle user status: rematch waiting');
     Get.back();
     Get.dialog(RematchWaitingDialog(), barrierDismissible: false);
   }
 
-   _handleWinStatus()  {
-    // await Future.delayed(Duration(seconds: 2));
-     logger.t('handle user status: win');
-    Get.dialog(
-      OnlineWinnerDialog(), barrierDismissible: false
-    );
+  Future<void> _handleWinStatus() async {
+    logger.t('handle user status: win');
+    await Future.delayed(Duration(seconds: 2));
+    logger.t('handle user status: win');
+    Get.dialog(OnlineWinnerDialog(), barrierDismissible: false);
   }
 
-   _handleLoseStatus()  {
-     logger.t('handle user status: lose');
-    Future.delayed(Duration(seconds: 2));
-    Get.dialog(
-        OnlineLoserDialog(), barrierDismissible: false
-    );
+  Future<void> _handleLoseStatus() async {
+    logger.t('handle user status: lose');
+    await Future.delayed(Duration(seconds: 2));
+    Get.dialog(OnlineLoserDialog(), barrierDismissible: false);
   }
 
   void _handleIdleStatus() {
@@ -327,40 +325,40 @@ class OnlineUserController extends GetxController {
   }
 
   /// Updates user data when signing in.
-  void handleSignIn(OnlineUser newUser) {
+  Future<void> handleSignIn(OnlineUser newUser) async {
     logger.t('online user controller: handle sign in');
-    firestoreService.addUser(newUser);
+    await firestoreService.addUser(newUser);
     currentUser = newUser;
     update();
   }
 
-  void updateUserStatusToIdle() {
+  Future<void> updateUserStatusToIdle() async {
     final data = {
       'status': OnlineUserStatus.idle.toShortString(),
     };
-    firestoreService.updateUser(firebaseAuth.currentUser!.uid, data);
+    await firestoreService.updateUser(firebaseAuth.currentUser!.uid, data);
   }
 
-  void updateUserStatusToInWelcomePage() {
+  Future<void> updateUserStatusToInWelcomePage() async {
     final data = {
       'status': OnlineUserStatus.inWelcomePage.toShortString(),
     };
-    firestoreService.updateUser(firebaseAuth.currentUser!.uid, data);
+    await firestoreService.updateUser(firebaseAuth.currentUser!.uid, data);
   }
 
   /// Establishes the opponent relationship between two users in Firestore.
   ///
   /// Updates the `opponentId` fields for both users to reflect their connection.
-  void establishOpponentRelationship() {
-    firestoreService.updateUserOpponentId(currentUser.uid, opponentId);
-    firestoreService.updateUserOpponentId(opponentId, currentUser.uid);
+  Future<void> establishOpponentRelationship() async {
+    await firestoreService.updateUserOpponentId(currentUser.uid, opponentId);
+    await firestoreService.updateUserOpponentId(opponentId, currentUser.uid);
     update();
   }
 
   /// Terminates the opponent relationship between two users in Firestore and sets their statuses to idle.
   ///
   /// Clears opponent IDs, player indices, and sets statuses to idle, indicating they're available for new games.
-  void clearOpponentRelationshipAndResetStatuses() {
+  Future<void> clearOpponentRelationshipAndResetStatuses() async {
     final currentUserData = {
       'opponentId': '',
       'playerIndex': null,
@@ -372,8 +370,8 @@ class OnlineUserController extends GetxController {
       'status': OnlineUserStatus.idle.toShortString(),
     };
 
-    firestoreService.updateUser(currentUser.uid, currentUserData);
-    firestoreService.updateUser(opponentId, opponentData);
+    await firestoreService.updateUser(currentUser.uid, currentUserData);
+    await firestoreService.updateUser(opponentId, opponentData);
 
     opponentId = '';
     opponent = null;
@@ -404,44 +402,44 @@ class OnlineUserController extends GetxController {
       final opponentData = {
         'status': OnlineUserStatus.lose.toShortString()
       };
-      firestoreService.updateUser(currentUser.uid, currentUserData);
-      firestoreService.updateUser(opponentId, opponentData);
+      await firestoreService.updateUser(currentUser.uid, currentUserData);
+      await firestoreService.updateUser(opponentId, opponentData);
     }
   }
 
-  void requestOpponentForReplay() {
+  Future<void> requestOpponentForReplay() async {
     final currentUserData = {
       'status': OnlineUserStatus.rematchPending.toShortString(),
     };
-    firestoreService.updateUser(currentUser.uid, currentUserData);
+    await firestoreService.updateUser(currentUser.uid, currentUserData);
   }
 
   /// If there are no player in the current room has rematch pending status
   /// then, show [RematchWaitingDialog].
   /// Else, show [RematchDialog].
   Future<void> handlePressRematchButtonOnAppbar() async {
-    if(await hasRematchPendingUser(1)) {
-      Get.dialog(RematchDialog(), barrierDismissible: false);
-    }
-    if (await hasRematchPendingUser(0)) {
-      Get.dialog(RematchWaitingDialog(), barrierDismissible: false);
-      updateCurrentUserStatus(OnlineUserStatus.rematchPending);
-    }
+    Get.dialog(RematchDialog(), barrierDismissible: false);
   }
 
   Future<void> handlePressRematchButtonOnDialog() async {
-    OnlineUserController.to.updateCurrentUserStatus(OnlineUserStatus.rematchPending);
+    await OnlineUserController.to.updateCurrentUserStatus(OnlineUserStatus.rematchPending);
     if (await hasRematchPendingUser(1)) {
+      Get.until((route) => !Get.isDialogOpen!);
       Get.dialog(RematchWaitingDialog(), barrierDismissible: false);
     }
     if (await hasRematchPendingUser(2)) {
       OnlineGameController.to.nextRound();
     }
-
   }
 
   Future<bool> hasRematchPendingUser(int num) async {
-    QuerySnapshot result = await firestoreService.getUsersInARoomWithRematchPendingStatus(currentUser.currentRoomId);
+    QuerySnapshot result =
+        await firestoreService.getUsersInARoomWithRematchPendingStatus(currentUser.currentRoomId);
     return result.docs.length == num;
+  }
+
+  Future<void> handleRematchWaitingCancelation() async {
+    Get.until((route) => !Get.isDialogOpen!);
+    await OnlineUserController.to.updateCurrentUserStatus(OnlineUserStatus.roundCompleted);
   }
 }

@@ -30,10 +30,9 @@ class RematchWaitingDialog extends StatelessWidget {
     return TextButton(
       onPressed: () {
         logger.t('press cancel button');
-        Get.back();
-        OnlineUserController.to.updateCurrentUserStatus(OnlineUserStatus.roundCompleted);
+        OnlineUserController.to.handleRematchWaitingCancelation();
       },
-      child: Text('QUIT'),
+      child: Text('CANCEL'),
     );
   }
 }
