@@ -161,7 +161,7 @@ class FirestoreService {
   }
 
   Stream<QuerySnapshot<Object?>> watchAllRoomsOfAUser(String uid) {
-    return _roomRef.snapshots();
+    return _roomRef.where('playerIds', arrayContainsAny: [uid]).snapshots();
   }
 
   Stream<QuerySnapshot> watchOnlineRooms() {
