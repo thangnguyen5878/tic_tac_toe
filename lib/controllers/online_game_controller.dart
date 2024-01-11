@@ -1,4 +1,3 @@
-
 import 'package:flutter_tic_tac_toe/controllers/online_user_controller.dart';
 import 'package:flutter_tic_tac_toe/models/online/online_board.dart';
 import 'package:flutter_tic_tac_toe/models/online/online_cell.dart';
@@ -35,8 +34,8 @@ class OnlineGameController extends GetxController {
     update();
   }
 
-  void createRoom() {
-    room = OnlineRoom();
+  void createRoom(String player1Id, String player2Id) {
+    room = OnlineRoom(player1Id: player1Id, player2Id: player2Id);
     currentRoomId = room.id;
     logger.t('room created in controller');
     // logger.t('Room{id: ${room.id}, name: ${room.name}');
@@ -46,7 +45,7 @@ class OnlineGameController extends GetxController {
 
   void _watchRoomFromFirebase() {
     // listen for current user
-    if(currentRoomId != '') {
+    if (currentRoomId != '') {
       firestoreService.watchRoom(currentRoomId).listen((snapshot) {
         if (snapshot.exists) {
           room = snapshot.data() as OnlineRoom;
@@ -67,15 +66,13 @@ class OnlineGameController extends GetxController {
     update();
   }
 
-
   Future<void> pushRoomToFirebase() async {
     await firestoreService.addRoom(room);
     logger.t('Room{id: ${room.id}, name: ${room.name}}');
     update();
   }
 
-
-  void pushRoomToFirebaseWithArgument(OnlineRoom onlineRoom)  {
+  void pushRoomToFirebaseWithArgument(OnlineRoom onlineRoom) {
     firestoreService.addRoom(onlineRoom);
     logger.t('push onlineRoom to firebase');
     logger.t('Room{id: ${onlineRoom.id}, name: ${onlineRoom.name}}');
@@ -114,7 +111,8 @@ class OnlineGameController extends GetxController {
   drawSeedOnCell(int row, int column, Seed seed) {
     logger.t('draw $seed on cell($row, $column)');
     OnlineCell? cell = room.board.cells[row][column];
-    if (room.state == GameState.playing && (cell.content != Seed.cross && cell.content != Seed.nought)) {
+    if (room.state == GameState.playing &&
+        (cell.content != Seed.cross && cell.content != Seed.nought)) {
       cell.content = seed;
       room.getCurrentRound().turns = [...room.getCurrentRound().turns, cell];
       room.checkWinner();
@@ -184,9 +182,7 @@ class OnlineGameController extends GetxController {
   Future<void> nextRound() async {
     room.nextRound();
     await pushRoomToFirebase();
-    final data = {
-      'status': OnlineUserStatus.inGame.toShortString()
-    };
+    final data = {'status': OnlineUserStatus.inGame.toShortString()};
     OnlineUserController.to.updateTwoUserOnFirebase(data);
     update();
   }

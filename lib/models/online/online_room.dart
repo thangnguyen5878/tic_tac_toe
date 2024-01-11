@@ -28,12 +28,13 @@ class OnlineRoom {
   int currentRoundIndex;
   int historyRoundIndex;
 
+  List<String?>? playerIds = [];
+
   @JsonKey(includeToJson: false, includeFromJson: false)
   List<OnlineCell>? checkingCells = List<OnlineCell>.empty(growable: true);
 
   @JsonKey(includeToJson: true, includeFromJson: true)
   final winCount = 5;
-
 
   OnlineRoom.all({
     required this.id,
@@ -47,7 +48,7 @@ class OnlineRoom {
     this.checkingCells,
   });
 
-  OnlineRoom({OnlinePlayer? player1, OnlinePlayer? player2})
+  OnlineRoom({OnlinePlayer? player1, OnlinePlayer? player2, String? player1Id, String? player2Id})
       : id = const Uuid().v4(),
         name = 'Untitled Room',
         board = OnlineBoard(),
@@ -55,6 +56,7 @@ class OnlineRoom {
         historyRoundIndex = 0,
         state = GameState.playing,
         currentRoundIndex = 0 {
+    playerIds = [player1Id ?? null, player2Id ?? null];
     rounds = [
       OnlineRound(index: 0, players: [
         OnlinePlayer(index: 0, name: 'Player 1', seed: Seed.cross, score: 0),
@@ -251,14 +253,12 @@ class OnlineRoom {
     ..name = json['name'] as String
     ..state = $enumDecode(_$GameStateEnumMap, json['state'])
     ..board = OnlineBoard.fromJson(json['board'] as Map<String, dynamic>)
-    ..historyBoard =
-    OnlineBoard.fromJson(json['historyBoard'] as Map<String, dynamic>)
-    ..rounds =
-    _$JsonConverterFromJson<List<Map<String, dynamic>>, List<OnlineRound?>>(
+    ..historyBoard = OnlineBoard.fromJson(json['historyBoard'] as Map<String, dynamic>)
+    ..rounds = _$JsonConverterFromJson<List<Map<String, dynamic>>, List<OnlineRound?>>(
         List<Map<String, dynamic>>.from(json['rounds']), const OnlineRoundListConverter().fromJson)
     ..currentRoundIndex = json['currentRoundIndex'] as int
-    ..historyRoundIndex = json['historyRoundIndex'] as int;
-
+    ..historyRoundIndex = json['historyRoundIndex'] as int
+    ..playerIds = (json['playerIds'] as List<dynamic>?)?.map((e) => e as String?).toList();
 
   @override
   String toString() {

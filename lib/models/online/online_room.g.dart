@@ -17,7 +17,9 @@ OnlineRoom _$OnlineRoomFromJson(Map<String, dynamic> json) => OnlineRoom()
       _$JsonConverterFromJson<List<Map<String, dynamic>>, List<OnlineRound?>>(
           json['rounds'], const OnlineRoundListConverter().fromJson)
   ..currentRoundIndex = json['currentRoundIndex'] as int
-  ..historyRoundIndex = json['historyRoundIndex'] as int;
+  ..historyRoundIndex = json['historyRoundIndex'] as int
+  ..playerIds =
+      (json['playerIds'] as List<dynamic>?)?.map((e) => e as String?).toList();
 
 Map<String, dynamic> _$OnlineRoomToJson(OnlineRoom instance) =>
     <String, dynamic>{
@@ -31,6 +33,7 @@ Map<String, dynamic> _$OnlineRoomToJson(OnlineRoom instance) =>
               instance.rounds, const OnlineRoundListConverter().toJson),
       'currentRoundIndex': instance.currentRoundIndex,
       'historyRoundIndex': instance.historyRoundIndex,
+      'playerIds': instance.playerIds,
       'winCount': instance.winCount,
     };
 

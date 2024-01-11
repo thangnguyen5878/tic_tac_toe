@@ -240,7 +240,8 @@ class OnlineUserController extends GetxController {
   /// Called when the "Accept Button" is pressed on [InvitationDialog].
   void acceptChallengeFromOpponent() {
     logger.t('accept challenge from opponent');
-    OnlineGameController.to.createRoom();
+    OnlineGameController.to
+        .createRoom(OnlineUserController.to.currentUser.uid, OnlineUserController.to.opponentId);
     OnlineGameController.to.pushRoomToFirebase();
     final currentUserData = {
       'status': OnlineUserStatus.inGame.toShortString(),

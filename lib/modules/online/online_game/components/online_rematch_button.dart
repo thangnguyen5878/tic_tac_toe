@@ -31,7 +31,6 @@ class OnlineRematchButton extends StatelessWidget {
         } else {
           return Container();
         }
-        ;
       },
     );
   }

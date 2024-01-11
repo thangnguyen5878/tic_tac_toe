@@ -23,30 +23,21 @@ class FirestoreService {
         fromFirestore: (snapshots, _) => OnlineRoom.fromJson(snapshots.data()!),
         toFirestore: (room, _) => room.toJson());
 
-    _playerRef = firestore
-        .collection(fPlayersCollection)
-        .withConverter<OnlinePlayer>(
-            fromFirestore: (snapshots, _) =>
-                OnlinePlayer.fromJson(snapshots.data()!),
-            toFirestore: (player, _) => player.toJson());
+    _playerRef = firestore.collection(fPlayersCollection).withConverter<OnlinePlayer>(
+        fromFirestore: (snapshots, _) => OnlinePlayer.fromJson(snapshots.data()!),
+        toFirestore: (player, _) => player.toJson());
 
     _cellRef = firestore.collection(fCellCollection).withConverter<OnlineCell>(
         fromFirestore: (snapshots, _) => OnlineCell.fromJson(snapshots.data()!),
         toFirestore: (cell, _) => cell.toJson());
 
-    _boardRef = firestore
-        .collection(fBoardCollection)
-        .withConverter<OnlineBoard>(
-            fromFirestore: (snapshots, _) =>
-                OnlineBoard.fromJson(snapshots.data()!),
-            toFirestore: (board, _) => board.toJson());
+    _boardRef = firestore.collection(fBoardCollection).withConverter<OnlineBoard>(
+        fromFirestore: (snapshots, _) => OnlineBoard.fromJson(snapshots.data()!),
+        toFirestore: (board, _) => board.toJson());
 
-    _roundRef = firestore
-        .collection(fRoundCollection)
-        .withConverter<OnlineRound>(
-            fromFirestore: (snapshots, _) =>
-                OnlineRound.fromJson(snapshots.data()!),
-            toFirestore: (round, _) => round.toJson());
+    _roundRef = firestore.collection(fRoundCollection).withConverter<OnlineRound>(
+        fromFirestore: (snapshots, _) => OnlineRound.fromJson(snapshots.data()!),
+        toFirestore: (round, _) => round.toJson());
 
     _userRef = firestore.collection(fUserCollection).withConverter<OnlineUser>(
         fromFirestore: (snapshots, _) => OnlineUser.fromJson(snapshots.data()!),
@@ -92,8 +83,6 @@ class FirestoreService {
     return _userRef.doc(uid).get();
   }
 
-
-
   Stream<DocumentSnapshot> watchUser(String uid) {
     return _userRef.doc(uid).snapshots();
   }
@@ -124,8 +113,7 @@ class FirestoreService {
   }
 
   /// Update a user's status in Firestore
-  Future<Map<String, dynamic>> updateUserStatus(
-      String uid, OnlineUserStatus status) async {
+  Future<Map<String, dynamic>> updateUserStatus(String uid, OnlineUserStatus status) async {
     final data = {
       'status': status.toShortString(),
     };
@@ -168,7 +156,11 @@ class FirestoreService {
     return _roomRef.doc(roomId).snapshots();
   }
 
-  Stream<QuerySnapshot<Object?>> watchAllRooms(String roomId) {
+  Stream<QuerySnapshot<Object?>> watchAllRooms() {
+    return _roomRef.snapshots();
+  }
+
+  Stream<QuerySnapshot<Object?>> watchAllRoomsOfAUser(String uid) {
     return _roomRef.snapshots();
   }
 
