@@ -24,22 +24,21 @@ class GameController extends GetxController {
       newRoom.name = CreateRoomController.to.room.text;
     }
     if (CreateRoomController.to.player1.text != '') {
-      newRoom.getCurrentRound().players![0].name = CreateRoomController.to.player1.text;
+      newRoom.getPlayer1().name = CreateRoomController.to.player1.text;
     }
     if (CreateRoomController.to.player2.text != '') {
-      newRoom.getCurrentRound().players![1].name = CreateRoomController.to.player2.text;
+      newRoom.getPlayer2().name = CreateRoomController.to.player2.text;
     }
     if (CreateRoomController.to.rowCount.text != '') {
       newRoom.board.rowCount = int.tryParse(CreateRoomController.to.rowCount.text) ?? 10;
-      newRoom.historyBoard.rowCount = int.tryParse(CreateRoomController.to.rowCount.text) ?? 10;
+      // newRoom.historyBoard.rowCount = int.tryParse(CreateRoomController.to.rowCount.text) ?? 10;
     }
     if (CreateRoomController.to.columnCount.text != '') {
       newRoom.board.columnCount = int.tryParse(CreateRoomController.to.columnCount.text) ?? 10;
-      newRoom.historyBoard.columnCount =
-          int.tryParse(CreateRoomController.to.columnCount.text) ?? 10;
+      // newRoom.historyBoard.columnCount = int.tryParse(CreateRoomController.to.columnCount.text) ?? 10;
     }
     newRoom.board.rebuild();
-    newRoom.historyBoard.rebuild();
+    // newRoom.historyBoard.rebuild();
     room = newRoom;
     await isarService.saveRoom(room);
     update();
@@ -76,62 +75,62 @@ class GameController extends GetxController {
     }
   }
 
-  historyNextTurn() {
-    final currentHistoryTurnIndex = room.getHistoryRound().historyTurnIndex!;
-    final historyTurnCount = room.getHistoryRound().turns.length;
-    if (currentHistoryTurnIndex < historyTurnCount) {
-      room.getHistoryRound().historyNextTurn();
-      room.updateHistoryBoard();
-      update();
-      logger.t('historyNextTurn()');
-    }
-  }
+  // historyNextTurn() {
+  //   final currentHistoryTurnIndex = room.getHistoryRound().historyTurnIndex!;
+  //   final historyTurnCount = room.getHistoryRound().turns.length;
+  //   if (currentHistoryTurnIndex < historyTurnCount) {
+  //     room.getHistoryRound().historyNextTurn();
+  //     room.updateHistoryBoard();
+  //     update();
+  //     logger.t('historyNextTurn()');
+  //   }
+  // }
 
-  historyPreviousTurn() {
-    final currentHistoryTurnIndex = room.getHistoryRound().historyTurnIndex;
-    if (currentHistoryTurnIndex! > 0) {
-      room.getHistoryRound().historyPreviousTurn();
-      room.updateHistoryBoard();
-      update();
-      logger.t('historyPreviousTurn()');
-    }
-  }
+  // historyPreviousTurn() {
+  //   final currentHistoryTurnIndex = room.getHistoryRound().historyTurnIndex;
+  //   if (currentHistoryTurnIndex! > 0) {
+  //     room.getHistoryRound().historyPreviousTurn();
+  //     room.updateHistoryBoard();
+  //     update();
+  //     logger.t('historyPreviousTurn()');
+  //   }
+  // }
 
   pauseHistoryAutoPlay() {
     isHistoryAutoPlay = false;
     update();
   }
 
-  void resumeHistoryAutoPlay() async {
-    isHistoryAutoPlay = true;
-    update();
+  // void resumeHistoryAutoPlay() async {
+  //   isHistoryAutoPlay = true;
+  //   update();
+  //
+  //   Timer.periodic(const Duration(seconds: 1), (timer) {
+  //     final historyCurrentTurnIndex = room.getHistoryRound().historyTurnIndex;
+  //     final turnCount = room.getHistoryRound().turns.length;
+  //
+  //     if (isHistoryAutoPlay) {
+  //       historyNextTurn();
+  //       update();
+  //
+  //       if (historyCurrentTurnIndex! >= turnCount - 1) {
+  //         pauseHistoryAutoPlay();
+  //         timer.cancel();
+  //       }
+  //     } else {
+  //       timer.cancel();
+  //     }
+  //   });
+  // }
 
-    Timer.periodic(const Duration(seconds: 1), (timer) {
-      final historyCurrentTurnIndex = room.getHistoryRound().historyTurnIndex;
-      final turnCount = room.getHistoryRound().turns.length;
-
-      if (isHistoryAutoPlay) {
-        historyNextTurn();
-        update();
-
-        if (historyCurrentTurnIndex! >= turnCount - 1) {
-          pauseHistoryAutoPlay();
-          timer.cancel();
-        }
-      } else {
-        timer.cancel();
-      }
-    });
-  }
-
-  toggleHistoryAutoPlay() {
-    if (isHistoryAutoPlay) {
-      pauseHistoryAutoPlay();
-    } else {
-      resumeHistoryAutoPlay();
-    }
-    update();
-  }
+  // toggleHistoryAutoPlay() {
+  //   if (isHistoryAutoPlay) {
+  //     pauseHistoryAutoPlay();
+  //   } else {
+  //     resumeHistoryAutoPlay();
+  //   }
+  //   update();
+  // }
 
   /// Move to the next round when a player wins and the player press the `Next round button`, then update the board.
   nextRound() {

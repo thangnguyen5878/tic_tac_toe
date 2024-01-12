@@ -10,8 +10,7 @@ class CellWidget extends StatelessWidget {
   final int row;
   final int column;
 
-  const CellWidget({Key? key, required this.row, required this.column})
-      : super(key: key);
+  const CellWidget({Key? key, required this.row, required this.column}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -37,9 +36,8 @@ class CellWidget extends StatelessWidget {
 
         return InkWell(
           onTap: () {
-            logger.t('Tap cell($row, $column) : ${round.getCurrentPlayer().seed}');
-            GameController.to
-                .drawSeed(row, column, round.getCurrentPlayer().seed!);
+            logger.t('Tap cell($row, $column) : ${room.getCurrentPlayer().seed}');
+            GameController.to.drawSeed(row, column, room.getCurrentPlayer().seed!);
           },
           child: Container(
             alignment: Alignment.center,

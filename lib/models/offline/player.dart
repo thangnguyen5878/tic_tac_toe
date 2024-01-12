@@ -12,28 +12,16 @@ class Player {
   @Enumerated(EnumType.name)
   Seed? seed;
 
-  int? score;
-
-  int? initialScore;
-
-  int? finalScore;
-
-  Player({this.index, this.name, this.seed, int? score}) : score = score ?? 0
-  {
-    initialScore = score;
-  }
+  Player({this.index, this.name, this.seed});
 
   Player.cloneNextRound(Player player) {
     index = player.index;
     name = player.name;
     seed = player.seed;
-    score = player.score;
-    initialScore = player.score;
-    finalScore = null;
   }
 
   @override
   String toString() {
-    return 'Player{index: $index, name: $name, seed: $seed, score: $score, initialScore: $initialScore, finalScore: $finalScore}';
+    return 'Player{index: $index, name: $name, seed: $seed}';
   }
 }

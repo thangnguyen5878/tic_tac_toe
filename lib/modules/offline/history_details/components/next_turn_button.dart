@@ -13,7 +13,7 @@ class NextTurnButton extends StatelessWidget {
       onPressed: () {
         logger.t('Press History Next Turn Button...');
         GameController.to.pauseHistoryAutoPlay();
-        GameController.to.historyNextTurn();
+        // GameController.to.historyNextTurn();
       },
       style: TextButton.styleFrom(elevation: 1, backgroundColor: kBlue30),
       child: const Icon(Icons.chevron_right, color: Colors.black, size: 35),

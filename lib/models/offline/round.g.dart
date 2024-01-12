@@ -18,46 +18,25 @@ const RoundSchema = Schema(
       name: r'currentPlayerIndex',
       type: IsarType.long,
     ),
-    r'currentTurnIndex': PropertySchema(
-      id: 1,
-      name: r'currentTurnIndex',
-      type: IsarType.long,
-    ),
-    r'historyTurnIndex': PropertySchema(
-      id: 2,
-      name: r'historyTurnIndex',
-      type: IsarType.long,
-    ),
-    r'historyTurns': PropertySchema(
-      id: 3,
-      name: r'historyTurns',
-      type: IsarType.objectList,
-      target: r'Cell',
-    ),
     r'index': PropertySchema(
-      id: 4,
+      id: 1,
       name: r'index',
       type: IsarType.long,
     ),
-    r'players': PropertySchema(
-      id: 5,
-      name: r'players',
+    r'scores': PropertySchema(
+      id: 2,
+      name: r'scores',
       type: IsarType.objectList,
-      target: r'Player',
+      target: r'Score',
     ),
     r'turns': PropertySchema(
-      id: 6,
+      id: 3,
       name: r'turns',
       type: IsarType.objectList,
       target: r'Cell',
     ),
-    r'winTurnIndex': PropertySchema(
-      id: 7,
-      name: r'winTurnIndex',
-      type: IsarType.long,
-    ),
     r'winnerIndex': PropertySchema(
-      id: 8,
+      id: 4,
       name: r'winnerIndex',
       type: IsarType.long,
     )
@@ -74,27 +53,12 @@ int _roundEstimateSize(
   Map<Type, List<int>> allOffsets,
 ) {
   var bytesCount = offsets.last;
-  bytesCount += 3 + object.historyTurns.length * 3;
+  bytesCount += 3 + object.scores.length * 3;
   {
-    final offsets = allOffsets[Cell]!;
-    for (var i = 0; i < object.historyTurns.length; i++) {
-      final value = object.historyTurns[i];
-      if (value != null) {
-        bytesCount += CellSchema.estimateSize(value, offsets, allOffsets);
-      }
-    }
-  }
-  {
-    final list = object.players;
-    if (list != null) {
-      bytesCount += 3 + list.length * 3;
-      {
-        final offsets = allOffsets[Player]!;
-        for (var i = 0; i < list.length; i++) {
-          final value = list[i];
-          bytesCount += PlayerSchema.estimateSize(value, offsets, allOffsets);
-        }
-      }
+    final offsets = allOffsets[Score]!;
+    for (var i = 0; i < object.scores.length; i++) {
+      final value = object.scores[i];
+      bytesCount += ScoreSchema.estimateSize(value, offsets, allOffsets);
     }
   }
   bytesCount += 3 + object.turns.length * 3;
@@ -117,29 +81,20 @@ void _roundSerialize(
   Map<Type, List<int>> allOffsets,
 ) {
   writer.writeLong(offsets[0], object.currentPlayerIndex);
-  writer.writeLong(offsets[1], object.currentTurnIndex);
-  writer.writeLong(offsets[2], object.historyTurnIndex);
+  writer.writeLong(offsets[1], object.index);
+  writer.writeObjectList<Score>(
+    offsets[2],
+    allOffsets,
+    ScoreSchema.serialize,
+    object.scores,
+  );
   writer.writeObjectList<Cell>(
     offsets[3],
     allOffsets,
     CellSchema.serialize,
-    object.historyTurns,
-  );
-  writer.writeLong(offsets[4], object.index);
-  writer.writeObjectList<Player>(
-    offsets[5],
-    allOffsets,
-    PlayerSchema.serialize,
-    object.players,
-  );
-  writer.writeObjectList<Cell>(
-    offsets[6],
-    allOffsets,
-    CellSchema.serialize,
     object.turns,
   );
-  writer.writeLong(offsets[7], object.winTurnIndex);
-  writer.writeLong(offsets[8], object.winnerIndex);
+  writer.writeLong(offsets[4], object.winnerIndex);
 }
 
 Round _roundDeserialize(
@@ -148,32 +103,23 @@ Round _roundDeserialize(
   List<int> offsets,
   Map<Type, List<int>> allOffsets,
 ) {
-  final object = Round(
-    index: reader.readLongOrNull(offsets[4]),
-    players: reader.readObjectList<Player>(
-      offsets[5],
-      PlayerSchema.deserialize,
-      allOffsets,
-      Player(),
-    ),
-    winnerIndex: reader.readLongOrNull(offsets[8]),
-  );
-  object.currentPlayerIndex = reader.readLongOrNull(offsets[0]);
-  object.currentTurnIndex = reader.readLongOrNull(offsets[1]);
-  object.historyTurnIndex = reader.readLongOrNull(offsets[2]);
-  object.historyTurns = reader.readObjectOrNullList<Cell>(
+  final object = Round();
+  object.currentPlayerIndex = reader.readLong(offsets[0]);
+  object.index = reader.readLong(offsets[1]);
+  object.scores = reader.readObjectList<Score>(
+        offsets[2],
+        ScoreSchema.deserialize,
+        allOffsets,
+        Score(),
+      ) ??
+      [];
+  object.turns = reader.readObjectOrNullList<Cell>(
         offsets[3],
         CellSchema.deserialize,
         allOffsets,
       ) ??
       [];
-  object.turns = reader.readObjectOrNullList<Cell>(
-        offsets[6],
-        CellSchema.deserialize,
-        allOffsets,
-      ) ??
-      [];
-  object.winTurnIndex = reader.readLongOrNull(offsets[7]);
+  object.winnerIndex = reader.readLongOrNull(offsets[4]);
   return object;
 }
 
@@ -185,11 +131,17 @@ P _roundDeserializeProp<P>(
 ) {
   switch (propertyId) {
     case 0:
-      return (reader.readLongOrNull(offset)) as P;
+      return (reader.readLong(offset)) as P;
     case 1:
-      return (reader.readLongOrNull(offset)) as P;
+      return (reader.readLong(offset)) as P;
     case 2:
-      return (reader.readLongOrNull(offset)) as P;
+      return (reader.readObjectList<Score>(
+            offset,
+            ScoreSchema.deserialize,
+            allOffsets,
+            Score(),
+          ) ??
+          []) as P;
     case 3:
       return (reader.readObjectOrNullList<Cell>(
             offset,
@@ -199,49 +151,14 @@ P _roundDeserializeProp<P>(
           []) as P;
     case 4:
       return (reader.readLongOrNull(offset)) as P;
-    case 5:
-      return (reader.readObjectList<Player>(
-        offset,
-        PlayerSchema.deserialize,
-        allOffsets,
-        Player(),
-      )) as P;
-    case 6:
-      return (reader.readObjectOrNullList<Cell>(
-            offset,
-            CellSchema.deserialize,
-            allOffsets,
-          ) ??
-          []) as P;
-    case 7:
-      return (reader.readLongOrNull(offset)) as P;
-    case 8:
-      return (reader.readLongOrNull(offset)) as P;
     default:
       throw IsarError('Unknown property with id $propertyId');
   }
 }
 
 extension RoundQueryFilter on QueryBuilder<Round, Round, QFilterCondition> {
-  QueryBuilder<Round, Round, QAfterFilterCondition> currentPlayerIndexIsNull() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(const FilterCondition.isNull(
-        property: r'currentPlayerIndex',
-      ));
-    });
-  }
-
-  QueryBuilder<Round, Round, QAfterFilterCondition>
-      currentPlayerIndexIsNotNull() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(const FilterCondition.isNotNull(
-        property: r'currentPlayerIndex',
-      ));
-    });
-  }
-
   QueryBuilder<Round, Round, QAfterFilterCondition> currentPlayerIndexEqualTo(
-      int? value) {
+      int value) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
         property: r'currentPlayerIndex',
@@ -252,7 +169,7 @@ extension RoundQueryFilter on QueryBuilder<Round, Round, QFilterCondition> {
 
   QueryBuilder<Round, Round, QAfterFilterCondition>
       currentPlayerIndexGreaterThan(
-    int? value, {
+    int value, {
     bool include = false,
   }) {
     return QueryBuilder.apply(this, (query) {
@@ -265,7 +182,7 @@ extension RoundQueryFilter on QueryBuilder<Round, Round, QFilterCondition> {
   }
 
   QueryBuilder<Round, Round, QAfterFilterCondition> currentPlayerIndexLessThan(
-    int? value, {
+    int value, {
     bool include = false,
   }) {
     return QueryBuilder.apply(this, (query) {
@@ -278,8 +195,8 @@ extension RoundQueryFilter on QueryBuilder<Round, Round, QFilterCondition> {
   }
 
   QueryBuilder<Round, Round, QAfterFilterCondition> currentPlayerIndexBetween(
-    int? lower,
-    int? upper, {
+    int lower,
+    int upper, {
     bool includeLower = true,
     bool includeUpper = true,
   }) {
@@ -294,266 +211,7 @@ extension RoundQueryFilter on QueryBuilder<Round, Round, QFilterCondition> {
     });
   }
 
-  QueryBuilder<Round, Round, QAfterFilterCondition> currentTurnIndexIsNull() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(const FilterCondition.isNull(
-        property: r'currentTurnIndex',
-      ));
-    });
-  }
-
-  QueryBuilder<Round, Round, QAfterFilterCondition>
-      currentTurnIndexIsNotNull() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(const FilterCondition.isNotNull(
-        property: r'currentTurnIndex',
-      ));
-    });
-  }
-
-  QueryBuilder<Round, Round, QAfterFilterCondition> currentTurnIndexEqualTo(
-      int? value) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'currentTurnIndex',
-        value: value,
-      ));
-    });
-  }
-
-  QueryBuilder<Round, Round, QAfterFilterCondition> currentTurnIndexGreaterThan(
-    int? value, {
-    bool include = false,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        include: include,
-        property: r'currentTurnIndex',
-        value: value,
-      ));
-    });
-  }
-
-  QueryBuilder<Round, Round, QAfterFilterCondition> currentTurnIndexLessThan(
-    int? value, {
-    bool include = false,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.lessThan(
-        include: include,
-        property: r'currentTurnIndex',
-        value: value,
-      ));
-    });
-  }
-
-  QueryBuilder<Round, Round, QAfterFilterCondition> currentTurnIndexBetween(
-    int? lower,
-    int? upper, {
-    bool includeLower = true,
-    bool includeUpper = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.between(
-        property: r'currentTurnIndex',
-        lower: lower,
-        includeLower: includeLower,
-        upper: upper,
-        includeUpper: includeUpper,
-      ));
-    });
-  }
-
-  QueryBuilder<Round, Round, QAfterFilterCondition> historyTurnIndexIsNull() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(const FilterCondition.isNull(
-        property: r'historyTurnIndex',
-      ));
-    });
-  }
-
-  QueryBuilder<Round, Round, QAfterFilterCondition>
-      historyTurnIndexIsNotNull() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(const FilterCondition.isNotNull(
-        property: r'historyTurnIndex',
-      ));
-    });
-  }
-
-  QueryBuilder<Round, Round, QAfterFilterCondition> historyTurnIndexEqualTo(
-      int? value) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'historyTurnIndex',
-        value: value,
-      ));
-    });
-  }
-
-  QueryBuilder<Round, Round, QAfterFilterCondition> historyTurnIndexGreaterThan(
-    int? value, {
-    bool include = false,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        include: include,
-        property: r'historyTurnIndex',
-        value: value,
-      ));
-    });
-  }
-
-  QueryBuilder<Round, Round, QAfterFilterCondition> historyTurnIndexLessThan(
-    int? value, {
-    bool include = false,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.lessThan(
-        include: include,
-        property: r'historyTurnIndex',
-        value: value,
-      ));
-    });
-  }
-
-  QueryBuilder<Round, Round, QAfterFilterCondition> historyTurnIndexBetween(
-    int? lower,
-    int? upper, {
-    bool includeLower = true,
-    bool includeUpper = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.between(
-        property: r'historyTurnIndex',
-        lower: lower,
-        includeLower: includeLower,
-        upper: upper,
-        includeUpper: includeUpper,
-      ));
-    });
-  }
-
-  QueryBuilder<Round, Round, QAfterFilterCondition>
-      historyTurnsElementIsNull() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(const FilterCondition.elementIsNull(
-        property: r'historyTurns',
-      ));
-    });
-  }
-
-  QueryBuilder<Round, Round, QAfterFilterCondition>
-      historyTurnsElementIsNotNull() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(const FilterCondition.elementIsNotNull(
-        property: r'historyTurns',
-      ));
-    });
-  }
-
-  QueryBuilder<Round, Round, QAfterFilterCondition> historyTurnsLengthEqualTo(
-      int length) {
-    return QueryBuilder.apply(this, (query) {
-      return query.listLength(
-        r'historyTurns',
-        length,
-        true,
-        length,
-        true,
-      );
-    });
-  }
-
-  QueryBuilder<Round, Round, QAfterFilterCondition> historyTurnsIsEmpty() {
-    return QueryBuilder.apply(this, (query) {
-      return query.listLength(
-        r'historyTurns',
-        0,
-        true,
-        0,
-        true,
-      );
-    });
-  }
-
-  QueryBuilder<Round, Round, QAfterFilterCondition> historyTurnsIsNotEmpty() {
-    return QueryBuilder.apply(this, (query) {
-      return query.listLength(
-        r'historyTurns',
-        0,
-        false,
-        999999,
-        true,
-      );
-    });
-  }
-
-  QueryBuilder<Round, Round, QAfterFilterCondition> historyTurnsLengthLessThan(
-    int length, {
-    bool include = false,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.listLength(
-        r'historyTurns',
-        0,
-        true,
-        length,
-        include,
-      );
-    });
-  }
-
-  QueryBuilder<Round, Round, QAfterFilterCondition>
-      historyTurnsLengthGreaterThan(
-    int length, {
-    bool include = false,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.listLength(
-        r'historyTurns',
-        length,
-        include,
-        999999,
-        true,
-      );
-    });
-  }
-
-  QueryBuilder<Round, Round, QAfterFilterCondition> historyTurnsLengthBetween(
-    int lower,
-    int upper, {
-    bool includeLower = true,
-    bool includeUpper = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.listLength(
-        r'historyTurns',
-        lower,
-        includeLower,
-        upper,
-        includeUpper,
-      );
-    });
-  }
-
-  QueryBuilder<Round, Round, QAfterFilterCondition> indexIsNull() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(const FilterCondition.isNull(
-        property: r'index',
-      ));
-    });
-  }
-
-  QueryBuilder<Round, Round, QAfterFilterCondition> indexIsNotNull() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(const FilterCondition.isNotNull(
-        property: r'index',
-      ));
-    });
-  }
-
-  QueryBuilder<Round, Round, QAfterFilterCondition> indexEqualTo(int? value) {
+  QueryBuilder<Round, Round, QAfterFilterCondition> indexEqualTo(int value) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
         property: r'index',
@@ -563,7 +221,7 @@ extension RoundQueryFilter on QueryBuilder<Round, Round, QFilterCondition> {
   }
 
   QueryBuilder<Round, Round, QAfterFilterCondition> indexGreaterThan(
-    int? value, {
+    int value, {
     bool include = false,
   }) {
     return QueryBuilder.apply(this, (query) {
@@ -576,7 +234,7 @@ extension RoundQueryFilter on QueryBuilder<Round, Round, QFilterCondition> {
   }
 
   QueryBuilder<Round, Round, QAfterFilterCondition> indexLessThan(
-    int? value, {
+    int value, {
     bool include = false,
   }) {
     return QueryBuilder.apply(this, (query) {
@@ -589,8 +247,8 @@ extension RoundQueryFilter on QueryBuilder<Round, Round, QFilterCondition> {
   }
 
   QueryBuilder<Round, Round, QAfterFilterCondition> indexBetween(
-    int? lower,
-    int? upper, {
+    int lower,
+    int upper, {
     bool includeLower = true,
     bool includeUpper = true,
   }) {
@@ -605,27 +263,11 @@ extension RoundQueryFilter on QueryBuilder<Round, Round, QFilterCondition> {
     });
   }
 
-  QueryBuilder<Round, Round, QAfterFilterCondition> playersIsNull() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(const FilterCondition.isNull(
-        property: r'players',
-      ));
-    });
-  }
-
-  QueryBuilder<Round, Round, QAfterFilterCondition> playersIsNotNull() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(const FilterCondition.isNotNull(
-        property: r'players',
-      ));
-    });
-  }
-
-  QueryBuilder<Round, Round, QAfterFilterCondition> playersLengthEqualTo(
+  QueryBuilder<Round, Round, QAfterFilterCondition> scoresLengthEqualTo(
       int length) {
     return QueryBuilder.apply(this, (query) {
       return query.listLength(
-        r'players',
+        r'scores',
         length,
         true,
         length,
@@ -634,10 +276,10 @@ extension RoundQueryFilter on QueryBuilder<Round, Round, QFilterCondition> {
     });
   }
 
-  QueryBuilder<Round, Round, QAfterFilterCondition> playersIsEmpty() {
+  QueryBuilder<Round, Round, QAfterFilterCondition> scoresIsEmpty() {
     return QueryBuilder.apply(this, (query) {
       return query.listLength(
-        r'players',
+        r'scores',
         0,
         true,
         0,
@@ -646,10 +288,10 @@ extension RoundQueryFilter on QueryBuilder<Round, Round, QFilterCondition> {
     });
   }
 
-  QueryBuilder<Round, Round, QAfterFilterCondition> playersIsNotEmpty() {
+  QueryBuilder<Round, Round, QAfterFilterCondition> scoresIsNotEmpty() {
     return QueryBuilder.apply(this, (query) {
       return query.listLength(
-        r'players',
+        r'scores',
         0,
         false,
         999999,
@@ -658,13 +300,13 @@ extension RoundQueryFilter on QueryBuilder<Round, Round, QFilterCondition> {
     });
   }
 
-  QueryBuilder<Round, Round, QAfterFilterCondition> playersLengthLessThan(
+  QueryBuilder<Round, Round, QAfterFilterCondition> scoresLengthLessThan(
     int length, {
     bool include = false,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.listLength(
-        r'players',
+        r'scores',
         0,
         true,
         length,
@@ -673,13 +315,13 @@ extension RoundQueryFilter on QueryBuilder<Round, Round, QFilterCondition> {
     });
   }
 
-  QueryBuilder<Round, Round, QAfterFilterCondition> playersLengthGreaterThan(
+  QueryBuilder<Round, Round, QAfterFilterCondition> scoresLengthGreaterThan(
     int length, {
     bool include = false,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.listLength(
-        r'players',
+        r'scores',
         length,
         include,
         999999,
@@ -688,7 +330,7 @@ extension RoundQueryFilter on QueryBuilder<Round, Round, QFilterCondition> {
     });
   }
 
-  QueryBuilder<Round, Round, QAfterFilterCondition> playersLengthBetween(
+  QueryBuilder<Round, Round, QAfterFilterCondition> scoresLengthBetween(
     int lower,
     int upper, {
     bool includeLower = true,
@@ -696,7 +338,7 @@ extension RoundQueryFilter on QueryBuilder<Round, Round, QFilterCondition> {
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.listLength(
-        r'players',
+        r'scores',
         lower,
         includeLower,
         upper,
@@ -805,75 +447,6 @@ extension RoundQueryFilter on QueryBuilder<Round, Round, QFilterCondition> {
     });
   }
 
-  QueryBuilder<Round, Round, QAfterFilterCondition> winTurnIndexIsNull() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(const FilterCondition.isNull(
-        property: r'winTurnIndex',
-      ));
-    });
-  }
-
-  QueryBuilder<Round, Round, QAfterFilterCondition> winTurnIndexIsNotNull() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(const FilterCondition.isNotNull(
-        property: r'winTurnIndex',
-      ));
-    });
-  }
-
-  QueryBuilder<Round, Round, QAfterFilterCondition> winTurnIndexEqualTo(
-      int? value) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'winTurnIndex',
-        value: value,
-      ));
-    });
-  }
-
-  QueryBuilder<Round, Round, QAfterFilterCondition> winTurnIndexGreaterThan(
-    int? value, {
-    bool include = false,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        include: include,
-        property: r'winTurnIndex',
-        value: value,
-      ));
-    });
-  }
-
-  QueryBuilder<Round, Round, QAfterFilterCondition> winTurnIndexLessThan(
-    int? value, {
-    bool include = false,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.lessThan(
-        include: include,
-        property: r'winTurnIndex',
-        value: value,
-      ));
-    });
-  }
-
-  QueryBuilder<Round, Round, QAfterFilterCondition> winTurnIndexBetween(
-    int? lower,
-    int? upper, {
-    bool includeLower = true,
-    bool includeUpper = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.between(
-        property: r'winTurnIndex',
-        lower: lower,
-        includeLower: includeLower,
-        upper: upper,
-        includeUpper: includeUpper,
-      ));
-    });
-  }
-
   QueryBuilder<Round, Round, QAfterFilterCondition> winnerIndexIsNull() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(const FilterCondition.isNull(
@@ -945,17 +518,10 @@ extension RoundQueryFilter on QueryBuilder<Round, Round, QFilterCondition> {
 }
 
 extension RoundQueryObject on QueryBuilder<Round, Round, QFilterCondition> {
-  QueryBuilder<Round, Round, QAfterFilterCondition> historyTurnsElement(
-      FilterQuery<Cell> q) {
+  QueryBuilder<Round, Round, QAfterFilterCondition> scoresElement(
+      FilterQuery<Score> q) {
     return QueryBuilder.apply(this, (query) {
-      return query.object(q, r'historyTurns');
-    });
-  }
-
-  QueryBuilder<Round, Round, QAfterFilterCondition> playersElement(
-      FilterQuery<Player> q) {
-    return QueryBuilder.apply(this, (query) {
-      return query.object(q, r'players');
+      return query.object(q, r'scores');
     });
   }
 

@@ -33,13 +33,11 @@ class PlayerBottomBar extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
-                      '${round.getPlayer1().name}: X',
-                      style:
-                          TextStyle(color: xColor, fontWeight: FontWeight.bold),
+                      '${room.getPlayer1().name}: X',
+                      style: TextStyle(color: xColor, fontWeight: FontWeight.bold),
                     ),
-                    Text('Score: ${round.getPlayer1().score}',
-                        style: TextStyle(
-                            color: xColor, fontWeight: FontWeight.bold)),
+                    Text('Score: ${room.getPlayer1Score().currentScore}',
+                        style: TextStyle(color: xColor, fontWeight: FontWeight.bold)),
                   ],
                 ),
               ),
@@ -52,14 +50,12 @@ class PlayerBottomBar extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
-                      '${round.getPlayer2().name}: O',
-                      style:
-                          TextStyle(color: oColor, fontWeight: FontWeight.bold),
+                      '${room.getPlayer2().name}: O',
+                      style: TextStyle(color: oColor, fontWeight: FontWeight.bold),
                     ),
                     Text(
-                      'Score: ${round.getPlayer2().score}',
-                      style:
-                          TextStyle(color: oColor, fontWeight: FontWeight.bold),
+                      'Score: ${room.getPlayer2Score().currentScore}',
+                      style: TextStyle(color: oColor, fontWeight: FontWeight.bold),
                     ),
                   ],
                 ),

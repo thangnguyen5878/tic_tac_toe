@@ -5,10 +5,6 @@ import '../modules/offline/create_room/create_room_binding.dart';
 import '../modules/offline/create_room/create_room_page.dart';
 import '../modules/offline/game/game_binding.dart';
 import '../modules/offline/game/game_page.dart';
-import '../modules/offline/history/history_binding.dart';
-import '../modules/offline/history/history_page.dart';
-import '../modules/offline/history_details/history_details_binding.dart';
-import '../modules/offline/history_details/history_details_page.dart';
 import '../modules/offline/home/home_binding.dart';
 import '../modules/offline/home/home_page.dart';
 import '../modules/offline/winner/winner_binding.dart';
@@ -51,16 +47,16 @@ class AppPages {
       opaque: false,
       transitionDuration: const Duration(seconds: 0),
     ),
-    GetPage(
-      name: _Paths.HISTORY,
-      page: () => HistoryPage(),
-      binding: HistoryBinding(),
-    ),
-    GetPage(
-      name: _Paths.HISTORY_DETAILS,
-      page: () => const HistoryDetailsPage(),
-      binding: HistoryDetailsBinding(),
-    ),
+    // GetPage(
+    //   name: _Paths.HISTORY,
+    //   page: () => HistoryPage(),
+    //   binding: HistoryBinding(),
+    // ),
+    // GetPage(
+    //   name: _Paths.HISTORY_DETAILS,
+    //   page: () => const HistoryDetailsPage(),
+    //   binding: HistoryDetailsBinding(),
+    // ),
     GetPage(name: _Paths.AUTH, page: () => const AuthPage(), binding: AuthBinding(), children: [
       GetPage(
         name: _Paths.ONLINE_WAITING_ROOM,

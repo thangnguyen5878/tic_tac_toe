@@ -13,7 +13,6 @@ class RoomCardSelectionMode extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     logger.t('build a room card in selection mode');
-    final round = room.getCurrentRound();
 
     return InkWell(
       onTap: () {
@@ -48,7 +47,7 @@ class RoomCardSelectionMode extends StatelessWidget {
             const SizedBox(height: 4),
             Text(
               style: kNormalText,
-              '${round.getPlayer1().name} (${round.getPlayer1().score}) - ${round.getPlayer2().name} (${round.getPlayer2().score})',
+              '${room.getPlayer1().name} (${room.getPlayer1Score().currentScore}) - ${room.getPlayer2().name} (${room.getPlayer2Score().currentScore})',
             ),
             // Add more widgets to display additional room information
           ],

@@ -3,14 +3,13 @@ import 'package:flutter_tic_tac_toe/controllers/game_controller.dart';
 import 'package:get/get.dart';
 
 class WinnerPage extends StatelessWidget {
-
   const WinnerPage({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     final room = GameController.to.room;
     final round = room.getCurrentRound();
 
-    final winnerName = round.getWinner().name;
+    final winnerName = room.getWinnerOfCurrentRound()?.name;
     final roundCount = room.getRoundCount();
 
     return SafeArea(
