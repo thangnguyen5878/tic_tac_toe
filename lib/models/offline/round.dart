@@ -96,6 +96,7 @@ class Round {
   //   return winTurnIndex != null && historyTurnIndex == winTurnIndex! + 1;
   // }
 
+  // bool getter
   bool hasWinner() {
     return winnerIndex != null;
   }

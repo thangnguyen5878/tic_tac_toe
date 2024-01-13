@@ -23,11 +23,11 @@ class GamePopupMenuButton extends StatelessWidget {
           child: Text('Reset'),
           // Remove the style parameter
         ),
-        // const PopupMenuItem<String>(
-        //   value: 'history',
-        //   child: Text('History'),
-        //   // Remove the style parameter
-        // ),
+        const PopupMenuItem<String>(
+          value: 'history',
+          child: Text('History'),
+          // Remove the style parameter
+        ),
       ],
       onSelected: (String value) async {
         if (value == 'reset') {

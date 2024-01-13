@@ -77,6 +77,10 @@ class Room {
     return rounds.last;
   }
 
+  Round getRound(int index) {
+    return rounds[index];
+  }
+
   int getRoundCount() {
     return rounds.length;
   }
@@ -99,6 +103,12 @@ class Room {
     }
   }
 
+  Player? getWinnerOfRound(int roundIndex) {
+    if (rounds[roundIndex].hasWinner()) {
+      return players[rounds[roundIndex].winnerIndex!];
+    }
+  }
+
   Score getPlayer1Score() {
     return getCurrentRound().getPlayer1Score();
   }
@@ -116,15 +126,21 @@ class Room {
     return history.currentRoundIndex + 1;
   }
 
-  Player? getWinnerOfARound(int roundIndex) {
-    if (isRoundValidate(roundIndex) && getCurrentRound().hasWinner()) {
-      return players[rounds[roundIndex].winnerIndex!];
-    }
+  // boolean getter
+  bool isPlayer1Win() {
+    return getCurrentRound().isPlayer1Win();
   }
 
-  // boolean getter
+  bool isPlayer2Win() {
+    return getCurrentRound().isPlayer2Win();
+  }
+
   bool isRoundValidate(int roundIndex) {
     return roundIndex >= 0 && roundIndex <= rounds.length - 1;
+  }
+
+  bool hasWinnerOfCurrentRound() {
+    return getCurrentRound().hasWinner();
   }
 
   // setter

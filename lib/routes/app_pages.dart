@@ -1,3 +1,5 @@
+import 'package:flutter_tic_tac_toe/modules/offline/history/history_binding.dart';
+import 'package:flutter_tic_tac_toe/modules/offline/history/history_page.dart';
 import 'package:flutter_tic_tac_toe/modules/online/online_waiting_room/online_waiting_room_page.dart';
 import 'package:get/get.dart';
 
@@ -47,11 +49,11 @@ class AppPages {
       opaque: false,
       transitionDuration: const Duration(seconds: 0),
     ),
-    // GetPage(
-    //   name: _Paths.HISTORY,
-    //   page: () => HistoryPage(),
-    //   binding: HistoryBinding(),
-    // ),
+    GetPage(
+      name: _Paths.HISTORY,
+      page: () => HistoryPage(),
+      binding: HistoryBinding(),
+    ),
     // GetPage(
     //   name: _Paths.HISTORY_DETAILS,
     //   page: () => const HistoryDetailsPage(),
