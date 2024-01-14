@@ -117,8 +117,16 @@ class Room {
     return getCurrentRound().getPlayer2Score();
   }
 
-  // getters history
-  Round getCurrentHistoryRound() {
+  // HISTORY GETTERS
+  int getHistoryTurnCount() {
+    if (hasWinnerInHistory()) {
+      return history.currentTurnIndex; // minus 1 because there are no next turn.
+    } else {
+      return history.currentTurnIndex + 1;
+    }
+  }
+
+  Round getHistoryCurrentRound() {
     return rounds[history.currentRoundIndex];
   }
 
@@ -126,7 +134,54 @@ class Room {
     return history.currentRoundIndex + 1;
   }
 
-  // boolean getter
+  int getHistoryNextTurnCount() {
+    return history.getTurnCount();
+  }
+
+  Player getHistoryCurrentPlayer() {
+    return players[history.currentPlayerIndex];
+  }
+
+  int getHistoryPlayer1CurrentScore() {
+    return getHistoryCurrentRound().getPlayer1Score().currentScore;
+  }
+
+  int getHistoryPlayer2CurrentScore() {
+    return getHistoryCurrentRound().getPlayer2Score().currentScore;
+  }
+
+  // HISTORY BOOLEAN METHODS
+  bool isPlayer1WinInHistory() {
+    return hasWinnerInHistory() && getHistoryCurrentRound().isPlayer1Turn();
+  }
+
+  bool isPlayer2WinInHistory() {
+    return hasWinnerInHistory() && getHistoryCurrentRound().isPlayer2Turn();
+  }
+
+  bool hasWinnerInHistory() {
+    return history.currentTurnIndex == getHistoryCurrentRound().getTurnCount() - 1;
+  }
+
+  bool isPlayer1TurnInHistory() {
+    if (hasWinnerInHistory()) {
+      return !history.isPlayer1Turn(); // When a winner appears, the game stops at winner turn.
+    }
+    return history.isPlayer1Turn();
+  }
+
+  bool isPlayer2TurnInHistory() {
+    if (hasWinnerInHistory()) {
+      return !history.isPlayer2Turn(); // When a winner appears, the game stops at winner turn.
+    }
+    return history.isPlayer2Turn();
+  }
+
+  // BOOLEAN METHODS
+  bool isGameOver() {
+    return state == GameState.stop;
+  }
+
   bool isPlayer1Win() {
     return getCurrentRound().isPlayer1Win();
   }
@@ -143,18 +198,13 @@ class Room {
     return getCurrentRound().hasWinner();
   }
 
-  // setter
+  // SETTERS
   void addScoreForPlayer1(int score) {
     getPlayer1Score().addScore(score);
   }
 
   void addScoreForPlayer2(int score) {
     getPlayer2Score().addScore(score);
-  }
-
-  // check methods
-  bool isGameOver() {
-    return state == GameState.stop;
   }
 
   /// Check whether adjacent cells are the same or not to check the winner
@@ -222,7 +272,7 @@ class Room {
       return; // Winner found and handled
     }
     // If no winner, move to next turn
-    getCurrentRound().nextTurn();
+    getCurrentRound().GoToNextTurn();
   }
 
   bool checkLines() {
@@ -308,17 +358,16 @@ class Room {
     getCurrentRound().reset();
   }
 
-  /// Load cell from turns to history board according to historyCurrentTurnIndex
-  // void updateHistoryBoard() {
-  //   historyBoard.reset();
-  //   final turns = getHistoryRound().turns;
-  //   final currentHistoryTurnIndex = getHistoryRound().historyTurnIndex!;
-  //   // logger.t('Turns: $turns');
-  //   if (currentHistoryTurnIndex >= 0) {
-  //     historyBoard.load(turns, currentHistoryTurnIndex);
-  //   }
-  // }
+  /// Loads [History.currentTurnIndex]+1 cells from [Round.turns] to [History.board].
+  void updateHistoryBoard() {
+    history.board.reset();
+    // Initial (turn index: -1): no cell on the board.
+    if (history.currentTurnIndex >= 0) {
+      history.board.load(getHistoryCurrentRound().turns, history.currentTurnIndex);
+    }
+  }
 
+  // LOGS
   @override
   String toString() {
     return 'Room{id: $id, name: $name, createdAt: $createdAt, lastModifiedAt: $lasAccessAt, state: $state, board: $board, players: $players, rounds: $rounds, history: $history, checkingCells: $checkingCells, winCount: $winCount}';
@@ -327,32 +376,4 @@ class Room {
   String toShortString() {
     return 'Room{id: $id, name: $name, createdAt: $createdAt, lastModifiedAt: $lasAccessAt, state: $state, checkingCells: $checkingCells, winCount: $winCount}';
   }
-
-  // Map<String, dynamic> toJson() {
-  //   return {
-  //     'id': id,
-  //     'name': name,
-  //     'state': state,
-  //     'board': board,
-  //     'historyBoard': historyBoard,
-  //     'rounds': rounds,
-  //     'currentRoundIndex': currentRoundIndex,
-  //     'historyRoundIndex': historyRoundIndex,
-  //     'checkingCells': checkingCells,
-  //   };
-  // }
-  //
-  // factory Room.fromJson(Map<String, dynamic> map) {
-  //   return Room.all(
-  //     id: map['id'] as Id,
-  //     name: map['name'] as String,
-  //     state: map['state'] as GameState,
-  //     board: map['board'] as Board,
-  //     historyBoard: map['historyBoard'] as Board,
-  //     rounds: map['rounds'] as List<Round?>,
-  //     currentRoundIndex: map['currentRoundIndex'] as int,
-  //     historyRoundIndex: map['historyRoundIndex'] as int,
-  //     checkingCells: map['checkingCells'] as List<Cell>,
-  //   );
-  // }
 }

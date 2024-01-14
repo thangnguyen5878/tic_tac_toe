@@ -16,6 +16,7 @@ class Cell {
   @Enumerated(EnumType.name)
   late CellState? state;
 
+  // CONSTRUCTORS
   Cell({this.row, this.column, Seed? content, CellState? state})
       : content = content ?? Seed.noSeed,
         state = state ?? CellState.normal;
@@ -34,6 +35,16 @@ class Cell {
     state = CellState.normal;
   }
 
+  // BOOLEAN METHODS
+  bool isPlayer1Win() {
+    return state == CellState.crossWin;
+  }
+
+  bool isPlayer2Win() {
+    return state == CellState.noughtWin;
+  }
+
+  // LOGS
   @override
   String toString() {
     return '''cell($row, $column): $content, $state\n''';

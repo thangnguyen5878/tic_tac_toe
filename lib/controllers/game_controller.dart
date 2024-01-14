@@ -52,7 +52,7 @@ class GameController extends GetxController {
 
   Future<int> saveRoomToIsarDatabase() async {
     await isarService.saveRoom(room);
-    update();
+    // update();
     return room.id;
   }
 
@@ -81,71 +81,14 @@ class GameController extends GetxController {
     }
   }
 
-  // historyNextTurn() {
-  //   final currentHistoryTurnIndex = room.getHistoryRound().historyTurnIndex!;
-  //   final historyTurnCount = room.getHistoryRound().turns.length;
-  //   if (currentHistoryTurnIndex < historyTurnCount) {
-  //     room.getHistoryRound().historyNextTurn();
-  //     room.updateHistoryBoard();
-  //     update();
-  //     logger.t('historyNextTurn()');
-  //   }
-  // }
-
-  // historyPreviousTurn() {
-  //   final currentHistoryTurnIndex = room.getHistoryRound().historyTurnIndex;
-  //   if (currentHistoryTurnIndex! > 0) {
-  //     room.getHistoryRound().historyPreviousTurn();
-  //     room.updateHistoryBoard();
-  //     update();
-  //     logger.t('historyPreviousTurn()');
-  //   }
-  // }
-
-  pauseHistoryAutoPlay() {
-    isHistoryAutoPlay = false;
-    update();
-  }
-
-  // void resumeHistoryAutoPlay() async {
-  //   isHistoryAutoPlay = true;
-  //   update();
-  //
-  //   Timer.periodic(const Duration(seconds: 1), (timer) {
-  //     final historyCurrentTurnIndex = room.getHistoryRound().historyTurnIndex;
-  //     final turnCount = room.getHistoryRound().turns.length;
-  //
-  //     if (isHistoryAutoPlay) {
-  //       historyNextTurn();
-  //       update();
-  //
-  //       if (historyCurrentTurnIndex! >= turnCount - 1) {
-  //         pauseHistoryAutoPlay();
-  //         timer.cancel();
-  //       }
-  //     } else {
-  //       timer.cancel();
-  //     }
-  //   });
-  // }
-
-  // toggleHistoryAutoPlay() {
-  //   if (isHistoryAutoPlay) {
-  //     pauseHistoryAutoPlay();
-  //   } else {
-  //     resumeHistoryAutoPlay();
-  //   }
-  //   update();
-  // }
-
   /// Move to the next round when a player wins and the player press the `Next round button`, then update the board.
-  nextRound() {
+  void nextRound() {
     room.nextRound();
     // logger.t('rounds: ${room.rounds}');
     update();
   }
 
-  resetBoard() {
+  void resetBoard() {
     room.reset();
     logger.t('reset game');
     update();
@@ -154,5 +97,62 @@ class GameController extends GetxController {
   void handleBackFromGamePage() {
     GameController.to.saveRoomToIsarDatabase();
     Get.offAllNamed(Routes.HOME);
+  }
+
+  // HISTORY METHODS
+  void goToNextTurnInHistory() {
+    if (!room.hasWinnerInHistory()) {
+      logger.t('History: Go to next turn');
+      pauseHistoryAutoPlay();
+      room.history.goToNextTurn();
+      room.updateHistoryBoard();
+      update();
+    }
+  }
+
+  void goToPreviousTurnInHistory() {
+    if (!room.history.isFirstTurn()) {
+      logger.t('History: Go to previous turn');
+      pauseHistoryAutoPlay();
+      room.history.goToPreviousTurn();
+      room.updateHistoryBoard();
+      update();
+    }
+  }
+
+  void pauseHistoryAutoPlay() {
+    isHistoryAutoPlay = false;
+    update();
+  }
+
+  void resumeHistoryAutoPlay() async {
+    isHistoryAutoPlay = true;
+    update();
+
+    Timer.periodic(const Duration(seconds: 1), (timer) {
+      final historyCurrentTurnIndex = room.history.currentTurnIndex;
+      final turnCount = room.getHistoryCurrentRound().getTurnCount();
+
+      if (isHistoryAutoPlay) {
+        goToNextTurnInHistory();
+        update();
+
+        if (historyCurrentTurnIndex >= turnCount - 1) {
+          pauseHistoryAutoPlay();
+          timer.cancel();
+        }
+      } else {
+        timer.cancel();
+      }
+    });
+  }
+
+  void toggleHistoryAutoPlay() {
+    if (isHistoryAutoPlay) {
+      pauseHistoryAutoPlay();
+    } else {
+      resumeHistoryAutoPlay();
+    }
+    update();
   }
 }

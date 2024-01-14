@@ -45,6 +45,9 @@ class Round {
 
   // turns
   int getTurnCount() {
+    if (hasWinner()) {
+      return turns.length; // There are no next turn.
+    }
     return turns.length + 1;
   }
 
@@ -96,7 +99,7 @@ class Round {
   //   return winTurnIndex != null && historyTurnIndex == winTurnIndex! + 1;
   // }
 
-  // bool getter
+  // BOOLEANS GETTERS
   bool hasWinner() {
     return winnerIndex != null;
   }
@@ -107,6 +110,14 @@ class Round {
 
   bool isPlayer2Win() {
     return hasWinner() && winnerIndex == 1;
+  }
+
+  bool isPlayer1Turn() {
+    return currentPlayerIndex == 0;
+  }
+
+  bool isPlayer2Turn() {
+    return currentPlayerIndex == 1;
   }
 
   Round cloneForNextRound() {
@@ -126,20 +137,17 @@ class Round {
     currentPlayerIndex = 0;
   }
 
-  // resetHistory() {
-  //   _historyPlayerIndex = 0;
-  //   historyTurnIndex = 0;
-  //   historyTurns = [];
-  // }
-
-  /// When draw Seed at a cell, automatically change to next turn.
-  nextTurn() {
-    // toggle player
+  void toglePlayer() {
     if (currentPlayerIndex == 0) {
       currentPlayerIndex = 1;
     } else {
       currentPlayerIndex = 0;
     }
+  }
+
+  /// When draw Seed at a cell, automatically change to next turn.
+  void GoToNextTurn() {
+    toglePlayer();
     // turns = [...turns, cell];
     // logger.t('next turn, current player: ${currentPlayerIndex! + 1}');
   }

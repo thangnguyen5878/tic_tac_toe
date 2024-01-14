@@ -11,13 +11,6 @@ Future<void> main() async {
   // FirebaseFirestore.instance.settings = Settings(persistenceEnabled: true);
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
 
-  // Get.put(OnlineGameController());
-  // OnlineRoom room1 = OnlineRoom();
-  // OnlineGameController.to.pushRoomToFirebaseWithArgument(room1);
-
-  // final object = OnlineRoom.fromJson(roomJsonSnippet);
-  // logger.i(object);
-
   runApp(
     GetMaterialApp(
       defaultTransition: Transition.noTransition,

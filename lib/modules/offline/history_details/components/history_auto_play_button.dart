@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_tic_tac_toe/controllers/game_controller.dart';
 import 'package:flutter_tic_tac_toe/utils/constants/app_colors.dart';
+import 'package:flutter_tic_tac_toe/utils/constants/service_constants.dart';
 import 'package:get/get.dart';
 
 class HistoryAutoPlayButton extends StatelessWidget {
@@ -13,7 +14,8 @@ class HistoryAutoPlayButton extends StatelessWidget {
 
       return ElevatedButton(
         onPressed: () {
-          // GameController.to.toggleHistoryAutoPlay();
+          logger.t('Press Auto Play Button');
+          GameController.to.toggleHistoryAutoPlay();
         },
         style: TextButton.styleFrom(elevation: 1, backgroundColor: kPurple30),
         child: Icon(icon, color: Colors.black, size: 35),

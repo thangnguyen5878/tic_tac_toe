@@ -12,9 +12,8 @@ class PreviousTurnButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return ElevatedButton(
       onPressed: () {
-        logger.t('Press Previous Next Turn Button...');
-        GameController.to.pauseHistoryAutoPlay();
-        // GameController.to.historyPreviousTurn();
+        logger.t('Press Previous Turn Button');
+        GameController.to.goToPreviousTurnInHistory();
       },
       style: TextButton.styleFrom(elevation: 1, backgroundColor: kBlue30),
       child: const Icon(
