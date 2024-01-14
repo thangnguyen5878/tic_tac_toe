@@ -137,7 +137,7 @@ class Round {
     currentPlayerIndex = 0;
   }
 
-  void toglePlayer() {
+  void togglePlayer() {
     if (currentPlayerIndex == 0) {
       currentPlayerIndex = 1;
     } else {
@@ -147,7 +147,7 @@ class Round {
 
   /// When draw Seed at a cell, automatically change to next turn.
   void GoToNextTurn() {
-    toglePlayer();
+    togglePlayer();
     // turns = [...turns, cell];
     // logger.t('next turn, current player: ${currentPlayerIndex! + 1}');
   }

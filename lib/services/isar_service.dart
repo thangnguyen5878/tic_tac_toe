@@ -34,16 +34,21 @@ class IsarService {
     return isar.rooms.get(id);
   }
 
-  Stream<List<Room>> watchAllRooms() async* {
+  Stream<List<dynamic>> watchAllRooms() async* {
     final isar = await db;
-    yield* isar.rooms.where().watch(fireImmediately: true);
+    yield* isar.rooms.buildQuery(sortBy: [
+      const SortProperty(
+        property: 'lastAccessAt',
+        sort: Sort.desc,
+      )
+    ]).watch(fireImmediately: true);
   }
 
   // ROOM: INSERT AND UPDATE
   /// Save a Room object in the database
-   saveRoom(Room room) async {
+  Future<void> saveRoom(Room room) async {
     final isar = await db;
-    isar.writeTxn(() => isar.rooms.put(room));
+    await isar.writeTxn(() => isar.rooms.put(room));
   }
 
   // ROOM: DELETE

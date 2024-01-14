@@ -57,11 +57,18 @@ class GameController extends GetxController {
   }
 
   /// Load a room from isar database by room id.
-  loadRoomById(id) async {
+  Future<void> loadRoomById(id) async {
     room = (await isarService.getRoom(id))!;
+    room.lastAccessAt = DateTime.now();
     var turns = room.getCurrentRound().turns;
     room.board.loadAll(turns);
     update();
+  }
+
+  void openRoom(int roomId) {
+    logger.t('open a room(id: ${roomId})');
+    loadRoomById(roomId);
+    Get.toNamed(Routes.GAME, arguments: roomId);
   }
 
   /// The player draw a Seed in a cell(row, column) on the board.

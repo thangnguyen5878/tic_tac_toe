@@ -34,9 +34,9 @@ const RoomSchema = CollectionSchema(
       type: IsarType.object,
       target: r'History',
     ),
-    r'lasAccessAt': PropertySchema(
+    r'lastAccessAt': PropertySchema(
       id: 3,
-      name: r'lasAccessAt',
+      name: r'lastAccessAt',
       type: IsarType.dateTime,
     ),
     r'name': PropertySchema(
@@ -140,7 +140,7 @@ void _roomSerialize(
     HistorySchema.serialize,
     object.history,
   );
-  writer.writeDateTime(offsets[3], object.lasAccessAt);
+  writer.writeDateTime(offsets[3], object.lastAccessAt);
   writer.writeString(offsets[4], object.name);
   writer.writeObjectList<Player>(
     offsets[5],
@@ -179,7 +179,7 @@ Room _roomDeserialize(
       ) ??
       History();
   object.id = id;
-  object.lasAccessAt = reader.readDateTime(offsets[3]);
+  object.lastAccessAt = reader.readDateTime(offsets[3]);
   object.name = reader.readString(offsets[4]);
   object.players = reader.readObjectList<Player>(
         offsets[5],
@@ -455,43 +455,43 @@ extension RoomQueryFilter on QueryBuilder<Room, Room, QFilterCondition> {
     });
   }
 
-  QueryBuilder<Room, Room, QAfterFilterCondition> lasAccessAtEqualTo(
+  QueryBuilder<Room, Room, QAfterFilterCondition> lastAccessAtEqualTo(
       DateTime value) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'lasAccessAt',
+        property: r'lastAccessAt',
         value: value,
       ));
     });
   }
 
-  QueryBuilder<Room, Room, QAfterFilterCondition> lasAccessAtGreaterThan(
+  QueryBuilder<Room, Room, QAfterFilterCondition> lastAccessAtGreaterThan(
     DateTime value, {
     bool include = false,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.greaterThan(
         include: include,
-        property: r'lasAccessAt',
+        property: r'lastAccessAt',
         value: value,
       ));
     });
   }
 
-  QueryBuilder<Room, Room, QAfterFilterCondition> lasAccessAtLessThan(
+  QueryBuilder<Room, Room, QAfterFilterCondition> lastAccessAtLessThan(
     DateTime value, {
     bool include = false,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.lessThan(
         include: include,
-        property: r'lasAccessAt',
+        property: r'lastAccessAt',
         value: value,
       ));
     });
   }
 
-  QueryBuilder<Room, Room, QAfterFilterCondition> lasAccessAtBetween(
+  QueryBuilder<Room, Room, QAfterFilterCondition> lastAccessAtBetween(
     DateTime lower,
     DateTime upper, {
     bool includeLower = true,
@@ -499,7 +499,7 @@ extension RoomQueryFilter on QueryBuilder<Room, Room, QFilterCondition> {
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.between(
-        property: r'lasAccessAt',
+        property: r'lastAccessAt',
         lower: lower,
         includeLower: includeLower,
         upper: upper,
@@ -1029,15 +1029,15 @@ extension RoomQuerySortBy on QueryBuilder<Room, Room, QSortBy> {
     });
   }
 
-  QueryBuilder<Room, Room, QAfterSortBy> sortByLasAccessAt() {
+  QueryBuilder<Room, Room, QAfterSortBy> sortByLastAccessAt() {
     return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'lasAccessAt', Sort.asc);
+      return query.addSortBy(r'lastAccessAt', Sort.asc);
     });
   }
 
-  QueryBuilder<Room, Room, QAfterSortBy> sortByLasAccessAtDesc() {
+  QueryBuilder<Room, Room, QAfterSortBy> sortByLastAccessAtDesc() {
     return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'lasAccessAt', Sort.desc);
+      return query.addSortBy(r'lastAccessAt', Sort.desc);
     });
   }
 
@@ -1103,15 +1103,15 @@ extension RoomQuerySortThenBy on QueryBuilder<Room, Room, QSortThenBy> {
     });
   }
 
-  QueryBuilder<Room, Room, QAfterSortBy> thenByLasAccessAt() {
+  QueryBuilder<Room, Room, QAfterSortBy> thenByLastAccessAt() {
     return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'lasAccessAt', Sort.asc);
+      return query.addSortBy(r'lastAccessAt', Sort.asc);
     });
   }
 
-  QueryBuilder<Room, Room, QAfterSortBy> thenByLasAccessAtDesc() {
+  QueryBuilder<Room, Room, QAfterSortBy> thenByLastAccessAtDesc() {
     return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'lasAccessAt', Sort.desc);
+      return query.addSortBy(r'lastAccessAt', Sort.desc);
     });
   }
 
@@ -1159,9 +1159,9 @@ extension RoomQueryWhereDistinct on QueryBuilder<Room, Room, QDistinct> {
     });
   }
 
-  QueryBuilder<Room, Room, QDistinct> distinctByLasAccessAt() {
+  QueryBuilder<Room, Room, QDistinct> distinctByLastAccessAt() {
     return QueryBuilder.apply(this, (query) {
-      return query.addDistinctBy(r'lasAccessAt');
+      return query.addDistinctBy(r'lastAccessAt');
     });
   }
 
@@ -1211,9 +1211,9 @@ extension RoomQueryProperty on QueryBuilder<Room, Room, QQueryProperty> {
     });
   }
 
-  QueryBuilder<Room, DateTime, QQueryOperations> lasAccessAtProperty() {
+  QueryBuilder<Room, DateTime, QQueryOperations> lastAccessAtProperty() {
     return QueryBuilder.apply(this, (query) {
-      return query.addPropertyName(r'lasAccessAt');
+      return query.addPropertyName(r'lastAccessAt');
     });
   }
 

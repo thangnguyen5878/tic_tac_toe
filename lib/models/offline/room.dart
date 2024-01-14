@@ -19,7 +19,7 @@ class Room {
   Id id = Isar.autoIncrement;
   String name = 'Untitled Room';
   DateTime createdAt = DateTime.now();
-  DateTime lasAccessAt = DateTime.now();
+  DateTime lastAccessAt = DateTime.now();
 
   @Enumerated(EnumType.name)
   GameState state = GameState.playing;
@@ -43,7 +43,7 @@ class Room {
       {required this.id,
       required this.name,
       required this.createdAt,
-      required this.lasAccessAt,
+      required this.lastAccessAt,
       required this.state,
       required this.board,
       required this.players,
@@ -61,7 +61,7 @@ class Room {
       History? history})
       : name = name ?? 'Untitled Room',
         createdAt = createdAt ?? DateTime.now(),
-        lasAccessAt = lastAccessAt ?? DateTime.now(),
+        lastAccessAt = lastAccessAt ?? DateTime.now(),
         state = state ?? GameState.playing,
         board = Board(),
         players = players ??
@@ -160,7 +160,7 @@ class Room {
   }
 
   bool hasWinnerInHistory() {
-    return history.currentTurnIndex == getHistoryCurrentRound().getTurnCount() - 1;
+    return history.currentTurnIndex == getHistoryCurrentRound().getTurnCount();
   }
 
   bool isPlayer1TurnInHistory() {
@@ -370,10 +370,10 @@ class Room {
   // LOGS
   @override
   String toString() {
-    return 'Room{id: $id, name: $name, createdAt: $createdAt, lastModifiedAt: $lasAccessAt, state: $state, board: $board, players: $players, rounds: $rounds, history: $history, checkingCells: $checkingCells, winCount: $winCount}';
+    return 'Room{id: $id, name: $name, createdAt: $createdAt, lastModifiedAt: $lastAccessAt, state: $state, board: $board, players: $players, rounds: $rounds, history: $history, checkingCells: $checkingCells, winCount: $winCount}';
   }
 
   String toShortString() {
-    return 'Room{id: $id, name: $name, createdAt: $createdAt, lastModifiedAt: $lasAccessAt, state: $state, checkingCells: $checkingCells, winCount: $winCount}';
+    return 'Room{id: $id, name: $name, createdAt: $createdAt, lastModifiedAt: $lastAccessAt, state: $state, checkingCells: $checkingCells, winCount: $winCount}';
   }
 }
