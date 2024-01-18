@@ -8,6 +8,7 @@ part 'online_cell.g.dart';
 class OnlineCell {
   int? row;
   int? column;
+
   Seed? content;
   late CellState? state;
 
