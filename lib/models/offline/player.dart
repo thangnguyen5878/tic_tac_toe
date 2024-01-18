@@ -4,31 +4,39 @@ import 'package:isar/isar.dart';
 
 part 'player.g.dart';
 
+/// A player in the game.
 @embedded
 class Player {
+  /// The index of the player.
   int? index;
 
+  /// The name of the player.
   String? name;
 
+  /// The seed of the player.
   @Enumerated(EnumType.name)
   Seed? seed;
 
   // CONSTRUCTORS
+  /// Creates a new player instance.
   Player({this.index, this.name, this.seed});
 
   // METHODS: CLONE
+  /// Creates a clone of the player for the next round.
   Player.cloneNextRound(Player player) {
     index = player.index;
     name = player.name;
     seed = player.seed;
   }
 
-  // METHOD: LOG
+  // METHODS: LOG
+  /// Returns a string representation of the player.
   @override
   String toString() {
     return 'Player{index: $index, name: $name, seed: $seed}';
   }
 
+  /// Logs information about the player.
   void logInfo() {
     logger.t(this);
   }

@@ -1,65 +1,46 @@
+import 'package:flutter_tic_tac_toe/utils/constants/service_constants.dart';
 import 'package:flutter_tic_tac_toe/utils/enums/seed.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'online_player.g.dart';
 
+/// A player in the game.
 @JsonSerializable(explicitToJson: true)
 class OnlinePlayer {
+  /// The index of the player.
   int? index;
+
+  /// The name of the player.
   String? name;
+
+  /// The seed of the player.
   Seed? seed;
-  int? score;
-  int? initialScore;
-  int? finalScore;
 
-  // @DocumentReferenceConverter()
-  // DocumentReference<Map<String, dynamic>>? playerRef;
+  // CONSTRUCTORS
+  /// Creates a new player instance.
+  OnlinePlayer({this.index, this.name, this.seed});
 
-  OnlinePlayer({this.index, this.name, this.seed, int? score}) : score = score ?? 0
-  {
-    initialScore = score;
-  }
-
-
-  OnlinePlayer.all({this.index, this.name, this.seed, this.score, this.initialScore,
-      this.finalScore});
-
+  // METHODS: CLONE
+  /// Creates a clone of the player for the next round.
   OnlinePlayer.cloneNextRound(OnlinePlayer player) {
     index = player.index;
     name = player.name;
     seed = player.seed;
-    score = player.score;
-    initialScore = player.score;
-    finalScore = null;
   }
 
+  // JSON SERIALIZATION
   factory OnlinePlayer.fromJson(Map<String, dynamic> json) => _$OnlinePlayerFromJson(json);
   Map<String, dynamic> toJson() => _$OnlinePlayerToJson(this);
 
+  // METHODS: LOG
+  /// Returns a string representation of the player.
   @override
   String toString() {
-    return 'OnlinePlayer{index: $index, name: $name, seed: $seed, score: $score, initialScore: $initialScore, finalScore: $finalScore}';
+    return 'OnlinePlayer{index: $index, name: $name, seed: $seed}';
   }
 
-  // Map<String, dynamic> toJson() {
-  //   return {
-  //     'index': this.index,
-  //     'name': this.name,
-  //     'seed': this.seed.toString(),
-  //     'score': this.score,
-  //     'initialScore': this.initialScore,
-  //     'finalScore': this.finalScore,
-  //   };
-  // }
-  //
-  // factory OnlinePlayer.fromJson(Map<String, dynamic> map) {
-  //   return OnlinePlayer.all(
-  //     index: map['index'] as int,
-  //     name: map['name'] as String,
-  //     seed: map['seed'] as Seed,
-  //     score: map['score'] as int,
-  //     initialScore: map['initialScore'] as int,
-  //     finalScore: map['finalScore'] as int,
-  //   );
-  // }
+  /// Logs information about the player.
+  void logInfo() {
+    logger.t(this);
+  }
 }
