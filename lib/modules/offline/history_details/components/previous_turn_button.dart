@@ -5,14 +5,15 @@ import 'package:flutter_tic_tac_toe/controllers/game_controller.dart';
 import 'package:flutter_tic_tac_toe/utils/constants/app_colors.dart';
 import 'package:flutter_tic_tac_toe/utils/constants/service_constants.dart';
 
-class PreviousTurnButton extends StatelessWidget {
-  const PreviousTurnButton({super.key});
+class HistoryPreviousTurnButton extends StatelessWidget {
+  const HistoryPreviousTurnButton({super.key});
 
   @override
   Widget build(BuildContext context) {
     return ElevatedButton(
       onPressed: () {
         logger.t('Press Previous Turn Button');
+        GameController.to.pauseHistoryAutoPlay();
         GameController.to.goToPreviousTurnInHistory();
       },
       style: TextButton.styleFrom(elevation: 1, backgroundColor: kBlue30),

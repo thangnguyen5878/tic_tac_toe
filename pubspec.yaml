@@ -28,6 +28,8 @@ dependencies:
   uuid: ^4.2.2
   logger: ^2.0.2+1
   font_awesome_flutter: ^10.6.0
+  gap: ^3.0.1
+  mocktail: ^1.0.2
 
 
 dev_dependencies: 

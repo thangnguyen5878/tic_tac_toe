@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_tic_tac_toe/modules/offline/history_details/components/next_turn_button.dart';
 import 'package:flutter_tic_tac_toe/modules/offline/history_details/components/history_auto_play_button.dart';
+import 'package:flutter_tic_tac_toe/modules/offline/history_details/components/next_turn_button.dart';
 import 'package:flutter_tic_tac_toe/modules/offline/history_details/components/previous_turn_button.dart';
 import 'package:flutter_tic_tac_toe/utils/constants/app_colors.dart';
+import 'package:gap/gap.dart';
 
-class ControlBar extends StatelessWidget {
-  const ControlBar({
+class HistoryControlBar extends StatelessWidget {
+  const HistoryControlBar({
     super.key,
   });
 
@@ -22,11 +23,9 @@ class ControlBar extends StatelessWidget {
           right: 5,
           child: Row(
             children: [
-              PreviousTurnButton(),
-              SizedBox(
-                width: 5,
-              ),
-              NextTurnButton(),
+              HistoryPreviousTurnButton(),
+              Gap(5),
+              HistoryNextTurnButton(),
             ],
           ),
         ),

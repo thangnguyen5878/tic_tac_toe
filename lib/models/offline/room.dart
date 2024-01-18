@@ -32,8 +32,9 @@ class Room {
   List<Round> rounds = [Round()];
   History history = History();
 
+  /// Temporary list to track cells being checked for a potential winner.
   @ignore
-  List<Cell>? checkingCells = List<Cell>.empty(growable: true);
+  List<Cell> checkingCells = <Cell>[];
 
   final winCount = 5;
 
@@ -119,66 +120,77 @@ class Room {
   }
 
   // GETTERS: HISTORY
-  int getHistoryTurnCount() {
-    if (hasWinnerInHistory()) {
-      return history.currentTurnIndex; // minus 1 because there are no next turn.
-    } else {
+  int getTurnCountInHistory() {
+    if (!isLastTurnInHistory()) {
       return history.currentTurnIndex + 1;
+    } else {
+      return history.currentTurnIndex; // minus 1 because there are no next turn.
     }
   }
 
-  Round getHistoryCurrentRound() {
+  Round getCurrentRoundInHistory() {
     return rounds[history.currentRoundIndex];
   }
 
-  int getHistoryRoundCount() {
+  int getRoundCountInHistory() {
     return history.currentRoundIndex + 1;
   }
 
-  int getHistoryNextTurnCount() {
+  int getNextTurnCountInHistory() {
     return history.getTurnCount();
   }
 
-  Player getHistoryCurrentPlayer() {
+  Player getCurrentPlayerInHistory() {
     return players[history.currentPlayerIndex];
   }
 
-  int getHistoryPlayer1CurrentScore() {
-    return getHistoryCurrentRound().getPlayer1Score().currentScore;
+  int getPlayer1CurrentScoreInHistory() {
+    return getCurrentRoundInHistory().getPlayer1Score().currentScore;
   }
 
-  int getHistoryPlayer2CurrentScore() {
-    return getHistoryCurrentRound().getPlayer2Score().currentScore;
+  int getPlayer2CurrentScoreInHistory() {
+    return getCurrentRoundInHistory().getPlayer2Score().currentScore;
   }
 
   // METHODS: BOOLEAN HISTORY
   bool isPlayer1WinInHistory() {
-    return hasWinnerInHistory() && getHistoryCurrentRound().isPlayer1Turn();
+    return hasWinnerInHistory() && getCurrentRoundInHistory().isPlayer1Turn();
   }
 
   bool isPlayer2WinInHistory() {
-    return hasWinnerInHistory() && getHistoryCurrentRound().isPlayer2Turn();
+    return hasWinnerInHistory() && getCurrentRoundInHistory().isPlayer2Turn();
   }
 
   bool hasWinnerInHistory() {
-    return history.currentTurnIndex == getHistoryCurrentRound().getTurnCount();
+    return history.currentTurnIndex == getCurrentRoundInHistory().getTurnCount();
   }
 
   bool isPlayer1TurnInHistory() {
-    if (hasWinnerInHistory()) {
-      return !history.isPlayer1Turn(); // When a winner appears, the game stops at winner turn.
+    if (!isLastTurnInHistory()) {
+      return history.isPlayer1Turn();
     }
-    return history.isPlayer1Turn();
+    // The figures stop at the last turn.
+    return !history.isPlayer1Turn();
   }
 
   bool isPlayer2TurnInHistory() {
-    if (hasWinnerInHistory()) {
-      return !history.isPlayer2Turn(); // When a winner appears, the game stops at winner turn.
+    if (!isLastTurnInHistory()) {
+      return history.isPlayer2Turn();
     }
-    return history.isPlayer2Turn();
+    // The figures stop at the last turn.
+    return !history.isPlayer2Turn();
   }
 
   // METHODS: BOOLEAN
+  bool isLastTurnInHistory() {
+    return history.currentTurnIndex == getCurrentRoundInHistory().turns.length;
+    // Because when turnIndex = 0, there are no seed on the board.
+  }
+
+  bool isLastTurnInHistoryPlus() {
+    return history.currentTurnIndex == getCurrentRoundInHistory().turns.length + 2;
+  }
+
   bool isGameOver() {
     return state == GameState.stop;
   }
@@ -361,11 +373,10 @@ class Room {
   }
 
   /// Loads [History.currentTurnIndex]+1 cells from [Round.turns] to [History.board].
-  void updateHistoryBoard() {
+  void updateBoardInHistory() {
     history.board.reset();
-    // Initial (turn index: -1): no cell on the board.
     if (history.currentTurnIndex >= 0) {
-      history.board.load(getHistoryCurrentRound().turns, history.currentTurnIndex);
+      history.board.load(getCurrentRoundInHistory().turns, history.currentTurnIndex);
     }
   }
 

@@ -100,6 +100,7 @@ class Round {
     );
   }
 
+  /// Resets the round by clearing the winner, turns, and current player index.
   reset() {
     if (hasWinner()) {
       getWinnerScore()!.reset();

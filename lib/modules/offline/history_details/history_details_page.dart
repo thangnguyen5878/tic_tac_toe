@@ -50,11 +50,11 @@ class HistoryDetailsPage extends StatelessWidget {
       title: GetBuilder<GameController>(
         builder: (gameController) {
           final room = GameController.to.room;
-          final round = room.getHistoryCurrentRound();
+          final round = room.getCurrentRoundInHistory();
 
           return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
             Text('Room: ${room.name}', style: kHeading2),
-            Text('Round: ${room.getHistoryRoundCount()}, Turn: ${room.getHistoryTurnCount()}',
+            Text('Round: ${room.getRoundCountInHistory()}, Turn: ${room.getTurnCountInHistory()}',
                 style: kHeading3),
           ]);
         },
@@ -82,7 +82,7 @@ class HistoryDetailsPage extends StatelessWidget {
         right: 0,
         bottom: 0,
         child: Column(
-          children: [HistoryPlayerBottomBar(), ControlBar()],
+          children: [HistoryPlayerBottomBar(), HistoryControlBar()],
         ),
       ),
     ]);

@@ -22,6 +22,10 @@ class Cell {
       : content = content ?? Seed.noSeed,
         state = state ?? CellState.normal;
 
+  Cell.custom({this.row, this.column, Seed? content, CellState? state})
+      : content = content ?? Seed.noSeed,
+        state = state ?? CellState.normal;
+
   Cell.clone(Cell cell) {
     row = cell.row;
     column = cell.column;

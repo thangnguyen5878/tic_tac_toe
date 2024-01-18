@@ -15,7 +15,7 @@ class HistoryBoard extends StatelessWidget {
     final rowCount = board.rowCount;
     final columnCount = board.columnCount;
 
-    GameController.to.room.updateHistoryBoard();
+    GameController.to.room.updateBoardInHistory();
 
     return Container(
       decoration: BoxDecoration(border: Border.all(width: 1)),

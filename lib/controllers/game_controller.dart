@@ -109,21 +109,23 @@ class GameController extends GetxController {
 
   // HISTORY METHODS
   void goToNextTurnInHistory() {
-    if (!room.hasWinnerInHistory()) {
+    if (!room.isLastTurnInHistory()) {
       logger.t('History: Go to next turn');
-      pauseHistoryAutoPlay();
       room.history.goToNextTurn();
-      room.updateHistoryBoard();
+      room.updateBoardInHistory();
       update();
+    } else {
+      if (isHistoryAutoPlay) {
+        pauseHistoryAutoPlay();
+      }
     }
   }
 
   void goToPreviousTurnInHistory() {
     if (!room.history.isFirstTurn()) {
       logger.t('History: Go to previous turn');
-      pauseHistoryAutoPlay();
       room.history.goToPreviousTurn();
-      room.updateHistoryBoard();
+      room.updateBoardInHistory();
       update();
     }
   }
@@ -138,17 +140,9 @@ class GameController extends GetxController {
     update();
 
     Timer.periodic(const Duration(seconds: 1), (timer) {
-      final historyCurrentTurnIndex = room.history.currentTurnIndex;
-      final turnCount = room.getHistoryCurrentRound().getTurnCount();
-
       if (isHistoryAutoPlay) {
         goToNextTurnInHistory();
         update();
-
-        if (historyCurrentTurnIndex >= turnCount - 1) {
-          pauseHistoryAutoPlay();
-          timer.cancel();
-        }
       } else {
         timer.cancel();
       }
