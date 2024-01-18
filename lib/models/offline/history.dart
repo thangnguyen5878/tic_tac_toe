@@ -31,30 +31,35 @@ class History {
         currentPlayerIndex = currentPlayerIndex ?? 0,
         board = board ?? Board();
 
-  // GETTERS
+  // GETTERS: BOOLEAN
+  /// Returns the number of turns in the history.
   int getTurnCount() {
     return currentTurnIndex + 1;
   }
 
-  // METHODS: BOOLEAN
+  /// Returns whether the current player is player 1.
   bool isPlayer1Turn() {
     return currentPlayerIndex == 0;
   }
 
+  /// Returns whether the current player is player 2.
   bool isPlayer2Turn() {
     return currentPlayerIndex == 1;
   }
 
+  /// Returns whether it is the first turn in the history.
   bool isFirstTurn() {
     return currentTurnIndex == 0;
   }
 
-  // METHODS: BUSINESS
+  // METHODS: BOOLEAN
+  /// Resets the history to its initial state.
   void reset() {
     currentPlayerIndex = 0;
     currentTurnIndex = 0;
   }
 
+  /// Switches the current player.
   void togglePlayer() {
     if (isPlayer1Turn()) {
       currentPlayerIndex = 1;
@@ -63,11 +68,13 @@ class History {
     }
   }
 
+  /// Moves to the next turn in the history.
   void goToNextTurn() {
     togglePlayer();
     currentTurnIndex++;
   }
 
+  /// Moves to the previous turn in the history.
   void goToPreviousTurn() {
     togglePlayer();
     currentTurnIndex--;
@@ -79,14 +86,17 @@ class History {
     return 'History{currentRoundIndex: $currentRoundIndex, currentTurnIndex: $currentTurnIndex, currentPlayerIndex: $currentPlayerIndex, board: $board}';
   }
 
+  /// Returns a shortened version of the history as a string.
   String toShortString() {
     return 'History{currentRoundIndex: $currentRoundIndex, currentTurnIndex: $currentTurnIndex, currentPlayerIndex: $currentPlayerIndex, board: ${board.toShortString()}';
   }
 
+  /// Logs information about the history.
   void logInfo() {
     logger.t(this);
   }
 
+  /// Logs a shortened version of the history information.
   void logShortInfo() {
     logger.t(toShortString());
   }

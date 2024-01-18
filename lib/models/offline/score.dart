@@ -4,63 +4,68 @@ import 'package:isar/isar.dart';
 
 part 'score.g.dart';
 
-/// Player's score within a round.
+/// A class representing a player's score within a round.
 @embedded
 class Score {
-  /// Player's current score within a round.
+  /// The player's current score within a round.
   ///
-  /// - Initial value: Initialized to the same value as [initialScore].
-  /// - Display: Shown in the [PlayerBottomBar] on the [GamePage].
+  /// - Initial value: Initialized to 0.
+  /// - Displayed: Shown in the [PlayerBottomBar] on the [GamePage].
   int currentScore = 0;
 
-  /// Player's starting score in a round.
+  /// The player's initial score in a round.
   ///
   /// - Initial value:
   /// - 0 if it's the first round (no previous scores).
   /// - Equal to the [finalScore] of the previous round otherwise.
-  /// - Display: Shown in the [HistoryPlayerBottomBar] on the [HistoryDetailsPage].
+  /// - Displayed: Shown in the [HistoryPlayerBottomBar] on the [HistoryDetailsPage].
   int initialScore = 0;
 
-  /// Player's final score in a round.
+  /// The player's final score in a round.
   ///
   /// - Calculated: Determined at the end of the round.
-  /// - Display: Shown in the [HistoryPlayerBottomBar] on the [HistoryDetailsPage].
+  /// - Displayed: Shown in the [HistoryPlayerBottomBar] on the [HistoryDetailsPage].
   int? finalScore;
 
   // CONSTRUCTORS
+  /// Creates a new instance of the [Score] class.
   Score();
 
+  /// Creates a new instance of the [Score] class with the specified values.
   Score.all(this.currentScore, this.initialScore, this.finalScore);
 
+  /// Creates a new instance of the [Score] class with the specified initial score and final score.
   Score.custom({int? initialScore, this.finalScore})
       : initialScore = initialScore ?? 0,
         currentScore = initialScore ?? 0;
 
   // GETTERS: BOOLEAN
-  /// Whether there's a winner
+  /// Returns whether the player has a winner.
   bool hasWinner() {
     return finalScore != null;
   }
 
   // METHODS: CLONE
+  /// Creates a clone of the score for the next round.
   Score cloneForNextRound() {
     return Score.custom(initialScore: finalScore);
   }
 
   // METHODS: BUSINESS
-  /// Add value for [currentScore].
+  /// Adds the specified score to the player's current score.
   void addScore(int score) {
     currentScore += score;
   }
 
-  /// Update [finalScore] according to [currentScore].
+  /// Updates the player's final score based on their current score.
   void updateFinalScore() {
     finalScore = currentScore;
   }
 
+  /// Resets the player's score.
   void reset() {
     if (hasWinner()) {
-      currentScore = initialScore!;
+      currentScore = initialScore;
       finalScore = null;
     }
   }
@@ -71,6 +76,7 @@ class Score {
     return 'Score{currentScore: $currentScore, initialScore: $initialScore, finalScore: $finalScore}';
   }
 
+  /// Logs information about the score.
   void logInfo() {
     logger.t(this);
   }
