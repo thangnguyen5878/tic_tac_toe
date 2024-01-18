@@ -37,6 +37,7 @@ class Room {
 
   final winCount = 5;
 
+  // CONSTRUCTORS
   Room();
 
   Room.all(
@@ -72,7 +73,7 @@ class Room {
         rounds = [Round()],
         history = History();
 
-  // getters
+  // GETTER
   Round getCurrentRound() {
     return rounds.last;
   }
@@ -117,7 +118,7 @@ class Room {
     return getCurrentRound().getPlayer2Score();
   }
 
-  // HISTORY GETTERS
+  // GETTERS: HISTORY
   int getHistoryTurnCount() {
     if (hasWinnerInHistory()) {
       return history.currentTurnIndex; // minus 1 because there are no next turn.
@@ -150,7 +151,7 @@ class Room {
     return getHistoryCurrentRound().getPlayer2Score().currentScore;
   }
 
-  // HISTORY BOOLEAN METHODS
+  // METHODS: BOOLEAN HISTORY
   bool isPlayer1WinInHistory() {
     return hasWinnerInHistory() && getHistoryCurrentRound().isPlayer1Turn();
   }
@@ -177,7 +178,7 @@ class Room {
     return history.isPlayer2Turn();
   }
 
-  // BOOLEAN METHODS
+  // METHODS: BOOLEAN
   bool isGameOver() {
     return state == GameState.stop;
   }
@@ -207,6 +208,7 @@ class Room {
     getPlayer2Score().addScore(score);
   }
 
+  // METHODS: BUSINESS
   /// Check whether adjacent cells are the same or not to check the winner
   isWinningRow(List<Cell> cells) {
     if (cells.isEmpty) {
@@ -367,13 +369,21 @@ class Room {
     }
   }
 
-  // LOGS
+  // METHODS: LOG
   @override
   String toString() {
-    return 'Room{id: $id, name: $name, createdAt: $createdAt, lastModifiedAt: $lastAccessAt, state: $state, board: $board, players: $players, rounds: $rounds, history: $history, checkingCells: $checkingCells, winCount: $winCount}';
+    return 'Room{id: $id, name: $name, createdAt: $createdAt, lastAccessAt: $lastAccessAt, state: $state, board: $board, players: $players, rounds: $rounds, history: $history, checkingCells: $checkingCells, winCount: $winCount}';
   }
 
   String toShortString() {
-    return 'Room{id: $id, name: $name, createdAt: $createdAt, lastModifiedAt: $lastAccessAt, state: $state, checkingCells: $checkingCells, winCount: $winCount}';
+    return 'Room{id: $id, name: $name, createdAt: $createdAt, lastAccessAt: $lastAccessAt, state: $state, history: ${history.toShortString()}}';
+  }
+
+  void logInfo() {
+    logger.t(this);
+  }
+
+  void logShortInfo() {
+    logger.t(toShortString());
   }
 }

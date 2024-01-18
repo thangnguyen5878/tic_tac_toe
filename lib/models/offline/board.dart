@@ -15,7 +15,7 @@ class Board {
   @ignore
   late List<List<Cell>> cells;
 
-  /// Board constructor with the default 5x5 board
+  // CONSTRUCTORS
   Board({int? rowCount, int? columnCount})
       : rowCount = rowCount ?? defaultRowCount,
         columnCount = columnCount ?? defaultColumnCount {
@@ -29,6 +29,7 @@ class Board {
     );
   }
 
+  // METHODS: BUSINESS
   /// Rebuild the board with the lastest number of rows and columns
   rebuild() {
     cells = List.generate(
@@ -68,7 +69,21 @@ class Board {
     logger.t('Reset board');
   }
 
+  // METHODS: LOG
   @override
-  String toString() =>
-      'Board(rowCount: $rowCount, columnCount: $columnCount, cells: $cells)';
+  String toString() {
+    return 'Board{rowCount: $rowCount, columnCount: $columnCount, cells: $cells}';
+  }
+
+  String toShortString() {
+    return 'Board{rowCount: $rowCount, columnCount: $columnCount}';
+  }
+
+  void logInfo() {
+    logger.t(this);
+  }
+
+  void logShortInfo() {
+    logger.t(toShortString());
+  }
 }

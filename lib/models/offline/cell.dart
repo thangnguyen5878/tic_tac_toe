@@ -1,3 +1,4 @@
+import 'package:flutter_tic_tac_toe/utils/constants/service_constants.dart';
 import 'package:flutter_tic_tac_toe/utils/enums/cell_state.dart';
 import 'package:flutter_tic_tac_toe/utils/enums/seed.dart';
 import 'package:isar/isar.dart';
@@ -35,7 +36,7 @@ class Cell {
     state = CellState.normal;
   }
 
-  // BOOLEAN METHODS
+  // METHODS: BOOLEAN
   bool isPlayer1Win() {
     return state == CellState.crossWin;
   }
@@ -44,9 +45,17 @@ class Cell {
     return state == CellState.noughtWin;
   }
 
-  // LOGS
+  // METHODS: LOGS
   @override
   String toString() {
-    return '''cell($row, $column): $content, $state\n''';
+    return 'Cell{row: $row, column: $column, content: $content, state: $state}';
+  }
+
+  String toStringContent() {
+    return '$content';
+  }
+
+  void logInfo() {
+    logger.t(this);
   }
 }

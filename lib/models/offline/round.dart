@@ -23,6 +23,7 @@ class Round {
   /// Scores of 2 players in this round.
   List<Score> scores = [Score(), Score()];
 
+  // CONSTRUCTORS
   Round();
 
   Round.custom(
@@ -38,35 +39,18 @@ class Round {
 
   Round.all(
       this.index, this.currentPlayerIndex, this.winnerIndex, this.turns, this.scores); // getters
-  // round
+
+  // GETTERS
   int getRoundCount() {
     return index! + 1;
   }
 
-  // turns
   int getTurnCount() {
     if (hasWinner()) {
       return turns.length; // There are no next turn.
     }
     return turns.length + 1;
   }
-
-  // getters history
-  // Player getCurrentHistoryPlayer() {
-  //   return players![_historyPlayerIndex!];
-  // }
-
-  // int getHistoryPlayerIndex() {
-  //   return isHistoryWinTurn() ? winnerIndex! : _historyPlayerIndex!;
-  // }
-
-  // int getHistoryPlayer1Score() {
-  //   return isHistoryWinTurn() ? getPlayer1().finalScore! : getPlayer1().initialScore!;
-  // }
-
-  // int getHistoryPlayer2Score() {
-  //   return isHistoryWinTurn() ? getPlayer2().finalScore! : getPlayer2().initialScore!;
-  // }
 
   Cell? getLastTurn() {
     return turns.last;
@@ -86,20 +70,7 @@ class Round {
     }
   }
 
-  // Cell getHistoryTurn() {
-  //   return turns[historyTurnIndex!]!;
-  // }
-
-  // int getHistoryTurnCount() {
-  //   return isHistoryWinTurn() ? winTurnIndex! + 1 : historyTurnIndex! + 1;
-  // }
-
-  // check
-  // bool isHistoryWinTurn() {
-  //   return winTurnIndex != null && historyTurnIndex == winTurnIndex! + 1;
-  // }
-
-  // BOOLEANS GETTERS
+  // METHODS: BOOLEAN
   bool hasWinner() {
     return winnerIndex != null;
   }
@@ -120,6 +91,7 @@ class Round {
     return currentPlayerIndex == 1;
   }
 
+  // METHODS: BUSINESS
   Round cloneForNextRound() {
     logger.t('clone next round');
     return Round.custom(
@@ -152,6 +124,7 @@ class Round {
     // logger.t('next turn, current player: ${currentPlayerIndex! + 1}');
   }
 
+  // METHODS: LOG
   @override
   String toString() {
     return 'Round{index: $index, currentPlayerIndex: $currentPlayerIndex, winnerIndex: $winnerIndex, turns: $turns, scores: $scores}';
@@ -161,30 +134,11 @@ class Round {
     return 'Round{index: $index, currentPlayerIndex: $currentPlayerIndex, winnerIndex: $winnerIndex, scores: $scores}';
   }
 
-// historyNextTurn() {
-  //   if (_historyPlayerIndex == 0) {
-  //     _historyPlayerIndex = 1;
-  //   } else {
-  //     _historyPlayerIndex = 0;
-  //   }
-  //   historyTurnIndex = historyTurnIndex! + 1;
-  //   // if (historyCurrentTurnIndex! >= winTurnIndex! - 1) {
-  //   //   historyCurrentPlayerIndex = winnerIndex;
-  //   //   historyCurrentTurnIndex = winTurnIndex;
-  //   // }
-  //   // logger.t('next turn, current player: ${historyCurrentPlayerIndex! + 1}');
-  // }
+  void logInfo() {
+    logger.t(this);
+  }
 
-  // void historyPreviousTurn() {
-  //   // if (historyCurrentTurnIndex == 1) {
-  //   //   historyCurrentPlayerIndex = null;
-  //   // }
-  //   if (_historyPlayerIndex == 0) {
-  //     _historyPlayerIndex = 1;
-  //   } else {
-  //     _historyPlayerIndex = 0;
-  //   }
-  //   historyTurnIndex = historyTurnIndex! - 1;
-  //   logger.t('next turn, current player: ${_historyPlayerIndex! + 1}');
-  // }
+  void logShortInfo() {
+    logger.t(toShortString());
+  }
 }

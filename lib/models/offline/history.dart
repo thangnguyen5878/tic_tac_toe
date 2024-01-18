@@ -1,4 +1,5 @@
 import 'package:flutter_tic_tac_toe/models/offline/board.dart';
+import 'package:flutter_tic_tac_toe/utils/constants/service_constants.dart';
 import 'package:isar/isar.dart';
 
 part 'history.g.dart';
@@ -30,12 +31,12 @@ class History {
         currentPlayerIndex = currentPlayerIndex ?? 0,
         board = board ?? Board();
 
-  // GETTER
+  // GETTERS
   int getTurnCount() {
     return currentTurnIndex + 1;
   }
 
-  // BOOLEANS METHODS
+  // METHODS: BOOLEAN
   bool isPlayer1Turn() {
     return currentPlayerIndex == 0;
   }
@@ -48,7 +49,7 @@ class History {
     return currentTurnIndex == 0;
   }
 
-  // BUSINESS METHODS
+  // METHODS: BUSINESS
   void reset() {
     currentPlayerIndex = 0;
     currentTurnIndex = 0;
@@ -70,5 +71,23 @@ class History {
   void goToPreviousTurn() {
     togglePlayer();
     currentTurnIndex--;
+  }
+
+  // METHODS: LOG
+  @override
+  String toString() {
+    return 'History{currentRoundIndex: $currentRoundIndex, currentTurnIndex: $currentTurnIndex, currentPlayerIndex: $currentPlayerIndex, board: $board}';
+  }
+
+  String toShortString() {
+    return 'History{currentRoundIndex: $currentRoundIndex, currentTurnIndex: $currentTurnIndex, currentPlayerIndex: $currentPlayerIndex, board: ${board.toShortString()}';
+  }
+
+  void logInfo() {
+    logger.t(this);
+  }
+
+  void logShortInfo() {
+    logger.t(toShortString());
   }
 }
