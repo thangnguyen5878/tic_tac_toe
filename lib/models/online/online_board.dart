@@ -16,29 +16,30 @@ class OnlineBoard {
   @OnlineCellListConverter2()
   List<List<OnlineCell>> cells = [];
 
-  /// OnlineBoard constructor with the default value
+  // CONSTRUCTORS
   OnlineBoard({int? rowCount, int? columnCount})
-      : rowCount = rowCount ?? defaultOnlineRowCount,
-        columnCount = columnCount ?? defaultOnlineColumnCount {
+      : rowCount = rowCount ?? defaultRowCount,
+        columnCount = columnCount ?? defaultColumnCount {
     cells = List.generate(
       this.rowCount!,
-          (row) => List.generate(
+      (row) => List.generate(
         this.columnCount!,
-            (column) => OnlineCell(row: row, column: column, content: Seed.noSeed, state: CellState.normal),
+        (column) =>
+            OnlineCell(row: row, column: column, content: Seed.noSeed, state: CellState.normal),
       ),
       growable: true,
     );
   }
 
-  OnlineBoard.all({this.rowCount, this.columnCount, required this.cells});
-
+  // METHODS: BUSINESS
   /// Rebuild the board with the lastest number of rows and columns
   rebuild() {
     cells = List.generate(
       rowCount!,
-          (row) => List.generate(
+      (row) => List.generate(
         columnCount!,
-            (column) => OnlineCell(row: row, column: column, content: Seed.noSeed, state: CellState.normal),
+        (column) =>
+            OnlineCell(row: row, column: column, content: Seed.noSeed, state: CellState.normal),
       ),
       growable: true,
     );
@@ -68,19 +69,27 @@ class OnlineBoard {
         cells[i][j] = OnlineCell.cloneReset(cells[i][j]);
       }
     }
-    logger.t('reset online board');
+    logger.t('Reset board');
   }
 
   factory OnlineBoard.fromJson(Map<String, dynamic> json) => _$OnlineBoardFromJson(json);
   Map<String, dynamic> toJson() => _$OnlineBoardToJson(this);
 
-  String toShortString() =>
-      'OnlineBoard(rowCount: $rowCount, columnCount: $columnCount, cells: $cells)';
-
+  // METHODS: LOG
   @override
   String toString() {
     return 'OnlineBoard{rowCount: $rowCount, columnCount: $columnCount, cells: $cells}';
   }
+
+  String toShortString() {
+    return 'OnlineBoard{rowCount: $rowCount, columnCount: $columnCount}';
+  }
+
+  void logInfo() {
+    logger.t(this);
+  }
+
+  void logShortInfo() {
+    logger.t(toShortString());
+  }
 }
-
-
