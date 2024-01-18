@@ -65,14 +65,14 @@ class Room {
         createdAt = createdAt ?? DateTime.now(),
         lastAccessAt = lastAccessAt ?? DateTime.now(),
         state = state ?? GameState.playing,
-        board = Board(),
+        board = board ?? Board(),
         players = players ??
             [
               Player(index: 0, name: 'Player 1', seed: Seed.cross),
               Player(index: 1, name: 'Player 2', seed: Seed.nought)
             ],
-        rounds = [Round()],
-        history = History();
+        rounds = rounds ?? [Round()],
+        history = history ?? History();
 
   // GETTER
   Round getCurrentRound() {

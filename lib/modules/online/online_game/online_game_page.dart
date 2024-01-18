@@ -34,7 +34,7 @@ class OnlineGamePage extends StatelessWidget {
               ),
             );
           } else {
-            logger.t('no datda');
+            logger.t('No data. Room id: ${OnlineGameController.to.currentRoomId}');
             return const Text(
               'no data',
               style: kNormalText,

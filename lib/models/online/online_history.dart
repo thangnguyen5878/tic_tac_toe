@@ -84,6 +84,10 @@ class OnlineHistory {
     currentTurnIndex--;
   }
 
+  // JSON SERIALIZATION
+  factory OnlineHistory.fromJson(Map<String, dynamic> json) => _$OnlineHistoryFromJson(json);
+  Map<String, dynamic> toJson() => _$OnlineHistoryToJson(this);
+
   // METHODS: LOG
   @override
   String toString() {

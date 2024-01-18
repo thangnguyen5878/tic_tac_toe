@@ -40,6 +40,15 @@ class Round {
   Round.all(
       this.index, this.currentPlayerIndex, this.winnerIndex, this.turns, this.scores); // getters
 
+  // METHODS: CLONE
+  Round cloneForNextRound() {
+    logger.t('clone next round');
+    return Round.custom(
+      index: index + 1,
+      scores: [getPlayer1Score().cloneForNextRound(), getPlayer2Score().cloneForNextRound()],
+    );
+  }
+
   // GETTERS
   int getRoundCount() {
     return index! + 1;
@@ -92,14 +101,6 @@ class Round {
   }
 
   // METHODS: BUSINESS
-  Round cloneForNextRound() {
-    logger.t('clone next round');
-    return Round.custom(
-      index: index + 1,
-      scores: [getPlayer1Score().cloneForNextRound(), getPlayer2Score().cloneForNextRound()],
-    );
-  }
-
   /// Resets the round by clearing the winner, turns, and current player index.
   reset() {
     if (hasWinner()) {

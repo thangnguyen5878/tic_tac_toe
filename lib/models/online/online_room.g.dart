@@ -6,50 +6,47 @@ part of 'online_room.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-OnlineRoom _$OnlineRoomFromJson(Map<String, dynamic> json) => OnlineRoom()
-  ..id = json['id'] as String
-  ..name = json['name'] as String
-  ..state = $enumDecode(_$GameStateEnumMap, json['state'])
-  ..board = OnlineBoard.fromJson(json['board'] as Map<String, dynamic>)
-  ..historyBoard =
-      OnlineBoard.fromJson(json['historyBoard'] as Map<String, dynamic>)
-  ..rounds =
-      _$JsonConverterFromJson<List<Map<String, dynamic>>, List<OnlineRound?>>(
-          json['rounds'], const OnlineRoundListConverter().fromJson)
-  ..currentRoundIndex = json['currentRoundIndex'] as int
-  ..historyRoundIndex = json['historyRoundIndex'] as int
-  ..playerIds =
-      (json['playerIds'] as List<dynamic>?)?.map((e) => e as String?).toList();
+OnlineRoom _$OnlineRoomFromJson(Map<String, dynamic> json) => OnlineRoom(
+      name: json['name'] as String?,
+      state: $enumDecodeNullable(_$GameStateEnumMap, json['state']),
+      createdAt: json['createdAt'] == null
+          ? null
+          : DateTime.parse(json['createdAt'] as String),
+      lastAccessAt: json['lastAccessAt'] == null
+          ? null
+          : DateTime.parse(json['lastAccessAt'] as String),
+      board: json['board'] == null
+          ? null
+          : OnlineBoard.fromJson(json['board'] as Map<String, dynamic>),
+      players: (json['players'] as List<dynamic>?)
+          ?.map((e) => OnlinePlayer.fromJson(e as Map<String, dynamic>))
+          .toList(),
+      rounds: (json['rounds'] as List<dynamic>?)
+          ?.map((e) => OnlineRound.fromJson(e as Map<String, dynamic>))
+          .toList(),
+      history: json['history'] == null
+          ? null
+          : OnlineHistory.fromJson(json['history'] as Map<String, dynamic>),
+      playerIds: (json['playerIds'] as List<dynamic>?)
+          ?.map((e) => e as String?)
+          .toList(),
+    )..id = json['id'] as String;
 
 Map<String, dynamic> _$OnlineRoomToJson(OnlineRoom instance) =>
     <String, dynamic>{
       'id': instance.id,
       'name': instance.name,
+      'createdAt': instance.createdAt.toIso8601String(),
+      'lastAccessAt': instance.lastAccessAt.toIso8601String(),
       'state': _$GameStateEnumMap[instance.state]!,
-      'board': instance.board.toJson(),
-      'historyBoard': instance.historyBoard.toJson(),
-      'rounds':
-          _$JsonConverterToJson<List<Map<String, dynamic>>, List<OnlineRound?>>(
-              instance.rounds, const OnlineRoundListConverter().toJson),
-      'currentRoundIndex': instance.currentRoundIndex,
-      'historyRoundIndex': instance.historyRoundIndex,
+      'board': instance.board,
+      'players': instance.players,
       'playerIds': instance.playerIds,
-      'winCount': instance.winCount,
+      'rounds': instance.rounds,
+      'history': instance.history,
     };
 
 const _$GameStateEnumMap = {
   GameState.playing: 'playing',
   GameState.stop: 'stop',
 };
-
-Value? _$JsonConverterFromJson<Json, Value>(
-  Object? json,
-  Value? Function(Json json) fromJson,
-) =>
-    json == null ? null : fromJson(json as Json);
-
-Json? _$JsonConverterToJson<Json, Value>(
-  Value? value,
-  Json? Function(Value value) toJson,
-) =>
-    value == null ? null : toJson(value);

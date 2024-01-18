@@ -67,6 +67,10 @@ class OnlineScore {
     }
   }
 
+  // JSON SERIALIZATION
+  factory OnlineScore.fromJson(Map<String, dynamic> json) => _$OnlineScoreFromJson(json);
+  Map<String, dynamic> toJson() => _$OnlineScoreToJson(this);
+
   // METHODS: LOG
   @override
   String toString() {

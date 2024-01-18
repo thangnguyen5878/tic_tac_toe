@@ -1,118 +1,88 @@
 import 'package:flutter_tic_tac_toe/models/online/online_cell.dart';
-import 'package:flutter_tic_tac_toe/models/online/online_player.dart';
+import 'package:flutter_tic_tac_toe/models/online/online_score.dart';
 import 'package:flutter_tic_tac_toe/utils/constants/service_constants.dart';
 import 'package:flutter_tic_tac_toe/utils/json%20converters/online_cell_list_converter.dart';
+import 'package:flutter_tic_tac_toe/utils/json%20converters/online_score_list_converter.dart';
 import 'package:json_annotation/json_annotation.dart';
-
-import '../../utils/json converters/online_player_list_converter.dart';
 
 part 'online_round.g.dart';
 
 @JsonSerializable(explicitToJson: true)
 class OnlineRound {
-  int? index;
+  /// Index references to a round in [Room.rounds].
+  int index = 0;
 
-  @OnlinePlayerListConverter()
-  List<OnlinePlayer>? players;
+  /// Index references to the current player in [Room.players].
+  int currentPlayerIndex = 0;
 
-  int? currentPlayerIndex;
-  int? currentTurnIndex;
+  /// Index references to the winner in [Room.players].
   int? winnerIndex;
-  int? winTurnIndex;
 
+  /// Container that stores all the drawn [OnlineCell] on the board in order.
   @OnlineCellListConverter()
   List<OnlineCell?> turns = [];
 
-  @OnlineCellListConverter()
-  List<OnlineCell?> historyTurns = [];
+  /// Scores of 2 players in this round.
+  @OnlineScoreListConverter()
+  List<OnlineScore> scores = [OnlineScore(), OnlineScore()];
 
-  @JsonKey(includeFromJson: true, includeToJson: true)
-  int? _historyPlayerIndex;
-  int? historyTurnIndex;
+  // CONSTRUCTORS
+  OnlineRound();
 
-  OnlineRound({this.index, this.winnerIndex, this.players})
-      : currentTurnIndex = 0,
-        historyTurnIndex = 0,
-        currentPlayerIndex = 0,
-        _historyPlayerIndex = 0;
-
-
-  OnlineRound.all({
-      this.index,
-      this.players,
-      this.currentPlayerIndex,
-      this.currentTurnIndex,
+  OnlineRound.custom(
+      {int? index,
+      int? currentPlayerIndex,
       this.winnerIndex,
-      this.winTurnIndex,
-      required this.turns,
-      required this.historyTurns,
-      required int historyPlayerIndex,
-      this.historyTurnIndex}) {
-    _historyPlayerIndex = historyPlayerIndex;
+      List<OnlineCell>? turns,
+      List<OnlineScore>? scores})
+      : index = index ?? 0,
+        currentPlayerIndex = 0,
+        turns = turns ?? [],
+        scores = scores ?? [OnlineScore(), OnlineScore()];
+
+  OnlineRound.all(
+      this.index, this.currentPlayerIndex, this.winnerIndex, this.turns, this.scores); // getters
+
+  // METHODS: CLONE
+  OnlineRound cloneForNextRound() {
+    logger.t('clone next round');
+    return OnlineRound.custom(
+      index: index + 1,
+      scores: [getPlayer1Score().cloneForNextRound(), getPlayer2Score().cloneForNextRound()],
+    );
   }
 
-  // getters
-  // round
+// GETTERS
   int getRoundCount() {
     return index! + 1;
   }
 
-  // players
-  OnlinePlayer getPlayer1() {
-    return players![0];
-  }
-
-  OnlinePlayer getPlayer2() {
-    return players![1];
-  }
-
-  OnlinePlayer getCurrentPlayer() {
-    return players![currentPlayerIndex!];
-  }
-
-  // turns
   int getTurnCount() {
-    return currentTurnIndex! + 1;
+    if (hasWinner()) {
+      return turns.length; // There are no next turn.
+    }
+    return turns.length + 1;
   }
 
-  // getters history
-  OnlinePlayer getWinner() {
-    return players![winnerIndex!];
+  OnlineCell? getLastTurn() {
+    return turns.last;
   }
 
-  OnlinePlayer getCurrentHistoryPlayer() {
-    return players![_historyPlayerIndex!];
+  OnlineScore getPlayer1Score() {
+    return scores[0];
   }
 
-  int getHistoryPlayerIndex() {
-    return isHistoryWinTurn() ? winnerIndex! : _historyPlayerIndex!;
+  OnlineScore getPlayer2Score() {
+    return scores[1];
   }
 
-  int getHistoryPlayer1Score() {
-    return isHistoryWinTurn() ? getPlayer1().finalScore! : getPlayer1().initialScore!;
+  OnlineScore? getWinnerScore() {
+    if (hasWinner()) {
+      return scores[winnerIndex!];
+    }
   }
 
-  int getHistoryPlayer2Score() {
-    return isHistoryWinTurn() ? getPlayer2().finalScore! : getPlayer2().initialScore!;
-  }
-
-  OnlineCell getCurrentTurn() {
-    return turns[currentTurnIndex!]!;
-  }
-
-  OnlineCell getHistoryTurn() {
-    return turns[historyTurnIndex!]!;
-  }
-
-  int getHistoryTurnCount() {
-    return isHistoryWinTurn() ? winTurnIndex! + 1 : historyTurnIndex! + 1;
-  }
-
-  // check
-  bool isHistoryWinTurn() {
-    return winTurnIndex != null && historyTurnIndex == winTurnIndex! + 1;
-  }
-
+  // METHODS: BOOLEAN
   bool hasWinner() {
     return winnerIndex != null;
   }
@@ -125,92 +95,71 @@ class OnlineRound {
     return hasWinner() && winnerIndex == 1;
   }
 
-  OnlineRound.cloneNextRound(OnlineRound round) {
-    index = round.index! + 1;
-    players = round.players!.map((player) => OnlinePlayer.cloneNextRound(player)).toList();
-    currentPlayerIndex = 0;
-    _historyPlayerIndex = 0;
-    winnerIndex = null;
-    turns = [];
-    historyTurns = [];
-    currentTurnIndex = 0;
-    historyTurnIndex = 0;
-    winTurnIndex = null;
-    logger.t('clone next round');
+  bool isPlayer1Turn() {
+    return currentPlayerIndex == 0;
   }
 
+  bool isPlayer2Turn() {
+    return currentPlayerIndex == 1;
+  }
+
+  // METHODS: BUSINESS
+  /// Resets the round by clearing the winner, turns, and current player index.
   reset() {
-    // if there's a winner
-    if (winnerIndex != null) {
-      getWinner().score = getWinner().score! - 1;
+    if (hasWinner()) {
+      getWinnerScore()!.reset();
+      winnerIndex = null;
     }
-    winnerIndex = null;
     turns = [];
-    currentTurnIndex = 0;
+    currentPlayerIndex = 0;
   }
 
-  resetHistory() {
-    _historyPlayerIndex = 0;
-    historyTurnIndex = 0;
-    historyTurns = [];
-  }
-
-  /// When draw Seed at a cell, automatically change to next turn.
-  nextTurn() {
+  void togglePlayer() {
     if (currentPlayerIndex == 0) {
       currentPlayerIndex = 1;
     } else {
       currentPlayerIndex = 0;
     }
-    currentTurnIndex = currentTurnIndex! + 1;
-    logger.t('next turn, current player: ${currentPlayerIndex! + 1}');
   }
 
-  historyNextTurn() {
-    if (_historyPlayerIndex == 0) {
-      _historyPlayerIndex = 1;
-    } else {
-      _historyPlayerIndex = 0;
-    }
-    historyTurnIndex = historyTurnIndex! + 1;
+  /// When draw Seed at a cell, automatically change to next turn.
+  void GoToNextTurn() {
+    togglePlayer();
+    // turns = [...turns, cell];
+    // logger.t('next turn, current player: ${currentPlayerIndex! + 1}');
   }
 
-  historyPreviousTurn() {
-    if (_historyPlayerIndex == 0) {
-      _historyPlayerIndex = 1;
-    } else {
-      _historyPlayerIndex = 0;
-    }
-    historyTurnIndex = historyTurnIndex! - 1;
-    logger.t('next turn, current player: ${_historyPlayerIndex! + 1}');
-  }
-
-  updateFinalScore() {
-    players!.map((player) => player.finalScore = player.score);
-  }
-
-  factory OnlineRound.fromJson(Map<String, dynamic> json) => OnlineRound(
-    index: json['index'] as int?,
-    winnerIndex: json['winnerIndex'] as int?,
-    players: (json['players'] as List<dynamic>?)
-        ?.map((e) => OnlinePlayer.fromJson(e))
-        .toList(),
-  )
-    ..currentPlayerIndex = json['currentPlayerIndex'] as int?
-    ..currentTurnIndex = json['currentTurnIndex'] as int?
-    ..winTurnIndex = json['winTurnIndex'] as int?
-    ..turns = const OnlineCellListConverter()
-        .fromJson(json['turns'])
-    ..historyTurns = const OnlineCellListConverter()
-        .fromJson(json['historyTurns'])
-    .._historyPlayerIndex = json['_historyPlayerIndex'] as int?
-    ..historyTurnIndex = json['historyTurnIndex'] as int?;
-  // factory OnlineRound.fromJson(Map<String, dynamic> json) => _$OnlineRoundFromJson(json);
+  // JSON SERIALIZATION
+  // factory OnlineRound.fromJson(Map<String, dynamic> json) => OnlineRound(
+  //       index: json['index'] as int?,
+  //       winnerIndex: json['winnerIndex'] as int?,
+  //       players: (json['players'] as List<dynamic>?)?.map((e) => OnlinePlayer.fromJson(e)).toList(),
+  //     )
+  //       ..currentPlayerIndex = json['currentPlayerIndex'] as int?
+  //       ..currentTurnIndex = json['currentTurnIndex'] as int?
+  //       ..winTurnIndex = json['winTurnIndex'] as int?
+  //       ..turns = const OnlineCellListConverter().fromJson(json['turns'])
+  //       ..historyTurns = const OnlineCellListConverter().fromJson(json['historyTurns'])
+  //       .._historyPlayerIndex = json['_historyPlayerIndex'] as int?
+  //       ..historyTurnIndex = json['historyTurnIndex'] as int?;
+  factory OnlineRound.fromJson(Map<String, dynamic> json) => _$OnlineRoundFromJson(json);
   Map<String, dynamic> toJson() => _$OnlineRoundToJson(this);
 
+  // METHODS: LOG
   @override
   String toString() {
-    return 'OnlineRound{index: $index, players: $players, currentPlayerIndex: $currentPlayerIndex, currentTurnIndex: $currentTurnIndex, winnerIndex: $winnerIndex, winTurnIndex: $winTurnIndex, turns: $turns, historyTurns: $historyTurns, _historyPlayerIndex: $_historyPlayerIndex, historyTurnIndex: $historyTurnIndex}';
+    return 'OnlineRound{index: $index, currentPlayerIndex: $currentPlayerIndex, winnerIndex: $winnerIndex, turns: $turns, scores: $scores}';
   }
 
+  String toShortString() {
+    return 'OnlineRound{index: $index, currentPlayerIndex: $currentPlayerIndex, winnerIndex: $winnerIndex, scores: $scores}';
+  }
+
+  void logInfo() {
+    logger.t(this);
+  }
+
+  void logShortInfo() {
+    logger.t(toShortString());
+  }
 }

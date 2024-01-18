@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter_tic_tac_toe/controllers/online_user_controller.dart';
 import 'package:flutter_tic_tac_toe/models/online/online_board.dart';
 import 'package:flutter_tic_tac_toe/models/online/online_cell.dart';
@@ -13,6 +15,7 @@ import 'package:get/get.dart';
 class OnlineGameController extends GetxController {
   static OnlineGameController to = Get.find();
 
+  bool isHistoryAutoPlay = false;
   String currentRoomId = '';
 
   OnlineRoom room = OnlineRoom();
@@ -34,15 +37,6 @@ class OnlineGameController extends GetxController {
     update();
   }
 
-  void createRoom(String player1Id, String player2Id) {
-    room = OnlineRoom(player1Id: player1Id, player2Id: player2Id);
-    currentRoomId = room.id;
-    logger.t('room created in controller');
-    // logger.t('Room{id: ${room.id}, name: ${room.name}');
-    logger.i(room.toShortString());
-    update();
-  }
-
   void _watchRoomFromFirebase() {
     // listen for current user
     if (currentRoomId != '') {
@@ -55,6 +49,15 @@ class OnlineGameController extends GetxController {
         update();
       });
     }
+  }
+
+  void createRoom(String player1Id, String player2Id) {
+    room = OnlineRoom(playerIds: [player1Id, player2Id]);
+    currentRoomId = room.id;
+    logger.t('room created in controller');
+    logger.i(room);
+    logger.i(room.toJson());
+    update();
   }
 
   void pullRoomFromFirebase() {
@@ -121,62 +124,56 @@ class OnlineGameController extends GetxController {
     }
   }
 
-  historyNextTurn() {
-    final currentHistoryTurnIndex = room.getHistoryRound().historyTurnIndex!;
-    final historyTurnCount = room.getHistoryRound().turns.length;
-    if (currentHistoryTurnIndex < historyTurnCount) {
-      room.getHistoryRound().historyNextTurn();
-      room.updateHistoryBoard();
+  // HISTORY METHODS
+  void goToNextTurnInHistory() {
+    if (!room.isLastTurnInHistory()) {
+      logger.t('History: Go to next turn');
+      room.history.goToNextTurn();
+      room.updateBoardInHistory();
       update();
-      logger.t('historyNextTurn()');
+    } else {
+      if (isHistoryAutoPlay) {
+        pauseHistoryAutoPlay();
+      }
     }
   }
 
-  historyPreviousTurn() {
-    final currentHistoryTurnIndex = room.getHistoryRound().historyTurnIndex;
-    if (currentHistoryTurnIndex! > 0) {
-      room.getHistoryRound().historyPreviousTurn();
-      room.updateHistoryBoard();
+  void goToPreviousTurnInHistory() {
+    if (!room.history.isFirstTurn()) {
+      logger.t('History: Go to previous turn');
+      room.history.goToPreviousTurn();
+      room.updateBoardInHistory();
       update();
-      logger.t('historyPreviousTurn()');
     }
   }
 
-  // pauseHistoryAutoPlay() {
-  //   isHistoryAutoPlay = false;
-  //   update();
-  // }
-  //
-  // void resumeHistoryAutoPlay() async {
-  //   isHistoryAutoPlay = true;
-  //   update();
-  //
-  //   Timer.periodic(Duration(seconds: 1), (timer) {
-  //     final historyCurrentTurnIndex = room.getHistoryRound().historyTurnIndex;
-  //     final turnCount = room.getHistoryRound().turns.length;
-  //
-  //     if (isHistoryAutoPlay) {
-  //       historyNextTurn();
-  //       update();
-  //
-  //       if (historyCurrentTurnIndex! >= turnCount - 1) {
-  //         pauseHistoryAutoPlay();
-  //         timer.cancel();
-  //       }
-  //     } else {
-  //       timer.cancel();
-  //     }
-  //   });
-  // }
-  //
-  // toggleHistoryAutoPlay() {
-  //   if (isHistoryAutoPlay) {
-  //     pauseHistoryAutoPlay();
-  //   } else {
-  //     resumeHistoryAutoPlay();
-  //   }
-  //   update();
-  // }
+  void pauseHistoryAutoPlay() {
+    isHistoryAutoPlay = false;
+    update();
+  }
+
+  void resumeHistoryAutoPlay() async {
+    isHistoryAutoPlay = true;
+    update();
+
+    Timer.periodic(const Duration(seconds: 1), (timer) {
+      if (isHistoryAutoPlay) {
+        goToNextTurnInHistory();
+        update();
+      } else {
+        timer.cancel();
+      }
+    });
+  }
+
+  void toggleHistoryAutoPlay() {
+    if (isHistoryAutoPlay) {
+      pauseHistoryAutoPlay();
+    } else {
+      resumeHistoryAutoPlay();
+    }
+    update();
+  }
 
   /// Move to the next round when a player wins and the player press the `Next round button`, then update the board.
   Future<void> nextRound() async {

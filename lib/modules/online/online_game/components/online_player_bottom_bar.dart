@@ -8,7 +8,8 @@ class OnlinePlayerBottomBar extends StatelessWidget {
   final OnlineRoom room;
 
   const OnlinePlayerBottomBar({
-    super.key, required this.room,
+    super.key,
+    required this.room,
   });
 
   @override
@@ -21,7 +22,7 @@ class OnlinePlayerBottomBar extends StatelessWidget {
         color: Colors.grey,
         height: 48,
         child: GetBuilder(builder: (OnlineGameController controller) {
-          // final room = GameController.to.room;
+          final room = OnlineGameController.to.room;
           final round = room.getCurrentRound();
 
           final xColor = round.currentPlayerIndex == 0 ? kBlack : kGrey45;
@@ -40,13 +41,11 @@ class OnlinePlayerBottomBar extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
-                        '${round.getPlayer1().name}: X',
-                        style:
-                            TextStyle(color: xColor, fontWeight: FontWeight.bold),
+                        '${room.getPlayer1().name}: X',
+                        style: TextStyle(color: xColor, fontWeight: FontWeight.bold),
                       ),
-                      Text('Score: ${round.getPlayer1().score}',
-                          style: TextStyle(
-                              color: xColor, fontWeight: FontWeight.bold)),
+                      Text('Score: ${room.getPlayer1Score().currentScore}',
+                          style: TextStyle(color: xColor, fontWeight: FontWeight.bold)),
                     ],
                   ),
                 ),
@@ -59,14 +58,12 @@ class OnlinePlayerBottomBar extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
-                        '${round.getPlayer2().name}: O',
-                        style:
-                            TextStyle(color: oColor, fontWeight: FontWeight.bold),
+                        '${room.getPlayer2().name}: O',
+                        style: TextStyle(color: oColor, fontWeight: FontWeight.bold),
                       ),
                       Text(
-                        'Score: ${round.getPlayer2().score}',
-                        style:
-                            TextStyle(color: oColor, fontWeight: FontWeight.bold),
+                        'Score: ${room.getPlayer2Score().currentScore}',
+                        style: TextStyle(color: oColor, fontWeight: FontWeight.bold),
                       ),
                     ],
                   ),

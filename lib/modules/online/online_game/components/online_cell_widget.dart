@@ -13,7 +13,8 @@ class OnlineCellWidget extends StatelessWidget {
   final int row;
   final int column;
 
-  const OnlineCellWidget({Key? key, required this.row, required this.column, required this.room}) : super(key: key);
+  const OnlineCellWidget({Key? key, required this.row, required this.column, required this.room})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -36,8 +37,8 @@ class OnlineCellWidget extends StatelessWidget {
 
       return InkWell(
         onTap: () {
-          if(OnlineUserController.to.currentUser.playerIndex == round.currentPlayerIndex) {
-            OnlineGameController.to.drawSeedOnCell(row, column, round.getCurrentPlayer().seed!);
+          if (OnlineUserController.to.currentUser.playerIndex == round.currentPlayerIndex) {
+            OnlineGameController.to.drawSeedOnCell(row, column, room.getCurrentPlayer().seed!);
             logger.t('tap cell, player index: ${OnlineUserController.to.currentUser.playerIndex}');
           }
         },

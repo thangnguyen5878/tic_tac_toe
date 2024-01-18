@@ -1,134 +1,282 @@
-import 'package:flutter_tic_tac_toe/controllers/online_game_controller.dart';
-import 'package:flutter_tic_tac_toe/controllers/online_user_controller.dart';
 import 'package:flutter_tic_tac_toe/models/online/online_board.dart';
 import 'package:flutter_tic_tac_toe/models/online/online_cell.dart';
+import 'package:flutter_tic_tac_toe/models/online/online_history.dart';
 import 'package:flutter_tic_tac_toe/models/online/online_player.dart';
 import 'package:flutter_tic_tac_toe/models/online/online_round.dart';
+import 'package:flutter_tic_tac_toe/models/online/online_score.dart';
 import 'package:flutter_tic_tac_toe/utils/constants/service_constants.dart';
 import 'package:flutter_tic_tac_toe/utils/enums/cell_state.dart';
 import 'package:flutter_tic_tac_toe/utils/enums/game_state.dart';
 import 'package:flutter_tic_tac_toe/utils/enums/seed.dart';
+import 'package:flutter_tic_tac_toe/utils/json%20converters/online_player_list_converter.dart';
 import 'package:flutter_tic_tac_toe/utils/json%20converters/online_round_list_converter.dart';
+import 'package:get/get.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:uuid/uuid.dart';
 
 part 'online_room.g.dart';
 
-@JsonSerializable(explicitToJson: true)
+@JsonSerializable()
 class OnlineRoom {
   String id;
-  String name;
-  GameState state;
-  OnlineBoard board;
-  OnlineBoard historyBoard;
+  String name = 'Untitled OnlineRoom';
+  DateTime createdAt = DateTime.now();
+  DateTime lastAccessAt = DateTime.now();
+
+  GameState state = GameState.playing;
+
+  OnlineBoard board = OnlineBoard();
+
+  @OnlinePlayerListConverter()
+  List<OnlinePlayer> players = [
+    OnlinePlayer(index: 0, name: 'OnlinePlayer 1', seed: Seed.cross),
+    OnlinePlayer(index: 1, name: 'OnlinePlayer 2', seed: Seed.nought)
+  ];
+
+  List<String?> playerIds = [];
 
   @OnlineRoundListConverter()
-  List<OnlineRound?>? rounds;
+  List<OnlineRound> rounds = [OnlineRound()];
 
-  int currentRoundIndex;
-  int historyRoundIndex;
+  OnlineHistory history = OnlineHistory();
 
-  List<String?>? playerIds = [];
-
+  /// Temporary list to track cells being checked for a potential winner.
   @JsonKey(includeToJson: false, includeFromJson: false)
-  List<OnlineCell>? checkingCells = List<OnlineCell>.empty(growable: true);
+  List<OnlineCell> checkingCells = <OnlineCell>[];
 
-  @JsonKey(includeToJson: true, includeFromJson: true)
   final winCount = 5;
 
-  OnlineRoom.all({
-    required this.id,
-    required this.name,
-    required this.state,
-    required this.board,
-    required this.historyBoard,
-    this.rounds,
-    required this.currentRoundIndex,
-    required this.historyRoundIndex,
-    this.checkingCells,
-  });
+  OnlineRoom.all(
+      {required this.id,
+      required this.name,
+      required this.createdAt,
+      required this.lastAccessAt,
+      required this.state,
+      required this.board,
+      required this.players,
+      required this.rounds,
+      required this.history});
 
-  OnlineRoom({OnlinePlayer? player1, OnlinePlayer? player2, String? player1Id, String? player2Id})
-      : id = const Uuid().v4(),
-        name = 'Untitled Room',
-        board = OnlineBoard(),
-        historyBoard = OnlineBoard(),
-        historyRoundIndex = 0,
-        state = GameState.playing,
-        currentRoundIndex = 0 {
-    playerIds = [player1Id ?? null, player2Id ?? null];
-    rounds = [
-      OnlineRound(index: 0, players: [
-        OnlinePlayer(index: 0, name: 'Player 1', seed: Seed.cross, score: 0),
-        OnlinePlayer(index: 1, name: 'Player 2', seed: Seed.nought, score: 0)
-      ])
-    ];
+  OnlineRoom({
+    String? name,
+    GameState? state,
+    DateTime? createdAt,
+    DateTime? lastAccessAt,
+    OnlineBoard? board,
+    List<OnlinePlayer>? players,
+    List<OnlineRound>? rounds,
+    OnlineHistory? history,
+    List<String?>? playerIds,
+  })  : id = const Uuid().v4(),
+        name = name ?? 'Untitled OnlineRoom',
+        createdAt = createdAt ?? DateTime.now(),
+        lastAccessAt = lastAccessAt ?? DateTime.now(),
+        state = state ?? GameState.playing,
+        board = board ?? OnlineBoard(),
+        players = players ??
+            [
+              OnlinePlayer(index: 0, name: 'OnlinePlayer 1', seed: Seed.cross),
+              OnlinePlayer(index: 1, name: 'OnlinePlayer 2', seed: Seed.nought)
+            ],
+        rounds = rounds ?? [OnlineRound()],
+        history = history ?? OnlineHistory(),
+        playerIds = playerIds ?? [];
+
+  // GETTER
+  OnlineRound getCurrentRound() {
+    return rounds.last;
   }
 
-  // getters
-  OnlineRound getCurrentRound() {
-    return rounds![currentRoundIndex]!;
+  OnlineRound getRound(int index) {
+    return rounds[index];
   }
 
   int getRoundCount() {
-    return currentRoundIndex + 1;
+    return rounds.length;
   }
 
-  // getters history
-  OnlineRound getHistoryRound() {
-    return rounds![historyRoundIndex]!;
+  OnlinePlayer getCurrentPlayer() {
+    return players[getCurrentRound().currentPlayerIndex];
   }
 
-  int getHistoryRoundCount() {
-    return historyRoundIndex + 1;
+  OnlinePlayer getPlayer1() {
+    return players[0];
   }
 
-  // check methods
+  OnlinePlayer getPlayer2() {
+    return players[1];
+  }
+
+  OnlinePlayer? getWinnerOfCurrentRound() {
+    if (getCurrentRound().hasWinner()) {
+      return players[getCurrentRound().winnerIndex!];
+    }
+  }
+
+  OnlinePlayer? getWinnerOfRound(int roundIndex) {
+    if (rounds[roundIndex].hasWinner()) {
+      return players[rounds[roundIndex].winnerIndex!];
+    }
+  }
+
+  OnlineScore getPlayer1Score() {
+    return getCurrentRound().getPlayer1Score();
+  }
+
+  OnlineScore getPlayer2Score() {
+    return getCurrentRound().getPlayer2Score();
+  }
+
+  // GETTERS: HISTORY
+  int getTurnCountInHistory() {
+    if (!isLastTurnInHistory()) {
+      return history.currentTurnIndex + 1;
+    } else {
+      return history.currentTurnIndex; // minus 1 because there are no next turn.
+    }
+  }
+
+  OnlineRound getCurrentRoundInHistory() {
+    return rounds[history.currentRoundIndex];
+  }
+
+  int getRoundCountInHistory() {
+    return history.currentRoundIndex + 1;
+  }
+
+  int getNextTurnCountInHistory() {
+    return history.getTurnCount();
+  }
+
+  OnlinePlayer getCurrentPlayerInHistory() {
+    return players[history.currentPlayerIndex];
+  }
+
+  int getPlayer1CurrentScoreInHistory() {
+    return getCurrentRoundInHistory().getPlayer1Score().currentScore;
+  }
+
+  int getPlayer2CurrentScoreInHistory() {
+    return getCurrentRoundInHistory().getPlayer2Score().currentScore;
+  }
+
+  // METHODS: BOOLEAN HISTORY
+  bool isPlayer1WinInHistory() {
+    return hasWinnerInHistory() && getCurrentRoundInHistory().isPlayer1Turn();
+  }
+
+  bool isPlayer2WinInHistory() {
+    return hasWinnerInHistory() && getCurrentRoundInHistory().isPlayer2Turn();
+  }
+
+  bool hasWinnerInHistory() {
+    return history.currentTurnIndex == getCurrentRoundInHistory().getTurnCount();
+  }
+
+  bool isPlayer1TurnInHistory() {
+    if (!isLastTurnInHistory()) {
+      return history.isPlayer1Turn();
+    }
+    // The figures stop at the last turn.
+    return !history.isPlayer1Turn();
+  }
+
+  bool isPlayer2TurnInHistory() {
+    if (!isLastTurnInHistory()) {
+      return history.isPlayer2Turn();
+    }
+    // The figures stop at the last turn.
+    return !history.isPlayer2Turn();
+  }
+
+  // METHODS: BOOLEAN
+  bool isLastTurnInHistory() {
+    return history.currentTurnIndex == getCurrentRoundInHistory().turns.length;
+    // Because when turnIndex = 0, there are no seed on the board.
+  }
+
+  bool isLastTurnInHistoryPlus() {
+    return history.currentTurnIndex == getCurrentRoundInHistory().turns.length + 2;
+  }
+
   bool isGameOver() {
     return state == GameState.stop;
   }
 
+  bool isPlayer1Win() {
+    return getCurrentRound().isPlayer1Win();
+  }
+
+  bool isPlayer2Win() {
+    return getCurrentRound().isPlayer2Win();
+  }
+
+  bool isRoundValidate(int roundIndex) {
+    return roundIndex >= 0 && roundIndex <= rounds.length - 1;
+  }
+
+  bool hasWinnerOfCurrentRound() {
+    return getCurrentRound().hasWinner();
+  }
+
+  // SETTERS
+  void addScoreForPlayer1(int score) {
+    getPlayer1Score().addScore(score);
+  }
+
+  void addScoreForPlayer2(int score) {
+    getPlayer2Score().addScore(score);
+  }
+
+  // METHODS: BUSINESS
   /// Check whether adjacent cells are the same or not to check the winner
-  bool isWinningRow(List<OnlineCell> list) {
-    if (list.isEmpty) {
+  isWinningRow(List<OnlineCell> cells) {
+    if (cells.isEmpty) {
       return false;
     }
-    dynamic firstElement = list[0].content;
-    for (int i = 1; i < list.length; i++) {
-      if (list[i].content != firstElement) {
+    final firstElement = cells[0].content;
+    for (int i = 1; i < cells.length; i++) {
+      if (cells[i].content != firstElement) {
         return false;
       }
     }
     return true;
   }
 
-  Future<void> handleWin(int winnerIndex) async {
-    logger.t('handle win');
-    var player1 = getCurrentRound().players![0];
-    var player2 = getCurrentRound().players![1];
+  void handleWin(int winnerIndex) {
+    bool isPlayer1Win = winnerIndex == 0;
 
-    if (winnerIndex == 0) {
-      player1.score = player1.score! + 1;
+    if (isPlayer1Win) {
+      addScoreForPlayer1(1);
       colorWinningCells(CellState.crossWin);
     } else {
-      player2.score = player2.score! + 1;
+      addScoreForPlayer2(1);
       colorWinningCells(CellState.noughtWin);
     }
 
+    // update winner, final score and game state
     getCurrentRound().winnerIndex = winnerIndex;
-    player1.finalScore = player1.score;
-    player2.finalScore = player2.score;
-    getCurrentRound().winTurnIndex = getCurrentRound().turns.length - 1;
+    getPlayer1Score().updateFinalScore();
+    getPlayer2Score().updateFinalScore();
     state = GameState.stop;
 
-    OnlineUserController.to.updateWinnerAndLoserStatus();
-    OnlineGameController.to.pushRoomToFirebase();
+    logWinnerAndNotify();
   }
 
   /// This method will be used to color the winning cells.
   void colorWinningCells(CellState winningState) {
     for (OnlineCell cell in checkingCells!) {
       cell.state = winningState;
+    }
+  }
+
+  /// This method will log the winner and navigate to the winner screen.
+  void logWinnerAndNotify() {
+    if (getCurrentRound().hasWinner()) {
+      OnlinePlayer winner = getWinnerOfCurrentRound()!;
+      logger.t('Winner is ${winner!.name}');
+      // logger.t('rounds: $rounds');
+      Get.toNamed('winner');
     }
   }
 
@@ -146,7 +294,7 @@ class OnlineRoom {
       return; // Winner found and handled
     }
     // If no winner, move to next turn
-    getCurrentRound().nextTurn();
+    getCurrentRound().GoToNextTurn();
   }
 
   bool checkLines() {
@@ -216,56 +364,50 @@ class OnlineRoom {
 
   /// Move to the next round when a player wins and the player press the `Next round button`
   void nextRound() {
-    // reset the game
     state = GameState.playing;
     board.reset();
-
-    // move to the next round
-    OnlineRound nextRound = OnlineRound.cloneNextRound(getCurrentRound());
+    OnlineRound nextRound = getCurrentRound().cloneForNextRound();
     rounds = [...?rounds, nextRound];
-    currentRoundIndex++;
+    // logger.t('nextRound()\n');
+    // logger.t('current round: ${rounds![currentRoundIndex - 1]}\n');
+    // logger.t('next round: ${rounds![currentRoundIndex]}\n');
   }
 
   /// Reset game to the original state
   void reset() {
-    logger.t('reset game');
     state = GameState.playing;
     board.reset();
     getCurrentRound().reset();
   }
 
-  /// Load cell from turns to history board according to historyCurrentTurnIndex
-  void updateHistoryBoard() {
-    historyBoard.reset();
-    final turns = getHistoryRound().turns;
-    final currentHistoryTurnIndex = getHistoryRound().historyTurnIndex!;
-    // logger.t('Turns: $turns');
-    if (currentHistoryTurnIndex >= 0) {
-      historyBoard.load(turns, currentHistoryTurnIndex);
+  /// Loads [OnlineHistory.currentTurnIndex]+1 cells from [OnlineRound.turns] to [OnlineHistory.board].
+  void updateBoardInHistory() {
+    history.board.reset();
+    if (history.currentTurnIndex >= 0) {
+      history.board.load(getCurrentRoundInHistory().turns, history.currentTurnIndex);
     }
   }
 
   // toJson() and fromJson()
   Map<String, dynamic> toJson() => _$OnlineRoomToJson(this);
 
-  factory OnlineRoom.fromJson(Map<String, dynamic> json) => OnlineRoom()
-    ..id = json['id'] as String
-    ..name = json['name'] as String
-    ..state = $enumDecode(_$GameStateEnumMap, json['state'])
-    ..board = OnlineBoard.fromJson(json['board'] as Map<String, dynamic>)
-    ..historyBoard = OnlineBoard.fromJson(json['historyBoard'] as Map<String, dynamic>)
-    ..rounds = _$JsonConverterFromJson<List<Map<String, dynamic>>, List<OnlineRound?>>(
-        List<Map<String, dynamic>>.from(json['rounds']), const OnlineRoundListConverter().fromJson)
-    ..currentRoundIndex = json['currentRoundIndex'] as int
-    ..historyRoundIndex = json['historyRoundIndex'] as int
-    ..playerIds = (json['playerIds'] as List<dynamic>?)?.map((e) => e as String?).toList();
+  factory OnlineRoom.fromJson(Map<String, dynamic> json) => _$OnlineRoomFromJson(json);
 
+  // METHODS: LOG
   @override
   String toString() {
-    return 'OnlineRoom{id: $id, name: $name, state: $state, board: $board, historyBoard: $historyBoard, \nrounds: $rounds, currentRoundIndex: $currentRoundIndex, historyRoundIndex: $historyRoundIndex, checkingCells: $checkingCells, winCount: $winCount}';
+    return 'OnlineRoom{id: $id, name: $name, createdAt: $createdAt, lastAccessAt: $lastAccessAt, state: $state,\n board: $board,\n players: $players,\n rounds: $rounds,\n history: $history,\n checkingCells: $checkingCells, winCount: $winCount}';
   }
 
   String toShortString() {
-    return 'OnlineRoom{id: $id, name: $name}';
+    return 'OnlineRoom{id: $id, name: $name, createdAt: $createdAt, lastAccessAt: $lastAccessAt, state: $state, history: ${history.toShortString()}}';
+  }
+
+  void logInfo() {
+    logger.i(this);
+  }
+
+  void logShortInfo() {
+    logger.t(toShortString());
   }
 }
