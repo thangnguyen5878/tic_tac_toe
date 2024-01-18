@@ -16,8 +16,6 @@ import '../modules/offline/winner/winner_page.dart';
 import '../modules/online/auth/auth_binding.dart';
 import '../modules/online/auth/view/auth_page.dart';
 import '../modules/online/online_game/online_game_page.dart';
-import '../modules/online/online_history/online_history_binding.dart';
-import '../modules/online/online_history/online_history_page.dart';
 
 // ignore_for_file: constant_identifier_names
 
@@ -82,10 +80,10 @@ class AppPages {
       page: () => const OnlineGamePage(),
       // binding: OnlineGameBinding(),
     ),
-    GetPage(
-      name: _Paths.ONLINE_HISTORY,
-      page: () => const OnlineHistoryPage(),
-      binding: OnlineHistoryBinding(),
-    ),
+    // GetPage(
+    //   name: _Paths.ONLINE_HISTORY,
+    //   page: () => const OnlineHistoryPage(),
+    //   binding: OnlineHistoryBinding(),
+    // ),
   ];
 }

@@ -31,11 +31,12 @@ class GameController extends GetxController {
     }
     if (CreateRoomController.to.rowCount.text != '') {
       newRoom.board.rowCount = int.tryParse(CreateRoomController.to.rowCount.text) ?? 10;
-      // newRoom.historyBoard.rowCount = int.tryParse(CreateRoomController.to.rowCount.text) ?? 10;
+      newRoom.history.board.rowCount = int.tryParse(CreateRoomController.to.rowCount.text) ?? 10;
     }
     if (CreateRoomController.to.columnCount.text != '') {
       newRoom.board.columnCount = int.tryParse(CreateRoomController.to.columnCount.text) ?? 10;
-      // newRoom.historyBoard.columnCount = int.tryParse(CreateRoomController.to.columnCount.text) ?? 10;
+      newRoom.history.board.columnCount =
+          int.tryParse(CreateRoomController.to.columnCount.text) ?? 10;
     }
     newRoom.board.rebuild();
     // newRoom.historyBoard.rebuild();
