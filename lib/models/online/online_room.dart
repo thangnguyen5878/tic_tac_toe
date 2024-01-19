@@ -1,3 +1,5 @@
+import 'package:flutter_tic_tac_toe/controllers/online_game_controller.dart';
+import 'package:flutter_tic_tac_toe/controllers/online_user_controller.dart';
 import 'package:flutter_tic_tac_toe/models/online/online_board.dart';
 import 'package:flutter_tic_tac_toe/models/online/online_cell.dart';
 import 'package:flutter_tic_tac_toe/models/online/online_history.dart';
@@ -16,7 +18,7 @@ import 'package:uuid/uuid.dart';
 
 part 'online_room.g.dart';
 
-@JsonSerializable()
+@JsonSerializable(explicitToJson: true)
 class OnlineRoom {
   String id;
   String name = 'Untitled OnlineRoom';
@@ -243,6 +245,26 @@ class OnlineRoom {
     return true;
   }
 
+  // void handleWin(int winnerIndex) {
+  //   bool isPlayer1Win = winnerIndex == 0;
+  //
+  //   if (isPlayer1Win) {
+  //     addScoreForPlayer1(1);
+  //     colorWinningCells(CellState.crossWin);
+  //   } else {
+  //     addScoreForPlayer2(1);
+  //     colorWinningCells(CellState.noughtWin);
+  //   }
+  //
+  //   // update winner, final score and game state
+  //   getCurrentRound().winnerIndex = winnerIndex;
+  //   getPlayer1Score().updateFinalScore();
+  //   getPlayer2Score().updateFinalScore();
+  //   state = GameState.stop;
+  //
+  //   logWinnerAndNotify();
+  // }
+
   void handleWin(int winnerIndex) {
     bool isPlayer1Win = winnerIndex == 0;
 
@@ -250,17 +272,17 @@ class OnlineRoom {
       addScoreForPlayer1(1);
       colorWinningCells(CellState.crossWin);
     } else {
-      addScoreForPlayer2(1);
+      addScoreForPlayer2(2);
       colorWinningCells(CellState.noughtWin);
     }
 
-    // update winner, final score and game state
     getCurrentRound().winnerIndex = winnerIndex;
     getPlayer1Score().updateFinalScore();
     getPlayer2Score().updateFinalScore();
     state = GameState.stop;
 
-    logWinnerAndNotify();
+    OnlineUserController.to.updateWinnerAndLoserStatus();
+    OnlineGameController.to.pushRoomToFirebase();
   }
 
   /// This method will be used to color the winning cells.
@@ -368,9 +390,6 @@ class OnlineRoom {
     board.reset();
     OnlineRound nextRound = getCurrentRound().cloneForNextRound();
     rounds = [...?rounds, nextRound];
-    // logger.t('nextRound()\n');
-    // logger.t('current round: ${rounds![currentRoundIndex - 1]}\n');
-    // logger.t('next round: ${rounds![currentRoundIndex]}\n');
   }
 
   /// Reset game to the original state
@@ -391,16 +410,35 @@ class OnlineRoom {
   // toJson() and fromJson()
   Map<String, dynamic> toJson() => _$OnlineRoomToJson(this);
 
-  factory OnlineRoom.fromJson(Map<String, dynamic> json) => _$OnlineRoomFromJson(json);
+  factory OnlineRoom.fromJson(Map<String, dynamic> json) => OnlineRoom(
+        name: json['name'] as String?,
+        state: $enumDecodeNullable(_$GameStateEnumMap, json['state']),
+        createdAt: json['createdAt'] == null ? null : DateTime.parse(json['createdAt'] as String),
+        lastAccessAt:
+            json['lastAccessAt'] == null ? null : DateTime.parse(json['lastAccessAt'] as String),
+        board: json['board'] == null
+            ? null
+            : OnlineBoard.fromJson(json['board'] as Map<String, dynamic>),
+        players: (List<Map<String, dynamic>>.from(json['players']))
+            ?.map((e) => OnlinePlayer.fromJson(e as Map<String, dynamic>))
+            .toList(),
+        rounds: (List<Map<String, dynamic>>.from(json['rounds']))
+            ?.map((e) => OnlineRound.fromJson(e as Map<String, dynamic>))
+            .toList(),
+        history: json['history'] == null
+            ? null
+            : OnlineHistory.fromJson(json['history'] as Map<String, dynamic>),
+        playerIds: (json['playerIds'] as List<dynamic>?)?.map((e) => e as String?).toList(),
+      )..id = json['id'] as String;
 
   // METHODS: LOG
   @override
   String toString() {
-    return 'OnlineRoom{id: $id, name: $name, createdAt: $createdAt, lastAccessAt: $lastAccessAt, state: $state,\n board: $board,\n players: $players,\n rounds: $rounds,\n history: $history,\n checkingCells: $checkingCells, winCount: $winCount}';
+    return 'OnlineRoom{id: $id, name: $name,  state: $state,\n board: $board,\n players: $players,\n rounds: $rounds,\n history: $history,\n checkingCells: $checkingCells, winCount: $winCount}';
   }
 
   String toShortString() {
-    return 'OnlineRoom{id: $id, name: $name, createdAt: $createdAt, lastAccessAt: $lastAccessAt, state: $state, history: ${history.toShortString()}}';
+    return 'OnlineRoom{id: $id, name: $name,  state: $state, history: ${history.toShortString()}}';
   }
 
   void logInfo() {

@@ -13,6 +13,7 @@ class OnlineBoard {
   int? rowCount;
   int? columnCount;
 
+  // @JsonKey(includeFromJson: false, includeToJson: false)
   @OnlineCellListConverter2()
   List<List<OnlineCell>> cells = [];
 

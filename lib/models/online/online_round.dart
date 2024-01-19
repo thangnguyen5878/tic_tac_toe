@@ -130,19 +130,15 @@ class OnlineRound {
   }
 
   // JSON SERIALIZATION
-  // factory OnlineRound.fromJson(Map<String, dynamic> json) => OnlineRound(
-  //       index: json['index'] as int?,
-  //       winnerIndex: json['winnerIndex'] as int?,
-  //       players: (json['players'] as List<dynamic>?)?.map((e) => OnlinePlayer.fromJson(e)).toList(),
-  //     )
-  //       ..currentPlayerIndex = json['currentPlayerIndex'] as int?
-  //       ..currentTurnIndex = json['currentTurnIndex'] as int?
-  //       ..winTurnIndex = json['winTurnIndex'] as int?
-  //       ..turns = const OnlineCellListConverter().fromJson(json['turns'])
-  //       ..historyTurns = const OnlineCellListConverter().fromJson(json['historyTurns'])
-  //       .._historyPlayerIndex = json['_historyPlayerIndex'] as int?
-  //       ..historyTurnIndex = json['historyTurnIndex'] as int?;
-  factory OnlineRound.fromJson(Map<String, dynamic> json) => _$OnlineRoundFromJson(json);
+  factory OnlineRound.fromJson(Map<String, dynamic> json) => OnlineRound()
+    ..index = json['index'] as int
+    ..currentPlayerIndex = json['currentPlayerIndex'] as int
+    ..winnerIndex = json['winnerIndex'] as int?
+    ..turns =
+        const OnlineCellListConverter().fromJson(List<Map<String, dynamic>>.from(json['turns']))
+    ..scores =
+        const OnlineScoreListConverter().fromJson(List<Map<String, dynamic>>.from(json['scores']));
+
   Map<String, dynamic> toJson() => _$OnlineRoundToJson(this);
 
   // METHODS: LOG

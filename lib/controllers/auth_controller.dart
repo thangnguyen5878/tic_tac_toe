@@ -1,9 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_tic_tac_toe/controllers/online_user_controller.dart';
+import 'package:flutter_tic_tac_toe/models/online/online_user.dart';
 import 'package:flutter_tic_tac_toe/modules/online/auth/view/signin_page.dart';
 import 'package:flutter_tic_tac_toe/modules/online/auth/view/welcome_page.dart';
-import 'package:flutter_tic_tac_toe/models/online/online_user.dart';
 import 'package:flutter_tic_tac_toe/utils/constants/service_constants.dart';
 import 'package:get/get.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -53,7 +53,8 @@ class AuthController extends GetxController {
   }
 
   Stream<List<OnlineUser>> getOnlineUsers() {
-    return FirebaseFirestore.instance.collection('players')
+    return FirebaseFirestore.instance
+        .collection('players')
         .where('isOnline', isEqualTo: true)
         .snapshots()
         .map((snapshot) => snapshot.docs.map((doc) => OnlineUser.fromJson(doc.data())).toList());
@@ -65,8 +66,7 @@ class AuthController extends GetxController {
       final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
 
       // Obtain the auth details from the request
-      final GoogleSignInAuthentication? googleAuth =
-          await googleUser?.authentication;
+      final GoogleSignInAuthentication? googleAuth = await googleUser?.authentication;
 
       // Create a new credential
       final credential = GoogleAuthProvider.credential(
@@ -74,8 +74,7 @@ class AuthController extends GetxController {
         idToken: googleAuth?.idToken,
       );
 
-      UserCredential userCredential =
-          await FirebaseAuth.instance.signInWithCredential(credential);
+      UserCredential userCredential = await FirebaseAuth.instance.signInWithCredential(credential);
       logger.t('Signed in with Google');
       logger.i(userCredential);
       firestoreService.createUserDocument(userCredential);

@@ -39,11 +39,11 @@ Map<String, dynamic> _$OnlineRoomToJson(OnlineRoom instance) =>
       'createdAt': instance.createdAt.toIso8601String(),
       'lastAccessAt': instance.lastAccessAt.toIso8601String(),
       'state': _$GameStateEnumMap[instance.state]!,
-      'board': instance.board,
-      'players': instance.players,
+      'board': instance.board.toJson(),
+      'players': instance.players.map((e) => e.toJson()).toList(),
       'playerIds': instance.playerIds,
-      'rounds': instance.rounds,
-      'history': instance.history,
+      'rounds': instance.rounds.map((e) => e.toJson()).toList(),
+      'history': instance.history.toJson(),
     };
 
 const _$GameStateEnumMap = {

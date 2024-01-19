@@ -55,8 +55,7 @@ class OnlineGameController extends GetxController {
     room = OnlineRoom(playerIds: [player1Id, player2Id]);
     currentRoomId = room.id;
     logger.t('room created in controller');
-    logger.i(room);
-    logger.i(room.toJson());
+    logger.i(room.toShortString());
     update();
   }
 
