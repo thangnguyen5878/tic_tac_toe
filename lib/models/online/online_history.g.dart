@@ -11,7 +11,7 @@ OnlineHistory _$OnlineHistoryFromJson(Map<String, dynamic> json) =>
       ..currentRoundIndex = json['currentRoundIndex'] as int
       ..currentTurnIndex = json['currentTurnIndex'] as int
       ..currentPlayerIndex = json['currentPlayerIndex'] as int
-      ..board = OnlineBoard.fromJson(json['board'] as Map<String, dynamic>);
+      ..board = Board.fromJson(json['board'] as Map<String, dynamic>);
 
 Map<String, dynamic> _$OnlineHistoryToJson(OnlineHistory instance) =>
     <String, dynamic>{

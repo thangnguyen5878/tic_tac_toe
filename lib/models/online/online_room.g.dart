@@ -17,7 +17,7 @@ OnlineRoom _$OnlineRoomFromJson(Map<String, dynamic> json) => OnlineRoom(
           : DateTime.parse(json['lastAccessAt'] as String),
       board: json['board'] == null
           ? null
-          : OnlineBoard.fromJson(json['board'] as Map<String, dynamic>),
+          : Board.fromJson(json['board'] as Map<String, dynamic>),
       players: (json['players'] as List<dynamic>?)
           ?.map((e) => Player.fromJson(e as Map<String, dynamic>))
           .toList(),

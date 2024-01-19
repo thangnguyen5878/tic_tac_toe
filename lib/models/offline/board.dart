@@ -4,15 +4,20 @@ import 'package:flutter_tic_tac_toe/utils/constants/game_constants.dart';
 import 'package:flutter_tic_tac_toe/utils/constants/service_constants.dart';
 import 'package:flutter_tic_tac_toe/utils/enums/cell_state.dart';
 import 'package:flutter_tic_tac_toe/utils/enums/seed.dart';
+import 'package:flutter_tic_tac_toe/utils/json%20converters/online_cell_list_converter2.dart';
 import 'package:isar/isar.dart';
+import 'package:json_annotation/json_annotation.dart';
 
 part 'board.g.dart';
 
 @embedded
+@JsonSerializable(explicitToJson: true)
 class Board {
   int? rowCount;
   int? columnCount;
+
   @ignore
+  @CellListConverter2()
   late List<List<Cell>> cells;
 
   // CONSTRUCTORS
@@ -68,6 +73,10 @@ class Board {
     }
     logger.t('Reset board');
   }
+
+  // JSON SERIALIZATION
+  factory Board.fromJson(Map<String, dynamic> json) => _$BoardFromJson(json);
+  Map<String, dynamic> toJson() => _$BoardToJson(this);
 
   // METHODS: LOG
   @override

@@ -1,9 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_tic_tac_toe/controllers/online_user_controller.dart';
+import 'package:flutter_tic_tac_toe/models/offline/board.dart';
 import 'package:flutter_tic_tac_toe/models/offline/cell.dart';
 import 'package:flutter_tic_tac_toe/models/offline/player.dart';
-import 'package:flutter_tic_tac_toe/models/online/online_board.dart';
 import 'package:flutter_tic_tac_toe/models/online/online_room.dart';
 import 'package:flutter_tic_tac_toe/models/online/online_round.dart';
 import 'package:flutter_tic_tac_toe/models/online/online_user.dart';
@@ -31,8 +31,8 @@ class FirestoreService {
         fromFirestore: (snapshots, _) => Cell.fromJson(snapshots.data()!),
         toFirestore: (cell, _) => cell.toJson());
 
-    _boardRef = firestore.collection(fBoardCollection).withConverter<OnlineBoard>(
-        fromFirestore: (snapshots, _) => OnlineBoard.fromJson(snapshots.data()!),
+    _boardRef = firestore.collection(fBoardCollection).withConverter<Board>(
+        fromFirestore: (snapshots, _) => Board.fromJson(snapshots.data()!),
         toFirestore: (board, _) => board.toJson());
 
     _roundRef = firestore.collection(fRoundCollection).withConverter<OnlineRound>(
@@ -204,7 +204,7 @@ class FirestoreService {
   }
 
   // ONLINE BOARD
-  void addBoard(OnlineBoard board) {
+  void addBoard(Board board) {
     _boardRef.add(board);
     logger.t('add a board to Firestore');
   }

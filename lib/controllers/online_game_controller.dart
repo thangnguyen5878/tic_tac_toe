@@ -1,9 +1,9 @@
 import 'dart:async';
 
 import 'package:flutter_tic_tac_toe/controllers/online_user_controller.dart';
+import 'package:flutter_tic_tac_toe/models/offline/board.dart';
 import 'package:flutter_tic_tac_toe/models/offline/cell.dart';
 import 'package:flutter_tic_tac_toe/models/offline/player.dart';
-import 'package:flutter_tic_tac_toe/models/online/online_board.dart';
 import 'package:flutter_tic_tac_toe/models/online/online_room.dart';
 import 'package:flutter_tic_tac_toe/models/online/online_round.dart';
 import 'package:flutter_tic_tac_toe/utils/constants/service_constants.dart';
@@ -22,7 +22,7 @@ class OnlineGameController extends GetxController {
   // StreamController<OnlineRoom> _roomController = StreamController<OnlineRoom>();
 
   Player player = Player();
-  OnlineBoard board = OnlineBoard();
+  Board board = Board();
   Cell cell = Cell();
   OnlineRound round = OnlineRound();
 

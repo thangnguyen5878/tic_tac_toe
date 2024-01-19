@@ -1,4 +1,4 @@
-import 'package:flutter_tic_tac_toe/models/online/online_board.dart';
+import 'package:flutter_tic_tac_toe/models/offline/board.dart';
 import 'package:flutter_tic_tac_toe/utils/constants/service_constants.dart';
 import 'package:json_annotation/json_annotation.dart';
 
@@ -17,7 +17,7 @@ class OnlineHistory {
   int currentPlayerIndex = 0;
 
   /// Board contains all data shown in the board of [HistoryDetailsPage].
-  OnlineBoard board = OnlineBoard();
+  Board board = Board();
 
   // CONSTRUCTORS
   /// Creates a new instance of the [OnlineHistory] class.
@@ -29,11 +29,11 @@ class OnlineHistory {
 
   /// Creates a new instance of the [OnlineHistory] class with the specified properties.
   OnlineHistory.custom(
-      {int? currentRoundIndex, int? currentTurnIndex, int? currentPlayerIndex, OnlineBoard? board})
+      {int? currentRoundIndex, int? currentTurnIndex, int? currentPlayerIndex, Board? board})
       : currentRoundIndex = currentRoundIndex ?? 0,
         currentTurnIndex = currentTurnIndex ?? 0,
         currentPlayerIndex = currentPlayerIndex ?? 0,
-        board = board ?? OnlineBoard();
+        board = board ?? Board();
 
   // GETTERS
   int getTurnCount() {

@@ -1,9 +1,9 @@
 import 'package:flutter_tic_tac_toe/controllers/online_game_controller.dart';
 import 'package:flutter_tic_tac_toe/controllers/online_user_controller.dart';
+import 'package:flutter_tic_tac_toe/models/offline/board.dart';
 import 'package:flutter_tic_tac_toe/models/offline/cell.dart';
 import 'package:flutter_tic_tac_toe/models/offline/player.dart';
 import 'package:flutter_tic_tac_toe/models/offline/score.dart';
-import 'package:flutter_tic_tac_toe/models/online/online_board.dart';
 import 'package:flutter_tic_tac_toe/models/online/online_history.dart';
 import 'package:flutter_tic_tac_toe/models/online/online_round.dart';
 import 'package:flutter_tic_tac_toe/utils/constants/service_constants.dart';
@@ -27,7 +27,7 @@ class OnlineRoom {
 
   GameState state = GameState.playing;
 
-  OnlineBoard board = OnlineBoard();
+  Board board = Board();
 
   @PlayerListConverter()
   List<Player> players = [
@@ -64,7 +64,7 @@ class OnlineRoom {
     GameState? state,
     DateTime? createdAt,
     DateTime? lastAccessAt,
-    OnlineBoard? board,
+    Board? board,
     List<Player>? players,
     List<OnlineRound>? rounds,
     OnlineHistory? history,
@@ -74,7 +74,7 @@ class OnlineRoom {
         createdAt = createdAt ?? DateTime.now(),
         lastAccessAt = lastAccessAt ?? DateTime.now(),
         state = state ?? GameState.playing,
-        board = board ?? OnlineBoard(),
+        board = board ?? Board(),
         players = players ??
             [
               Player(index: 0, name: 'OnlinePlayer 1', seed: Seed.cross),
@@ -416,9 +416,7 @@ class OnlineRoom {
         createdAt: json['createdAt'] == null ? null : DateTime.parse(json['createdAt'] as String),
         lastAccessAt:
             json['lastAccessAt'] == null ? null : DateTime.parse(json['lastAccessAt'] as String),
-        board: json['board'] == null
-            ? null
-            : OnlineBoard.fromJson(json['board'] as Map<String, dynamic>),
+        board: json['board'] == null ? null : Board.fromJson(json['board'] as Map<String, dynamic>),
         players: (List<Map<String, dynamic>>.from(json['players']))
             ?.map((e) => Player.fromJson(e as Map<String, dynamic>))
             .toList(),

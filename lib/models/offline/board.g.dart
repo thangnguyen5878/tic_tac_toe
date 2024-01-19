@@ -219,3 +219,19 @@ extension BoardQueryFilter on QueryBuilder<Board, Board, QFilterCondition> {
 }
 
 extension BoardQueryObject on QueryBuilder<Board, Board, QFilterCondition> {}
+
+// **************************************************************************
+// JsonSerializableGenerator
+// **************************************************************************
+
+Board _$BoardFromJson(Map<String, dynamic> json) => Board(
+      rowCount: json['rowCount'] as int?,
+      columnCount: json['columnCount'] as int?,
+    )..cells = const CellListConverter2()
+        .fromJson(json['cells'] as Map<String, dynamic>);
+
+Map<String, dynamic> _$BoardToJson(Board instance) => <String, dynamic>{
+      'rowCount': instance.rowCount,
+      'columnCount': instance.columnCount,
+      'cells': const CellListConverter2().toJson(instance.cells),
+    };
