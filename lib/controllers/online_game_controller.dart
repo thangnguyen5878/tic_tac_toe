@@ -1,8 +1,8 @@
 import 'dart:async';
 
 import 'package:flutter_tic_tac_toe/controllers/online_user_controller.dart';
+import 'package:flutter_tic_tac_toe/models/offline/cell.dart';
 import 'package:flutter_tic_tac_toe/models/online/online_board.dart';
-import 'package:flutter_tic_tac_toe/models/online/online_cell.dart';
 import 'package:flutter_tic_tac_toe/models/online/online_player.dart';
 import 'package:flutter_tic_tac_toe/models/online/online_room.dart';
 import 'package:flutter_tic_tac_toe/models/online/online_round.dart';
@@ -23,7 +23,7 @@ class OnlineGameController extends GetxController {
 
   OnlinePlayer player = OnlinePlayer();
   OnlineBoard board = OnlineBoard();
-  OnlineCell cell = OnlineCell();
+  Cell cell = Cell();
   OnlineRound round = OnlineRound();
 
   @override
@@ -112,7 +112,7 @@ class OnlineGameController extends GetxController {
   /// The player draw a Seed in a cell(row, column) on the board.
   drawSeedOnCell(int row, int column, Seed seed) {
     logger.t('draw $seed on cell($row, $column)');
-    OnlineCell? cell = room.board.cells[row][column];
+    Cell? cell = room.board.cells[row][column];
     if (room.state == GameState.playing &&
         (cell.content != Seed.cross && cell.content != Seed.nought)) {
       cell.content = seed;

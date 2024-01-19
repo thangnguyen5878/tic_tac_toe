@@ -1,8 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_tic_tac_toe/controllers/online_user_controller.dart';
+import 'package:flutter_tic_tac_toe/models/offline/cell.dart';
 import 'package:flutter_tic_tac_toe/models/online/online_board.dart';
-import 'package:flutter_tic_tac_toe/models/online/online_cell.dart';
 import 'package:flutter_tic_tac_toe/models/online/online_player.dart';
 import 'package:flutter_tic_tac_toe/models/online/online_room.dart';
 import 'package:flutter_tic_tac_toe/models/online/online_round.dart';
@@ -27,8 +27,8 @@ class FirestoreService {
         fromFirestore: (snapshots, _) => OnlinePlayer.fromJson(snapshots.data()!),
         toFirestore: (player, _) => player.toJson());
 
-    _cellRef = firestore.collection(fCellCollection).withConverter<OnlineCell>(
-        fromFirestore: (snapshots, _) => OnlineCell.fromJson(snapshots.data()!),
+    _cellRef = firestore.collection(fCellCollection).withConverter<Cell>(
+        fromFirestore: (snapshots, _) => Cell.fromJson(snapshots.data()!),
         toFirestore: (cell, _) => cell.toJson());
 
     _boardRef = firestore.collection(fBoardCollection).withConverter<OnlineBoard>(
@@ -198,7 +198,7 @@ class FirestoreService {
   }
 
   // ONLINE CELL
-  void addCell(OnlineCell cell) {
+  void addCell(Cell cell) {
     _cellRef.add(cell);
     logger.t('add a cell to Firestore');
   }

@@ -9,12 +9,12 @@ part of 'online_board.dart';
 OnlineBoard _$OnlineBoardFromJson(Map<String, dynamic> json) => OnlineBoard(
       rowCount: json['rowCount'] as int?,
       columnCount: json['columnCount'] as int?,
-    )..cells = const OnlineCellListConverter2()
+    )..cells = const CellListConverter2()
         .fromJson(json['cells'] as Map<String, dynamic>);
 
 Map<String, dynamic> _$OnlineBoardToJson(OnlineBoard instance) =>
     <String, dynamic>{
       'rowCount': instance.rowCount,
       'columnCount': instance.columnCount,
-      'cells': const OnlineCellListConverter2().toJson(instance.cells),
+      'cells': const CellListConverter2().toJson(instance.cells),
     };

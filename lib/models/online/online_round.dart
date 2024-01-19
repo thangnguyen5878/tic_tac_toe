@@ -1,4 +1,4 @@
-import 'package:flutter_tic_tac_toe/models/online/online_cell.dart';
+import 'package:flutter_tic_tac_toe/models/offline/cell.dart';
 import 'package:flutter_tic_tac_toe/models/online/online_score.dart';
 import 'package:flutter_tic_tac_toe/utils/constants/service_constants.dart';
 import 'package:flutter_tic_tac_toe/utils/json%20converters/online_cell_list_converter.dart';
@@ -18,9 +18,9 @@ class OnlineRound {
   /// Index references to the winner in [Room.players].
   int? winnerIndex;
 
-  /// Container that stores all the drawn [OnlineCell] on the board in order.
-  @OnlineCellListConverter()
-  List<OnlineCell?> turns = [];
+  /// Container that stores all the drawn [Cell] on the board in order.
+  @CellListConverter()
+  List<Cell?> turns = [];
 
   /// Scores of 2 players in this round.
   @OnlineScoreListConverter()
@@ -33,7 +33,7 @@ class OnlineRound {
       {int? index,
       int? currentPlayerIndex,
       this.winnerIndex,
-      List<OnlineCell>? turns,
+      List<Cell>? turns,
       List<OnlineScore>? scores})
       : index = index ?? 0,
         currentPlayerIndex = 0,
@@ -64,7 +64,7 @@ class OnlineRound {
     return turns.length + 1;
   }
 
-  OnlineCell? getLastTurn() {
+  Cell? getLastTurn() {
     return turns.last;
   }
 
@@ -134,8 +134,7 @@ class OnlineRound {
     ..index = json['index'] as int
     ..currentPlayerIndex = json['currentPlayerIndex'] as int
     ..winnerIndex = json['winnerIndex'] as int?
-    ..turns =
-        const OnlineCellListConverter().fromJson(List<Map<String, dynamic>>.from(json['turns']))
+    ..turns = const CellListConverter().fromJson(List<Map<String, dynamic>>.from(json['turns']))
     ..scores =
         const OnlineScoreListConverter().fromJson(List<Map<String, dynamic>>.from(json['scores']));
 

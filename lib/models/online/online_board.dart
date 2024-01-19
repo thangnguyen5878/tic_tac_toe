@@ -1,4 +1,4 @@
-import 'package:flutter_tic_tac_toe/models/online/online_cell.dart';
+import 'package:flutter_tic_tac_toe/models/offline/cell.dart';
 import 'package:flutter_tic_tac_toe/utils/constants/game_constants.dart';
 import 'package:flutter_tic_tac_toe/utils/constants/service_constants.dart';
 import 'package:flutter_tic_tac_toe/utils/enums/cell_state.dart';
@@ -14,8 +14,8 @@ class OnlineBoard {
   int? columnCount;
 
   // @JsonKey(includeFromJson: false, includeToJson: false)
-  @OnlineCellListConverter2()
-  List<List<OnlineCell>> cells = [];
+  @CellListConverter2()
+  List<List<Cell>> cells = [];
 
   // CONSTRUCTORS
   OnlineBoard({int? rowCount, int? columnCount})
@@ -25,8 +25,7 @@ class OnlineBoard {
       this.rowCount!,
       (row) => List.generate(
         this.columnCount!,
-        (column) =>
-            OnlineCell(row: row, column: column, content: Seed.noSeed, state: CellState.normal),
+        (column) => Cell(row: row, column: column, content: Seed.noSeed, state: CellState.normal),
       ),
       growable: true,
     );
@@ -39,27 +38,26 @@ class OnlineBoard {
       rowCount!,
       (row) => List.generate(
         columnCount!,
-        (column) =>
-            OnlineCell(row: row, column: column, content: Seed.noSeed, state: CellState.normal),
+        (column) => Cell(row: row, column: column, content: Seed.noSeed, state: CellState.normal),
       ),
       growable: true,
     );
   }
 
   /// Load from turns list to the board
-  void loadAll(List<OnlineCell?> turns) {
+  void loadAll(List<Cell?> turns) {
     for (int t = 0; t < turns.length; t++) {
       int row = turns[t]!.row!;
       int column = turns[t]!.column!;
-      cells[row][column] = OnlineCell.clone(turns[t]!);
+      cells[row][column] = Cell.clone(turns[t]!);
     }
   }
 
-  void load(List<OnlineCell?> turns, int size) {
+  void load(List<Cell?> turns, int size) {
     for (int t = 0; t < size; t++) {
       int row = turns[t]!.row!;
       int column = turns[t]!.column!;
-      cells[row][column] = OnlineCell.clone(turns[t]!);
+      cells[row][column] = Cell.clone(turns[t]!);
     }
   }
 
@@ -67,7 +65,7 @@ class OnlineBoard {
   void reset() {
     for (int i = 0; i < rowCount!; i++) {
       for (int j = 0; j < columnCount!; j++) {
-        cells[i][j] = OnlineCell.cloneReset(cells[i][j]);
+        cells[i][j] = Cell.cloneReset(cells[i][j]);
       }
     }
     logger.t('Reset board');

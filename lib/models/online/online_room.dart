@@ -1,7 +1,7 @@
 import 'package:flutter_tic_tac_toe/controllers/online_game_controller.dart';
 import 'package:flutter_tic_tac_toe/controllers/online_user_controller.dart';
+import 'package:flutter_tic_tac_toe/models/offline/cell.dart';
 import 'package:flutter_tic_tac_toe/models/online/online_board.dart';
-import 'package:flutter_tic_tac_toe/models/online/online_cell.dart';
 import 'package:flutter_tic_tac_toe/models/online/online_history.dart';
 import 'package:flutter_tic_tac_toe/models/online/online_player.dart';
 import 'package:flutter_tic_tac_toe/models/online/online_round.dart';
@@ -44,7 +44,7 @@ class OnlineRoom {
 
   /// Temporary list to track cells being checked for a potential winner.
   @JsonKey(includeToJson: false, includeFromJson: false)
-  List<OnlineCell> checkingCells = <OnlineCell>[];
+  List<Cell> checkingCells = <Cell>[];
 
   final winCount = 5;
 
@@ -232,7 +232,7 @@ class OnlineRoom {
 
   // METHODS: BUSINESS
   /// Check whether adjacent cells are the same or not to check the winner
-  isWinningRow(List<OnlineCell> cells) {
+  isWinningRow(List<Cell> cells) {
     if (cells.isEmpty) {
       return false;
     }
@@ -287,7 +287,7 @@ class OnlineRoom {
 
   /// This method will be used to color the winning cells.
   void colorWinningCells(CellState winningState) {
-    for (OnlineCell cell in checkingCells!) {
+    for (Cell cell in checkingCells!) {
       cell.state = winningState;
     }
   }
@@ -303,7 +303,7 @@ class OnlineRoom {
   }
 
   /// This method checks if there's a winner and handles the case.
-  bool checkForWinner(List<OnlineCell> cellsToCheck, Seed seed) {
+  bool checkForWinner(List<Cell> cellsToCheck, Seed seed) {
     if (isWinningRow(cellsToCheck)) {
       handleWin(seed == Seed.cross ? 0 : 1);
       return true;

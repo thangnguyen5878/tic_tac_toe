@@ -2,6 +2,7 @@ import 'package:flutter_tic_tac_toe/utils/constants/service_constants.dart';
 import 'package:flutter_tic_tac_toe/utils/enums/cell_state.dart';
 import 'package:flutter_tic_tac_toe/utils/enums/seed.dart';
 import 'package:isar/isar.dart';
+import 'package:json_annotation/json_annotation.dart';
 
 part 'cell.g.dart';
 
@@ -9,6 +10,7 @@ part 'cell.g.dart';
 ///
 /// A cell contains a row and column index, a content (which can be either an X or an O), and a state (which can be empty, player 1's turn, player 2's turn, or a win for a specific player).
 @embedded
+@JsonSerializable(explicitToJson: true)
 class Cell {
   /// The row index of the cell.
   int? row;
@@ -25,16 +27,10 @@ class Cell {
   late CellState? state;
 
   // CONSTRUCTORS
-  /// Creates a new cell with the specified properties.
-  ///
-  /// If no content is specified, the cell will have no content. If no state is specified, the cell will have the default state of "normal".
   Cell({this.row, this.column, Seed? content, CellState? state})
       : content = content ?? Seed.noSeed,
         state = state ?? CellState.normal;
 
-  /// Creates a new cell with the specified properties.
-  ///
-  /// If no content is specified, the cell will have no content. If no state is specified, the cell will have the default state of "normal".
   Cell.custom({this.row, this.column, Seed? content, CellState? state})
       : content = content ?? Seed.noSeed,
         state = state ?? CellState.normal;
@@ -66,6 +62,10 @@ class Cell {
   bool isPlayer2Win() {
     return state == CellState.noughtWin;
   }
+
+  // JSON SERIALIZATION
+  factory Cell.fromJson(Map<String, dynamic> json) => _$CellFromJson(json);
+  Map<String, dynamic> toJson() => _$CellToJson(this);
 
   // METHODS: LOG
   /// Returns a string representation of the cell, including its row, column, content, and state.
