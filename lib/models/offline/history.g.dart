@@ -292,3 +292,20 @@ extension HistoryQueryObject
     });
   }
 }
+
+// **************************************************************************
+// JsonSerializableGenerator
+// **************************************************************************
+
+History _$HistoryFromJson(Map<String, dynamic> json) => History()
+  ..currentRoundIndex = json['currentRoundIndex'] as int
+  ..currentTurnIndex = json['currentTurnIndex'] as int
+  ..currentPlayerIndex = json['currentPlayerIndex'] as int
+  ..board = Board.fromJson(json['board'] as Map<String, dynamic>);
+
+Map<String, dynamic> _$HistoryToJson(History instance) => <String, dynamic>{
+      'currentRoundIndex': instance.currentRoundIndex,
+      'currentTurnIndex': instance.currentTurnIndex,
+      'currentPlayerIndex': instance.currentPlayerIndex,
+      'board': instance.board.toJson(),
+    };

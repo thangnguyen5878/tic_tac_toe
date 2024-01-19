@@ -4,7 +4,6 @@ import 'package:flutter_tic_tac_toe/models/offline/board.dart';
 import 'package:flutter_tic_tac_toe/models/offline/cell.dart';
 import 'package:flutter_tic_tac_toe/models/offline/player.dart';
 import 'package:flutter_tic_tac_toe/models/offline/score.dart';
-import 'package:flutter_tic_tac_toe/models/online/online_history.dart';
 import 'package:flutter_tic_tac_toe/models/online/online_round.dart';
 import 'package:flutter_tic_tac_toe/utils/constants/service_constants.dart';
 import 'package:flutter_tic_tac_toe/utils/enums/cell_state.dart';
@@ -15,6 +14,8 @@ import 'package:flutter_tic_tac_toe/utils/json%20converters/online_round_list_co
 import 'package:get/get.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:uuid/uuid.dart';
+
+import '../offline/history.dart';
 
 part 'online_room.g.dart';
 
@@ -40,7 +41,7 @@ class OnlineRoom {
   @OnlineRoundListConverter()
   List<OnlineRound> rounds = [OnlineRound()];
 
-  OnlineHistory history = OnlineHistory();
+  History history = History();
 
   /// Temporary list to track cells being checked for a potential winner.
   @JsonKey(includeToJson: false, includeFromJson: false)
@@ -67,7 +68,7 @@ class OnlineRoom {
     Board? board,
     List<Player>? players,
     List<OnlineRound>? rounds,
-    OnlineHistory? history,
+    History? history,
     List<String?>? playerIds,
   })  : id = const Uuid().v4(),
         name = name ?? 'Untitled OnlineRoom',
@@ -81,7 +82,7 @@ class OnlineRoom {
               Player(index: 1, name: 'OnlinePlayer 2', seed: Seed.nought)
             ],
         rounds = rounds ?? [OnlineRound()],
-        history = history ?? OnlineHistory(),
+        history = history ?? History(),
         playerIds = playerIds ?? [];
 
   // GETTER
@@ -399,7 +400,7 @@ class OnlineRoom {
     getCurrentRound().reset();
   }
 
-  /// Loads [OnlineHistory.currentTurnIndex]+1 cells from [OnlineRound.turns] to [OnlineHistory.board].
+  /// Loads [History.currentTurnIndex]+1 cells from [OnlineRound.turns] to [History.board].
   void updateBoardInHistory() {
     history.board.reset();
     if (history.currentTurnIndex >= 0) {
@@ -425,7 +426,7 @@ class OnlineRoom {
             .toList(),
         history: json['history'] == null
             ? null
-            : OnlineHistory.fromJson(json['history'] as Map<String, dynamic>),
+            : History.fromJson(json['history'] as Map<String, dynamic>),
         playerIds: (json['playerIds'] as List<dynamic>?)?.map((e) => e as String?).toList(),
       )..id = json['id'] as String;
 

@@ -26,7 +26,7 @@ OnlineRoom _$OnlineRoomFromJson(Map<String, dynamic> json) => OnlineRoom(
           .toList(),
       history: json['history'] == null
           ? null
-          : OnlineHistory.fromJson(json['history'] as Map<String, dynamic>),
+          : History.fromJson(json['history'] as Map<String, dynamic>),
       playerIds: (json['playerIds'] as List<dynamic>?)
           ?.map((e) => e as String?)
           .toList(),

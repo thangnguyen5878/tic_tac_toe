@@ -1,11 +1,13 @@
 import 'package:flutter_tic_tac_toe/models/offline/board.dart';
 import 'package:flutter_tic_tac_toe/utils/constants/service_constants.dart';
 import 'package:isar/isar.dart';
+import 'package:json_annotation/json_annotation.dart';
 
 part 'history.g.dart';
 
 /// The data for history function.
 @embedded
+@JsonSerializable(explicitToJson: true)
 class History {
   /// Index that references to the current history round in [Room.rounds].
   int currentRoundIndex = 0;
@@ -79,6 +81,10 @@ class History {
     togglePlayer();
     currentTurnIndex--;
   }
+
+  // JSON SERIALIZATION
+  factory History.fromJson(Map<String, dynamic> json) => _$HistoryFromJson(json);
+  Map<String, dynamic> toJson() => _$HistoryToJson(this);
 
   // METHODS: LOG
   @override
