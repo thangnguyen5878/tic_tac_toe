@@ -2,11 +2,15 @@
 import 'package:flutter_tic_tac_toe/models/offline/cell.dart';
 import 'package:flutter_tic_tac_toe/models/offline/score.dart';
 import 'package:flutter_tic_tac_toe/utils/constants/service_constants.dart';
+import 'package:flutter_tic_tac_toe/utils/json%20converters/online_cell_list_converter.dart';
+import 'package:flutter_tic_tac_toe/utils/json%20converters/online_score_list_converter.dart';
 import 'package:isar/isar.dart';
+import 'package:json_annotation/json_annotation.dart';
 
 part 'round.g.dart';
 
 @embedded
+@JsonSerializable(explicitToJson: true)
 class Round {
   /// Index references to a round in [Room.rounds].
   int index = 0;
@@ -125,6 +129,16 @@ class Round {
     // turns = [...turns, cell];
     // logger.t('next turn, current player: ${currentPlayerIndex! + 1}');
   }
+
+  // JSON SERIALIZATION
+  factory Round.fromJson(Map<String, dynamic> json) => Round()
+    ..index = json['index'] as int
+    ..currentPlayerIndex = json['currentPlayerIndex'] as int
+    ..winnerIndex = json['winnerIndex'] as int?
+    ..turns = const CellListConverter().fromJson(List<Map<String, dynamic>>.from(json['turns']))
+    ..scores = const ScoreListConverter().fromJson(List<Map<String, dynamic>>.from(json['scores']));
+
+  Map<String, dynamic> toJson() => _$RoundToJson(this);
 
   // METHODS: LOG
   @override

@@ -3,8 +3,8 @@ import 'package:flutter_tic_tac_toe/controllers/online_user_controller.dart';
 import 'package:flutter_tic_tac_toe/models/offline/board.dart';
 import 'package:flutter_tic_tac_toe/models/offline/cell.dart';
 import 'package:flutter_tic_tac_toe/models/offline/player.dart';
+import 'package:flutter_tic_tac_toe/models/offline/round.dart';
 import 'package:flutter_tic_tac_toe/models/offline/score.dart';
-import 'package:flutter_tic_tac_toe/models/online/online_round.dart';
 import 'package:flutter_tic_tac_toe/utils/constants/service_constants.dart';
 import 'package:flutter_tic_tac_toe/utils/enums/cell_state.dart';
 import 'package:flutter_tic_tac_toe/utils/enums/game_state.dart';
@@ -38,8 +38,8 @@ class OnlineRoom {
 
   List<String?> playerIds = [];
 
-  @OnlineRoundListConverter()
-  List<OnlineRound> rounds = [OnlineRound()];
+  @RoundListConverter()
+  List<Round> rounds = [Round()];
 
   History history = History();
 
@@ -67,7 +67,7 @@ class OnlineRoom {
     DateTime? lastAccessAt,
     Board? board,
     List<Player>? players,
-    List<OnlineRound>? rounds,
+    List<Round>? rounds,
     History? history,
     List<String?>? playerIds,
   })  : id = const Uuid().v4(),
@@ -81,16 +81,16 @@ class OnlineRoom {
               Player(index: 0, name: 'OnlinePlayer 1', seed: Seed.cross),
               Player(index: 1, name: 'OnlinePlayer 2', seed: Seed.nought)
             ],
-        rounds = rounds ?? [OnlineRound()],
+        rounds = rounds ?? [Round()],
         history = history ?? History(),
         playerIds = playerIds ?? [];
 
   // GETTER
-  OnlineRound getCurrentRound() {
+  Round getCurrentRound() {
     return rounds.last;
   }
 
-  OnlineRound getRound(int index) {
+  Round getRound(int index) {
     return rounds[index];
   }
 
@@ -139,7 +139,7 @@ class OnlineRoom {
     }
   }
 
-  OnlineRound getCurrentRoundInHistory() {
+  Round getCurrentRoundInHistory() {
     return rounds[history.currentRoundIndex];
   }
 
@@ -389,7 +389,7 @@ class OnlineRoom {
   void nextRound() {
     state = GameState.playing;
     board.reset();
-    OnlineRound nextRound = getCurrentRound().cloneForNextRound();
+    Round nextRound = getCurrentRound().cloneForNextRound();
     rounds = [...?rounds, nextRound];
   }
 
@@ -400,7 +400,7 @@ class OnlineRoom {
     getCurrentRound().reset();
   }
 
-  /// Loads [History.currentTurnIndex]+1 cells from [OnlineRound.turns] to [History.board].
+  /// Loads [History.currentTurnIndex]+1 cells from [Round.turns] to [History.board].
   void updateBoardInHistory() {
     history.board.reset();
     if (history.currentTurnIndex >= 0) {
@@ -422,7 +422,7 @@ class OnlineRoom {
             ?.map((e) => Player.fromJson(e as Map<String, dynamic>))
             .toList(),
         rounds: (List<Map<String, dynamic>>.from(json['rounds']))
-            ?.map((e) => OnlineRound.fromJson(e as Map<String, dynamic>))
+            ?.map((e) => Round.fromJson(e as Map<String, dynamic>))
             .toList(),
         history: json['history'] == null
             ? null

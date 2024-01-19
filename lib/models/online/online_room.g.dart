@@ -22,7 +22,7 @@ OnlineRoom _$OnlineRoomFromJson(Map<String, dynamic> json) => OnlineRoom(
           ?.map((e) => Player.fromJson(e as Map<String, dynamic>))
           .toList(),
       rounds: (json['rounds'] as List<dynamic>?)
-          ?.map((e) => OnlineRound.fromJson(e as Map<String, dynamic>))
+          ?.map((e) => Round.fromJson(e as Map<String, dynamic>))
           .toList(),
       history: json['history'] == null
           ? null

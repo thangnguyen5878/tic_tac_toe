@@ -532,3 +532,26 @@ extension RoundQueryObject on QueryBuilder<Round, Round, QFilterCondition> {
     });
   }
 }
+
+// **************************************************************************
+// JsonSerializableGenerator
+// **************************************************************************
+
+Round _$RoundFromJson(Map<String, dynamic> json) => Round()
+  ..index = json['index'] as int
+  ..currentPlayerIndex = json['currentPlayerIndex'] as int
+  ..winnerIndex = json['winnerIndex'] as int?
+  ..turns = (json['turns'] as List<dynamic>)
+      .map((e) => e == null ? null : Cell.fromJson(e as Map<String, dynamic>))
+      .toList()
+  ..scores = (json['scores'] as List<dynamic>)
+      .map((e) => Score.fromJson(e as Map<String, dynamic>))
+      .toList();
+
+Map<String, dynamic> _$RoundToJson(Round instance) => <String, dynamic>{
+      'index': instance.index,
+      'currentPlayerIndex': instance.currentPlayerIndex,
+      'winnerIndex': instance.winnerIndex,
+      'turns': instance.turns.map((e) => e?.toJson()).toList(),
+      'scores': instance.scores.map((e) => e.toJson()).toList(),
+    };

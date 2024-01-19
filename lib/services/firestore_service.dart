@@ -4,8 +4,8 @@ import 'package:flutter_tic_tac_toe/controllers/online_user_controller.dart';
 import 'package:flutter_tic_tac_toe/models/offline/board.dart';
 import 'package:flutter_tic_tac_toe/models/offline/cell.dart';
 import 'package:flutter_tic_tac_toe/models/offline/player.dart';
+import 'package:flutter_tic_tac_toe/models/offline/round.dart';
 import 'package:flutter_tic_tac_toe/models/online/online_room.dart';
-import 'package:flutter_tic_tac_toe/models/online/online_round.dart';
 import 'package:flutter_tic_tac_toe/models/online/online_user.dart';
 import 'package:flutter_tic_tac_toe/utils/constants/service_constants.dart';
 import 'package:flutter_tic_tac_toe/utils/enums/online_user_status.dart';
@@ -35,8 +35,8 @@ class FirestoreService {
         fromFirestore: (snapshots, _) => Board.fromJson(snapshots.data()!),
         toFirestore: (board, _) => board.toJson());
 
-    _roundRef = firestore.collection(fRoundCollection).withConverter<OnlineRound>(
-        fromFirestore: (snapshots, _) => OnlineRound.fromJson(snapshots.data()!),
+    _roundRef = firestore.collection(fRoundCollection).withConverter<Round>(
+        fromFirestore: (snapshots, _) => Round.fromJson(snapshots.data()!),
         toFirestore: (round, _) => round.toJson());
 
     _userRef = firestore.collection(fUserCollection).withConverter<OnlineUser>(
@@ -210,7 +210,7 @@ class FirestoreService {
   }
 
   // ONLINE ROUND
-  void addRound(OnlineRound round) {
+  void addRound(Round round) {
     _roundRef.add(round);
     logger.t('add a round to Firestore');
   }
