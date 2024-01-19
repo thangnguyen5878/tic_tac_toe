@@ -1,11 +1,13 @@
 import 'package:flutter_tic_tac_toe/modules/offline/game/components/player_bottom_bar.dart';
 import 'package:flutter_tic_tac_toe/utils/constants/service_constants.dart';
 import 'package:isar/isar.dart';
+import 'package:json_annotation/json_annotation.dart';
 
 part 'score.g.dart';
 
 /// A class representing a player's score within a round.
 @embedded
+@JsonSerializable(explicitToJson: true)
 class Score {
   /// The player's current score within a round.
   ///
@@ -28,13 +30,10 @@ class Score {
   int? finalScore;
 
   // CONSTRUCTORS
-  /// Creates a new instance of the [Score] class.
   Score();
 
-  /// Creates a new instance of the [Score] class with the specified values.
   Score.all(this.currentScore, this.initialScore, this.finalScore);
 
-  /// Creates a new instance of the [Score] class with the specified initial score and final score.
   Score.custom({int? initialScore, this.finalScore})
       : initialScore = initialScore ?? 0,
         currentScore = initialScore ?? 0;
@@ -69,6 +68,10 @@ class Score {
       finalScore = null;
     }
   }
+
+  // JSON SERIALIZATION
+  factory Score.fromJson(Map<String, dynamic> json) => _$ScoreFromJson(json);
+  Map<String, dynamic> toJson() => _$ScoreToJson(this);
 
   // METHODS: LOG
   @override

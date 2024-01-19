@@ -1,5 +1,5 @@
 import 'package:flutter_tic_tac_toe/models/offline/cell.dart';
-import 'package:flutter_tic_tac_toe/models/online/online_score.dart';
+import 'package:flutter_tic_tac_toe/models/offline/score.dart';
 import 'package:flutter_tic_tac_toe/utils/constants/service_constants.dart';
 import 'package:flutter_tic_tac_toe/utils/json%20converters/online_cell_list_converter.dart';
 import 'package:flutter_tic_tac_toe/utils/json%20converters/online_score_list_converter.dart';
@@ -23,8 +23,8 @@ class OnlineRound {
   List<Cell?> turns = [];
 
   /// Scores of 2 players in this round.
-  @OnlineScoreListConverter()
-  List<OnlineScore> scores = [OnlineScore(), OnlineScore()];
+  @ScoreListConverter()
+  List<Score> scores = [Score(), Score()];
 
   // CONSTRUCTORS
   OnlineRound();
@@ -34,11 +34,11 @@ class OnlineRound {
       int? currentPlayerIndex,
       this.winnerIndex,
       List<Cell>? turns,
-      List<OnlineScore>? scores})
+      List<Score>? scores})
       : index = index ?? 0,
         currentPlayerIndex = 0,
         turns = turns ?? [],
-        scores = scores ?? [OnlineScore(), OnlineScore()];
+        scores = scores ?? [Score(), Score()];
 
   OnlineRound.all(
       this.index, this.currentPlayerIndex, this.winnerIndex, this.turns, this.scores); // getters
@@ -68,15 +68,15 @@ class OnlineRound {
     return turns.last;
   }
 
-  OnlineScore getPlayer1Score() {
+  Score getPlayer1Score() {
     return scores[0];
   }
 
-  OnlineScore getPlayer2Score() {
+  Score getPlayer2Score() {
     return scores[1];
   }
 
-  OnlineScore? getWinnerScore() {
+  Score? getWinnerScore() {
     if (hasWinner()) {
       return scores[winnerIndex!];
     }
@@ -135,8 +135,7 @@ class OnlineRound {
     ..currentPlayerIndex = json['currentPlayerIndex'] as int
     ..winnerIndex = json['winnerIndex'] as int?
     ..turns = const CellListConverter().fromJson(List<Map<String, dynamic>>.from(json['turns']))
-    ..scores =
-        const OnlineScoreListConverter().fromJson(List<Map<String, dynamic>>.from(json['scores']));
+    ..scores = const ScoreListConverter().fromJson(List<Map<String, dynamic>>.from(json['scores']));
 
   Map<String, dynamic> toJson() => _$OnlineRoundToJson(this);
 

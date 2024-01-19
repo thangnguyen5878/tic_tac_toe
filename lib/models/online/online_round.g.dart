@@ -12,7 +12,7 @@ OnlineRound _$OnlineRoundFromJson(Map<String, dynamic> json) => OnlineRound()
   ..winnerIndex = json['winnerIndex'] as int?
   ..turns = const CellListConverter()
       .fromJson(json['turns'] as List<Map<String, dynamic>>)
-  ..scores = const OnlineScoreListConverter()
+  ..scores = const ScoreListConverter()
       .fromJson(json['scores'] as List<Map<String, dynamic>>);
 
 Map<String, dynamic> _$OnlineRoundToJson(OnlineRound instance) =>
@@ -21,5 +21,5 @@ Map<String, dynamic> _$OnlineRoundToJson(OnlineRound instance) =>
       'currentPlayerIndex': instance.currentPlayerIndex,
       'winnerIndex': instance.winnerIndex,
       'turns': const CellListConverter().toJson(instance.turns),
-      'scores': const OnlineScoreListConverter().toJson(instance.scores),
+      'scores': const ScoreListConverter().toJson(instance.scores),
     };

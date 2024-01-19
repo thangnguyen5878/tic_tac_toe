@@ -2,10 +2,10 @@ import 'package:flutter_tic_tac_toe/controllers/online_game_controller.dart';
 import 'package:flutter_tic_tac_toe/controllers/online_user_controller.dart';
 import 'package:flutter_tic_tac_toe/models/offline/cell.dart';
 import 'package:flutter_tic_tac_toe/models/offline/player.dart';
+import 'package:flutter_tic_tac_toe/models/offline/score.dart';
 import 'package:flutter_tic_tac_toe/models/online/online_board.dart';
 import 'package:flutter_tic_tac_toe/models/online/online_history.dart';
 import 'package:flutter_tic_tac_toe/models/online/online_round.dart';
-import 'package:flutter_tic_tac_toe/models/online/online_score.dart';
 import 'package:flutter_tic_tac_toe/utils/constants/service_constants.dart';
 import 'package:flutter_tic_tac_toe/utils/enums/cell_state.dart';
 import 'package:flutter_tic_tac_toe/utils/enums/game_state.dart';
@@ -121,11 +121,11 @@ class OnlineRoom {
     }
   }
 
-  OnlineScore getPlayer1Score() {
+  Score getPlayer1Score() {
     return getCurrentRound().getPlayer1Score();
   }
 
-  OnlineScore getPlayer2Score() {
+  Score getPlayer2Score() {
     return getCurrentRound().getPlayer2Score();
   }
 

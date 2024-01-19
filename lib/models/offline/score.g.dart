@@ -264,3 +264,18 @@ extension ScoreQueryFilter on QueryBuilder<Score, Score, QFilterCondition> {
 }
 
 extension ScoreQueryObject on QueryBuilder<Score, Score, QFilterCondition> {}
+
+// **************************************************************************
+// JsonSerializableGenerator
+// **************************************************************************
+
+Score _$ScoreFromJson(Map<String, dynamic> json) => Score()
+  ..currentScore = json['currentScore'] as int
+  ..initialScore = json['initialScore'] as int
+  ..finalScore = json['finalScore'] as int?;
+
+Map<String, dynamic> _$ScoreToJson(Score instance) => <String, dynamic>{
+      'currentScore': instance.currentScore,
+      'initialScore': instance.initialScore,
+      'finalScore': instance.finalScore,
+    };
