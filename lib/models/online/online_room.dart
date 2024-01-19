@@ -1,9 +1,9 @@
 import 'package:flutter_tic_tac_toe/controllers/online_game_controller.dart';
 import 'package:flutter_tic_tac_toe/controllers/online_user_controller.dart';
 import 'package:flutter_tic_tac_toe/models/offline/cell.dart';
+import 'package:flutter_tic_tac_toe/models/offline/player.dart';
 import 'package:flutter_tic_tac_toe/models/online/online_board.dart';
 import 'package:flutter_tic_tac_toe/models/online/online_history.dart';
-import 'package:flutter_tic_tac_toe/models/online/online_player.dart';
 import 'package:flutter_tic_tac_toe/models/online/online_round.dart';
 import 'package:flutter_tic_tac_toe/models/online/online_score.dart';
 import 'package:flutter_tic_tac_toe/utils/constants/service_constants.dart';
@@ -29,10 +29,10 @@ class OnlineRoom {
 
   OnlineBoard board = OnlineBoard();
 
-  @OnlinePlayerListConverter()
-  List<OnlinePlayer> players = [
-    OnlinePlayer(index: 0, name: 'OnlinePlayer 1', seed: Seed.cross),
-    OnlinePlayer(index: 1, name: 'OnlinePlayer 2', seed: Seed.nought)
+  @PlayerListConverter()
+  List<Player> players = [
+    Player(index: 0, name: 'OnlinePlayer 1', seed: Seed.cross),
+    Player(index: 1, name: 'OnlinePlayer 2', seed: Seed.nought)
   ];
 
   List<String?> playerIds = [];
@@ -65,7 +65,7 @@ class OnlineRoom {
     DateTime? createdAt,
     DateTime? lastAccessAt,
     OnlineBoard? board,
-    List<OnlinePlayer>? players,
+    List<Player>? players,
     List<OnlineRound>? rounds,
     OnlineHistory? history,
     List<String?>? playerIds,
@@ -77,8 +77,8 @@ class OnlineRoom {
         board = board ?? OnlineBoard(),
         players = players ??
             [
-              OnlinePlayer(index: 0, name: 'OnlinePlayer 1', seed: Seed.cross),
-              OnlinePlayer(index: 1, name: 'OnlinePlayer 2', seed: Seed.nought)
+              Player(index: 0, name: 'OnlinePlayer 1', seed: Seed.cross),
+              Player(index: 1, name: 'OnlinePlayer 2', seed: Seed.nought)
             ],
         rounds = rounds ?? [OnlineRound()],
         history = history ?? OnlineHistory(),
@@ -97,25 +97,25 @@ class OnlineRoom {
     return rounds.length;
   }
 
-  OnlinePlayer getCurrentPlayer() {
+  Player getCurrentPlayer() {
     return players[getCurrentRound().currentPlayerIndex];
   }
 
-  OnlinePlayer getPlayer1() {
+  Player getPlayer1() {
     return players[0];
   }
 
-  OnlinePlayer getPlayer2() {
+  Player getPlayer2() {
     return players[1];
   }
 
-  OnlinePlayer? getWinnerOfCurrentRound() {
+  Player? getWinnerOfCurrentRound() {
     if (getCurrentRound().hasWinner()) {
       return players[getCurrentRound().winnerIndex!];
     }
   }
 
-  OnlinePlayer? getWinnerOfRound(int roundIndex) {
+  Player? getWinnerOfRound(int roundIndex) {
     if (rounds[roundIndex].hasWinner()) {
       return players[rounds[roundIndex].winnerIndex!];
     }
@@ -150,7 +150,7 @@ class OnlineRoom {
     return history.getTurnCount();
   }
 
-  OnlinePlayer getCurrentPlayerInHistory() {
+  Player getCurrentPlayerInHistory() {
     return players[history.currentPlayerIndex];
   }
 
@@ -272,7 +272,7 @@ class OnlineRoom {
       addScoreForPlayer1(1);
       colorWinningCells(CellState.crossWin);
     } else {
-      addScoreForPlayer2(2);
+      addScoreForPlayer2(1);
       colorWinningCells(CellState.noughtWin);
     }
 
@@ -295,7 +295,7 @@ class OnlineRoom {
   /// This method will log the winner and navigate to the winner screen.
   void logWinnerAndNotify() {
     if (getCurrentRound().hasWinner()) {
-      OnlinePlayer winner = getWinnerOfCurrentRound()!;
+      Player winner = getWinnerOfCurrentRound()!;
       logger.t('Winner is ${winner!.name}');
       // logger.t('rounds: $rounds');
       Get.toNamed('winner');
@@ -420,7 +420,7 @@ class OnlineRoom {
             ? null
             : OnlineBoard.fromJson(json['board'] as Map<String, dynamic>),
         players: (List<Map<String, dynamic>>.from(json['players']))
-            ?.map((e) => OnlinePlayer.fromJson(e as Map<String, dynamic>))
+            ?.map((e) => Player.fromJson(e as Map<String, dynamic>))
             .toList(),
         rounds: (List<Map<String, dynamic>>.from(json['rounds']))
             ?.map((e) => OnlineRound.fromJson(e as Map<String, dynamic>))

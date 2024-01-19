@@ -2,8 +2,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_tic_tac_toe/controllers/online_user_controller.dart';
 import 'package:flutter_tic_tac_toe/models/offline/cell.dart';
+import 'package:flutter_tic_tac_toe/models/offline/player.dart';
 import 'package:flutter_tic_tac_toe/models/online/online_board.dart';
-import 'package:flutter_tic_tac_toe/models/online/online_player.dart';
 import 'package:flutter_tic_tac_toe/models/online/online_room.dart';
 import 'package:flutter_tic_tac_toe/models/online/online_round.dart';
 import 'package:flutter_tic_tac_toe/models/online/online_user.dart';
@@ -23,8 +23,8 @@ class FirestoreService {
         fromFirestore: (snapshots, _) => OnlineRoom.fromJson(snapshots.data()!),
         toFirestore: (room, _) => room.toJson());
 
-    _playerRef = firestore.collection(fPlayersCollection).withConverter<OnlinePlayer>(
-        fromFirestore: (snapshots, _) => OnlinePlayer.fromJson(snapshots.data()!),
+    _playerRef = firestore.collection(fPlayersCollection).withConverter<Player>(
+        fromFirestore: (snapshots, _) => Player.fromJson(snapshots.data()!),
         toFirestore: (player, _) => player.toJson());
 
     _cellRef = firestore.collection(fCellCollection).withConverter<Cell>(
@@ -192,7 +192,7 @@ class FirestoreService {
   }
 
   // ONLINE PLAYER
-  void addPlayer(OnlinePlayer player) {
+  void addPlayer(Player player) {
     _playerRef.add(player);
     logger.t('add a player to Firestore');
   }

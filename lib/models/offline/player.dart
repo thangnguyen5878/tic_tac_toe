@@ -1,11 +1,13 @@
 import 'package:flutter_tic_tac_toe/utils/constants/service_constants.dart';
 import 'package:flutter_tic_tac_toe/utils/enums/seed.dart';
 import 'package:isar/isar.dart';
+import 'package:json_annotation/json_annotation.dart';
 
 part 'player.g.dart';
 
 /// A player in the game.
 @embedded
+@JsonSerializable(explicitToJson: true)
 class Player {
   /// The index of the player.
   int? index;
@@ -28,6 +30,10 @@ class Player {
     name = player.name;
     seed = player.seed;
   }
+
+  // JSON SERIALIZATION
+  factory Player.fromJson(Map<String, dynamic> json) => _$PlayerFromJson(json);
+  Map<String, dynamic> toJson() => _$PlayerToJson(this);
 
   // METHODS: LOG
   /// Returns a string representation of the player.

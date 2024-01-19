@@ -472,3 +472,25 @@ extension PlayerQueryFilter on QueryBuilder<Player, Player, QFilterCondition> {
 }
 
 extension PlayerQueryObject on QueryBuilder<Player, Player, QFilterCondition> {}
+
+// **************************************************************************
+// JsonSerializableGenerator
+// **************************************************************************
+
+Player _$PlayerFromJson(Map<String, dynamic> json) => Player(
+      index: json['index'] as int?,
+      name: json['name'] as String?,
+      seed: $enumDecodeNullable(_$SeedEnumMap, json['seed']),
+    );
+
+Map<String, dynamic> _$PlayerToJson(Player instance) => <String, dynamic>{
+      'index': instance.index,
+      'name': instance.name,
+      'seed': _$SeedEnumMap[instance.seed],
+    };
+
+const _$SeedEnumMap = {
+  Seed.cross: 'cross',
+  Seed.nought: 'nought',
+  Seed.noSeed: 'noSeed',
+};
