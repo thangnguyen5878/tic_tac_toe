@@ -147,12 +147,26 @@ class Room {
     return players[history.currentPlayerIndex];
   }
 
-  int getPlayer1CurrentScoreInHistory() {
-    return getCurrentRoundInHistory().getPlayer1Score().currentScore;
+  int getPlayer1ScoreInHistory() {
+    if (!hasWinnerInHistory()) {
+      logger.i(
+          'player 1 initial score: ${getCurrentRoundInHistory().getPlayer1Score().initialScore}');
+      return getCurrentRoundInHistory().getPlayer1Score().initialScore;
+    } else {
+      logger.i('player 1 final score: ${getCurrentRoundInHistory().getPlayer1Score().finalScore}');
+      return getCurrentRoundInHistory().getPlayer1Score().finalScore!;
+    }
   }
 
-  int getPlayer2CurrentScoreInHistory() {
-    return getCurrentRoundInHistory().getPlayer2Score().currentScore;
+  int getPlayer2ScoreInHistory() {
+    if (!hasWinnerInHistory()) {
+      logger.i(
+          'player 2 initial score: ${getCurrentRoundInHistory().getPlayer2Score().initialScore}');
+      return getCurrentRoundInHistory().getPlayer2Score().initialScore;
+    } else {
+      logger.i('player 2 final score: ${getCurrentRoundInHistory().getPlayer2Score().finalScore}');
+      return getCurrentRoundInHistory().getPlayer2Score().finalScore!;
+    }
   }
 
   // METHODS: BOOLEAN HISTORY
@@ -165,7 +179,7 @@ class Room {
   }
 
   bool hasWinnerInHistory() {
-    return history.currentTurnIndex == getCurrentRoundInHistory().getTurnCount();
+    return getCurrentRoundInHistory().hasWinner() && isLastTurnInHistory();
   }
 
   bool isPlayer1TurnInHistory() {
