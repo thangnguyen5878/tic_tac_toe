@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_tic_tac_toe/models/online/online_room.dart';
+import 'package:flutter_tic_tac_toe/models/offline/room.dart';
 import 'package:flutter_tic_tac_toe/utils/constants/app_colors.dart';
 import 'package:flutter_tic_tac_toe/utils/constants/app_styles.dart';
 import 'package:flutter_tic_tac_toe/utils/constants/service_constants.dart';
@@ -10,7 +10,7 @@ class OnlineRoomCard extends StatelessWidget {
     required this.room,
   });
 
-  final OnlineRoom room;
+  final Room room;
 
   @override
   Widget build(BuildContext context) {

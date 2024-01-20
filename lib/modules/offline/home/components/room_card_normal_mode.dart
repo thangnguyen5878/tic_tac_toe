@@ -17,14 +17,14 @@ class RoomCardNormalMode extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     logger.t(
-        'build a room card in normal mode, room(id: ${room.id}, name: ${room.name}, lastAccessAt: ${room.lastAccessAt})');
+        'build a room card in normal mode, room(id: ${room.isarId}, name: ${room.name}, lastAccessAt: ${room.lastAccessAt})');
 
     return InkWell(
       onTap: () {
-        GameController.to.openRoom(room.id);
+        GameController.to.openRoom(room.isarId);
       },
       onLongPress: () {
-        HomeController.to.activateRoomSelectionMode(room.id);
+        HomeController.to.activateRoomSelectionMode(room.isarId);
       },
       child: Container(
         width: double.infinity,

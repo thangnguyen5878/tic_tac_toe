@@ -4,8 +4,8 @@ import 'package:flutter_tic_tac_toe/controllers/online_user_controller.dart';
 import 'package:flutter_tic_tac_toe/models/offline/board.dart';
 import 'package:flutter_tic_tac_toe/models/offline/cell.dart';
 import 'package:flutter_tic_tac_toe/models/offline/player.dart';
+import 'package:flutter_tic_tac_toe/models/offline/room.dart';
 import 'package:flutter_tic_tac_toe/models/offline/round.dart';
-import 'package:flutter_tic_tac_toe/models/online/online_room.dart';
 import 'package:flutter_tic_tac_toe/models/online/online_user.dart';
 import 'package:flutter_tic_tac_toe/utils/constants/service_constants.dart';
 import 'package:flutter_tic_tac_toe/utils/enums/online_user_status.dart';
@@ -19,8 +19,8 @@ class FirestoreService {
   late final CollectionReference _userRef;
 
   FirestoreService() {
-    _roomRef = firestore.collection(fRoomCollection).withConverter<OnlineRoom>(
-        fromFirestore: (snapshots, _) => OnlineRoom.fromJson(snapshots.data()!),
+    _roomRef = firestore.collection(fRoomCollection).withConverter<Room>(
+        fromFirestore: (snapshots, _) => Room.fromJson(snapshots.data()!),
         toFirestore: (room, _) => room.toJson());
 
     _playerRef = firestore.collection(fPlayersCollection).withConverter<Player>(
@@ -138,7 +138,7 @@ class FirestoreService {
 
   // ONLINE ROOM
   // ADD ROOM
-  Future<void> addRoom(OnlineRoom room) async {
+  Future<void> addRoom(Room room) async {
     DocumentReference docRef = _roomRef.doc(room.id);
     docRef.set(room);
   }
@@ -173,7 +173,7 @@ class FirestoreService {
     await _userRef.doc(roomId).update(data);
   }
 
-  Future<void> updateRoomWithObject(String roomId, OnlineRoom room) async {
+  Future<void> updateRoomWithObject(String roomId, Room room) async {
     await _userRef.doc(roomId).update(room.toJson());
   }
 

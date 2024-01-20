@@ -16,16 +16,17 @@ class RoomCardSelectionMode extends StatelessWidget {
 
     return InkWell(
       onTap: () {
-        if (HomeController.to.isRoomCardSelected(room.id)) {
-          HomeController.to.removeSelectedRoom(room.id);
+        if (HomeController.to.isRoomCardSelected(room.isarId)) {
+          HomeController.to.removeSelectedRoom(room.isarId);
         } else {
-          HomeController.to.addSelectedRoom(room.id);
+          HomeController.to.addSelectedRoom(room.isarId);
         }
       },
       child: Container(
         width: double.infinity,
         padding: const EdgeInsets.all(12),
-        decoration: HomeController.to.isRoomCardSelected(room.id) ? kSelectedCardStyle : kCardStyle,
+        decoration:
+            HomeController.to.isRoomCardSelected(room.isarId) ? kSelectedCardStyle : kCardStyle,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [

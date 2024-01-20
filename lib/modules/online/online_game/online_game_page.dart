@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_tic_tac_toe/controllers/online_game_controller.dart';
 import 'package:flutter_tic_tac_toe/controllers/online_user_controller.dart';
-import 'package:flutter_tic_tac_toe/models/online/online_room.dart';
+import 'package:flutter_tic_tac_toe/models/offline/room.dart';
 import 'package:flutter_tic_tac_toe/modules/online/online_game/components/online_board_widget.dart';
 import 'package:flutter_tic_tac_toe/modules/online/online_game/components/online_game_back_button.dart';
 import 'package:flutter_tic_tac_toe/modules/online/online_game/components/online_player_bottom_bar.dart';
@@ -19,7 +19,7 @@ class OnlineGamePage extends StatelessWidget {
         stream: firestoreService.watchRoom(OnlineGameController.to.currentRoomId),
         builder: (context, snapshot) {
           if (snapshot.hasData) {
-            OnlineRoom room = snapshot.data!.data()! as OnlineRoom;
+            Room room = snapshot.data!.data()! as Room;
             OnlineGameController.to.room = room;
 
             return PopScope(
@@ -43,7 +43,7 @@ class OnlineGamePage extends StatelessWidget {
         });
   }
 
-  Stack _buildBody(OnlineRoom room) {
+  Stack _buildBody(Room room) {
     return Stack(children: [
       Center(
         child: Padding(

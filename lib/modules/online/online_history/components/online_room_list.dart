@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart'; // Import Firestore for StreamBuilder
 import 'package:flutter/material.dart';
 import 'package:flutter_tic_tac_toe/controllers/online_game_controller.dart';
-import 'package:flutter_tic_tac_toe/models/online/online_room.dart';
+import 'package:flutter_tic_tac_toe/models/offline/room.dart';
 import 'package:flutter_tic_tac_toe/modules/online/online_history/components/online_room_card.dart';
 import 'package:flutter_tic_tac_toe/utils/constants/service_constants.dart';
 import 'package:get/get.dart';
@@ -30,7 +30,7 @@ class OnlineRoomList extends StatelessWidget {
                         separatorBuilder: (context, index) => const SizedBox(height: 12),
                         itemCount: rooms.length,
                         itemBuilder: (context, index) {
-                          final room = rooms[index].data() as OnlineRoom;
+                          final room = rooms[index].data() as Room;
                           return OnlineRoomCard(room: room);
                         },
                       ),

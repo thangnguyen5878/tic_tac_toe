@@ -47,14 +47,14 @@ class GameController extends GetxController {
 
   void viewHistoryRoundDetails(int roundIndex) {
     GameController.to.room.history.currentRoundIndex = roundIndex;
-    Get.toNamed(Routes.HISTORY_DETAILS, arguments: [room.id, roundIndex]);
+    Get.toNamed(Routes.HISTORY_DETAILS, arguments: [room.isarId, roundIndex]);
     update();
   }
 
   Future<int> saveRoomToIsarDatabase() async {
     await isarService.saveRoom(room);
     // update();
-    return room.id;
+    return room.isarId;
   }
 
   /// Load a room from isar database by room id.

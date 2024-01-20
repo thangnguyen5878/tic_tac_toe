@@ -4,8 +4,8 @@ import 'package:flutter_tic_tac_toe/controllers/online_user_controller.dart';
 import 'package:flutter_tic_tac_toe/models/offline/board.dart';
 import 'package:flutter_tic_tac_toe/models/offline/cell.dart';
 import 'package:flutter_tic_tac_toe/models/offline/player.dart';
+import 'package:flutter_tic_tac_toe/models/offline/room.dart';
 import 'package:flutter_tic_tac_toe/models/offline/round.dart';
-import 'package:flutter_tic_tac_toe/models/online/online_room.dart';
 import 'package:flutter_tic_tac_toe/utils/constants/service_constants.dart';
 import 'package:flutter_tic_tac_toe/utils/enums/game_state.dart';
 import 'package:flutter_tic_tac_toe/utils/enums/online_user_status.dart';
@@ -18,7 +18,7 @@ class OnlineGameController extends GetxController {
   bool isHistoryAutoPlay = false;
   String currentRoomId = '';
 
-  OnlineRoom room = OnlineRoom();
+  Room room = Room();
   // StreamController<OnlineRoom> _roomController = StreamController<OnlineRoom>();
 
   Player player = Player();
@@ -33,7 +33,7 @@ class OnlineGameController extends GetxController {
   }
 
   void updateRoom(Map<String, dynamic> json) {
-    room = OnlineRoom.fromJson(json);
+    room = Room.fromJson(json);
     update();
   }
 
@@ -42,7 +42,7 @@ class OnlineGameController extends GetxController {
     if (currentRoomId != '') {
       firestoreService.watchRoom(currentRoomId).listen((snapshot) {
         if (snapshot.exists) {
-          room = snapshot.data() as OnlineRoom;
+          room = snapshot.data() as Room;
           logger.t('update room instance from firebase');
           logger.t('Room{id: ${room.id}, name: ${room.name}');
         }
@@ -52,8 +52,8 @@ class OnlineGameController extends GetxController {
   }
 
   void createRoom(String player1Id, String player2Id) {
-    room = OnlineRoom(playerIds: [player1Id, player2Id]);
-    currentRoomId = room.id;
+    room = Room.custom(playerIds: [player1Id, player2Id]);
+    currentRoomId = room.id!;
     logger.t('room created in controller');
     logger.i(room.toShortString());
     update();
@@ -61,7 +61,7 @@ class OnlineGameController extends GetxController {
 
   void pullRoomFromFirebase() {
     firestoreService.getRoom(currentRoomId).then((snapshot) {
-      room = snapshot.data()! as OnlineRoom;
+      room = snapshot.data()! as Room;
       logger.t('pull room from firebase');
       logger.t('Room{id: ${room.id}, name: ${room.name}');
     });
@@ -74,7 +74,7 @@ class OnlineGameController extends GetxController {
     update();
   }
 
-  void pushRoomToFirebaseWithArgument(OnlineRoom onlineRoom) {
+  void pushRoomToFirebaseWithArgument(Room onlineRoom) {
     firestoreService.addRoom(onlineRoom);
     logger.t('push onlineRoom to firebase');
     logger.t('Room{id: ${onlineRoom.id}, name: ${onlineRoom.name}}');

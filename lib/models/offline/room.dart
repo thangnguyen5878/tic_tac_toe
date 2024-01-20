@@ -1,4 +1,6 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'package:flutter_tic_tac_toe/controllers/online_game_controller.dart';
+import 'package:flutter_tic_tac_toe/controllers/online_user_controller.dart';
 import 'package:flutter_tic_tac_toe/models/offline/board.dart';
 import 'package:flutter_tic_tac_toe/models/offline/cell.dart';
 import 'package:flutter_tic_tac_toe/models/offline/history.dart';
@@ -11,18 +13,28 @@ import 'package:flutter_tic_tac_toe/utils/enums/game_state.dart';
 import 'package:flutter_tic_tac_toe/utils/enums/seed.dart';
 import 'package:get/get.dart';
 import 'package:isar/isar.dart';
+import 'package:json_annotation/json_annotation.dart';
+import 'package:uuid/uuid.dart';
 
 part 'room.g.dart';
 
 @collection
+@JsonSerializable(explicitToJson: true)
 class Room {
-  Id id = Isar.autoIncrement;
+  @ignore
+  String id = Uuid().v4();
+
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  Id isarId = Isar.autoIncrement;
+
   String name = 'Untitled Room';
   DateTime createdAt = DateTime.now();
   DateTime lastAccessAt = DateTime.now();
 
   @Enumerated(EnumType.name)
   GameState state = GameState.playing;
+
+  List<String> playerIds = [];
 
   Board board = Board();
   List<Player> players = [
@@ -41,17 +53,6 @@ class Room {
   // CONSTRUCTORS
   Room();
 
-  Room.all(
-      {required this.id,
-      required this.name,
-      required this.createdAt,
-      required this.lastAccessAt,
-      required this.state,
-      required this.board,
-      required this.players,
-      required this.rounds,
-      required this.history});
-
   Room.custom(
       {String? name,
       GameState? state,
@@ -60,7 +61,8 @@ class Room {
       Board? board,
       List<Player>? players,
       List<Round>? rounds,
-      History? history})
+      History? history,
+      List<String>? playerIds})
       : name = name ?? 'Untitled Room',
         createdAt = createdAt ?? DateTime.now(),
         lastAccessAt = lastAccessAt ?? DateTime.now(),
@@ -72,7 +74,8 @@ class Room {
               Player(index: 1, name: 'Player 2', seed: Seed.nought)
             ],
         rounds = rounds ?? [Round()],
-        history = history ?? History();
+        history = history ?? History(),
+        playerIds = playerIds ?? [];
 
   // GETTER
   Round getCurrentRound() {
@@ -235,7 +238,7 @@ class Room {
     return true;
   }
 
-  void handleWin(int winnerIndex) {
+  void handleWinOffline(int winnerIndex) {
     bool isPlayer1Win = winnerIndex == 0;
 
     if (isPlayer1Win) {
@@ -253,6 +256,26 @@ class Room {
     state = GameState.stop;
 
     logWinnerAndNotify();
+  }
+
+  void handleWinOnline(int winnerIndex) {
+    bool isPlayer1Win = winnerIndex == 0;
+
+    if (isPlayer1Win) {
+      addScoreForPlayer1(1);
+      colorWinningCells(CellState.crossWin);
+    } else {
+      addScoreForPlayer2(1);
+      colorWinningCells(CellState.noughtWin);
+    }
+
+    getCurrentRound().winnerIndex = winnerIndex;
+    getPlayer1Score().updateFinalScore();
+    getPlayer2Score().updateFinalScore();
+    state = GameState.stop;
+
+    OnlineUserController.to.updateWinnerAndLoserStatus();
+    OnlineGameController.to.pushRoomToFirebase();
   }
 
   /// This method will be used to color the winning cells.
@@ -275,8 +298,13 @@ class Room {
   /// This method checks if there's a winner and handles the case.
   bool checkForWinner(List<Cell> cellsToCheck, Seed seed) {
     if (isWinningRow(cellsToCheck)) {
-      handleWin(seed == Seed.cross ? 0 : 1);
-      return true;
+      if (isOnline) {
+        handleWinOnline(seed == Seed.cross ? 0 : 1);
+        return true;
+      } else {
+        handleWinOffline(seed == Seed.cross ? 0 : 1);
+        return true;
+      }
     }
     return false;
   }
@@ -380,14 +408,35 @@ class Room {
     }
   }
 
+  // JSON SERIALIZATION
+  Map<String, dynamic> toJson() => _$RoomToJson(this);
+
+  factory Room.fromJson(Map<String, dynamic> json) => Room()
+    ..id = json['id'] as String
+    ..name = json['name'] as String
+    ..createdAt = DateTime.parse(json['createdAt'] as String)
+    ..lastAccessAt = DateTime.parse(json['lastAccessAt'] as String)
+    ..state = $enumDecode(_$GameStateEnumMap, json['state'])
+    ..board = Board.fromJson(json['board'] as Map<String, dynamic>)
+    ..players = (List<Map<String, dynamic>>.from(json['players']))
+        .map((e) => Player.fromJson(e as Map<String, dynamic>))
+        .toList()
+    ..rounds = (List<Map<String, dynamic>>.from(json['rounds']))
+        .map((e) => Round.fromJson(e as Map<String, dynamic>))
+        .toList()
+    ..history = History.fromJson(json['history'] as Map<String, dynamic>)
+    ..checkingCells = (json['checkingCells'] as List<dynamic>)
+        .map((e) => Cell.fromJson(e as Map<String, dynamic>))
+        .toList();
+
   // METHODS: LOG
   @override
   String toString() {
-    return 'Room{id: $id, name: $name, createdAt: $createdAt, lastAccessAt: $lastAccessAt, state: $state, board: $board, players: $players, rounds: $rounds, history: $history, checkingCells: $checkingCells, winCount: $winCount}';
+    return 'Room{id: $isarId, name: $name, createdAt: $createdAt, lastAccessAt: $lastAccessAt, state: $state, board: $board, players: $players, rounds: $rounds, history: $history, checkingCells: $checkingCells, winCount: $winCount}';
   }
 
   String toShortString() {
-    return 'Room{id: $id, name: $name, createdAt: $createdAt, lastAccessAt: $lastAccessAt, state: $state, history: ${history.toShortString()}}';
+    return 'Room{id: $isarId, name: $name, createdAt: $createdAt, lastAccessAt: $lastAccessAt, state: $state, history: ${history.toShortString()}}';
   }
 
   void logInfo() {

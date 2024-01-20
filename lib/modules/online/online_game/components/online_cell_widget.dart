@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_tic_tac_toe/controllers/online_game_controller.dart';
 import 'package:flutter_tic_tac_toe/controllers/online_user_controller.dart';
-import 'package:flutter_tic_tac_toe/models/online/online_room.dart';
+import 'package:flutter_tic_tac_toe/models/offline/room.dart';
 import 'package:flutter_tic_tac_toe/utils/constants/app_colors.dart';
 import 'package:flutter_tic_tac_toe/utils/constants/service_constants.dart';
 import 'package:flutter_tic_tac_toe/utils/enums/cell_state.dart';
@@ -9,7 +9,7 @@ import 'package:get/get.dart';
 
 // ignore: must_be_immutable
 class OnlineCellWidget extends StatelessWidget {
-  final OnlineRoom room;
+  final Room room;
   final int row;
   final int column;
 

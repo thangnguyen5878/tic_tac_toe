@@ -44,26 +44,31 @@ const RoomSchema = CollectionSchema(
       name: r'name',
       type: IsarType.string,
     ),
-    r'players': PropertySchema(
+    r'playerIds': PropertySchema(
       id: 5,
+      name: r'playerIds',
+      type: IsarType.stringList,
+    ),
+    r'players': PropertySchema(
+      id: 6,
       name: r'players',
       type: IsarType.objectList,
       target: r'Player',
     ),
     r'rounds': PropertySchema(
-      id: 6,
+      id: 7,
       name: r'rounds',
       type: IsarType.objectList,
       target: r'Round',
     ),
     r'state': PropertySchema(
-      id: 7,
+      id: 8,
       name: r'state',
       type: IsarType.string,
       enumMap: _RoomstateEnumValueMap,
     ),
     r'winCount': PropertySchema(
-      id: 8,
+      id: 9,
       name: r'winCount',
       type: IsarType.long,
     )
@@ -72,7 +77,7 @@ const RoomSchema = CollectionSchema(
   serialize: _roomSerialize,
   deserialize: _roomDeserialize,
   deserializeProp: _roomDeserializeProp,
-  idName: r'id',
+  idName: r'isarId',
   indexes: {},
   links: {},
   embeddedSchemas: {
@@ -101,6 +106,13 @@ int _roomEstimateSize(
       HistorySchema.estimateSize(
           object.history, allOffsets[History]!, allOffsets);
   bytesCount += 3 + object.name.length * 3;
+  bytesCount += 3 + object.playerIds.length * 3;
+  {
+    for (var i = 0; i < object.playerIds.length; i++) {
+      final value = object.playerIds[i];
+      bytesCount += value.length * 3;
+    }
+  }
   bytesCount += 3 + object.players.length * 3;
   {
     final offsets = allOffsets[Player]!;
@@ -142,20 +154,21 @@ void _roomSerialize(
   );
   writer.writeDateTime(offsets[3], object.lastAccessAt);
   writer.writeString(offsets[4], object.name);
+  writer.writeStringList(offsets[5], object.playerIds);
   writer.writeObjectList<Player>(
-    offsets[5],
+    offsets[6],
     allOffsets,
     PlayerSchema.serialize,
     object.players,
   );
   writer.writeObjectList<Round>(
-    offsets[6],
+    offsets[7],
     allOffsets,
     RoundSchema.serialize,
     object.rounds,
   );
-  writer.writeString(offsets[7], object.state.name);
-  writer.writeLong(offsets[8], object.winCount);
+  writer.writeString(offsets[8], object.state.name);
+  writer.writeLong(offsets[9], object.winCount);
 }
 
 Room _roomDeserialize(
@@ -178,24 +191,25 @@ Room _roomDeserialize(
         allOffsets,
       ) ??
       History();
-  object.id = id;
+  object.isarId = id;
   object.lastAccessAt = reader.readDateTime(offsets[3]);
   object.name = reader.readString(offsets[4]);
+  object.playerIds = reader.readStringList(offsets[5]) ?? [];
   object.players = reader.readObjectList<Player>(
-        offsets[5],
+        offsets[6],
         PlayerSchema.deserialize,
         allOffsets,
         Player(),
       ) ??
       [];
   object.rounds = reader.readObjectList<Round>(
-        offsets[6],
+        offsets[7],
         RoundSchema.deserialize,
         allOffsets,
         Round(),
       ) ??
       [];
-  object.state = _RoomstateValueEnumMap[reader.readStringOrNull(offsets[7])] ??
+  object.state = _RoomstateValueEnumMap[reader.readStringOrNull(offsets[8])] ??
       GameState.playing;
   return object;
 }
@@ -228,6 +242,8 @@ P _roomDeserializeProp<P>(
     case 4:
       return (reader.readString(offset)) as P;
     case 5:
+      return (reader.readStringList(offset) ?? []) as P;
+    case 6:
       return (reader.readObjectList<Player>(
             offset,
             PlayerSchema.deserialize,
@@ -235,7 +251,7 @@ P _roomDeserializeProp<P>(
             Player(),
           ) ??
           []) as P;
-    case 6:
+    case 7:
       return (reader.readObjectList<Round>(
             offset,
             RoundSchema.deserialize,
@@ -243,10 +259,10 @@ P _roomDeserializeProp<P>(
             Round(),
           ) ??
           []) as P;
-    case 7:
+    case 8:
       return (_RoomstateValueEnumMap[reader.readStringOrNull(offset)] ??
           GameState.playing) as P;
-    case 8:
+    case 9:
       return (reader.readLong(offset)) as P;
     default:
       throw IsarError('Unknown property with id $propertyId');
@@ -263,7 +279,7 @@ const _RoomstateValueEnumMap = {
 };
 
 Id _roomGetId(Room object) {
-  return object.id;
+  return object.isarId;
 }
 
 List<IsarLinkBase<dynamic>> _roomGetLinks(Room object) {
@@ -271,11 +287,11 @@ List<IsarLinkBase<dynamic>> _roomGetLinks(Room object) {
 }
 
 void _roomAttach(IsarCollection<dynamic> col, Id id, Room object) {
-  object.id = id;
+  object.isarId = id;
 }
 
 extension RoomQueryWhereSort on QueryBuilder<Room, Room, QWhere> {
-  QueryBuilder<Room, Room, QAfterWhere> anyId() {
+  QueryBuilder<Room, Room, QAfterWhere> anyIsarId() {
     return QueryBuilder.apply(this, (query) {
       return query.addWhereClause(const IdWhereClause.any());
     });
@@ -283,66 +299,66 @@ extension RoomQueryWhereSort on QueryBuilder<Room, Room, QWhere> {
 }
 
 extension RoomQueryWhere on QueryBuilder<Room, Room, QWhereClause> {
-  QueryBuilder<Room, Room, QAfterWhereClause> idEqualTo(Id id) {
+  QueryBuilder<Room, Room, QAfterWhereClause> isarIdEqualTo(Id isarId) {
     return QueryBuilder.apply(this, (query) {
       return query.addWhereClause(IdWhereClause.between(
-        lower: id,
-        upper: id,
+        lower: isarId,
+        upper: isarId,
       ));
     });
   }
 
-  QueryBuilder<Room, Room, QAfterWhereClause> idNotEqualTo(Id id) {
+  QueryBuilder<Room, Room, QAfterWhereClause> isarIdNotEqualTo(Id isarId) {
     return QueryBuilder.apply(this, (query) {
       if (query.whereSort == Sort.asc) {
         return query
             .addWhereClause(
-              IdWhereClause.lessThan(upper: id, includeUpper: false),
+              IdWhereClause.lessThan(upper: isarId, includeUpper: false),
             )
             .addWhereClause(
-              IdWhereClause.greaterThan(lower: id, includeLower: false),
+              IdWhereClause.greaterThan(lower: isarId, includeLower: false),
             );
       } else {
         return query
             .addWhereClause(
-              IdWhereClause.greaterThan(lower: id, includeLower: false),
+              IdWhereClause.greaterThan(lower: isarId, includeLower: false),
             )
             .addWhereClause(
-              IdWhereClause.lessThan(upper: id, includeUpper: false),
+              IdWhereClause.lessThan(upper: isarId, includeUpper: false),
             );
       }
     });
   }
 
-  QueryBuilder<Room, Room, QAfterWhereClause> idGreaterThan(Id id,
+  QueryBuilder<Room, Room, QAfterWhereClause> isarIdGreaterThan(Id isarId,
       {bool include = false}) {
     return QueryBuilder.apply(this, (query) {
       return query.addWhereClause(
-        IdWhereClause.greaterThan(lower: id, includeLower: include),
+        IdWhereClause.greaterThan(lower: isarId, includeLower: include),
       );
     });
   }
 
-  QueryBuilder<Room, Room, QAfterWhereClause> idLessThan(Id id,
+  QueryBuilder<Room, Room, QAfterWhereClause> isarIdLessThan(Id isarId,
       {bool include = false}) {
     return QueryBuilder.apply(this, (query) {
       return query.addWhereClause(
-        IdWhereClause.lessThan(upper: id, includeUpper: include),
+        IdWhereClause.lessThan(upper: isarId, includeUpper: include),
       );
     });
   }
 
-  QueryBuilder<Room, Room, QAfterWhereClause> idBetween(
-    Id lowerId,
-    Id upperId, {
+  QueryBuilder<Room, Room, QAfterWhereClause> isarIdBetween(
+    Id lowerIsarId,
+    Id upperIsarId, {
     bool includeLower = true,
     bool includeUpper = true,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addWhereClause(IdWhereClause.between(
-        lower: lowerId,
+        lower: lowerIsarId,
         includeLower: includeLower,
-        upper: upperId,
+        upper: upperIsarId,
         includeUpper: includeUpper,
       ));
     });
@@ -403,42 +419,42 @@ extension RoomQueryFilter on QueryBuilder<Room, Room, QFilterCondition> {
     });
   }
 
-  QueryBuilder<Room, Room, QAfterFilterCondition> idEqualTo(Id value) {
+  QueryBuilder<Room, Room, QAfterFilterCondition> isarIdEqualTo(Id value) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'id',
+        property: r'isarId',
         value: value,
       ));
     });
   }
 
-  QueryBuilder<Room, Room, QAfterFilterCondition> idGreaterThan(
+  QueryBuilder<Room, Room, QAfterFilterCondition> isarIdGreaterThan(
     Id value, {
     bool include = false,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.greaterThan(
         include: include,
-        property: r'id',
+        property: r'isarId',
         value: value,
       ));
     });
   }
 
-  QueryBuilder<Room, Room, QAfterFilterCondition> idLessThan(
+  QueryBuilder<Room, Room, QAfterFilterCondition> isarIdLessThan(
     Id value, {
     bool include = false,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.lessThan(
         include: include,
-        property: r'id',
+        property: r'isarId',
         value: value,
       ));
     });
   }
 
-  QueryBuilder<Room, Room, QAfterFilterCondition> idBetween(
+  QueryBuilder<Room, Room, QAfterFilterCondition> isarIdBetween(
     Id lower,
     Id upper, {
     bool includeLower = true,
@@ -446,7 +462,7 @@ extension RoomQueryFilter on QueryBuilder<Room, Room, QFilterCondition> {
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.between(
-        property: r'id',
+        property: r'isarId',
         lower: lower,
         includeLower: includeLower,
         upper: upper,
@@ -633,6 +649,220 @@ extension RoomQueryFilter on QueryBuilder<Room, Room, QFilterCondition> {
         property: r'name',
         value: '',
       ));
+    });
+  }
+
+  QueryBuilder<Room, Room, QAfterFilterCondition> playerIdsElementEqualTo(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'playerIds',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Room, Room, QAfterFilterCondition> playerIdsElementGreaterThan(
+    String value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'playerIds',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Room, Room, QAfterFilterCondition> playerIdsElementLessThan(
+    String value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'playerIds',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Room, Room, QAfterFilterCondition> playerIdsElementBetween(
+    String lower,
+    String upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'playerIds',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Room, Room, QAfterFilterCondition> playerIdsElementStartsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.startsWith(
+        property: r'playerIds',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Room, Room, QAfterFilterCondition> playerIdsElementEndsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.endsWith(
+        property: r'playerIds',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Room, Room, QAfterFilterCondition> playerIdsElementContains(
+      String value,
+      {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.contains(
+        property: r'playerIds',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Room, Room, QAfterFilterCondition> playerIdsElementMatches(
+      String pattern,
+      {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.matches(
+        property: r'playerIds',
+        wildcard: pattern,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Room, Room, QAfterFilterCondition> playerIdsElementIsEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'playerIds',
+        value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<Room, Room, QAfterFilterCondition> playerIdsElementIsNotEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        property: r'playerIds',
+        value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<Room, Room, QAfterFilterCondition> playerIdsLengthEqualTo(
+      int length) {
+    return QueryBuilder.apply(this, (query) {
+      return query.listLength(
+        r'playerIds',
+        length,
+        true,
+        length,
+        true,
+      );
+    });
+  }
+
+  QueryBuilder<Room, Room, QAfterFilterCondition> playerIdsIsEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.listLength(
+        r'playerIds',
+        0,
+        true,
+        0,
+        true,
+      );
+    });
+  }
+
+  QueryBuilder<Room, Room, QAfterFilterCondition> playerIdsIsNotEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.listLength(
+        r'playerIds',
+        0,
+        false,
+        999999,
+        true,
+      );
+    });
+  }
+
+  QueryBuilder<Room, Room, QAfterFilterCondition> playerIdsLengthLessThan(
+    int length, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.listLength(
+        r'playerIds',
+        0,
+        true,
+        length,
+        include,
+      );
+    });
+  }
+
+  QueryBuilder<Room, Room, QAfterFilterCondition> playerIdsLengthGreaterThan(
+    int length, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.listLength(
+        r'playerIds',
+        length,
+        include,
+        999999,
+        true,
+      );
+    });
+  }
+
+  QueryBuilder<Room, Room, QAfterFilterCondition> playerIdsLengthBetween(
+    int lower,
+    int upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.listLength(
+        r'playerIds',
+        lower,
+        includeLower,
+        upper,
+        includeUpper,
+      );
     });
   }
 
@@ -1091,15 +1321,15 @@ extension RoomQuerySortThenBy on QueryBuilder<Room, Room, QSortThenBy> {
     });
   }
 
-  QueryBuilder<Room, Room, QAfterSortBy> thenById() {
+  QueryBuilder<Room, Room, QAfterSortBy> thenByIsarId() {
     return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'id', Sort.asc);
+      return query.addSortBy(r'isarId', Sort.asc);
     });
   }
 
-  QueryBuilder<Room, Room, QAfterSortBy> thenByIdDesc() {
+  QueryBuilder<Room, Room, QAfterSortBy> thenByIsarIdDesc() {
     return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'id', Sort.desc);
+      return query.addSortBy(r'isarId', Sort.desc);
     });
   }
 
@@ -1172,6 +1402,12 @@ extension RoomQueryWhereDistinct on QueryBuilder<Room, Room, QDistinct> {
     });
   }
 
+  QueryBuilder<Room, Room, QDistinct> distinctByPlayerIds() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'playerIds');
+    });
+  }
+
   QueryBuilder<Room, Room, QDistinct> distinctByState(
       {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
@@ -1187,9 +1423,9 @@ extension RoomQueryWhereDistinct on QueryBuilder<Room, Room, QDistinct> {
 }
 
 extension RoomQueryProperty on QueryBuilder<Room, Room, QQueryProperty> {
-  QueryBuilder<Room, int, QQueryOperations> idProperty() {
+  QueryBuilder<Room, int, QQueryOperations> isarIdProperty() {
     return QueryBuilder.apply(this, (query) {
-      return query.addPropertyName(r'id');
+      return query.addPropertyName(r'isarId');
     });
   }
 
@@ -1223,6 +1459,12 @@ extension RoomQueryProperty on QueryBuilder<Room, Room, QQueryProperty> {
     });
   }
 
+  QueryBuilder<Room, List<String>, QQueryOperations> playerIdsProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'playerIds');
+    });
+  }
+
   QueryBuilder<Room, List<Player>, QQueryOperations> playersProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'players');
@@ -1247,3 +1489,46 @@ extension RoomQueryProperty on QueryBuilder<Room, Room, QQueryProperty> {
     });
   }
 }
+
+// **************************************************************************
+// JsonSerializableGenerator
+// **************************************************************************
+
+Room _$RoomFromJson(Map<String, dynamic> json) => Room()
+  ..id = json['id'] as String
+  ..name = json['name'] as String
+  ..createdAt = DateTime.parse(json['createdAt'] as String)
+  ..lastAccessAt = DateTime.parse(json['lastAccessAt'] as String)
+  ..state = $enumDecode(_$GameStateEnumMap, json['state'])
+  ..playerIds =
+      (json['playerIds'] as List<dynamic>).map((e) => e as String).toList()
+  ..board = Board.fromJson(json['board'] as Map<String, dynamic>)
+  ..players = (json['players'] as List<dynamic>)
+      .map((e) => Player.fromJson(e as Map<String, dynamic>))
+      .toList()
+  ..rounds = (json['rounds'] as List<dynamic>)
+      .map((e) => Round.fromJson(e as Map<String, dynamic>))
+      .toList()
+  ..history = History.fromJson(json['history'] as Map<String, dynamic>)
+  ..checkingCells = (json['checkingCells'] as List<dynamic>)
+      .map((e) => Cell.fromJson(e as Map<String, dynamic>))
+      .toList();
+
+Map<String, dynamic> _$RoomToJson(Room instance) => <String, dynamic>{
+      'id': instance.id,
+      'name': instance.name,
+      'createdAt': instance.createdAt.toIso8601String(),
+      'lastAccessAt': instance.lastAccessAt.toIso8601String(),
+      'state': _$GameStateEnumMap[instance.state]!,
+      'playerIds': instance.playerIds,
+      'board': instance.board.toJson(),
+      'players': instance.players.map((e) => e.toJson()).toList(),
+      'rounds': instance.rounds.map((e) => e.toJson()).toList(),
+      'history': instance.history.toJson(),
+      'checkingCells': instance.checkingCells.map((e) => e.toJson()).toList(),
+    };
+
+const _$GameStateEnumMap = {
+  GameState.playing: 'playing',
+  GameState.stop: 'stop',
+};

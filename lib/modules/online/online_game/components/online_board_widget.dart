@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_tic_tac_toe/models/online/online_room.dart';
+import 'package:flutter_tic_tac_toe/models/offline/room.dart';
 import 'package:flutter_tic_tac_toe/modules/online/online_game/components/online_cell_widget.dart';
 import 'package:flutter_tic_tac_toe/utils/constants/service_constants.dart';
 
 class OnlineBoardWidget extends StatelessWidget {
-  final OnlineRoom room;
+  final Room room;
 
   const OnlineBoardWidget({super.key, required this.room});
 
