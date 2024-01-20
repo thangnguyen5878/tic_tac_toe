@@ -8,6 +8,10 @@ const Color kRoomCardColor = kBrown15;
 const Color kSelectedRoomCardColor = kBrown20;
 const Color kSelectedDrawerTileColor = Color(0xFFD4D4D4);
 
+// CELL
+const Color kCrossCellWinBackgroundColor = Color(0xFFFFD4C7);
+const Color kNoughtCellWinBackgroundColor = Color(0xFFCAF5C0);
+
 // primary color: brown
 const kBrown10 = Color(0xFFEEE7E7);
 const kBrown15 = Color(0xFFF0E5E5);

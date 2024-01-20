@@ -34,6 +34,9 @@ class Board {
     );
   }
 
+  // GETTERS
+  Cell getCell(int row, int column) => cells[row][column];
+
   // METHODS: BUSINESS
   /// Rebuild the board with the lastest number of rows and columns
   rebuild() {

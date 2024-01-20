@@ -52,7 +52,7 @@ class Cell {
     state = CellState.normal;
   }
 
-  // METHODS: BOOLEAN
+  // GETTERS: BOOLEAN
   /// Returns whether the cell represents a win for player 1.
   bool isPlayer1Win() {
     return state == CellState.crossWin;
