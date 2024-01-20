@@ -1,6 +1,6 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
-import 'package:flutter_tic_tac_toe/models/offline/cell.dart';
-import 'package:flutter_tic_tac_toe/models/offline/score.dart';
+import 'package:flutter_tic_tac_toe/models/cell.dart';
+import 'package:flutter_tic_tac_toe/models/score.dart';
 import 'package:flutter_tic_tac_toe/utils/constants/service_constants.dart';
 import 'package:flutter_tic_tac_toe/utils/json%20converters/online_cell_list_converter.dart';
 import 'package:flutter_tic_tac_toe/utils/json%20converters/online_score_list_converter.dart';
@@ -55,7 +55,7 @@ class Round {
 
   // GETTERS
   int getRoundCount() {
-    return index! + 1;
+    return index + 1;
   }
 
   int getTurnCount() {
@@ -80,6 +80,8 @@ class Round {
   Score? getWinnerScore() {
     if (hasWinner()) {
       return scores[winnerIndex!];
+    } else {
+      return null;
     }
   }
 

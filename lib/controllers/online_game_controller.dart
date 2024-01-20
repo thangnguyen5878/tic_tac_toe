@@ -1,11 +1,11 @@
 import 'dart:async';
 
 import 'package:flutter_tic_tac_toe/controllers/online_user_controller.dart';
-import 'package:flutter_tic_tac_toe/models/offline/board.dart';
-import 'package:flutter_tic_tac_toe/models/offline/cell.dart';
-import 'package:flutter_tic_tac_toe/models/offline/player.dart';
-import 'package:flutter_tic_tac_toe/models/offline/room.dart';
-import 'package:flutter_tic_tac_toe/models/offline/round.dart';
+import 'package:flutter_tic_tac_toe/models/board.dart';
+import 'package:flutter_tic_tac_toe/models/cell.dart';
+import 'package:flutter_tic_tac_toe/models/player.dart';
+import 'package:flutter_tic_tac_toe/models/room.dart';
+import 'package:flutter_tic_tac_toe/models/round.dart';
 import 'package:flutter_tic_tac_toe/utils/constants/service_constants.dart';
 import 'package:flutter_tic_tac_toe/utils/enums/game_state.dart';
 import 'package:flutter_tic_tac_toe/utils/enums/online_user_status.dart';
@@ -53,7 +53,7 @@ class OnlineGameController extends GetxController {
 
   void createRoom(String player1Id, String player2Id) {
     room = Room.custom(playerIds: [player1Id, player2Id]);
-    currentRoomId = room.id!;
+    currentRoomId = room.id;
     logger.t('room created in controller');
     logger.i(room.toShortString());
     update();

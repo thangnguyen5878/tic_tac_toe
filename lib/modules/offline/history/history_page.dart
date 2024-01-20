@@ -13,7 +13,6 @@ class HistoryPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final roomId = Get.arguments;
     logger.t('build home screen...');
     return SafeArea(
       child: Scaffold(

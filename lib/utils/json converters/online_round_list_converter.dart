@@ -1,4 +1,4 @@
-import 'package:flutter_tic_tac_toe/models/offline/round.dart';
+import 'package:flutter_tic_tac_toe/models/round.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 class RoundListConverter implements JsonConverter<List<Round?>, List<Map<String, dynamic>>> {

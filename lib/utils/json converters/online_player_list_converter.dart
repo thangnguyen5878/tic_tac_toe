@@ -1,4 +1,4 @@
-import 'package:flutter_tic_tac_toe/models/offline/player.dart';
+import 'package:flutter_tic_tac_toe/models/player.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 class PlayerListConverter implements JsonConverter<List<Player?>, List<Map<String, dynamic>>> {

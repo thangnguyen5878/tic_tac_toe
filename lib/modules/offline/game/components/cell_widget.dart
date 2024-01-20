@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_tic_tac_toe/models/offline/room.dart';
+import 'package:flutter_tic_tac_toe/models/room.dart';
 import 'package:flutter_tic_tac_toe/utils/constants/app_colors.dart';
 
 // ignore: must_be_immutable
@@ -17,7 +17,6 @@ class CellWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     final cell = room.board.getCell(row, column);
     final content = cell.content.toString();
-    final state = cell.state!;
 
     Color backgroundColor = Colors.white;
     if (cell.isPlayer1Win()) {

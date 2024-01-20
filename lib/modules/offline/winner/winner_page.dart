@@ -7,7 +7,6 @@ class WinnerPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final room = GameController.to.room;
-    final round = room.getCurrentRound();
 
     final winnerName = room.getWinnerOfCurrentRound()?.name;
     final roundCount = room.getRoundCount();

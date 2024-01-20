@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart'; // Import Firestore for StreamBuilder
 import 'package:flutter/material.dart';
 import 'package:flutter_tic_tac_toe/controllers/online_game_controller.dart';
-import 'package:flutter_tic_tac_toe/models/offline/room.dart';
+import 'package:flutter_tic_tac_toe/models/room.dart';
 import 'package:flutter_tic_tac_toe/modules/online/online_history/components/online_room_card.dart';
 import 'package:flutter_tic_tac_toe/utils/constants/service_constants.dart';
 import 'package:get/get.dart';

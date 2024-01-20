@@ -1,12 +1,12 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter_tic_tac_toe/controllers/online_game_controller.dart';
 import 'package:flutter_tic_tac_toe/controllers/online_user_controller.dart';
-import 'package:flutter_tic_tac_toe/models/offline/board.dart';
-import 'package:flutter_tic_tac_toe/models/offline/cell.dart';
-import 'package:flutter_tic_tac_toe/models/offline/history.dart';
-import 'package:flutter_tic_tac_toe/models/offline/player.dart';
-import 'package:flutter_tic_tac_toe/models/offline/round.dart';
-import 'package:flutter_tic_tac_toe/models/offline/score.dart';
+import 'package:flutter_tic_tac_toe/models/board.dart';
+import 'package:flutter_tic_tac_toe/models/cell.dart';
+import 'package:flutter_tic_tac_toe/models/history.dart';
+import 'package:flutter_tic_tac_toe/models/player.dart';
+import 'package:flutter_tic_tac_toe/models/round.dart';
+import 'package:flutter_tic_tac_toe/models/score.dart';
 import 'package:flutter_tic_tac_toe/utils/constants/service_constants.dart';
 import 'package:flutter_tic_tac_toe/utils/enums/cell_state.dart';
 import 'package:flutter_tic_tac_toe/utils/enums/game_state.dart';
@@ -105,12 +105,16 @@ class Room {
   Player? getWinnerOfCurrentRound() {
     if (getCurrentRound().hasWinner()) {
       return players[getCurrentRound().winnerIndex!];
+    } else {
+      return null;
     }
   }
 
   Player? getWinnerOfRound(int roundIndex) {
     if (rounds[roundIndex].hasWinner()) {
       return players[rounds[roundIndex].winnerIndex!];
+    } else {
+      return null;
     }
   }
 
@@ -294,7 +298,7 @@ class Room {
 
   /// This method will be used to color the winning cells.
   void colorWinningCells(CellState winningState) {
-    for (Cell cell in checkingCells!) {
+    for (Cell cell in checkingCells) {
       cell.state = winningState;
     }
   }
@@ -303,7 +307,7 @@ class Room {
   void logWinnerAndNotify() {
     if (getCurrentRound().hasWinner()) {
       Player winner = getWinnerOfCurrentRound()!;
-      logger.t('Winner is ${winner!.name}');
+      logger.t('Winner is ${winner.name}');
       // logger.t('rounds: $rounds');
       Get.toNamed('winner');
     }
@@ -334,13 +338,13 @@ class Room {
   bool checkLines() {
     for (int row = 0; row < board.rowCount!; row++) {
       for (int col = 0; col <= board.columnCount! - winCount; col++) {
-        checkingCells?.clear();
+        checkingCells.clear();
         for (int k = 0; k < winCount; k++) {
-          checkingCells?.add(board.cells[row][col + k]);
+          checkingCells.add(board.cells[row][col + k]);
         }
         // Check if the first cell is not noSeed before checking for winner
         if (board.cells[row][col].content != Seed.noSeed &&
-            checkForWinner(checkingCells!, board.cells[row][col].content!)) {
+            checkForWinner(checkingCells, board.cells[row][col].content!)) {
           return true;
         }
       }
@@ -351,13 +355,13 @@ class Room {
   bool checkColumns() {
     for (int col = 0; col < board.columnCount!; col++) {
       for (int row = 0; row <= board.rowCount! - winCount; row++) {
-        checkingCells?.clear();
+        checkingCells.clear();
         for (int k = 0; k < winCount; k++) {
-          checkingCells?.add(board.cells[row + k][col]);
+          checkingCells.add(board.cells[row + k][col]);
         }
         // Check if the first cell is not noSeed before checking for winner
         if (board.cells[row][col].content != Seed.noSeed &&
-            checkForWinner(checkingCells!, board.cells[row][col].content!)) {
+            checkForWinner(checkingCells, board.cells[row][col].content!)) {
           return true;
         }
       }
@@ -369,12 +373,12 @@ class Room {
     // Check descending diagonal (\)
     for (int row = 0; row <= board.rowCount! - winCount; row++) {
       for (int col = 0; col <= board.columnCount! - winCount; col++) {
-        checkingCells?.clear();
+        checkingCells.clear();
         for (int k = 0; k < winCount; k++) {
-          checkingCells?.add(board.cells[row + k][col + k]);
+          checkingCells.add(board.cells[row + k][col + k]);
         }
         if (board.cells[row][col].content != Seed.noSeed &&
-            checkForWinner(checkingCells!, board.cells[row][col].content!)) {
+            checkForWinner(checkingCells, board.cells[row][col].content!)) {
           return true;
         }
       }
@@ -383,12 +387,12 @@ class Room {
     // Check ascending diagonal (/)
     for (int row = 0; row <= board.rowCount! - winCount; row++) {
       for (int col = winCount - 1; col < board.columnCount!; col++) {
-        checkingCells?.clear();
+        checkingCells.clear();
         for (int k = 0; k < winCount; k++) {
-          checkingCells?.add(board.cells[row + k][col - k]);
+          checkingCells.add(board.cells[row + k][col - k]);
         }
         if (board.cells[row][col].content != Seed.noSeed &&
-            checkForWinner(checkingCells!, board.cells[row][col].content!)) {
+            checkForWinner(checkingCells, board.cells[row][col].content!)) {
           return true;
         }
       }
@@ -401,7 +405,7 @@ class Room {
     state = GameState.playing;
     board.reset();
     Round nextRound = getCurrentRound().cloneForNextRound();
-    rounds = [...?rounds, nextRound];
+    rounds = [...rounds, nextRound];
     // logger.t('nextRound()\n');
     // logger.t('current round: ${rounds![currentRoundIndex - 1]}\n');
     // logger.t('next round: ${rounds![currentRoundIndex]}\n');

@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_tic_tac_toe/controllers/game_controller.dart';
-import 'package:flutter_tic_tac_toe/models/offline/room.dart';
+import 'package:flutter_tic_tac_toe/models/room.dart';
 import 'package:flutter_tic_tac_toe/modules/offline/game/components/board_widget.dart';
-import 'package:flutter_tic_tac_toe/modules/offline/game/components/game_popup_menu_button.dart';
 import 'package:flutter_tic_tac_toe/modules/offline/game/components/next_round_button.dart';
 import 'package:flutter_tic_tac_toe/modules/offline/game/components/player_bottom_bar.dart';
+import 'package:flutter_tic_tac_toe/modules/offline/game/components/reset_board_button.dart';
+import 'package:flutter_tic_tac_toe/routes/app_pages.dart';
 import 'package:flutter_tic_tac_toe/utils/constants/app_colors.dart';
 import 'package:flutter_tic_tac_toe/utils/constants/app_size.dart';
 import 'package:flutter_tic_tac_toe/utils/constants/app_styles.dart';
@@ -13,6 +14,7 @@ import 'package:get/get.dart';
 
 class GamePage extends StatelessWidget {
   final roomId = Get.arguments;
+  final onBackPressed = () => GameController.to.handleBackFromGamePage();
 
   GamePage({super.key});
 
@@ -24,7 +26,7 @@ class GamePage extends StatelessWidget {
       canPop: false,
       onPopInvoked: (didPop) {
         if (didPop) return;
-        GameController.to.handleBackFromGamePage();
+        onBackPressed();
       },
       child: GetBuilder<GameController>(builder: (controler) {
         Room room = GameController.to.room;
@@ -70,9 +72,9 @@ class GamePage extends StatelessWidget {
         Text('Round: ${room.getRoundCount()}, Turn: ${round.getTurnCount()}', style: kHeading3),
       ]),
       actions: [
-        // buildResetBoardButton(),
-        NextRoundButton(),
-        GamePopupMenuButton(),
+        ResetBoardButton(),
+        if (room.isGameOver()) NextRoundButton(),
+        _buildPopupMenuButton(),
       ],
     );
   }
@@ -85,9 +87,42 @@ class GamePage extends StatelessWidget {
         color: kBlack,
         size: kIconSize,
       ),
-      onPressed: () async {
-        GameController.to.handleBackFromGamePage();
+      onPressed: () {
+        onBackPressed();
       },
+    );
+  }
+
+  _buildPopupMenuButton() {
+    final room = GameController.to.room;
+    return PopupMenuButton<String>(
+      itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
+        const PopupMenuItem<String>(
+          value: 'reset',
+          child: Text('Reset'),
+          // Remove the style parameter
+        ),
+        const PopupMenuItem<String>(
+          value: 'history',
+          child: Text('History'),
+          // Remove the style parameter
+        ),
+      ],
+      onSelected: (String value) async {
+        if (value == 'reset') {
+          GameController.to.resetBoard();
+          await GameController.to.saveRoomToIsarDatabase();
+        } else if (value == 'history') {
+          logger.t('Going to History Page, roomId = $roomId');
+          GameController.to.saveRoomToIsarDatabase();
+          Get.toNamed(Routes.HISTORY, arguments: room.id);
+        }
+      },
+      icon: const Icon(
+        Icons.more_vert,
+        color: Colors.black,
+        size: kIconSize, // Set the color of the three dots icon to black
+      ),
     );
   }
 }

@@ -50,7 +50,6 @@ class HistoryDetailsPage extends StatelessWidget {
       title: GetBuilder<GameController>(
         builder: (gameController) {
           final room = GameController.to.room;
-          final round = room.getCurrentRoundInHistory();
 
           return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
             Text('Room: ${room.name}', style: kHeading2),

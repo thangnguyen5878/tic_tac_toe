@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_tic_tac_toe/controllers/online_game_controller.dart';
 import 'package:flutter_tic_tac_toe/controllers/online_user_controller.dart';
-import 'package:flutter_tic_tac_toe/models/offline/room.dart';
+import 'package:flutter_tic_tac_toe/models/room.dart';
 import 'package:flutter_tic_tac_toe/modules/online/online_game/components/online_board_widget.dart';
 import 'package:flutter_tic_tac_toe/modules/online/online_game/components/online_game_back_button.dart';
 import 'package:flutter_tic_tac_toe/modules/online/online_game/components/online_player_bottom_bar.dart';

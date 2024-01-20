@@ -1,4 +1,4 @@
-import 'package:flutter_tic_tac_toe/models/offline/score.dart';
+import 'package:flutter_tic_tac_toe/models/score.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 class ScoreListConverter implements JsonConverter<List<Score>, List<Map<String, dynamic>>> {

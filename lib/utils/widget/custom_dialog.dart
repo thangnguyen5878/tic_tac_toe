@@ -38,7 +38,7 @@ class CustomDialog extends StatelessWidget {
 
   Widget _buildDialogBody() {
     return Container(
-      padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 8),
+      padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 24),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_tic_tac_toe/controllers/game_controller.dart';
 import 'package:flutter_tic_tac_toe/utils/constants/app_colors.dart';
-import 'package:flutter_tic_tac_toe/utils/enums/cell_state.dart';
 import 'package:get/get.dart';
 
 // ignore: must_be_immutable
@@ -21,7 +20,6 @@ class HistoryCell extends StatelessWidget {
           final cell = room.history.board.cells[row][column];
 
           final content = cell.content.toString();
-          CellState state = cell.state!;
 
           Color bColor = Colors.white;
 

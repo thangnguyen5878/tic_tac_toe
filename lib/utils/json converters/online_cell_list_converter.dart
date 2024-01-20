@@ -1,4 +1,4 @@
-import 'package:flutter_tic_tac_toe/models/offline/cell.dart';
+import 'package:flutter_tic_tac_toe/models/cell.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 class CellListConverter implements JsonConverter<List<Cell?>, List<Map<String, dynamic>>> {

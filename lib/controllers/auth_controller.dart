@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_tic_tac_toe/controllers/online_user_controller.dart';
-import 'package:flutter_tic_tac_toe/models/online/online_user.dart';
+import 'package:flutter_tic_tac_toe/models/online_user.dart';
 import 'package:flutter_tic_tac_toe/modules/online/auth/view/signin_page.dart';
 import 'package:flutter_tic_tac_toe/modules/online/auth/view/welcome_page.dart';
 import 'package:flutter_tic_tac_toe/utils/constants/service_constants.dart';

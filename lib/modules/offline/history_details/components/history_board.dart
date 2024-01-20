@@ -29,7 +29,7 @@ class HistoryBoard extends StatelessWidget {
           mainAxisSpacing: 0,
           childAspectRatio: 1,
         ),
-        itemCount: columnCount! * rowCount!,
+        itemCount: columnCount * rowCount!,
         itemBuilder: (context, index) {
           return HistoryCell(row: index ~/ columnCount, column: index % columnCount);
         },

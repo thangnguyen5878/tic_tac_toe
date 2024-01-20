@@ -1,12 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_tic_tac_toe/controllers/online_user_controller.dart';
-import 'package:flutter_tic_tac_toe/models/offline/board.dart';
-import 'package:flutter_tic_tac_toe/models/offline/cell.dart';
-import 'package:flutter_tic_tac_toe/models/offline/player.dart';
-import 'package:flutter_tic_tac_toe/models/offline/room.dart';
-import 'package:flutter_tic_tac_toe/models/offline/round.dart';
-import 'package:flutter_tic_tac_toe/models/online/online_user.dart';
+import 'package:flutter_tic_tac_toe/models/board.dart';
+import 'package:flutter_tic_tac_toe/models/cell.dart';
+import 'package:flutter_tic_tac_toe/models/online_user.dart';
+import 'package:flutter_tic_tac_toe/models/player.dart';
+import 'package:flutter_tic_tac_toe/models/room.dart';
+import 'package:flutter_tic_tac_toe/models/round.dart';
 import 'package:flutter_tic_tac_toe/utils/constants/service_constants.dart';
 import 'package:flutter_tic_tac_toe/utils/enums/online_user_status.dart';
 

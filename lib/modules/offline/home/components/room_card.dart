@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_tic_tac_toe/controllers/home_controller.dart';
-import 'package:flutter_tic_tac_toe/models/offline/room.dart';
+import 'package:flutter_tic_tac_toe/models/room.dart';
 import 'package:flutter_tic_tac_toe/modules/offline/home/components/room_card_normal_mode.dart';
 import 'package:flutter_tic_tac_toe/modules/offline/home/components/room_card_selection_mode.dart';
 import 'package:get/get.dart';

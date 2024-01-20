@@ -1,4 +1,4 @@
-import 'package:flutter_tic_tac_toe/models/online/online_user.dart';
+import 'package:flutter_tic_tac_toe/models/online_user.dart';
 import 'package:flutter_tic_tac_toe/utils/constants/service_constants.dart';
 
 class FirestoreServiceTest {
@@ -15,5 +15,4 @@ class FirestoreServiceTest {
     String deleteUserUid = 'c0a1ddeb-7ae4-4db2-83ac-6563d161ef4d';
     firestoreService.deleteUser(deleteUserUid);
   }
-
 }
