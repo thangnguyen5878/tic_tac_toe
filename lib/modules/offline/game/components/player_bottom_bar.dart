@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_tic_tac_toe/controllers/game_controller.dart';
+import 'package:flutter_tic_tac_toe/models/offline/room.dart';
 import 'package:flutter_tic_tac_toe/utils/constants/app_colors.dart';
 import 'package:get/get_state_manager/src/simple/get_state.dart';
 
 class PlayerBottomBar extends StatelessWidget {
+  final Room room;
+
   const PlayerBottomBar({
     super.key,
+    required this.room,
   });
 
   @override
@@ -14,7 +18,7 @@ class PlayerBottomBar extends StatelessWidget {
       color: Colors.grey,
       height: 48,
       child: GetBuilder(builder: (GameController gameController) {
-        final room = GameController.to.room;
+        // final room = GameController.to.room;
         final round = room.getCurrentRound();
 
         final xColor = round.currentPlayerIndex == 0 ? kBlack : kGrey45;

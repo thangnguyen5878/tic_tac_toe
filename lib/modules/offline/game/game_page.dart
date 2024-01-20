@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_tic_tac_toe/controllers/game_controller.dart';
+import 'package:flutter_tic_tac_toe/models/offline/room.dart';
 import 'package:flutter_tic_tac_toe/modules/offline/game/components/board_widget.dart';
 import 'package:flutter_tic_tac_toe/modules/offline/game/components/game_popup_menu_button.dart';
 import 'package:flutter_tic_tac_toe/modules/offline/game/components/next_round_button.dart';
@@ -14,6 +15,7 @@ class GamePage extends StatelessWidget {
   final roomId = Get.arguments;
 
   GamePage({super.key});
+
   @override
   Widget build(BuildContext context) {
     logger.t('build game page');
@@ -24,46 +26,52 @@ class GamePage extends StatelessWidget {
         if (didPop) return;
         GameController.to.handleBackFromGamePage();
       },
-      child: Scaffold(
-        appBar: _buildAppBar(),
-        body: Stack(children: [
-          Center(
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 10),
-              child: ListView(
-                scrollDirection: Axis.vertical,
-                children: const [
-                  SizedBox(height: 10),
-                  BoardWidget(),
-                  SizedBox(height: 60),
-                ],
+      child: GetBuilder<GameController>(builder: (controler) {
+        Room room = GameController.to.room;
+        return Scaffold(
+          appBar: _buildAppBar(),
+          body: Stack(children: [
+            Center(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 10),
+                child: ListView(
+                  scrollDirection: Axis.vertical,
+                  children: [
+                    SizedBox(height: 10),
+                    BoardWidget(room: room),
+                    SizedBox(height: 60),
+                  ],
+                ),
               ),
             ),
-          ),
-          const Positioned(bottom: 0, left: 0, right: 0, child: PlayerBottomBar()),
-        ]),
-      ),
+            Positioned(
+                bottom: 0,
+                left: 0,
+                right: 0,
+                child: PlayerBottomBar(
+                  room: room,
+                )),
+          ]),
+        );
+      }),
     );
   }
 
   AppBar _buildAppBar() {
+    final room = GameController.to.room;
+    final round = room.getCurrentRound();
+
     return AppBar(
       backgroundColor: kBrown40,
       leading: _buildBackButton(),
       // titleSpacing: 0,
-      title: GetBuilder<GameController>(
-        builder: (gameController) {
-          final room = GameController.to.room;
-          final round = room.getCurrentRound();
-          return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-            Text('Room: ${room.name}', style: kHeading2),
-            Text('Round: ${room.getRoundCount()}, Turn: ${round.getTurnCount()}', style: kHeading3),
-          ]);
-        },
-      ),
+      title: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+        Text('Room: ${room.name}', style: kHeading2),
+        Text('Round: ${room.getRoundCount()}, Turn: ${round.getTurnCount()}', style: kHeading3),
+      ]),
       actions: [
         // buildResetBoardButton(),
-        const NextRoundButton(),
+        NextRoundButton(),
         GamePopupMenuButton(),
       ],
     );
