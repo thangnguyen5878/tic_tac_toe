@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_tic_tac_toe/controllers/game_controller.dart';
 import 'package:flutter_tic_tac_toe/modules/offline/history/components/round_card_list.dart';
 import 'package:flutter_tic_tac_toe/utils/constants/app_colors.dart';
 import 'package:flutter_tic_tac_toe/utils/constants/app_size.dart';
@@ -13,11 +14,12 @@ class HistoryPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    logger.t('build home screen...');
+    final room = GameController.to.room;
+    logger.t('Build History Page.');
     return SafeArea(
       child: Scaffold(
         appBar: buildAppBar(),
-        body: RoundCardList(),
+        body: RoundCardList(room: room),
       ),
     );
   }
@@ -41,7 +43,6 @@ class HistoryPage extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
             Text('History', style: kTitle1),
-            // Text('Room: ${room.name}', style: kHeading3),
           ],
         ),
       ),

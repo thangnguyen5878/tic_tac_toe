@@ -1,25 +1,27 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_tic_tac_toe/controllers/game_controller.dart';
+import 'package:flutter_tic_tac_toe/models/room.dart';
 import 'package:flutter_tic_tac_toe/modules/offline/history/components/round_card.dart';
 import 'package:flutter_tic_tac_toe/utils/constants/app_colors.dart';
 import 'package:flutter_tic_tac_toe/utils/constants/app_styles.dart';
+import 'package:flutter_tic_tac_toe/utils/constants/service_constants.dart';
 
 class RoundCardList extends StatelessWidget {
+  final Room room;
+
   const RoundCardList({
     super.key,
+    required this.room,
   });
 
   @override
   Widget build(BuildContext context) {
-    final room = GameController.to.room;
+    logger.t('Build Round Card List.');
+
     return Container(
       alignment: Alignment.topCenter,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Container(
-          //     padding: EdgeInsets.only(top: 8, left: 16),
-          //     child: Text('Room: ${room.name}', style: kHeading2)),
           Expanded(
             child: ListView.separated(
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
@@ -37,7 +39,7 @@ class RoundCardList extends StatelessWidget {
                   );
                 } else {
                   // minus 1 to convert to round index
-                  return RoundCard(roundIndex: index - 1);
+                  return RoundCard(room: room, roundIndex: index - 1);
                 }
               },
             ),

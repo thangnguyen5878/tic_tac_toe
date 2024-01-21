@@ -1,18 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_tic_tac_toe/controllers/game_controller.dart';
+import 'package:flutter_tic_tac_toe/models/room.dart';
 import 'package:flutter_tic_tac_toe/utils/constants/app_colors.dart';
 import 'package:flutter_tic_tac_toe/utils/constants/app_styles.dart';
+import 'package:flutter_tic_tac_toe/utils/constants/service_constants.dart';
 
 class RoundCard extends StatelessWidget {
+  final Room room;
   final int roundIndex;
 
-  const RoundCard({super.key, required this.roundIndex});
+  const RoundCard({super.key, required this.roundIndex, required this.room});
 
   @override
   Widget build(BuildContext context) {
-    final room = GameController.to.room;
+    logger.t('Build Round Card $roundIndex.');
+
     final round = room.getRound(roundIndex);
     final roundCount = round.getRoundCount();
+
     final player1Name = room.getPlayer1().name;
     final player1Score = round.getPlayer1Score().currentScore;
     final player2Name = room.getPlayer2().name;
@@ -27,11 +32,6 @@ class RoundCard extends StatelessWidget {
     } else {
       winnerColor = kBlack; // You can choose another color
     }
-
-    // logger.t('round card $round');
-    // logger.t('player 1: $player1Name $player1Score');
-    // logger.t('player 2: $player2Name $player2Score');
-    // logger.t('winner: $winnerName $winnerColor');
 
     return InkWell(
       onTap: () {
