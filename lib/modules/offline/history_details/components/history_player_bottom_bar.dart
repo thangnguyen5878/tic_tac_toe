@@ -1,10 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_tic_tac_toe/controllers/game_controller.dart';
-import 'package:flutter_tic_tac_toe/utils/constants/app_colors.dart';
+import 'package:flutter_tic_tac_toe/models/room.dart';
+import 'package:flutter_tic_tac_toe/utils/constants/player_bottom_bar_constants.dart';
 import 'package:get/get_state_manager/src/simple/get_state.dart';
 
-class HistoryPlayerBottomBar extends StatelessWidget {
-  const HistoryPlayerBottomBar({super.key});
+class PlayerBottomBar extends StatelessWidget {
+  final Room room;
+  final bool isHistory;
+
+  PlayerBottomBar({
+    super.key,
+    required this.room,
+    bool? isHistory,
+  }) : isHistory = isHistory ?? false;
 
   @override
   Widget build(BuildContext context) {
@@ -12,21 +20,60 @@ class HistoryPlayerBottomBar extends StatelessWidget {
       color: Colors.grey,
       height: 48,
       child: GetBuilder(builder: (GameController gameController) {
-        final room = GameController.to.room;
+        final String player1Name;
+        final int player1Score;
+        final Color player1TextColor;
+        final Color player1BoxColor;
 
-        // Player 1's data
-        final player1Name = room.getPlayer1().name;
-        final player1Score = room.getPlayer1ScoreInHistory();
-        final player1TextColor = room.isPlayer1TurnInHistory() ? kBlack : kGrey45;
-        final player1BoxColor = room.isPlayer1TurnInHistory() ? kBrown30_history : kGrey30;
+        final String player2Name;
+        final int player2Score;
+        final Color player2TextColor;
+        final Color player2BoxColor;
 
-        // Player 2's data
-        final player2Name = room.getPlayer2().name;
-        final player2Score = room.getPlayer2ScoreInHistory();
-        final player2TextColor = room.isPlayer2TurnInHistory() ? kBlack : kGrey45;
-        final player2BoxColor = room.isPlayer2TurnInHistory() ? kBrown30_history : kGrey30;
+        if (!isHistory) {
+          // NORMAL GAME
+          // Player 1
+          player1Name = room.getPlayer1().name!;
+          player1Score = room.getPlayer1Score().currentScore;
+          player1TextColor = room.isPlayer1Turn()
+              ? PlayerBottomBarConstants.selectedTextColor
+              : PlayerBottomBarConstants.unselectedTextColor;
+          player1BoxColor = room.isPlayer1Turn()
+              ? PlayerBottomBarConstants.selectedBoxColor
+              : PlayerBottomBarConstants.unselectedBoxColor;
 
-        // logger.t('history player bottom bar: ${round.winTurnIndex}');
+          // Player 2
+          player2Name = room.getPlayer2().name!;
+          player2Score = room.getPlayer2Score().currentScore;
+          player2TextColor = room.isPlayer2Turn()
+              ? PlayerBottomBarConstants.selectedTextColor
+              : PlayerBottomBarConstants.unselectedTextColor;
+          player2BoxColor = room.isPlayer2Turn()
+              ? PlayerBottomBarConstants.selectedBoxColor
+              : PlayerBottomBarConstants.unselectedBoxColor;
+        } else {
+          // HISTORY
+          // Player 1
+          player1Name = room.getPlayer1().name!;
+          player1Score = room.getPlayer1ScoreInHistory();
+          player1TextColor = room.isPlayer1TurnInHistory()
+              ? HistoryPlayerBottomBarConstants.selectedTextColor
+              : HistoryPlayerBottomBarConstants.unselectedTextColor;
+          player1BoxColor = room.isPlayer1TurnInHistory()
+              ? HistoryPlayerBottomBarConstants.selectedBoxColor
+              : HistoryPlayerBottomBarConstants.unselectedBoxColor;
+
+          // Player 2
+          player2Name = room.getPlayer2().name!;
+          player2Score = room.getPlayer2ScoreInHistory();
+          player2TextColor = room.isPlayer2TurnInHistory()
+              ? HistoryPlayerBottomBarConstants.selectedTextColor
+              : HistoryPlayerBottomBarConstants.unselectedTextColor;
+          player2BoxColor = room.isPlayer2TurnInHistory()
+              ? HistoryPlayerBottomBarConstants.selectedBoxColor
+              : HistoryPlayerBottomBarConstants.unselectedBoxColor;
+        }
+
         return Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [

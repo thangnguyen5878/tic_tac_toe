@@ -12,7 +12,6 @@ import 'package:get/get.dart';
 
 class GameController extends GetxController {
   static GameController get to => Get.find();
-  bool isHistoryAutoPlay = false;
   Room room = Room();
 
   IsarService isarService = IsarService();
@@ -46,8 +45,10 @@ class GameController extends GetxController {
   }
 
   void viewHistoryRoundDetails(int roundIndex) {
-    GameController.to.room.history.currentRoundIndex = roundIndex;
+    room.history.currentRoundIndex = roundIndex;
     Get.toNamed(Routes.HISTORY_DETAILS, arguments: [room.isarId, roundIndex]);
+    room.history.reset();
+    room.updateBoardInHistory();
     update();
   }
 
@@ -115,7 +116,7 @@ class GameController extends GetxController {
       room.updateBoardInHistory();
       update();
     } else {
-      if (isHistoryAutoPlay) {
+      if (room.history.isAutoPlay) {
         pauseHistoryAutoPlay();
       }
     }
@@ -131,16 +132,16 @@ class GameController extends GetxController {
   }
 
   void pauseHistoryAutoPlay() {
-    isHistoryAutoPlay = false;
+    room.history.isAutoPlay = false;
     update();
   }
 
   void resumeHistoryAutoPlay() async {
-    isHistoryAutoPlay = true;
+    room.history.isAutoPlay = true;
     update();
 
     Timer.periodic(const Duration(seconds: 1), (timer) {
-      if (isHistoryAutoPlay) {
+      if (room.history.isAutoPlay) {
         goToNextTurnInHistory();
         update();
       } else {
@@ -150,7 +151,7 @@ class GameController extends GetxController {
   }
 
   void toggleHistoryAutoPlay() {
-    if (isHistoryAutoPlay) {
+    if (room.history.isAutoPlay) {
       pauseHistoryAutoPlay();
     } else {
       resumeHistoryAutoPlay();

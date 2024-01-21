@@ -53,7 +53,7 @@ const kNormalLargeText = TextStyle(
 
 const kRoundNumberBoxText = TextStyle(
   fontSize: 14,
-  color: kBrown55,
+  color: kBrown60,
 );
 
 // BOX DECORATION STYLES
@@ -80,15 +80,15 @@ const kSelectedCardStyle = BoxDecoration(
 );
 
 const kRoomIconStyle = BoxDecoration(
-  color: kBrown40_history,
+  color: kBrown30,
   borderRadius: BorderRadius.all(
     Radius.circular(4),
   ),
   // boxShadow: [kDefaultShadow],
 );
 
-const kRoundNumberBoxStyle = BoxDecoration(
-  color: kBrown30_o80,
+final kRoundNumberBoxStyle = BoxDecoration(
+  color: kBrown35.withOpacity(0.8),
   borderRadius: BorderRadius.all(
     Radius.circular(4),
   ),

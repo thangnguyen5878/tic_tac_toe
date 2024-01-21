@@ -13,6 +13,7 @@ FirestoreService firestoreService = FirestoreService();
 IsarService isarService = IsarService();
 var uuid = const Uuid();
 bool isOnline = firebaseAuth.currentUser != null;
+bool isOffline = firebaseAuth.currentUser == null;
 
 // Firebase Collections
 const fUserCollection = 'users';

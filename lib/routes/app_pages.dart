@@ -56,7 +56,7 @@ class AppPages {
     ),
     GetPage(
       name: _Paths.HISTORY_DETAILS,
-      page: () => const HistoryDetailsPage(),
+      page: () => HistoryDetailsPage(),
       binding: HistoryDetailsBinding(),
     ),
     GetPage(name: _Paths.AUTH, page: () => const AuthPage(), binding: AuthBinding(), children: [

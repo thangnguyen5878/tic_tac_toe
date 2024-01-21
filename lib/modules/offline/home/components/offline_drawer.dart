@@ -37,7 +37,7 @@ class OfflineDrawer extends StatelessWidget {
       currentAccountPicture: GestureDetector(
         child: ClipOval(
           child: CircleAvatar(
-            backgroundColor: kGrey45,
+            backgroundColor: kDarkGrey,
             child: AuthController.to.user.value == null
                 ? const Icon(
                     Icons.person,

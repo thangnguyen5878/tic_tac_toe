@@ -3,8 +3,8 @@ import 'package:flutter_tic_tac_toe/controllers/game_controller.dart';
 import 'package:flutter_tic_tac_toe/models/room.dart';
 import 'package:flutter_tic_tac_toe/modules/offline/game/components/board_widget.dart';
 import 'package:flutter_tic_tac_toe/modules/offline/game/components/next_round_button.dart';
-import 'package:flutter_tic_tac_toe/modules/offline/game/components/player_bottom_bar.dart';
 import 'package:flutter_tic_tac_toe/modules/offline/game/components/reset_board_button.dart';
+import 'package:flutter_tic_tac_toe/modules/offline/history_details/components/history_player_bottom_bar.dart';
 import 'package:flutter_tic_tac_toe/routes/app_pages.dart';
 import 'package:flutter_tic_tac_toe/utils/constants/app_colors.dart';
 import 'package:flutter_tic_tac_toe/utils/constants/app_size.dart';
@@ -40,7 +40,9 @@ class GamePage extends StatelessWidget {
                   scrollDirection: Axis.vertical,
                   children: [
                     SizedBox(height: 10),
-                    BoardWidget(room: room),
+                    BoardWidget(
+                      room: room,
+                    ),
                     SizedBox(height: 60),
                   ],
                 ),

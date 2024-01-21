@@ -33,6 +33,11 @@ const HistorySchema = Schema(
       id: 3,
       name: r'currentTurnIndex',
       type: IsarType.long,
+    ),
+    r'isAutoPlay': PropertySchema(
+      id: 4,
+      name: r'isAutoPlay',
+      type: IsarType.bool,
     )
   },
   estimateSize: _historyEstimateSize,
@@ -67,6 +72,7 @@ void _historySerialize(
   writer.writeLong(offsets[1], object.currentPlayerIndex);
   writer.writeLong(offsets[2], object.currentRoundIndex);
   writer.writeLong(offsets[3], object.currentTurnIndex);
+  writer.writeBool(offsets[4], object.isAutoPlay);
 }
 
 History _historyDeserialize(
@@ -85,6 +91,7 @@ History _historyDeserialize(
   object.currentPlayerIndex = reader.readLong(offsets[1]);
   object.currentRoundIndex = reader.readLong(offsets[2]);
   object.currentTurnIndex = reader.readLong(offsets[3]);
+  object.isAutoPlay = reader.readBool(offsets[4]);
   return object;
 }
 
@@ -108,6 +115,8 @@ P _historyDeserializeProp<P>(
       return (reader.readLong(offset)) as P;
     case 3:
       return (reader.readLong(offset)) as P;
+    case 4:
+      return (reader.readBool(offset)) as P;
     default:
       throw IsarError('Unknown property with id $propertyId');
   }
@@ -281,6 +290,16 @@ extension HistoryQueryFilter
       ));
     });
   }
+
+  QueryBuilder<History, History, QAfterFilterCondition> isAutoPlayEqualTo(
+      bool value) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'isAutoPlay',
+        value: value,
+      ));
+    });
+  }
 }
 
 extension HistoryQueryObject
@@ -301,11 +320,13 @@ History _$HistoryFromJson(Map<String, dynamic> json) => History()
   ..currentRoundIndex = json['currentRoundIndex'] as int
   ..currentTurnIndex = json['currentTurnIndex'] as int
   ..currentPlayerIndex = json['currentPlayerIndex'] as int
+  ..isAutoPlay = json['isAutoPlay'] as bool
   ..board = Board.fromJson(json['board'] as Map<String, dynamic>);
 
 Map<String, dynamic> _$HistoryToJson(History instance) => <String, dynamic>{
       'currentRoundIndex': instance.currentRoundIndex,
       'currentTurnIndex': instance.currentTurnIndex,
       'currentPlayerIndex': instance.currentPlayerIndex,
+      'isAutoPlay': instance.isAutoPlay,
       'board': instance.board.toJson(),
     };

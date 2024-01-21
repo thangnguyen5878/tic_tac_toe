@@ -1,6 +1,6 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter_tic_tac_toe/models/cell.dart';
-import 'package:flutter_tic_tac_toe/utils/constants/game_constants.dart';
+import 'package:flutter_tic_tac_toe/utils/constants/board_constants.dart';
 import 'package:flutter_tic_tac_toe/utils/constants/service_constants.dart';
 import 'package:flutter_tic_tac_toe/utils/enums/cell_state.dart';
 import 'package:flutter_tic_tac_toe/utils/enums/seed.dart';
@@ -22,8 +22,8 @@ class Board {
 
   // CONSTRUCTORS
   Board({int? rowCount, int? columnCount})
-      : rowCount = rowCount ?? defaultRowCount,
-        columnCount = columnCount ?? defaultColumnCount {
+      : rowCount = rowCount ?? BoardConstants.defaultRowCount,
+        columnCount = columnCount ?? BoardConstants.defaultColumnCount {
     cells = List.generate(
       this.rowCount!,
       (row) => List.generate(

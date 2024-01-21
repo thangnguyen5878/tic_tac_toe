@@ -21,10 +21,10 @@ class PlayerBottomBar extends StatelessWidget {
         // final room = GameController.to.room;
         final round = room.getCurrentRound();
 
-        final xColor = round.currentPlayerIndex == 0 ? kBlack : kGrey45;
-        final oColor = round.currentPlayerIndex == 1 ? kBlack : kGrey45;
-        final xBoxColor = round.currentPlayerIndex == 0 ? kBrown30 : kGrey30;
-        final oBoxColor = round.currentPlayerIndex == 1 ? kBrown30 : kGrey30;
+        final xColor = round.isPlayer1Turn() ? kBlack : kDarkGrey;
+        final oColor = round.currentPlayerIndex == 1 ? kBlack : kDarkGrey;
+        final xBoxColor = round.currentPlayerIndex == 0 ? kBrown35 : kLightGrey;
+        final oBoxColor = round.currentPlayerIndex == 1 ? kBrown35 : kLightGrey;
 
         return Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,

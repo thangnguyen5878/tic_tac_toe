@@ -26,10 +26,10 @@ class OnlineCellWidget extends StatelessWidget {
 
       Color bColor = Colors.white;
       if (state == CellState.crossWin) {
-        bColor = kRed20;
+        bColor = kLightPink;
       }
       if (state == CellState.noughtWin) {
-        bColor = kGreen30;
+        bColor = kLightGreen;
       }
       if (state == CellState.normal) {
         bColor = Colors.white;

@@ -58,10 +58,9 @@ class CreateRoomPage extends StatelessWidget {
   ElevatedButton buildCreateRoomButton() {
     return ElevatedButton(
       style: ElevatedButton.styleFrom(
-        backgroundColor: kBrown30,
+        backgroundColor: kBrown35,
         foregroundColor: kBlack,
-        padding:
-            const EdgeInsets.symmetric(horizontal: 48, vertical: 8),
+        padding: const EdgeInsets.symmetric(horizontal: 48, vertical: 8),
       ),
       child: const Text('Create Room'),
       onPressed: () {
@@ -127,9 +126,8 @@ class CreateRoomPage extends StatelessWidget {
   TextFormField buildRowCountField() {
     return TextFormField(
       controller: CreateRoomController.to.rowCount,
-      decoration: kTextField(
-          labelText:
-              'Number of rows ($rowCountFieldMinLength-$rowCountFieldMaxLength)'),
+      decoration:
+          kTextField(labelText: 'Number of rows ($rowCountFieldMinLength-$rowCountFieldMaxLength)'),
       keyboardType: TextInputType.number,
       validator: (value) {
         if (value!.isEmpty) {
@@ -150,8 +148,7 @@ class CreateRoomPage extends StatelessWidget {
     return TextFormField(
       controller: CreateRoomController.to.columnCount,
       decoration: kTextField(
-        labelText:
-            'Number of columns ($columnCountFieldMinLength-$columnCountFieldMaxLength)',
+        labelText: 'Number of columns ($columnCountFieldMinLength-$columnCountFieldMaxLength)',
       ),
       keyboardType: TextInputType.number,
       validator: (value) {

@@ -39,7 +39,7 @@ class OnlineRoomCard extends StatelessWidget {
                 children: <TextSpan>[
                   const TextSpan(text: 'Current round: '),
                   TextSpan(
-                      text: '${room.getRoundCount()}', style: const TextStyle(color: kBrown55)),
+                      text: '${room.getRoundCount()}', style: const TextStyle(color: kBrown60)),
                 ],
               ),
             ),

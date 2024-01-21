@@ -28,7 +28,7 @@ class RoundCard extends StatelessWidget {
     if (round.isPlayer1Win()) {
       winnerColor = kRed70;
     } else if (round.isPlayer2Win()) {
-      winnerColor = kGreen60;
+      winnerColor = kDarkGreen;
     } else {
       winnerColor = kBlack; // You can choose another color
     }

@@ -6,12 +6,21 @@ import 'package:flutter_tic_tac_toe/utils/constants/service_constants.dart';
 
 class BoardWidget extends StatelessWidget {
   final Room room;
-  BoardWidget({super.key, required this.room});
+  final bool isHistory;
+
+  BoardWidget({super.key, required this.room, bool? isHistory}) : isHistory = isHistory ?? false;
 
   @override
   Widget build(BuildContext context) {
-    final columnCount = room.board.columnCount;
-    final rowCount = room.board.rowCount;
+    final board;
+    if (!isHistory) {
+      board = room.board;
+    } else {
+      board = room.history.board;
+    }
+
+    final columnCount = board.columnCount;
+    final rowCount = board.rowCount;
     logger.t('Build Board Widget $columnCount x $rowCount.');
 
     return Container(
@@ -29,15 +38,19 @@ class BoardWidget extends StatelessWidget {
         itemCount: columnCount * rowCount!,
         itemBuilder: (context, index) {
           final int row = index ~/ columnCount;
-          final int column = index % columnCount;
+          final int column = index % columnCount as int;
+          final cell = board.getCell(row, column);
 
           return CellWidget(
-            row: row,
-            column: column,
             room: room,
+            cell: cell,
+            isHistory: isHistory,
             onTap: () {
-              logger.t('Tap cell($row, $column) : ${room.getCurrentPlayer().seed}');
-              GameController.to.drawSeed(row, column, room.getCurrentPlayer().seed!);
+              if (isOffline) {
+                final room = GameController.to.room;
+                logger.t('Tap cell($row, $column) : ${room.getCurrentPlayer().seed}');
+                GameController.to.drawSeed(row, column, room.getCurrentPlayer().seed!);
+              }
             },
           );
         },

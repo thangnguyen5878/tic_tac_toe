@@ -18,19 +18,27 @@ class History {
   /// Index that references to the current history player in [Room.players].
   int currentPlayerIndex = 0;
 
+  bool isAutoPlay = false;
+
   /// Board contains all data shown in the board of [HistoryDetailsPage].
   Board board = Board();
 
   // CONSTRUCTORS
   History();
 
-  History.all(this.currentTurnIndex, this.currentRoundIndex, this.currentPlayerIndex, this.board);
+  History.all(this.currentTurnIndex, this.currentRoundIndex, this.currentPlayerIndex,
+      this.isAutoPlay, this.board);
 
   History.custom(
-      {int? currentRoundIndex, int? currentTurnIndex, int? currentPlayerIndex, Board? board})
+      {int? currentRoundIndex,
+      int? currentTurnIndex,
+      int? currentPlayerIndex,
+      bool? isAutoPlay,
+      Board? board})
       : currentRoundIndex = currentRoundIndex ?? 0,
         currentTurnIndex = currentTurnIndex ?? 0,
         currentPlayerIndex = currentPlayerIndex ?? 0,
+        isAutoPlay = isAutoPlay ?? false,
         board = board ?? Board();
 
   // GETTERS: BOOLEAN

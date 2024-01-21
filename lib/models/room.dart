@@ -77,7 +77,7 @@ class Room {
         history = history ?? History(),
         playerIds = playerIds ?? [];
 
-  // GETTER
+  // GETTERs
   Round getCurrentRound() {
     return rounds.last;
   }
@@ -173,7 +173,7 @@ class Room {
     }
   }
 
-  // METHODS: BOOLEAN HISTORY
+  // GETTERS: BOOLEAN, HISTORY
   bool isPlayer1WinInHistory() {
     return hasWinnerInHistory() && getCurrentRoundInHistory().isPlayer1Turn();
   }
@@ -202,7 +202,7 @@ class Room {
     return !history.isPlayer2Turn();
   }
 
-  // METHODS: BOOLEAN
+  // GETTERS: BOOLEAN
   bool isLastTurnInHistory() {
     return history.currentTurnIndex == getCurrentRoundInHistory().turns.length;
     // Because when turnIndex = 0, there are no seed on the board.
@@ -214,6 +214,14 @@ class Room {
 
   bool isGameOver() {
     return state == GameState.stop;
+  }
+
+  bool isPlayer1Turn() {
+    return getCurrentRound().isPlayer1Turn();
+  }
+
+  bool isPlayer2Turn() {
+    return getCurrentRound().isPlayer2Turn();
   }
 
   bool isPlayer1Win() {
