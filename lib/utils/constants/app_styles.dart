@@ -23,6 +23,22 @@ const kHeading1 = TextStyle(
   fontWeight: FontWeight.bold,
 );
 
+const kHeading1White = TextStyle(
+  fontSize: 20,
+  color: kWhite,
+  fontWeight: FontWeight.bold,
+);
+
+const kNormalText = TextStyle(
+  fontSize: 15,
+  color: Colors.black,
+);
+
+const kNormalTextWhite = TextStyle(
+  fontSize: 15,
+  color: kWhite,
+);
+
 const kHeading2 = TextStyle(
   fontSize: 16,
   color: Colors.black,
@@ -33,11 +49,6 @@ const kHeading3 = TextStyle(
   fontSize: 13,
   color: Colors.black,
   fontWeight: FontWeight.bold,
-);
-
-const kNormalText = TextStyle(
-  fontSize: 15,
-  color: Colors.black,
 );
 
 const kBoldText = TextStyle(fontSize: 15, color: Colors.black, fontWeight: FontWeight.w500);

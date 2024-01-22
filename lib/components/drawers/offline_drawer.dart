@@ -66,7 +66,7 @@ class OfflineDrawer extends StatelessWidget {
       // user email
       accountEmail: Text(
         AuthController.to.user.value == null
-            ? 'Tap the avatar icon to login'
+            ? 'Tap the avatar to login'
             : AuthController.to.user.value!.email!,
         style: kSmallText,
       ),

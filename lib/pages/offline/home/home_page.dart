@@ -87,7 +87,7 @@ class HomePage extends StatelessWidget {
       title: Container(
         padding: const EdgeInsets.only(top: 8, right: 32),
         alignment: Alignment.center,
-        child: const Text('Tic-tac-toe', style: kTitle1),
+        child: const Text('Tic-tac-toe Offline', style: kTitle1),
       ),
       backgroundColor: kWhite,
     );

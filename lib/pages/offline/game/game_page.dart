@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_tic_tac_toe/components/board_widget.dart';
 import 'package:flutter_tic_tac_toe/components/buttons/next_round_button.dart';
 import 'package:flutter_tic_tac_toe/components/buttons/reset_board_button.dart';
+import 'package:flutter_tic_tac_toe/components/dialogs/offline_leave_game_dialog.dart';
 import 'package:flutter_tic_tac_toe/components/player_status_bar.dart';
 import 'package:flutter_tic_tac_toe/controllers/game_controller.dart';
 import 'package:flutter_tic_tac_toe/models/room.dart';
@@ -11,7 +12,9 @@ import 'package:get/get.dart';
 
 class GamePage extends StatelessWidget {
   final roomId = Get.arguments;
-  final onBackPressed = () => GameController.to.handleBackFromGamePage();
+  void onBackPressed() {
+    Get.dialog(OfflineLeaveGameDialog(), barrierDismissible: false);
+  }
 
   GamePage({super.key});
 
