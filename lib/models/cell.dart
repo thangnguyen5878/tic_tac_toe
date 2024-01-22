@@ -1,4 +1,4 @@
-import 'package:flutter_tic_tac_toe/utils/constants/service_constants.dart';
+import 'package:flutter_tic_tac_toe/utils/constants/constants.dart';
 import 'package:flutter_tic_tac_toe/utils/enums/cell_state.dart';
 import 'package:flutter_tic_tac_toe/utils/enums/seed.dart';
 import 'package:isar/isar.dart';

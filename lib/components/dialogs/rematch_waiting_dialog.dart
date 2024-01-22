@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_tic_tac_toe/components/dialogs/custom_dialog.dart';
 import 'package:flutter_tic_tac_toe/controllers/online_user_controller.dart';
-import 'package:flutter_tic_tac_toe/utils/constants/service_constants.dart';
+import 'package:flutter_tic_tac_toe/utils/constants/constants.dart';
 import 'package:flutter_tic_tac_toe/utils/enums/online_user_status.dart';
 import 'package:get/get.dart';
 

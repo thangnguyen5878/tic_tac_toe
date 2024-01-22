@@ -3,9 +3,7 @@ import 'package:flutter_tic_tac_toe/components/board_widget.dart';
 import 'package:flutter_tic_tac_toe/components/history_control/control_bar.dart';
 import 'package:flutter_tic_tac_toe/components/player_status_bar.dart';
 import 'package:flutter_tic_tac_toe/controllers/game_controller.dart';
-import 'package:flutter_tic_tac_toe/utils/constants/app_colors.dart';
-import 'package:flutter_tic_tac_toe/utils/constants/app_styles.dart';
-import 'package:flutter_tic_tac_toe/utils/constants/service_constants.dart';
+import 'package:flutter_tic_tac_toe/utils/constants/constants.dart';
 import 'package:get/get.dart';
 
 class HistoryDetailsPage extends StatelessWidget {

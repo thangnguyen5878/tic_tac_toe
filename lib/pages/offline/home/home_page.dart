@@ -3,9 +3,7 @@ import 'package:flutter_tic_tac_toe/components/drawers/offline_drawer.dart';
 import 'package:flutter_tic_tac_toe/components/tiles/room_tile_list.dart';
 import 'package:flutter_tic_tac_toe/controllers/home_controller.dart';
 import 'package:flutter_tic_tac_toe/routes/app_pages.dart';
-import 'package:flutter_tic_tac_toe/utils/constants/app_colors.dart';
-import 'package:flutter_tic_tac_toe/utils/constants/app_styles.dart';
-import 'package:flutter_tic_tac_toe/utils/constants/service_constants.dart';
+import 'package:flutter_tic_tac_toe/utils/constants/constants.dart';
 import 'package:get/get.dart';
 
 class HomePage extends StatelessWidget {

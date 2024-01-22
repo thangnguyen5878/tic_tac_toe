@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_tic_tac_toe/controllers/auth_controller.dart';
-import 'package:flutter_tic_tac_toe/utils/constants/app_colors.dart';
-import 'package:flutter_tic_tac_toe/utils/constants/service_constants.dart';
 import 'package:get/get.dart';
+
+import '../../utils/constants/constants.dart';
 
 class SignOutButton extends StatelessWidget {
   const SignOutButton({super.key});

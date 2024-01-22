@@ -1,7 +1,7 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter_tic_tac_toe/models/cell.dart';
 import 'package:flutter_tic_tac_toe/models/score.dart';
-import 'package:flutter_tic_tac_toe/utils/constants/service_constants.dart';
+import 'package:flutter_tic_tac_toe/utils/constants/constants.dart';
 import 'package:flutter_tic_tac_toe/utils/json%20converters/online_cell_list_converter.dart';
 import 'package:flutter_tic_tac_toe/utils/json%20converters/online_score_list_converter.dart';
 import 'package:isar/isar.dart';

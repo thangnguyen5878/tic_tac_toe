@@ -3,7 +3,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_tic_tac_toe/services/firestore_service.dart';
 import 'package:flutter_tic_tac_toe/services/isar_service.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:logger/logger.dart';
 import 'package:uuid/uuid.dart';
 
 FirebaseAuth firebaseAuth = FirebaseAuth.instance;
@@ -22,16 +21,3 @@ const fRoundCollection = 'rounds';
 const fBoardCollection = 'boards';
 const fCellCollection = 'cells';
 const fPlayersCollection = 'players';
-
-var logger = Logger(
-  filter: null,
-  printer: PrettyPrinter(
-    printTime: true,
-    printEmojis: false,
-    lineLength: 80,
-
-    // methodCount: 0,
-    // errorMethodCount: 0
-  ),
-  output: null,
-);

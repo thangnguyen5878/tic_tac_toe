@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_tic_tac_toe/components/tiles/round_tile.dart';
 import 'package:flutter_tic_tac_toe/models/room.dart';
-import 'package:flutter_tic_tac_toe/utils/constants/app_colors.dart';
-import 'package:flutter_tic_tac_toe/utils/constants/app_styles.dart';
-import 'package:flutter_tic_tac_toe/utils/constants/service_constants.dart';
+import 'package:flutter_tic_tac_toe/utils/constants/constants.dart';
 
 class RoundTileList extends StatelessWidget {
   final Room room;

@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_tic_tac_toe/components/dialogs/custom_dialog.dart';
-import 'package:flutter_tic_tac_toe/utils/constants/service_constants.dart';
 import 'package:get/get.dart';
+
+import '../../utils/constants/constants.dart';
 
 class RejectedDialog extends StatelessWidget {
   const RejectedDialog({super.key});

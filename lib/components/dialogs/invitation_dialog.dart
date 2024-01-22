@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_tic_tac_toe/components/dialogs/custom_dialog.dart';
 import 'package:flutter_tic_tac_toe/controllers/online_user_controller.dart';
-import 'package:flutter_tic_tac_toe/utils/constants/service_constants.dart';
+
+import '../../utils/constants/constants.dart';
 
 class InvitationDialog extends StatelessWidget {
   const InvitationDialog({super.key});

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_tic_tac_toe/components/dialogs/custom_dialog.dart';
-import 'package:flutter_tic_tac_toe/utils/constants/service_constants.dart';
+import 'package:flutter_tic_tac_toe/utils/constants/constants.dart';
 import 'package:get/get.dart';
 
 class InvitationTimeoutDialog extends StatelessWidget {

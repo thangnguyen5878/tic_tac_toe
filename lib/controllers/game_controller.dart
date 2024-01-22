@@ -5,10 +5,11 @@ import 'package:flutter_tic_tac_toe/models/cell.dart';
 import 'package:flutter_tic_tac_toe/models/room.dart';
 import 'package:flutter_tic_tac_toe/routes/app_pages.dart';
 import 'package:flutter_tic_tac_toe/services/isar_service.dart';
-import 'package:flutter_tic_tac_toe/utils/constants/service_constants.dart';
 import 'package:flutter_tic_tac_toe/utils/enums/game_state.dart';
 import 'package:flutter_tic_tac_toe/utils/enums/seed.dart';
 import 'package:get/get.dart';
+
+import '../utils/constants/constants.dart';
 
 class GameController extends GetxController {
   static GameController get to => Get.find();

@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_tic_tac_toe/components/tiles/round_tile_list.dart';
 import 'package:flutter_tic_tac_toe/controllers/game_controller.dart';
-import 'package:flutter_tic_tac_toe/utils/constants/app_colors.dart';
-import 'package:flutter_tic_tac_toe/utils/constants/app_styles.dart';
-import 'package:flutter_tic_tac_toe/utils/constants/service_constants.dart';
+import 'package:flutter_tic_tac_toe/utils/constants/constants.dart';
 import 'package:get/get.dart';
 
 class HistoryPage extends StatelessWidget {
