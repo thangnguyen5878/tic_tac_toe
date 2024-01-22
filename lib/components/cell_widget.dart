@@ -36,18 +36,18 @@ class CellWidget extends StatelessWidget {
     Color backgroundColor = Colors.white;
     if (!isHistory) {
       // NORMAL GAME
-      if (cell.isPlayer1Win()) {
+      if (cell.isPlayer1Win) {
         backgroundColor = CellConstants.crossWinColor;
       }
-      if (cell.isPlayer2Win()) {
+      if (cell.isPlayer2Win) {
         backgroundColor = CellConstants.noughtWinColor;
       }
     } else {
       // HISTORY
-      if (room.isPlayer1WinInHistory() && cell.isPlayer1Win()) {
+      if (room.isPlayer1WinInHistory() && cell.isPlayer1Win) {
         backgroundColor = CellConstants.crossWinColorInHistory;
       }
-      if (room.isPlayer2WinInHistory() && cell.isPlayer2Win()) {
+      if (room.isPlayer2WinInHistory() && cell.isPlayer2Win) {
         backgroundColor = CellConstants.noughtWinColorInHistory;
       }
     }
