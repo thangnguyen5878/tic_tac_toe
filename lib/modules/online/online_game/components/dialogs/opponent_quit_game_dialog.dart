@@ -10,27 +10,23 @@ class OpponentQuitGameDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    logger.t('show opponent quit game dialog');
+    logger.t('Show opponent quit game dialog.');
     return CustomDialog(
-        title: "VICTORY!",
+        title: "ATTENTION!",
         content: "The opponent left the match.",
         // The BACK button should behave similarly to pressing the CANCEL button.
-        onBackPress: ( ) {
-          logger.t('press back button');
+        onBackPress: () {
+          logger.t('Press back button.');
           Get.back();
           OnlineUserController.to.updateCurrentUserStatus(OnlineUserStatus.opponentQuitted);
         },
-        children: [
-          _buildQuitButton(),
-          _buildCancelButton()
-        ]);
+        children: [_buildQuitButton(), _buildCancelButton()]);
   }
 }
 
 TextButton _buildQuitButton() {
   return TextButton(
-    onPressed: ()
-    {
+    onPressed: () {
       logger.t('press quit button');
       OnlineUserController.to.quitGameWhenOpponentQuitted();
     },

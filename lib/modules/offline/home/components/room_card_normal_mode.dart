@@ -17,7 +17,7 @@ class RoomCardNormalMode extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     logger.t(
-        'build a room card in normal mode, room(id: ${room.isarId}, name: ${room.name}, lastAccessAt: ${room.lastAccessAt})');
+        'Build a room card in normal mode, room(id: ${room.isarId}, name: ${room.name}, lastAccessAt: ${room.lastAccessAt})');
 
     return InkWell(
       onTap: () {

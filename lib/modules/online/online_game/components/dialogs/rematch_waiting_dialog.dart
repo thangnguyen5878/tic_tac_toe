@@ -10,14 +10,14 @@ class RematchWaitingDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    logger.t('show rematch waiting dialog');
+    logger.t('Show rematch waiting dialog.');
 
     return CustomDialog(
         title: 'REMATCH',
         content: 'Waiting for the opponent\'s respond.',
         // The BACK button should behave similarly to pressing the CANCEL button.
         onBackPress: () {
-          logger.t('press back button');
+          logger.t('Press back button.');
           Get.back();
           OnlineUserController.to.updateCurrentUserStatus(OnlineUserStatus.roundCompleted);
         },
@@ -29,7 +29,7 @@ class RematchWaitingDialog extends StatelessWidget {
   TextButton _buildCancelButton() {
     return TextButton(
       onPressed: () {
-        logger.t('press cancel button');
+        logger.t('Press cancel button.');
         OnlineUserController.to.handleRematchWaitingCancelation();
       },
       child: const Text('CANCEL'),

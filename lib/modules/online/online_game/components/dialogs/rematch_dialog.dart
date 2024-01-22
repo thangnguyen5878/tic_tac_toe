@@ -4,32 +4,28 @@ import 'package:flutter_tic_tac_toe/utils/constants/service_constants.dart';
 import 'package:flutter_tic_tac_toe/utils/widget/custom_dialog.dart';
 import 'package:get/get.dart';
 
-
 class RematchDialog extends StatelessWidget {
   const RematchDialog({super.key});
 
   @override
   Widget build(BuildContext context) {
-    logger.t('show rematch dialog');
+    logger.t('Show rematch dialog.');
 
     return CustomDialog(
         title: 'REMATCH?',
         content: 'Do you want to rematch your opponent?',
         // The BACK button should behave similarly to pressing the NO button.
         onBackPress: () {
-          logger.t('press back button');
+          logger.t('Press back button.');
           Get.back();
         },
-        children: [
-          _buildNoButton(),
-          _buildYesButton()
-        ]);
+        children: [_buildNoButton(), _buildYesButton()]);
   }
 
   TextButton _buildNoButton() {
     return TextButton(
       onPressed: () {
-        logger.t('press no button');
+        logger.t('Press NO button.');
         Get.back();
       },
       child: const Text('NO'),
@@ -39,7 +35,7 @@ class RematchDialog extends StatelessWidget {
   TextButton _buildYesButton() {
     return TextButton(
       onPressed: () {
-        logger.t('press yes button');
+        logger.t('Press YES button.');
         OnlineUserController.to.handlePressRematchButtonOnDialog();
       },
       child: const Text('YES'),

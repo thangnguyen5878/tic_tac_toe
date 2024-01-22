@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_tic_tac_toe/models/cell.dart';
 import 'package:flutter_tic_tac_toe/models/room.dart';
 import 'package:flutter_tic_tac_toe/utils/constants/app_colors.dart';
 import 'package:flutter_tic_tac_toe/utils/constants/cell_constants.dart';
@@ -7,17 +6,31 @@ import 'package:flutter_tic_tac_toe/utils/constants/cell_constants.dart';
 // ignore: must_be_immutable
 class CellWidget extends StatelessWidget {
   void Function() onTap;
-  final Cell cell;
   final Room room;
+  final int row;
+  final int column;
   final bool isHistory;
 
   CellWidget(
-      {Key? key, required this.onTap, required this.cell, bool? isHistory, required this.room})
+      {Key? key,
+      required this.onTap,
+      bool? isHistory,
+      required this.room,
+      required this.row,
+      required this.column})
       : isHistory = isHistory ?? false,
         super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final board;
+    if (!isHistory) {
+      board = room.board;
+    } else {
+      board = room.history.board;
+    }
+
+    final cell = board.getCell(row, column);
     final content = cell.content.toString();
 
     Color backgroundColor = Colors.white;

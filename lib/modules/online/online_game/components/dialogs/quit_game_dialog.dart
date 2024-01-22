@@ -9,27 +9,23 @@ class QuitGameDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    logger.t('show quit game dialog');
+    logger.t('Show quit game dialog.');
     return CustomDialog(
         title: "ATTENTION!",
         content: "The match is not over yet\n\nAre you sure to quit the match?",
         // The BACK button should behave similarly to pressing the CANCEL button.
         onBackPress: () {
-          logger.t('press back button');
+          logger.t('Press back button.');
           Get.back();
         },
-        children: [
-          _buildQuitButton(),
-          _buildCancelButton()
-        ]);
+        children: [_buildQuitButton(), _buildCancelButton()]);
   }
 }
 
 TextButton _buildQuitButton() {
   return TextButton(
-    onPressed: ()
-    {
-      logger.t('press quit button');
+    onPressed: () {
+      logger.t('Press quit button.');
       OnlineUserController.to.quitGameSuddenly();
     },
     child: const Text('QUIT'),
@@ -39,7 +35,7 @@ TextButton _buildQuitButton() {
 TextButton _buildCancelButton() {
   return TextButton(
     onPressed: () {
-      logger.t('press cancel button');
+      logger.t('Press cancel button.');
       Get.back();
     },
     child: const Text('CANCEL'),

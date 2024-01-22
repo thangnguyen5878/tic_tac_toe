@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_tic_tac_toe/controllers/game_controller.dart';
 import 'package:flutter_tic_tac_toe/modules/offline/game/components/board_widget.dart';
 import 'package:flutter_tic_tac_toe/modules/offline/history_details/components/control_bar.dart';
-import 'package:flutter_tic_tac_toe/modules/offline/history_details/components/history_player_bottom_bar.dart';
+import 'package:flutter_tic_tac_toe/modules/offline/history_details/components/player_status_bar.dart';
 import 'package:flutter_tic_tac_toe/utils/constants/app_colors.dart';
 import 'package:flutter_tic_tac_toe/utils/constants/app_size.dart';
 import 'package:flutter_tic_tac_toe/utils/constants/app_styles.dart';
@@ -98,7 +98,7 @@ class HistoryDetailsPage extends StatelessWidget {
         bottom: 0,
         child: Column(
           children: [
-            PlayerBottomBar(
+            PlayerStatusBar(
               room: room,
               isHistory: true,
             ),

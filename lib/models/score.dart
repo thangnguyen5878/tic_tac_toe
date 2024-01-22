@@ -1,4 +1,3 @@
-import 'package:flutter_tic_tac_toe/modules/offline/game/components/player_bottom_bar.dart';
 import 'package:flutter_tic_tac_toe/utils/constants/service_constants.dart';
 import 'package:isar/isar.dart';
 import 'package:json_annotation/json_annotation.dart';

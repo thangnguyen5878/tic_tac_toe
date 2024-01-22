@@ -10,7 +10,7 @@ class OnlineWinnerDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    logger.t('show online winner dialog');
+    logger.t('Show online winner dialog.');
     return CustomDialog(
         title: "YOU WIN!",
         content: "Congratulation! You win this round.",
@@ -35,13 +35,10 @@ TextButton _buildQuitButton() {
 
 TextButton _buildRematchButton() {
   return TextButton(
-    onPressed: ()
-    {
+    onPressed: () {
       logger.t('press rematch button');
       OnlineUserController.to.handlePressRematchButtonOnDialog();
     },
     child: const Text('REMATCH'),
   );
 }
-
-

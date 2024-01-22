@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_tic_tac_toe/controllers/game_controller.dart';
+import 'package:flutter_tic_tac_toe/controllers/online_game_controller.dart';
+import 'package:flutter_tic_tac_toe/controllers/online_user_controller.dart';
 import 'package:flutter_tic_tac_toe/models/room.dart';
 import 'package:flutter_tic_tac_toe/modules/offline/game/components/cell_widget.dart';
 import 'package:flutter_tic_tac_toe/utils/constants/service_constants.dart';
@@ -39,17 +41,26 @@ class BoardWidget extends StatelessWidget {
         itemBuilder: (context, index) {
           final int row = index ~/ columnCount;
           final int column = index % columnCount as int;
-          final cell = board.getCell(row, column);
 
           return CellWidget(
             room: room,
-            cell: cell,
+            row: row,
+            column: column,
             isHistory: isHistory,
             onTap: () {
-              if (isOffline) {
+              if (isOffline && !isHistory) {
                 final room = GameController.to.room;
                 logger.t('Tap cell($row, $column) : ${room.getCurrentPlayer().seed}');
                 GameController.to.drawSeed(row, column, room.getCurrentPlayer().seed!);
+              }
+              if (isOnline && !isHistory) {
+                if (OnlineUserController.to.currentUser.playerIndex ==
+                    room.getCurrentRound().currentPlayerIndex) {
+                  OnlineGameController.to
+                      .drawSeedOnCell(row, column, room.getCurrentPlayer().seed!);
+                  logger.t(
+                      'tap cell, player index: ${OnlineUserController.to.currentUser.playerIndex}');
+                }
               }
             },
           );

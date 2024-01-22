@@ -13,7 +13,7 @@ class DeleteRoomsButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return IconButton(
       onPressed: () {
-        logger.t('press delete rooms button');
+        logger.t('Press delete rooms button.');
         HomeController.to.removeSelectedRoomsFromDatabase();
       },
       icon: const Icon(

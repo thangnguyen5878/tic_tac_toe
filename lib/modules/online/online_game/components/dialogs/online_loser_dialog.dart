@@ -10,7 +10,7 @@ class OnlineLoserDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    logger.t('show online loser dialog');
+    logger.t('Show online loser dialog.');
     return CustomDialog(
         title: "YOU LOSE!",
         content: "You lose this round.",
@@ -20,10 +20,7 @@ class OnlineLoserDialog extends StatelessWidget {
           Get.back();
           OnlineUserController.to.updateCurrentUserStatus(OnlineUserStatus.roundCompleted);
         },
-        children: [
-          _buildQuitButton(),
-          _buildRematchButton()
-        ]);
+        children: [_buildQuitButton(), _buildRematchButton()]);
   }
 }
 
@@ -38,13 +35,10 @@ TextButton _buildQuitButton() {
 
 TextButton _buildRematchButton() {
   return TextButton(
-    onPressed: ()
-    {
+    onPressed: () {
       logger.t('press rematch button');
       OnlineUserController.to.handlePressRematchButtonOnDialog();
     },
     child: const Text('REMATCH'),
   );
 }
-
-
