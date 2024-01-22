@@ -3,7 +3,6 @@ import 'package:flutter_tic_tac_toe/utils/constants/constants.dart';
 import 'package:get/get.dart';
 
 class CreateRoomController extends GetxController {
-
   static CreateRoomController get to => Get.find();
 
   TextEditingController room = TextEditingController();

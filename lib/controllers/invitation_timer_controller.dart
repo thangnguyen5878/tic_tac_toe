@@ -14,8 +14,10 @@ class InvitationTimerController extends GetxController {
   void startTimer() {
     logger.t('start invitation waiting timer');
     resetTimer();
-    _timer = Timer.periodic(const Duration(seconds: 1), (Timer timer) {
-      logger.t('invitation waiting timer: $time');
+    _timer = Timer.periodic(
+      const Duration(seconds: 1),
+      (Timer timer) {
+        logger.t('invitation waiting timer: $time');
         if (time == 0) {
           stopTimer();
           OnlineUserController.to.handleInvitationTimeout();

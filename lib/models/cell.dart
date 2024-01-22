@@ -54,17 +54,14 @@ class Cell {
 
   // GETTERS: BOOLEAN
   /// Returns whether the cell represents a win for player 1.
-  bool isPlayer1Win() {
-    return state == CellState.crossWin;
-  }
+  bool get isPlayer1Win => state == CellState.crossWin;
 
   /// Returns whether the cell represents a win for player 2.
-  bool isPlayer2Win() {
-    return state == CellState.noughtWin;
-  }
+  bool get isPlayer2Win => state == CellState.noughtWin;
 
   // JSON SERIALIZATION
   factory Cell.fromJson(Map<String, dynamic> json) => _$CellFromJson(json);
+
   Map<String, dynamic> toJson() => _$CellToJson(this);
 
   // METHODS: LOG
