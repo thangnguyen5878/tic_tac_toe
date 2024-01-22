@@ -26,7 +26,7 @@ class RoundTileList extends StatelessWidget {
               separatorBuilder: (BuildContext context, int index) {
                 return const SizedBox(height: 12);
               },
-              itemCount: room.getRoundCount() + 1, // plus 1 since the title is included
+              itemCount: room.roundCount + 1, // plus 1 since the title is included
               itemBuilder: (context, index) {
                 if (index == 0) {
                   // This is the first item, which is the title

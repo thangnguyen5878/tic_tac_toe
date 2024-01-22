@@ -49,68 +49,38 @@ class Round {
     logger.t('clone next round');
     return Round.custom(
       index: index + 1,
-      scores: [getPlayer1Score().cloneForNextRound(), getPlayer2Score().cloneForNextRound()],
+      scores: [player1Score.cloneForNextRound(), player2Score.cloneForNextRound()],
     );
   }
 
   // GETTERS
-  int getRoundCount() {
-    return index + 1;
-  }
+  int get roundCount => index + 1;
 
-  int getTurnCount() {
-    if (hasWinner()) {
-      return turns.length; // There are no next turn.
-    }
-    return turns.length + 1;
-  }
+  int get turnCount => turns.length + (hasWinner ? 0 : 1);
 
-  Cell? getLastTurn() {
-    return turns.last;
-  }
+  Cell? get lastTurn => turns.last;
 
-  Score getPlayer1Score() {
-    return scores[0];
-  }
+  Score get player1Score => scores[0];
 
-  Score getPlayer2Score() {
-    return scores[1];
-  }
+  Score get player2Score => scores[1];
 
-  Score? getWinnerScore() {
-    if (hasWinner()) {
-      return scores[winnerIndex!];
-    } else {
-      return null;
-    }
-  }
+  Score? get winnerScore => hasWinner ? scores[winnerIndex!] : null;
 
-  // METHODS: BOOLEAN
-  bool hasWinner() {
-    return winnerIndex != null;
-  }
+  bool get hasWinner => winnerIndex != null;
 
-  bool isPlayer1Win() {
-    return hasWinner() && winnerIndex == 0;
-  }
+  bool get isPlayer1Win => hasWinner && winnerIndex == 0;
 
-  bool isPlayer2Win() {
-    return hasWinner() && winnerIndex == 1;
-  }
+  bool get isPlayer2Win => hasWinner && winnerIndex == 1;
 
-  bool isPlayer1Turn() {
-    return currentPlayerIndex == 0;
-  }
+  bool get isPlayer1Turn => currentPlayerIndex == 0;
 
-  bool isPlayer2Turn() {
-    return currentPlayerIndex == 1;
-  }
+  bool get isPlayer2Turn => currentPlayerIndex == 1;
 
   // METHODS: BUSINESS
   /// Resets the round by clearing the winner, turns, and current player index.
   reset() {
-    if (hasWinner()) {
-      getWinnerScore()!.reset();
+    if (hasWinner) {
+      winnerScore!.reset();
       winnerIndex = null;
     }
     turns = [];

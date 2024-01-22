@@ -43,26 +43,18 @@ class History {
 
   // GETTERS: BOOLEAN
   /// Returns the number of turns in the history.
-  int getTurnCount() {
-    return currentTurnIndex + 1;
-  }
+  int get turnCount => currentTurnIndex + 1;
 
   /// Returns whether the current player is player 1.
-  bool isPlayer1Turn() {
-    return currentPlayerIndex == 0;
-  }
+  bool get isPlayer1Turn => currentPlayerIndex == 0;
 
   /// Returns whether the current player is player 2.
-  bool isPlayer2Turn() {
-    return currentPlayerIndex == 1;
-  }
+  bool get isPlayer2Turn => currentPlayerIndex == 1;
 
   /// Returns whether it is the first turn in the history.
-  bool isFirstTurn() {
-    return currentTurnIndex == 0;
-  }
+  bool get isFirstTurn => currentTurnIndex == 0;
 
-  // METHODS: BOOLEAN
+// METHODS: BOOLEAN
   /// Resets the history to its initial state.
   void reset() {
     currentPlayerIndex = 0;
@@ -71,7 +63,7 @@ class History {
 
   /// Switches the current player.
   void togglePlayer() {
-    if (isPlayer1Turn()) {
+    if (isPlayer1Turn) {
       currentPlayerIndex = 1;
     } else {
       currentPlayerIndex = 0;

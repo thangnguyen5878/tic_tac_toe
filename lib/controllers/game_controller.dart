@@ -24,10 +24,10 @@ class GameController extends GetxController {
       newRoom.name = CreateRoomController.to.room.text;
     }
     if (CreateRoomController.to.player1.text != '') {
-      newRoom.getPlayer1().name = CreateRoomController.to.player1.text;
+      newRoom.player1.name = CreateRoomController.to.player1.text;
     }
     if (CreateRoomController.to.player2.text != '') {
-      newRoom.getPlayer2().name = CreateRoomController.to.player2.text;
+      newRoom.player2.name = CreateRoomController.to.player2.text;
     }
     if (CreateRoomController.to.rowCount.text != '') {
       newRoom.board.rowCount = int.tryParse(CreateRoomController.to.rowCount.text) ?? 10;
@@ -63,7 +63,7 @@ class GameController extends GetxController {
   Future<void> loadRoomById(id) async {
     room = (await isarService.getRoom(id))!;
     room.lastAccessAt = DateTime.now();
-    var turns = room.getCurrentRound().turns;
+    var turns = room.currentRound.turns;
     room.board.loadAll(turns);
     update();
   }
@@ -83,9 +83,9 @@ class GameController extends GetxController {
     if (room.state == GameState.playing &&
         (cell.content != Seed.cross && cell.content != Seed.nought)) {
       cell.content = seed;
-      room.getCurrentRound().turns = [...room.getCurrentRound().turns, cell];
+      room.currentRound.turns = [...room.currentRound.turns, cell];
       room.checkWinner();
-      logger.t('Draw seed, turns: ${room.getCurrentRound().turns}');
+      logger.t('Draw seed, turns: ${room.currentRound.turns}');
       GameController.to.saveRoomToIsarDatabase();
       update();
     }
@@ -111,7 +111,7 @@ class GameController extends GetxController {
 
   // HISTORY METHODS
   void goToNextTurnInHistory() {
-    if (!room.isLastTurnInHistory()) {
+    if (!room.isLastTurnInHistory) {
       logger.t('History: Go to next turn');
       room.history.goToNextTurn();
       room.updateBoardInHistory();
@@ -124,7 +124,7 @@ class GameController extends GetxController {
   }
 
   void goToPreviousTurnInHistory() {
-    if (!room.history.isFirstTurn()) {
+    if (!room.history.isFirstTurn) {
       logger.t('History: Go to previous turn');
       room.history.goToPreviousTurn();
       room.updateBoardInHistory();

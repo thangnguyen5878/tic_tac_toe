@@ -41,15 +41,14 @@ class RoomTileNormalMode extends StatelessWidget {
                 style: kNormalLargeText,
                 children: <TextSpan>[
                   const TextSpan(text: 'Current round: '),
-                  TextSpan(
-                      text: '${room.getRoundCount()}', style: const TextStyle(color: kBrown60)),
+                  TextSpan(text: '${room.roundCount}', style: const TextStyle(color: kBrown60)),
                 ],
               ),
             ),
             const SizedBox(height: 4),
             Text(
               style: kNormalText,
-              '${room.getPlayer1().name} (${room.getPlayer1Score().currentScore}) - ${room.getPlayer2().name} (${room.getPlayer2Score().currentScore})',
+              '${room.player1.name} (${room.player1Score.currentScore}) - ${room.player2.name} (${room.player2Score.currentScore})',
             ),
             // Add more widgets to display additional room information
           ],

@@ -8,8 +8,8 @@ class WinnerPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final room = GameController.to.room;
 
-    final winnerName = room.getWinnerOfCurrentRound()?.name;
-    final roundCount = room.getRoundCount();
+    final winnerName = room.winnerOfCurrentRound?.name;
+    final roundCount = room.roundCount;
 
     return SafeArea(
       child: GestureDetector(

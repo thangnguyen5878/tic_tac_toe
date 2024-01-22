@@ -116,7 +116,7 @@ class OnlineGameController extends GetxController {
     if (room.state == GameState.playing &&
         (cell.content != Seed.cross && cell.content != Seed.nought)) {
       cell.content = seed;
-      room.getCurrentRound().turns = [...room.getCurrentRound().turns, cell];
+      room.currentRound.turns = [...room.currentRound.turns, cell];
       room.checkWinner();
       OnlineGameController.to.pushRoomToFirebase();
       update();
@@ -125,7 +125,7 @@ class OnlineGameController extends GetxController {
 
   // HISTORY METHODS
   void goToNextTurnInHistory() {
-    if (!room.isLastTurnInHistory()) {
+    if (!room.isLastTurnInHistory) {
       logger.t('History: Go to next turn');
       room.history.goToNextTurn();
       room.updateBoardInHistory();
@@ -138,7 +138,7 @@ class OnlineGameController extends GetxController {
   }
 
   void goToPreviousTurnInHistory() {
-    if (!room.history.isFirstTurn()) {
+    if (!room.history.isFirstTurn) {
       logger.t('History: Go to previous turn');
       room.history.goToPreviousTurn();
       room.updateBoardInHistory();

@@ -391,7 +391,7 @@ class OnlineUserController extends GetxController {
   /// Updates the winner and loser statuses in Firestore based on the current round's outcome.
   void updateWinnerAndLoserStatus() {
     logger.t('update winner and loser status');
-    final winnerIndex = OnlineGameController.to.room.getCurrentRound().winnerIndex;
+    final winnerIndex = OnlineGameController.to.room.currentRound.winnerIndex;
     // The player who draws the last seed win the game.
     if (currentUser.playerIndex == winnerIndex) {
       final currentUserData = {'status': OnlineUserStatus.win.toShortString()};

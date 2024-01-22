@@ -39,9 +39,7 @@ class Score {
 
   // GETTERS: BOOLEAN
   /// Returns whether the player has a winner.
-  bool hasWinner() {
-    return finalScore != null;
-  }
+  bool get hasWinner => finalScore != null;
 
   // METHODS: CLONE
   /// Creates a clone of the score for the next round.
@@ -62,7 +60,7 @@ class Score {
 
   /// Resets the player's score.
   void reset() {
-    if (hasWinner()) {
+    if (hasWinner) {
       currentScore = initialScore;
       finalScore = null;
     }

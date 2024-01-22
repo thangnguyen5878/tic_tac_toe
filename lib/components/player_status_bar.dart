@@ -27,43 +27,43 @@ class PlayerStatusBar extends StatelessWidget {
     if (!isHistory) {
       // NORMAL GAME
       // Player 1
-      player1Name = room.getPlayer1().name!;
-      player1Score = room.getPlayer1Score().currentScore;
-      player1TextColor = room.isPlayer1Turn()
+      player1Name = room.player1.name!;
+      player1Score = room.player1Score.currentScore;
+      player1TextColor = room.isPlayer1Turn
           ? PlayerBottomBarConstants.selectedTextColor
           : PlayerBottomBarConstants.unselectedTextColor;
-      player1BoxColor = room.isPlayer1Turn()
+      player1BoxColor = room.isPlayer1Turn
           ? PlayerBottomBarConstants.selectedBoxColor
           : PlayerBottomBarConstants.unselectedBoxColor;
 
       // Player 2
-      player2Name = room.getPlayer2().name!;
-      player2Score = room.getPlayer2Score().currentScore;
-      player2TextColor = room.isPlayer2Turn()
+      player2Name = room.player2.name!;
+      player2Score = room.player2Score.currentScore;
+      player2TextColor = room.isPlayer2Turn
           ? PlayerBottomBarConstants.selectedTextColor
           : PlayerBottomBarConstants.unselectedTextColor;
-      player2BoxColor = room.isPlayer2Turn()
+      player2BoxColor = room.isPlayer2Turn
           ? PlayerBottomBarConstants.selectedBoxColor
           : PlayerBottomBarConstants.unselectedBoxColor;
     } else {
       // HISTORY
       // Player 1
-      player1Name = room.getPlayer1().name!;
-      player1Score = room.getPlayer1ScoreInHistory();
-      player1TextColor = room.isPlayer1TurnInHistory()
+      player1Name = room.player1.name!;
+      player1Score = room.player1ScoreInHistory;
+      player1TextColor = room.isPlayer1TurnInHistory
           ? HistoryPlayerBottomBarConstants.selectedTextColor
           : HistoryPlayerBottomBarConstants.unselectedTextColor;
-      player1BoxColor = room.isPlayer1TurnInHistory()
+      player1BoxColor = room.isPlayer1TurnInHistory
           ? HistoryPlayerBottomBarConstants.selectedBoxColor
           : HistoryPlayerBottomBarConstants.unselectedBoxColor;
 
       // Player 2
-      player2Name = room.getPlayer2().name!;
-      player2Score = room.getPlayer2ScoreInHistory();
-      player2TextColor = room.isPlayer2TurnInHistory()
+      player2Name = room.player2.name!;
+      player2Score = room.player2ScoreInHistory;
+      player2TextColor = room.isPlayer2TurnInHistory
           ? HistoryPlayerBottomBarConstants.selectedTextColor
           : HistoryPlayerBottomBarConstants.unselectedTextColor;
-      player2BoxColor = room.isPlayer2TurnInHistory()
+      player2BoxColor = room.isPlayer2TurnInHistory
           ? HistoryPlayerBottomBarConstants.selectedBoxColor
           : HistoryPlayerBottomBarConstants.unselectedBoxColor;
     }

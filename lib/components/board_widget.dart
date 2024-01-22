@@ -51,14 +51,13 @@ class BoardWidget extends StatelessWidget {
             onTap: () {
               if (isOffline && !isHistory) {
                 final room = GameController.to.room;
-                logger.t('Tap cell($row, $column) : ${room.getCurrentPlayer().seed}');
-                GameController.to.drawSeed(row, column, room.getCurrentPlayer().seed!);
+                logger.t('Tap cell($row, $column) : ${room.currentPlayer.seed}');
+                GameController.to.drawSeed(row, column, room.currentPlayer.seed!);
               }
               if (isOnline && !isHistory) {
                 if (OnlineUserController.to.currentUser.playerIndex ==
-                    room.getCurrentRound().currentPlayerIndex) {
-                  OnlineGameController.to
-                      .drawSeedOnCell(row, column, room.getCurrentPlayer().seed!);
+                    room.currentRound.currentPlayerIndex) {
+                  OnlineGameController.to.drawSeedOnCell(row, column, room.currentPlayer.seed!);
                   logger.t(
                       'tap cell, player index: ${OnlineUserController.to.currentUser.playerIndex}');
                 }

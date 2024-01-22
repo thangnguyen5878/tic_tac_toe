@@ -13,19 +13,19 @@ class RoundTile extends StatelessWidget {
   Widget build(BuildContext context) {
     logger.t('Build round tile $roundIndex.');
 
-    final round = room.getRound(roundIndex);
-    final roundCount = round.getRoundCount();
+    final round = room.rounds[roundIndex];
+    final roundCount = round.roundCount;
 
-    final player1Name = room.getPlayer1().name;
-    final player1Score = round.getPlayer1Score().currentScore;
-    final player2Name = room.getPlayer2().name;
-    final player2Score = round.getPlayer2Score().currentScore;
-    final winnerName = round.hasWinner() ? room.getWinnerOfRound(roundIndex)?.name : '';
+    final player1Name = room.player1.name;
+    final player1Score = round.player1Score.currentScore;
+    final player2Name = room.player2.name;
+    final player2Score = round.player2Score.currentScore;
+    final winnerName = round.hasWinner ? room.winnerOfRound(roundIndex)?.name : '';
 
     Color winnerColor;
-    if (round.isPlayer1Win()) {
+    if (round.isPlayer1Win) {
       winnerColor = kDarkRed;
-    } else if (round.isPlayer2Win()) {
+    } else if (round.isPlayer2Win) {
       winnerColor = kDarkGreen;
     } else {
       winnerColor = kBlack; // You can choose another color
@@ -46,7 +46,7 @@ class RoundTile extends StatelessWidget {
               style: kHeading1,
             ),
             const SizedBox(height: 4),
-            if (room.getRound(roundIndex).hasWinner())
+            if (room.rounds[roundIndex].hasWinner)
               Column(
                 children: [
                   RichText(

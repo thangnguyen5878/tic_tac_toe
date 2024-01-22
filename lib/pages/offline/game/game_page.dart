@@ -60,7 +60,7 @@ class GamePage extends StatelessWidget {
 
   AppBar _buildAppBar() {
     final room = GameController.to.room;
-    final round = room.getCurrentRound();
+    final round = room.currentRound;
 
     return AppBar(
       backgroundColor: kBrown40,
@@ -68,11 +68,11 @@ class GamePage extends StatelessWidget {
       // titleSpacing: 0,
       title: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
         Text('Room: ${room.name}', style: kHeading2),
-        Text('Round: ${room.getRoundCount()}, Turn: ${round.getTurnCount()}', style: kHeading3),
+        Text('Round: ${room.roundCount}, Turn: ${round.turnCount}', style: kHeading3),
       ]),
       actions: [
         ResetBoardButton(),
-        if (room.isGameOver()) NextRoundButton(),
+        if (room.isGameOver) NextRoundButton(),
         _buildPopupMenuButton(),
       ],
     );

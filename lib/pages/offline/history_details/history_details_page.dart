@@ -50,7 +50,7 @@ class HistoryDetailsPage extends StatelessWidget {
 
     return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
       Text('Room: ${room.name}', style: kHeading2),
-      Text('Round: ${room.getRoundCountInHistory()}, Turn: ${room.getTurnCountInHistory()}',
+      Text('Round: ${room.roundCountInHistory}, Turn: ${room.turnCountInHistory}',
           style: kHeading3),
     ]);
   }

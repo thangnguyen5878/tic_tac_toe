@@ -79,18 +79,18 @@ class OnlineGamePage extends StatelessWidget {
       title: GetBuilder<OnlineGameController>(
         builder: (controller) {
           final room = OnlineGameController.to.room;
-          final round = room.getCurrentRound();
+          final round = room.currentRound;
 
           return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
             Text('Room: ${room.name}', style: kHeading2),
-            Text('Round: ${room.getRoundCount()}, Turn: ${round.getTurnCount()}', style: kHeading3),
+            Text('Round: ${room.roundCount}, Turn: ${round.turnCount}', style: kHeading3),
           ]);
         },
       ),
       // ignore: prefer_const_literals_to_create_immutables
       actions: [
         // ignore: prefer_const_constructors
-        if (room.isGameOver()) _buildRematchButton(),
+        if (room.isGameOver) _buildRematchButton(),
       ],
     );
   }

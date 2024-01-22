@@ -78,175 +78,88 @@ class Room {
         playerIds = playerIds ?? [];
 
   // GETTERs
-  Round getCurrentRound() {
-    return rounds.last;
-  }
+  Round get currentRound => rounds.last;
 
-  Round getRound(int index) {
-    return rounds[index];
-  }
+  int get roundCount => rounds.length;
 
-  int getRoundCount() {
-    return rounds.length;
-  }
+  Player get currentPlayer => players[currentRound.currentPlayerIndex];
 
-  Player getCurrentPlayer() {
-    return players[getCurrentRound().currentPlayerIndex];
-  }
+  Player get player1 => players[0];
 
-  Player getPlayer1() {
-    return players[0];
-  }
+  Player get player2 => players[1];
 
-  Player getPlayer2() {
-    return players[1];
-  }
+  Player? get winnerOfCurrentRound =>
+      currentRound.hasWinner ? players[currentRound.winnerIndex!] : null;
 
-  Player? getWinnerOfCurrentRound() {
-    if (getCurrentRound().hasWinner()) {
-      return players[getCurrentRound().winnerIndex!];
-    } else {
-      return null;
-    }
-  }
+  Player? winnerOfRound(int roundIndex) =>
+      rounds[roundIndex].hasWinner ? players[rounds[roundIndex].winnerIndex!] : null;
 
-  Player? getWinnerOfRound(int roundIndex) {
-    if (rounds[roundIndex].hasWinner()) {
-      return players[rounds[roundIndex].winnerIndex!];
-    } else {
-      return null;
-    }
-  }
+  Score get player1Score => currentRound.player1Score;
 
-  Score getPlayer1Score() {
-    return getCurrentRound().getPlayer1Score();
-  }
+  Score get player2Score => currentRound.player2Score;
 
-  Score getPlayer2Score() {
-    return getCurrentRound().getPlayer2Score();
-  }
+// GETTERS: HISTORY
+  int get turnCountInHistory =>
+      !isLastTurnInHistory ? history.currentTurnIndex + 1 : history.currentTurnIndex;
 
-  // GETTERS: HISTORY
-  int getTurnCountInHistory() {
-    if (!isLastTurnInHistory()) {
-      return history.currentTurnIndex + 1;
-    } else {
-      return history.currentTurnIndex; // minus 1 because there are no next turn.
-    }
-  }
+  Round get currentRoundInHistory => rounds[history.currentRoundIndex];
 
-  Round getCurrentRoundInHistory() {
-    return rounds[history.currentRoundIndex];
-  }
+  int get roundCountInHistory => history.currentRoundIndex + 1;
 
-  int getRoundCountInHistory() {
-    return history.currentRoundIndex + 1;
-  }
+  int get nextTurnCountInHistory => history.turnCount;
 
-  int getNextTurnCountInHistory() {
-    return history.getTurnCount();
-  }
+  Player get currentPlayerInHistory => players[history.currentPlayerIndex];
 
-  Player getCurrentPlayerInHistory() {
-    return players[history.currentPlayerIndex];
-  }
+  int get player1ScoreInHistory => !hasWinnerInHistory
+      ? currentRoundInHistory.player1Score.initialScore
+      : currentRoundInHistory.player1Score.finalScore!;
 
-  int getPlayer1ScoreInHistory() {
-    if (!hasWinnerInHistory()) {
-      logger.i(
-          'player 1 initial score: ${getCurrentRoundInHistory().getPlayer1Score().initialScore}');
-      return getCurrentRoundInHistory().getPlayer1Score().initialScore;
-    } else {
-      logger.i('player 1 final score: ${getCurrentRoundInHistory().getPlayer1Score().finalScore}');
-      return getCurrentRoundInHistory().getPlayer1Score().finalScore!;
-    }
-  }
+  int get player2ScoreInHistory => !hasWinnerInHistory
+      ? currentRoundInHistory.player2Score.initialScore
+      : currentRoundInHistory.player2Score.finalScore!;
 
-  int getPlayer2ScoreInHistory() {
-    if (!hasWinnerInHistory()) {
-      logger.i(
-          'player 2 initial score: ${getCurrentRoundInHistory().getPlayer2Score().initialScore}');
-      return getCurrentRoundInHistory().getPlayer2Score().initialScore;
-    } else {
-      logger.i('player 2 final score: ${getCurrentRoundInHistory().getPlayer2Score().finalScore}');
-      return getCurrentRoundInHistory().getPlayer2Score().finalScore!;
-    }
-  }
+// GETTERS: BOOLEAN, HISTORY
+  bool get isPlayer1WinInHistory => hasWinnerInHistory && currentRoundInHistory.isPlayer1Turn;
 
-  // GETTERS: BOOLEAN, HISTORY
-  bool isPlayer1WinInHistory() {
-    return hasWinnerInHistory() && getCurrentRoundInHistory().isPlayer1Turn();
-  }
+  bool get isPlayer2WinInHistory => hasWinnerInHistory && currentRoundInHistory.isPlayer2Turn;
 
-  bool isPlayer2WinInHistory() {
-    return hasWinnerInHistory() && getCurrentRoundInHistory().isPlayer2Turn();
-  }
+  bool get hasWinnerInHistory => currentRoundInHistory.hasWinner && isLastTurnInHistory;
 
-  bool hasWinnerInHistory() {
-    return getCurrentRoundInHistory().hasWinner() && isLastTurnInHistory();
-  }
+  bool get isPlayer1TurnInHistory =>
+      !isLastTurnInHistory ? history.isPlayer1Turn : !history.isPlayer1Turn;
 
-  bool isPlayer1TurnInHistory() {
-    if (!isLastTurnInHistory()) {
-      return history.isPlayer1Turn();
-    }
-    // The figures stop at the last turn.
-    return !history.isPlayer1Turn();
-  }
+  bool get isPlayer2TurnInHistory =>
+      !isLastTurnInHistory ? history.isPlayer2Turn : !history.isPlayer2Turn;
 
-  bool isPlayer2TurnInHistory() {
-    if (!isLastTurnInHistory()) {
-      return history.isPlayer2Turn();
-    }
-    // The figures stop at the last turn.
-    return !history.isPlayer2Turn();
-  }
+// GETTERS: BOOLEAN
+  bool get isLastTurnInHistory => history.currentTurnIndex == currentRoundInHistory.turns.length;
 
-  // GETTERS: BOOLEAN
-  bool isLastTurnInHistory() {
-    return history.currentTurnIndex == getCurrentRoundInHistory().turns.length;
-    // Because when turnIndex = 0, there are no seed on the board.
-  }
+  bool get isLastTurnInHistoryPlus =>
+      history.currentTurnIndex == currentRoundInHistory.turns.length + 2;
 
-  bool isLastTurnInHistoryPlus() {
-    return history.currentTurnIndex == getCurrentRoundInHistory().turns.length + 2;
-  }
+  bool get isGameOver => state == GameState.stop;
 
-  bool isGameOver() {
-    return state == GameState.stop;
-  }
+  bool get isPlayer1Turn => currentRound.isPlayer1Turn;
 
-  bool isPlayer1Turn() {
-    return getCurrentRound().isPlayer1Turn();
-  }
+  bool get isPlayer2Turn => currentRound.isPlayer2Turn;
 
-  bool isPlayer2Turn() {
-    return getCurrentRound().isPlayer2Turn();
-  }
+  bool get isPlayer1Win => currentRound.isPlayer1Win;
 
-  bool isPlayer1Win() {
-    return getCurrentRound().isPlayer1Win();
-  }
+  bool get isPlayer2Win => currentRound.isPlayer2Win;
 
-  bool isPlayer2Win() {
-    return getCurrentRound().isPlayer2Win();
-  }
-
-  bool isRoundValidate(int roundIndex) {
-    return roundIndex >= 0 && roundIndex <= rounds.length - 1;
-  }
+  bool roundValidate(int roundIndex) => roundIndex >= 0 && roundIndex <= rounds.length - 1;
 
   bool hasWinnerOfCurrentRound() {
-    return getCurrentRound().hasWinner();
+    return currentRound.hasWinner;
   }
 
   // SETTERS
   void addScoreForPlayer1(int score) {
-    getPlayer1Score().addScore(score);
+    player1Score.addScore(score);
   }
 
   void addScoreForPlayer2(int score) {
-    getPlayer2Score().addScore(score);
+    player2Score.addScore(score);
   }
 
   // METHODS: BUSINESS
@@ -276,9 +189,9 @@ class Room {
     }
 
     // update winner, final score and game state
-    getCurrentRound().winnerIndex = winnerIndex;
-    getPlayer1Score().updateFinalScore();
-    getPlayer2Score().updateFinalScore();
+    currentRound.winnerIndex = winnerIndex;
+    player1Score.updateFinalScore();
+    player2Score.updateFinalScore();
     state = GameState.stop;
 
     logWinnerAndNotify();
@@ -295,9 +208,9 @@ class Room {
       colorWinningCells(CellState.noughtWin);
     }
 
-    getCurrentRound().winnerIndex = winnerIndex;
-    getPlayer1Score().updateFinalScore();
-    getPlayer2Score().updateFinalScore();
+    currentRound.winnerIndex = winnerIndex;
+    player1Score.updateFinalScore();
+    player2Score.updateFinalScore();
     state = GameState.stop;
 
     OnlineUserController.to.updateWinnerAndLoserStatus();
@@ -313,8 +226,8 @@ class Room {
 
   /// This method will log the winner and navigate to the winner screen.
   void logWinnerAndNotify() {
-    if (getCurrentRound().hasWinner()) {
-      Player winner = getWinnerOfCurrentRound()!;
+    if (currentRound.hasWinner) {
+      Player winner = winnerOfCurrentRound!;
       logger.t('Winner is ${winner.name}');
       // logger.t('rounds: $rounds');
       Get.toNamed('winner');
@@ -340,7 +253,7 @@ class Room {
       return; // Winner found and handled
     }
     // If no winner, move to next turn
-    getCurrentRound().goToNextTurn();
+    currentRound.goToNextTurn();
   }
 
   bool checkLines() {
@@ -412,7 +325,7 @@ class Room {
   void nextRound() {
     state = GameState.playing;
     board.reset();
-    Round nextRound = getCurrentRound().cloneForNextRound();
+    Round nextRound = currentRound.cloneForNextRound();
     rounds = [...rounds, nextRound];
     // logger.t('nextRound()\n');
     // logger.t('current round: ${rounds![currentRoundIndex - 1]}\n');
@@ -423,14 +336,14 @@ class Room {
   void reset() {
     state = GameState.playing;
     board.reset();
-    getCurrentRound().reset();
+    currentRound.reset();
   }
 
   /// Loads [History.currentTurnIndex]+1 cells from [Round.turns] to [History.board].
   void updateBoardInHistory() {
     history.board.reset();
     if (history.currentTurnIndex >= 0) {
-      history.board.load(getCurrentRoundInHistory().turns, history.currentTurnIndex);
+      history.board.load(currentRoundInHistory.turns, history.currentTurnIndex);
     }
   }
 

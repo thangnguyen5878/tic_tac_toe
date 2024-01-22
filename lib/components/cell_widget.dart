@@ -30,7 +30,7 @@ class CellWidget extends StatelessWidget {
       board = room.history.board;
     }
 
-    final cell = board.getCell(row, column);
+    final cell = board.cells[row][column];
     final content = cell.content.toString();
 
     Color backgroundColor = Colors.white;
@@ -44,10 +44,10 @@ class CellWidget extends StatelessWidget {
       }
     } else {
       // HISTORY
-      if (room.isPlayer1WinInHistory() && cell.isPlayer1Win) {
+      if (room.isPlayer1WinInHistory && cell.isPlayer1Win) {
         backgroundColor = CellConstants.crossWinColorInHistory;
       }
-      if (room.isPlayer2WinInHistory() && cell.isPlayer2Win) {
+      if (room.isPlayer2WinInHistory && cell.isPlayer2Win) {
         backgroundColor = CellConstants.noughtWinColorInHistory;
       }
     }
