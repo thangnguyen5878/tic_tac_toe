@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_tic_tac_toe/utils/constants/app_colors.dart';
 
+// ICON STYLES
+const kIconSize = 28.0;
+
 // TEXT STYLES
 const kTitle1 = TextStyle(
   fontFamily: 'Jomhuria',
@@ -64,7 +67,7 @@ const kDefaultShadow = BoxShadow(
 );
 
 const kCardStyle = BoxDecoration(
-  color: kRoomCardColor,
+  color: kRoomTileColor,
   borderRadius: BorderRadius.all(
     Radius.circular(4),
   ),
@@ -72,7 +75,7 @@ const kCardStyle = BoxDecoration(
 );
 
 const kSelectedCardStyle = BoxDecoration(
-  color: kSelectedRoomCardColor,
+  color: kSelectedRoomTileColor,
   borderRadius: BorderRadius.all(
     Radius.circular(4),
   ),

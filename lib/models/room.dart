@@ -340,7 +340,7 @@ class Room {
       return; // Winner found and handled
     }
     // If no winner, move to next turn
-    getCurrentRound().GoToNextTurn();
+    getCurrentRound().goToNextTurn();
   }
 
   bool checkLines() {

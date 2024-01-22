@@ -58,7 +58,7 @@ class HomeController extends GetxController {
     update();
   }
 
-  bool isRoomCardSelected(int roomId) {
+  bool isRoomTileSelected(int roomId) {
     return selectedRoomIds.contains(roomId);
   }
 }

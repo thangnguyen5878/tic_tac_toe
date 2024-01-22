@@ -126,7 +126,7 @@ class Round {
   }
 
   /// When draw Seed at a cell, automatically change to next turn.
-  void GoToNextTurn() {
+  void goToNextTurn() {
     togglePlayer();
     // turns = [...turns, cell];
     // logger.t('next turn, current player: ${currentPlayerIndex! + 1}');

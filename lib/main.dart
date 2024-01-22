@@ -8,14 +8,7 @@ import 'package:get/get.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  // FirebaseFirestore.instance.settings = Settings(persistenceEnabled: true);
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
-
-  // String player1Id = 'aaaaaaaaaaaaaaaaaa';
-  // String player2Id = 'bbbbbbbbbbbbbbbbbb';
-  // Get.put(OnlineGameController());
-  // OnlineGameController.to.createRoom(player1Id, player2Id);
-  // OnlineGameController.to.pushRoomToFirebase();
 
   runApp(
     GetMaterialApp(

@@ -23,7 +23,6 @@ const fBoardCollection = 'boards';
 const fCellCollection = 'cells';
 const fPlayersCollection = 'players';
 
-// Logger
 var logger = Logger(
   filter: null,
   printer: PrettyPrinter(
