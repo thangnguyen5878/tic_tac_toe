@@ -1,0 +1,2 @@
+D:/source_code/personal_projects/tic_tac_toe/android/app/.cxx/Debug/3u3ou3e1/x86_64/CMakeFiles/edit_cache.dir
+D:/source_code/personal_projects/tic_tac_toe/android/app/.cxx/Debug/3u3ou3e1/x86_64/CMakeFiles/rebuild_cache.dir

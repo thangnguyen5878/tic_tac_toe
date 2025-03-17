@@ -51,20 +51,21 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions android = FirebaseOptions(
     apiKey: 'AIzaSyCtDTFw-e7DvtbBIuKqJe5cueSBhI1ddF4',
-    appId: '1:405399125660:android:22903e611f322c1ea83759',
+    appId: '1:405399125660:android:a091ae1f3af2944fa83759',
     messagingSenderId: '405399125660',
     projectId: 'tic-tac-toe-63520',
-    storageBucket: 'tic-tac-toe-63520.appspot.com',
+    storageBucket: 'tic-tac-toe-63520.firebasestorage.app',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
     apiKey: 'AIzaSyCbQFejA8VzZLtN9YpYg7nxHqSCwWxuBbk',
-    appId: '1:405399125660:ios:7bccdc9160cb3368a83759',
+    appId: '1:405399125660:ios:d1ea4cae6c6df18ba83759',
     messagingSenderId: '405399125660',
     projectId: 'tic-tac-toe-63520',
-    storageBucket: 'tic-tac-toe-63520.appspot.com',
-    androidClientId: '405399125660-o1gmask5clj895oca7rj4fdkhm6spgba.apps.googleusercontent.com',
-    iosClientId: '405399125660-a71mikcvmcdtl09fmj20ndceifh3tti2.apps.googleusercontent.com',
-    iosBundleId: 'com.thang5878.flutterTicTacToe',
+    storageBucket: 'tic-tac-toe-63520.firebasestorage.app',
+    androidClientId: '405399125660-06msopft7dkkjt9t2rltdii86rr22qp7.apps.googleusercontent.com',
+    iosClientId: '405399125660-rf34h6f32qmtb4sg9esgodp7m33ef7mi.apps.googleusercontent.com',
+    iosBundleId: 'com.example.ticTacToe',
   );
+
 }

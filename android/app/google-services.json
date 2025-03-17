@@ -2,9 +2,97 @@
   "project_info": {
     "project_number": "405399125660",
     "project_id": "tic-tac-toe-63520",
-    "storage_bucket": "tic-tac-toe-63520.appspot.com"
+    "storage_bucket": "tic-tac-toe-63520.firebasestorage.app"
   },
   "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:405399125660:android:d916f5cda5853084a83759",
+        "android_client_info": {
+          "package_name": "com.example.firebase_lab1"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "405399125660-g3ada9s4pq9lm0n9j8jn1213tbaf272r.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.firebase_lab1",
+            "certificate_hash": "087611c6c81834a7923ae218895cc36f8d3cc016"
+          }
+        },
+        {
+          "client_id": "405399125660-hplnt0h24mpir9lacu60sdeif1cat5em.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCtDTFw-e7DvtbBIuKqJe5cueSBhI1ddF4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "405399125660-hplnt0h24mpir9lacu60sdeif1cat5em.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "405399125660-9lqsk13u3uc940jemcgk675hrag7ahau.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.firebaseLab1"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:405399125660:android:a091ae1f3af2944fa83759",
+        "android_client_info": {
+          "package_name": "com.example.tic_tac_toe"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "405399125660-61b5gpr701374fbrnoseev5bgaird7tq.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.tic_tac_toe",
+            "certificate_hash": "087611c6c81834a7923ae218895cc36f8d3cc016"
+          }
+        },
+        {
+          "client_id": "405399125660-hplnt0h24mpir9lacu60sdeif1cat5em.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCtDTFw-e7DvtbBIuKqJe5cueSBhI1ddF4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "405399125660-hplnt0h24mpir9lacu60sdeif1cat5em.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "405399125660-9lqsk13u3uc940jemcgk675hrag7ahau.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.firebaseLab1"
+              }
+            }
+          ]
+        }
+      }
+    },
     {
       "client_info": {
         "mobilesdk_app_id": "1:405399125660:android:22903e611f322c1ea83759",
@@ -13,6 +101,22 @@
         }
       },
       "oauth_client": [
+        {
+          "client_id": "405399125660-06msopft7dkkjt9t2rltdii86rr22qp7.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.thang5878.flutter_tic_tac_toe",
+            "certificate_hash": "087611c6c81834a7923ae218895cc36f8d3cc016"
+          }
+        },
+        {
+          "client_id": "405399125660-n7gmfneuc3dq8ih08necd0eu4scgefp9.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.thang5878.flutter_tic_tac_toe",
+            "certificate_hash": "503c247ae68be0282696a4cdf603d0812cc72188"
+          }
+        },
         {
           "client_id": "405399125660-o1gmask5clj895oca7rj4fdkhm6spgba.apps.googleusercontent.com",
           "client_type": 1,
@@ -39,10 +143,10 @@
               "client_type": 3
             },
             {
-              "client_id": "405399125660-9uka3i4k8ffne6aovabvp6pniguo0cva.apps.googleusercontent.com",
+              "client_id": "405399125660-9lqsk13u3uc940jemcgk675hrag7ahau.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
-                "bundle_id": "com.thang5878.flutterTicTacToe.RunnerTests"
+                "bundle_id": "com.example.firebaseLab1"
               }
             }
           ]
