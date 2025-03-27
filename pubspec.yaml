@@ -33,6 +33,7 @@ dependencies:
   gap: ^3.0.1
   mocktail: ^1.0.2
   flutter_launcher_icons: ^0.14.3
+  flutter_native_splash: ^2.4.5
 
 
 dev_dependencies: 
@@ -51,6 +52,26 @@ flutter_icons:
   image_path: "assets/logo.jpg"
   adaptive_icon_foreground: "assets/logo_foreground.png"
   adaptive_icon_background: "#ffffff"
+
+flutter_native_splash:
+  color: "#F5F6E8"
+  color_dark: "#272727"
+  image: assets/logo_splash.png
+  image_dark: assets/logo_splash.png
+  android_gravity: center
+  ios_content_mode: center
+  fullscreen: false
+
+  android_12:
+    color: "#F5F6E8"
+    color_dark: "#272727"
+    image: assets/logo_splash.png
+    image_dark: assets/logo_splash.png
+    android_gravity: center
+    ios_content_mode: center
+    fullscreen: false
+
+  web: false
 
 flutter: 
   uses-material-design: true
