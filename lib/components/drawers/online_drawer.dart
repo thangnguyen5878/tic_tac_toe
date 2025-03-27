@@ -26,7 +26,6 @@ class OnlineDrawer extends StatelessWidget {
           children: [
             _buildDrawerHeader(),
             _buildWaitingRoomTile(isOnlineWaitingRoom: isOnlineWaitingRoom),
-            _buildHistoryTile(isOnlineHistory: isOnlineHistory),
           ],
         ),
       );
