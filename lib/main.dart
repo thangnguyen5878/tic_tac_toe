@@ -20,6 +20,7 @@ Future<void> main() async {
       initialBinding: InitialBinding(),
       theme: ThemeData(
         scaffoldBackgroundColor: kWhite,
+        colorScheme: ColorScheme.fromSeed(seedColor: AppColors.primary),
       ),
     ),
   );
